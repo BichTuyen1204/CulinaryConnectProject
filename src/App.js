@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { Navbar } from "./components/navbar/Navbar";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Home } from "./page/home/Home";
+import ExploreMenu from "./components/menu/ExploreMenu";
+import Footer from "./components/footer/Footer";
+import Login from "./components/login/Login";
+import Sign_up from "./components/sign_up/Sign_up";
+import Cart from "./page/cart/Cart";
+import Contact from "./page/contact/Contact";
 
-function App() {
+const App = () => {
+  const [showLogin, setShowLogin] = useState(false);
+  const [showSignUp, setShowSignUp] = useState(false);
+
+  const openSignUp = () => {
+    setShowLogin(false);
+    setShowSignUp(true);
+  };
+
+  const openLogin = () => {
+    setShowLogin(true);
+    setShowSignUp(false);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {showLogin && (
+        <Login setShowLogin={setShowLogin} openSignUp={openSignUp} />
+      )}
+      {showSignUp && <Sign_up setShowSignUp={setShowSignUp} openLogin={openLogin} />}
+      <BrowserRouter>
+      <div className="app">
+          <Navbar setShowLogin={setShowLogin} />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="exploreMenu" element={<ExploreMenu />} />
+            <Route path="cart" element={<Cart />} />
+            <Route path="contact" element={<Contact />} />
+          </Routes>
+      </div>
+      <Footer />
+      </BrowserRouter>
+
+    </>
   );
-}
+};
 
 export default App;

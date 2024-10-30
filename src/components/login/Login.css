@@ -1,0 +1,109 @@
+.login {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: #00000090;
+    display: grid;
+}
+
+.login-container {
+    place-self: center;
+    width: max(23vw, 330px);
+    color: #808080;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding: 25px 30px;
+    border-radius: 8px;
+    font-size: 14px;
+    animation: fadeIn 0.5s;
+}
+
+.login-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: black;
+}
+
+.login-title .icon-closeicon-close {
+    cursor: pointer;
+}
+
+.login-title .icon-closeicon-close:hover {
+    color: tomato;
+}
+
+.login-title .icon-closeicon-close:hover {
+    color: black;
+}
+
+.login-input {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login-input input {
+    width: 100%;
+    outline: none;
+    border: 1px solid #d2d2d2;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.login-input input:focus {
+    border: 1px solid tomato;
+}
+
+.login-input .login-password {
+    position: relative;
+    width: 100%;
+}
+
+.login-input .login-password .login_ic_eye {
+    position: absolute;
+}
+
+.login-container button {
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    color: white;
+    background-color: tomato;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.login-condition {
+    display: flex;
+    align-items: start;
+    gap: 8px;
+    margin-top: -15px;
+}
+
+.login-condition input {
+    margin-top: 5px;
+}
+
+.part-end-login p span {
+    color: tomato;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.login-password input {
+    width: 100%;
+    padding-right: 2.5rem;
+  }
+
+.login_ic_eye {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+  }

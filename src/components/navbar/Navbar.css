@@ -1,0 +1,101 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar .logo-navbar {
+    width: 15%;
+    height: 150px;
+    padding: 20px;
+}
+
+.navbar .logo-navbar img {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+
+.navbar-menu {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+    color: #49557e;
+    font-size: 18px;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    padding-right: 40px;
+}
+
+.navbar .ic_search,
+.navbar .ic_basket {
+    font-size: 33px;
+}
+
+.navbar button {
+    background: transparent;
+    font-size: 16px;
+    color: #49557e;
+    border: 1px solid tomato;
+    padding: 10px 30px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.navbar button:hover {
+    background-color: #fff4f2;
+}
+
+.navbar .active {
+    padding-bottom: 2px;
+    border-bottom: 2px solid tomato;
+    color: tomato;
+}
+
+.navbar li {
+    cursor: pointer;
+}
+
+.navbar .navbar-basket-icon {
+    position: relative;
+}
+
+.navbar-right .ic_basket:hover,
+.navbar-right .ic_search:hover {
+    color: tomato;
+    cursor: pointer;
+}
+
+.navbar-right .ic_basket:active,
+.navbar-right .ic_search:active {
+    color: black;
+}
+
+.navbar .navbar-basket-icon .dot {
+    position: absolute;
+    min-width: 10px;
+    min-height: 10px;
+    background-color: tomato;
+    border-radius: 5px;
+    top: -7px;
+    right: -8px;
+}
+
+@media (max-width:1050px) {
+    .navbar .logo-navbar {
+        width: 150px;
+    }
+}
+
+@media (max-width:750px) {
+    .navbar .logo-navbar {
+        width: 250px;
+        height: 150px;
+    }
+}
