@@ -4,48 +4,79 @@ import { CiSearch } from "react-icons/ci";
 import { MdShoppingBasket } from "react-icons/md";
 import "./Navbar.css";
 import Logo from "../../assets/logo.png";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("home");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
   return (
-    <div className="navbar">
-      <div className="logo-navbar">
+    <div className="navbar col-12">
+      <div className="logo-navbar col-lg-1 col-md-2 col-sm-3 col-12">
         <Link to="/">
-          <img src={Logo} alt="" />
+          <img src={Logo} alt="Logo" />
         </Link>
       </div>
-      <ul className="navbar-menu">
+
+      <ul className="navbar-menu col-lg-4 col-md-6 col-sm-5 col-12">
         <li
           onClick={() => setMenu("home")}
-          className={menu === "home" ? "active" : ""}
+          className={`item ${menu === "home" ? "active" : ""}`}
         >
           <Link to="/">Home</Link>
         </li>
         <li
           onClick={() => setMenu("menu")}
-          className={menu === "menu" ? "active" : ""}
+          className={`item ${menu === "menu" ? "active" : ""}`}
         >
-          <Link to="/cart">Menu</Link>
+          <Link to="/food_card">Menu</Link>
+        </li>
+        <li
+          onClick={() => setMenu("recipe")}
+          className={`item ${menu === "recipe" ? "active" : ""}`}
+        >
+          <Link to="/contact">Recipe</Link>
         </li>
         <li
           onClick={() => setMenu("contact")}
-          className={menu === "contact" ? "active" : ""}
+          className={`item ${menu === "contact" ? "active" : ""}`}
         >
-          <Link to="/contact">Contact</Link> 
+          <Link to="/contact">Contact</Link>
         </li>
       </ul>
 
-      <div className="navbar-right">
-        <CiSearch className="ic_search" />
-        <div className="navbar-basket-icon">
-          <Link to="/cart">
-            <MdShoppingBasket className="ic_basket" />
+      <div className="navbar-right col-lg-5 col-md-4 col-sm-4 col-12">
+        <div className="search-container col-lg-7 col-md-12 col-sm-12 col-12">
+          <CiSearch className="ic_search" />
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className="search-input"
+          />
+        </div>
+
+        <div className="navbar-basket-icon col-lg-1 col-md-2 col-sm-2 col-12">
+          <Link
+            to="/cart"
+            className="link"
+            onClick={() => setMenu("icon-cart")}
+          >
+            <MdShoppingBasket
+              className={`ic_basket ${menu === "icon-cart" ? "active" : ""}`}
+            />
           </Link>
           <div className="dot"></div>
         </div>
 
-        <button onClick={() => setShowLogin(true)}>Sign in</button>
+        <div className="col-lg-4 col-md-6 col-sm-6 col-12">
+          <button onClick={() => setShowLogin(true)}>Sign in</button>
+        </div>
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import Login from "./components/login/Login";
 import Sign_up from "./components/sign_up/Sign_up";
 import Cart from "./page/cart/Cart";
 import Contact from "./page/contact/Contact";
+import { Food_card } from "./page/food_card/Food_card";
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -36,6 +37,7 @@ const App = () => {
             <Route path="exploreMenu" element={<ExploreMenu />} />
             <Route path="cart" element={<Cart />} />
             <Route path="contact" element={<Contact />} />
+            <Route path="food_card" element={<Food_card />} />
           </Routes>
       </div>
       <Footer />

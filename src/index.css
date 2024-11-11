@@ -9,9 +9,16 @@
 
 body {
     min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.link {
     text-decoration: none;
     color: inherit;
 }

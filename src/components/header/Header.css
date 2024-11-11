@@ -1,5 +1,6 @@
 .header {
     height: 34vw;
+    width: 100%;
     margin: 30px auto;
     background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('big-food.png') no-repeat;
     background-size: cover;
@@ -40,4 +41,10 @@
     background-color: white;
     font-size: max(1vw,13px);
     border-radius: 50px;
+}
+
+@media (max-width:376px) {
+    .header {
+        height: 50vw; /* Increase height as per necessity */
+    }
 }
