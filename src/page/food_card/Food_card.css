@@ -37,18 +37,17 @@
 .product-grid {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: flex-start;
     border-left: 2px solid #ddd;
     padding: 0 20px;
 }
 
 .product-card {
-    margin: 10px 5px;
+    margin: 10px 15px;
     border: 1px solid #ccc;
     border-radius: 8px;
     overflow: hidden;
     text-align: center;
-    width: 195px;
 }
 
 

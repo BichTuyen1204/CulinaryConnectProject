@@ -1,0 +1,138 @@
+.description-wrapper h4,
+.reviews-wrapper h3 {
+  font-size: 26px;
+  color: var(--color-1c1c1b);
+  margin-bottom: 10px;
+}
+
+.description-wrapper p {
+  font-size: 14px;
+  color: var(--color-777777);
+}
+
+.productdisplay-img-list{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.productdisplay-img-list img {
+  width: 100%;
+  height: 163px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.productdisplay-img-list img:hover{
+  transform: scale(0.90);
+}
+
+.productdisplay-img {
+  width: 100%;
+  height: 70%;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.productdisplay-main-img {
+  max-width: calc(100% - 70px);
+  height: 100%;
+  display: block;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+
+.main-product-image {
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.main-product-image > div {
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.main-product-image img {
+  width: 70%;
+  height: fit-content;
+  object-fit: cover;
+}
+
+.other-product-images {
+  background-color: white;
+  padding: 20px;
+}
+
+.other-product-images > div {
+  padding: 20px;
+  width: 48%;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.main-product-details {
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  width: 100%;
+}
+
+.border-bottom {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.main-product-details .title {
+  font-size: 15px;
+  font-weight: bold;
+  color: var(--color-1c1c1b);
+  margin-bottom: 10px;
+}
+
+.main-product-details .price {
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.product-heading {
+  font-size: 14px;
+  color: var(--color-1c1c1b);
+  margin-bottom: 0px;
+}
+
+.product-data {
+  font-size: 13px;
+  columns: var(--color-777777);
+  margin-bottom: 0px;
+  margin-left: 7px;
+}
+
+.button-food-detail-outline{
+    padding: 15px 0px;
+}
+
+.button-food-detail {
+    padding: 3px 17px;
+    border: 1px solid white;
+    background-color: tomato;
+    color: white;
+    font-size: 13px;
+}
+
+.button-food-detail:hover{
+    background-color: white;
+    color: tomato;
+    border: 1px solid tomato;
+}
+
+.button-food-detail:active {
+    border: 1px solid white;
+    background-color: tomato;
+    color: white;
+}
+
+.button-buy-now {
+    margin-left: 7px;
+}

@@ -39,7 +39,7 @@ export const Navbar = ({ setShowLogin }) => {
           onClick={() => setMenu("recipe")}
           className={`item ${menu === "recipe" ? "active" : ""}`}
         >
-          <Link to="/contact">Recipe</Link>
+          <Link to="/recipe">Recipe</Link>
         </li>
         <li
           onClick={() => setMenu("contact")}
@@ -75,7 +75,7 @@ export const Navbar = ({ setShowLogin }) => {
         </div>
 
         <div className="col-lg-4 col-md-6 col-sm-6 col-12">
-          <button onClick={() => setShowLogin(true)}>Sign in</button>
+          <button onClick={() => setShowLogin(true)}>Login</button>
         </div>
       </div>
     </div>

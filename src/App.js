@@ -9,6 +9,9 @@ import Sign_up from "./components/sign_up/Sign_up";
 import Cart from "./page/cart/Cart";
 import Contact from "./page/contact/Contact";
 import { Food_card } from "./page/food_card/Food_card";
+import { Food_detail } from "./page/food_detail/Food_detail";
+import Breadcrumb from "./components/bread_crumb/Breadcrumb";
+import Recipe from "./page/recipe/Recipe";
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -30,19 +33,24 @@ const App = () => {
       )}
       {showSignUp && <Sign_up setShowSignUp={setShowSignUp} openLogin={openLogin} />}
       <BrowserRouter>
-      <div className="app">
+        <div className="app">
           <Navbar setShowLogin={setShowLogin} />
+
+          {/* Thêm Breadcrumb ở đây */}
+          <Breadcrumb />
+
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="exploreMenu" element={<ExploreMenu />} />
             <Route path="cart" element={<Cart />} />
             <Route path="contact" element={<Contact />} />
             <Route path="food_card" element={<Food_card />} />
+            <Route path="food_detail" element={<Food_detail />} />
+            <Route path="recipe" element={<Recipe />} />
           </Routes>
-      </div>
-      <Footer />
+        </div>
+        <Footer />
       </BrowserRouter>
-
     </>
   );
 };

@@ -7,7 +7,7 @@ import Beef from "../../assets/Beef.png";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-export const Food_card = ({ image, name, price, oldPrice, onAddToCart }) => {
+export const Food_card = () => {
   const categories = ["All", "Fruits", "Vegetables", "Beverages", "Bakery"];
   const products = [
     { name: "Apple", price: "1.99", image: Fish, quantity: "1" },
@@ -23,10 +23,11 @@ export const Food_card = ({ image, name, price, oldPrice, onAddToCart }) => {
     { name: "Carrot Juice", price: "2.49", image: Shrimp },
     { name: "Carrot Juice", price: "2.49", image: Shrimp },
     { name: "Carrot Juice", price: "2.49", image: Shrimp },
+    { name: "Carrot Juice", price: "2.49", image: Shrimp }  
   ];
 
   return (
-    <div className="product-page-container col-12">
+    <div className="product-page-container col-12 mt-5">
       <div className="category-section col-2">
         <ul className="category-list">
           {categories.map((category) => (

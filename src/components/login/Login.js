@@ -119,7 +119,7 @@ const Login = ({ setShowLogin, openSignUp }) => {
         <div className="part-end-login">
           <p>
             Create a new account ?{" "}
-            <span onClick={openSignUp}>Sign up here</span>
+            <span onClick={openSignUp}>Register here</span>
           </p>
         </div>
       </form>

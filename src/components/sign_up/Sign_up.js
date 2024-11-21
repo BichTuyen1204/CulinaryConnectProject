@@ -3,12 +3,16 @@ import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import AccountService from "../../api/AccountService";
+
 
 const Sign_up = ({ setShowSignUp, openLogin }) => {
   const [fullName, setFullname] = useState("");
   const [fullNameError, setFullnameError] = useState("");
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -16,19 +20,22 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
   const [rePasswordError, setRePasswordError] = useState("");
   const [checkPass, setCheckPass] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
-
-
+  const [address, setAddress] = useState("");
+  const [addressError, setAddressError] = useState("");
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  
   const [account, setAccount] = useState({
     name: "",
     email: "",
+    phone: "",
     password: "",
+    address: "",
   });
 
   // Receive full name
   const FullnameChange = (e) => {
-    const value = e.target.value;
+    const { value } = e.target;
     setFullname(value);
-    setAccount({ ...account, [e.target.name]: e.target.value });
   };
 
   // Check full name
@@ -46,9 +53,9 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
     }
   };
 
-  /* Receives email */
+  // Receives email
   const EmailChange = (e) => {
-    const value = e.target.value;
+    const { value } = e.target;
     setEmail(value);
   };
 
@@ -79,9 +86,42 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
     }
   };
 
-  /* Receive password */
+  // Receive phone number
+  const PhoneChange = (e) => {
+    const { value } = e.target;
+    setPhone(value);
+  };
+
+  // Check phone number
+  const PhoneBlur = () => {
+    if (phone.trim() === "") {
+      setPhoneError("Please enter your phone number");
+    } else if (!/^\d{10}$/.test(phone)) {
+      setPhoneError("Your phone number just only number");
+    } else if (!/^0/.test(phone)) {
+      setPhoneError("Phone number must start with 0");
+    } else {
+      setPhoneError("");
+    }
+  };
+
+  // Receive address
+  const AddressChange = (e) => {
+    const { value } = e.target;
+    setAddress(value);
+  };
+
+  const AddressBlur = () => {
+    if (address.trim() === "") {
+      setAddressError("Please enter your address");
+    } else {
+      setAddressError("");
+    }
+  };
+
+  // Receive password
   const PasswordChange = (e) => {
-    const value = e.target.value;
+    const { value } = e.target;
     setPassword(value);
   };
 
@@ -135,32 +175,80 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
   // Show and hidden re-password
   const RePasswordVisibility = () => {
     setShowRePassword(!showRePassword);
-};
+  };
+
+  // Submit
+  const validateForm = async () => {
+    FullnameBlur();
+    EmailBlur();
+    PhoneBlur();
+    PasswordBlur();
+    RePasswordBlur();
+    AddressBlur();
+
+    if (
+      !fullNameError &&
+      !emailError &&
+      !phoneError &&
+      !passwordError &&
+      !rePasswordError &&
+      !addressError &&
+      fullName &&
+      email &&
+      phone &&
+      password &&
+      rePassword &&
+      address &&
+      !checkPass
+    ) {
+      setFormSubmitted(true);
+      try {
+        const response = AccountService.register(account);
+        console.log("Account created", response.data);
+        openLogin();
+      } catch (error) {
+        console.error("Have error when create an account", error);
+      }
+      setFullname("");
+      setEmail("");
+      setPhone("");
+      setPassword("");
+      setRePassword("");
+      setAddress("");
+
+      setTimeout(() => {
+        setFormSubmitted(false);
+      }, 20000);
+    } else {
+      alert("Please fill in all fields correctly before submitting.");
+    }
+  };
 
   return (
     <div className="sign-up">
       <form className="sign-up-container">
         <div className="sign-up-title">
-          <h2>Sign Up</h2>
+          <h2>Register</h2>
           <div className="icon-closeicon-close">
             <IoClose onClick={() => setShowSignUp(false)} />
           </div>
         </div>
 
+        {/* Input full name */}
         <div className="sign-up-input">
           <div className="sign-up-email">
             <input
-              type="text"
+              type="name"
               name="name"
               value={fullName}
               onChange={FullnameChange}
               onBlur={FullnameBlur}
               placeholder="Full name"
-              className="form-control"
             />
             {fullNameError && <p style={{ color: "red" }}>{fullNameError}</p>}
           </div>
 
+          {/* Input email */}
           <div className="sign-up-email">
             <input
               type="email"
@@ -173,6 +261,20 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
             {emailError && <p style={{ color: "red" }}>{emailError}</p>}
           </div>
 
+          {/* Input phone number */}
+          <div className="phone-number">
+            <input
+              type="text"
+              name="phone"
+              value={phone}
+              onChange={PhoneChange}
+              onBlur={PhoneBlur}
+              placeholder="Phone number"
+            />
+            {phoneError && <p style={{ color: "red" }}>{phoneError}</p>}
+          </div>
+
+          {/* Input password */}
           <div className="password">
             <div className="sign-up-password">
               <input
@@ -192,6 +294,7 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
             {passwordError && <p style={{ color: "red" }}>{passwordError}</p>}
           </div>
 
+          {/* Input re-password */}
           <div className="re-password">
             <div className="sign-up-password">
               <input
@@ -208,11 +311,37 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
                 onClick={RePasswordVisibility}
               />
             </div>
-            {passwordError && <p style={{ color: "red" }}>{passwordError}</p>}
+            {checkPass && (
+              <p style={{ color: "red" }}>Your password not match</p>
+            )}
+
+            {rePasswordError && (
+              <p style={{ color: "red" }}>{rePasswordError}</p>
+            )}
           </div>
 
+          {/* Input address */}
+          <div className="address">
+            <input
+              type="text"
+              name="address"
+              value={address}
+              onChange={AddressChange}
+              onBlur={AddressBlur}
+              placeholder="Address"
+            />
+            {addressError && <p style={{ color: "red" }}>{addressError}</p>}
+          </div>
         </div>
-        <button>Sign Up</button>
+
+        <div>
+          {formSubmitted && (
+            <p style={{ color: "green" }}>Register successful</p>
+          )}
+          <button type="button" onClick={validateForm}>
+            Register
+          </button>
+        </div>
         <div className="sign-up-condition">
           <input type="checkbox" required />
           <p>By continuing, I agree to the terms of use & privacy policy</p>
