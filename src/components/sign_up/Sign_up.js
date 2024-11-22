@@ -215,6 +215,7 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
       !passwordError &&
       !rePasswordError &&
       !addressError &&
+      !descriptionError &&
       name &&
       email &&
       phone &&
@@ -383,7 +384,7 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
               onBlur={DescriptionBlur}
               placeholder="Description"
             />
-            {addressError && <p style={{ color: "red" }}>{addressError}</p>}
+            {descriptionError && <p style={{ color: "red" }}>{descriptionError}</p>}
           </div>
         </div>
 

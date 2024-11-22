@@ -8,6 +8,8 @@ import { SlEarphonesAlt } from "react-icons/sl";
 import { IoMail } from "react-icons/io5";
 import "../footer/Footer.css";
 import { Link } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 
 const Footer = () => {
   return (
@@ -18,7 +20,7 @@ const Footer = () => {
         </div>
         <div className="footer-content-left">
             <h2>Access to us</h2>
-            <ul>
+            <ul className="ul-icon-social">
               <li>
                 <FaFacebookSquare className="facebook" />
                 <AiFillTikTok className="tiktok" />

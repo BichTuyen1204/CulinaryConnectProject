@@ -17,13 +17,13 @@ export const Navbar = ({ setShowLogin }) => {
 
   return (
     <div className="navbar col-12">
-      <div className="logo-navbar col-lg-1 col-md-2 col-sm-3 col-12">
+      <div className="logo-navbar col-2">
         <Link to="/">
           <img src={Logo} alt="Logo" />
         </Link>
       </div>
 
-      <ul className="navbar-menu col-lg-4 col-md-6 col-sm-5 col-12">
+      <ul className="navbar-menu col-5">
         <li
           onClick={() => setMenu("home")}
           className={`item ${menu === "home" ? "active" : ""}`}
@@ -50,8 +50,8 @@ export const Navbar = ({ setShowLogin }) => {
         </li>
       </ul>
 
-      <div className="navbar-right col-lg-5 col-md-4 col-sm-4 col-12">
-        <div className="search-container col-lg-7 col-md-12 col-sm-12 col-7">
+      <div className="navbar-right col-5">
+        <div className="search-container col-7">
           <CiSearch className="ic_search" />
           <input
             type="text"
@@ -62,7 +62,7 @@ export const Navbar = ({ setShowLogin }) => {
           />
         </div>
 
-        <div className="navbar-basket-icon col-lg-1 col-md-2 col-sm-2 col-1">
+        <div className="navbar-basket-icon col-1">
           <Link
             to="/cart"
             className="link"
@@ -75,11 +75,11 @@ export const Navbar = ({ setShowLogin }) => {
           <div className="dot"></div>
         </div>
 
-        <div className="navbar-location-icon col-lg-1 col-md-6 col-sm-6 col-12">
-            <FaLocationDot />
+        <div className="navbar-location-icon col-1">
+            <FaLocationDot className="ic_location" />
           </div>
 
-        <div className="col-lg-3 col-md-6 col-sm-6 col-12">
+        <div className="col-3">
           <button onClick={() => setShowLogin(true)}>Login</button>
         </div>
       </div>

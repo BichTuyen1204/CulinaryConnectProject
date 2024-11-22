@@ -1,11 +1,11 @@
 import React from "react";
-import Chicken from "../../assets/Chicken.png";
-import Fish from "../../assets/ca_dieu_hong.png"; // Thêm ảnh khác nếu có
 import "./FoodItem.css";
+import { Link } from "react-router-dom";
 
-const FoodList = ({ product }) => {
+const FoodItem = ({ product }) => {
   return (
     <div className="food-item">
+      <Link to="/food_detail">
       <div className="food-item-img-container">
         <img
           className="food-item-image"
@@ -13,6 +13,7 @@ const FoodList = ({ product }) => {
           alt={product.name}
         />
       </div>
+      </Link>
       <div className="food-item-info">
         <div className="food-item-name">
           <p>
@@ -37,4 +38,4 @@ const FoodList = ({ product }) => {
   );
 };
 
-export default FoodList;
+export default FoodItem;

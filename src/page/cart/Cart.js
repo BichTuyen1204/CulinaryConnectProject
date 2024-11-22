@@ -32,7 +32,6 @@ const Cart = () => {
           <p>Total</p>
           <p>Remove</p>
         </div>
-        <br />
         <hr />
 
         {products.map((item, index) => {

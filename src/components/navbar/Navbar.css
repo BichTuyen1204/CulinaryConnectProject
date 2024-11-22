@@ -42,7 +42,7 @@
 .navbar-right {
     display: flex;
     align-items: center;
-    gap: 40px;
+    gap: 15px;
     padding-right: 40px;
 }
 
@@ -140,13 +140,24 @@
 }
 
 .ic_basket {
-    color: black;
+    color: #4f4f4f;
 }
 
-.navbar-location-icon {
+.navbar-location-icon .ic_location {
     width: 25px;
     height: 25px;
     cursor: pointer;
+    margin-top: auto;
+    margin-bottom: auto;
+    color: #4f4f4f;
+}
+
+.navbar-location-icon .ic_location:hover {
+    color: tomato;
+}
+
+.navbar-location-icon .ic_location:active{
+    color: black;
 }
 
 @media (max-width:1050px) {

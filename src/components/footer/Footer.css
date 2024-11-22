@@ -13,12 +13,22 @@
 .footer-content {
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 2fr;
+    grid-template-columns: 1fr 1.5fr 2fr 2fr;
     gap: 80px;
 }
 
 .img-logo-footer {
-    width: 70%;
+    width: 100%;
+    height: 90%;
+}
+
+.ul-icon-social {
+    width: 60px;
+    height: 50px;
+}
+
+.facebook, .tiktok, .youtube {
+    width: 100%;
     height: 100%;
 }
 
