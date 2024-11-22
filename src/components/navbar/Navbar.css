@@ -143,6 +143,12 @@
     color: black;
 }
 
+.navbar-location-icon {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
 @media (max-width:1050px) {
     .navbar .logo-navbar {
         width: 150px;

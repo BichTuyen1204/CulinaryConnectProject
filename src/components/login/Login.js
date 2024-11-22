@@ -3,44 +3,42 @@ import { IoClose } from "react-icons/io5";
 import "../login/Login.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import AccountService from "../../api/AccountService";
 
 const Login = ({ setShowLogin, openSignUp }) => {
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
+  const [username, setUserName] = useState("");
+  const [userNameError, setUserNameError] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [loginError, setLoginError] = useState("");
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
 
-  /* Receives email */
-  const EmailChange = (e) => {
+  const [account, setAccount] = useState({
+    username: "",
+    password: "",
+  });
+
+  // Receives username
+  const userNameChange = (e) => {
     const value = e.target.value;
-    setEmail(value);
+    setUserName(value);
+    setAccount((preState) => ({ ...preState, username: value }));
   };
 
-  // Check email
-  const ValidEmail = (e) => {
-    const emailRegex = /@.*$/;
-    return emailRegex.test(e);
-  };
-
-  // Check email
-  const EmailBlur = () => {
-    if (email.trim() === "") {
-      setEmailError("Please enter your email");
-    } else if (!ValidEmail(email.trim())) {
-      setEmailError("Email must contain @ and .com");
-    } else if (email.length < 6) {
-      setEmailError("Email must be at least 6 characters long");
-    } else if (email.length > 100) {
-      setEmailError("Email must be less than 100 characters long");
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setEmailError("Please retype your email");
-    } else if (/@[^\w@]+\w/.test(email)) {
-      setEmailError("Please retype your email");
-    } else if (!/^[^\s@]+@[^\d@]+\.[^\s@]+$/.test(email)) {
-      setEmailError("Numbers are not allowed after @.");
+  // Check full name
+  const userNameBlur = () => {
+    if (username.trim() === "") {
+      setUserNameError("Please enter your full name");
+    } else if (username.length < 4) {
+      setUserNameError("The full name must be at least 4 characters");
+    } else if (username.length > 100) {
+      setUserNameError("The full name must be less than 100 characters");
+    } else if (!/^[\p{L}\s]+$/u.test(username)) {
+      setUserNameError("Please enter only alphabetic characters");
     } else {
-      setEmailError("");
+      setUserNameError("");
     }
   };
 
@@ -48,6 +46,7 @@ const Login = ({ setShowLogin, openSignUp }) => {
   const PasswordChange = (e) => {
     const value = e.target.value;
     setPassword(value);
+    setAccount((preState) => ({ ...preState, password: value }));
   };
 
   // Check password
@@ -69,9 +68,69 @@ const Login = ({ setShowLogin, openSignUp }) => {
     setShowPassword(!showPassword);
   };
 
+  const handleClose = (e) => {
+    setShowLogin(false);
+  };
+
+  const handleContainerClick = (e) => {
+    e.stopPropagation();
+  };
+
+  // Check box terms
+  const handleAgreementChange = (e) => {
+    setAgreedToTerms(e.target.checked);
+  };
+
+  const validateForm = async () => {
+    setLoginError("");
+    userNameBlur();
+    PasswordBlur();
+
+    if (!agreedToTerms) {
+      alert("Please agree to the terms of use and privacy policy");
+      return;
+    }
+
+    if (!userNameError && !passwordError && username && password) {
+      try {
+        const response = await AccountService.signin(account);
+        console.log("Login successful", response.data);
+        setFormSubmitted(true);
+        setLoginError("");
+        setTimeout(() => {
+        // openHome();
+        }, 5000);
+      } catch (error) {
+        console.error(
+          "Error when logging in:",
+          error.response ? error.response.data : error.message
+        );
+        if (error.response) {
+          switch (error.response.status) {
+            case 404:
+              setLoginError("Account does not exist.");
+              break;
+            case 401:
+              setLoginError("Invalid username or password.");
+              break;
+            default:
+              setLoginError("An error occurred. Please try again later.");
+          }
+        } else {
+          setLoginError("Network error. Please check your connection.");
+        }
+        setUserName("");
+        setPassword("");
+        setFormSubmitted(false);
+      }
+    } else {
+      alert("Please fill in all fields correctly before submitting.");
+    }
+  };
+
   return (
-    <div className="login">
-      <form className="login-container">
+    <div className="login" onClick={handleClose}>
+      <form className="login-container" onClick={handleContainerClick}>
         <div className="login-title">
           <h2>Login</h2>
           <div className="icon-closeicon-close">
@@ -82,14 +141,14 @@ const Login = ({ setShowLogin, openSignUp }) => {
         <div className="login-input">
           <div className="login-email">
             <input
-              type="email"
-              name="email"
-              value={email}
-              onChange={EmailChange}
-              onBlur={EmailBlur}
-              placeholder="Email"
+              type="text"
+              name="user name"
+              value={username}
+              onChange={userNameChange}
+              onBlur={userNameBlur}
+              placeholder="Full name"
             />
-            {emailError && <p style={{ color: "red" }}>{emailError}</p>}
+            {userNameError && <p style={{ color: "red" }}>{userNameError}</p>}
           </div>
 
           <div className="">
@@ -111,9 +170,9 @@ const Login = ({ setShowLogin, openSignUp }) => {
             {passwordError && <p style={{ color: "red" }}>{passwordError}</p>}
           </div>
         </div>
-        <button>Login</button>
+
         <div className="login-condition">
-          <input type="checkbox" required />
+          <input type="checkbox" onChange={handleAgreementChange} />
           <p>By continuing, I agree to the terms of use & privacy policy</p>
         </div>
         <div className="part-end-login">
@@ -121,6 +180,16 @@ const Login = ({ setShowLogin, openSignUp }) => {
             Create a new account ?{" "}
             <span onClick={openSignUp}>Register here</span>
           </p>
+        </div>
+
+        <div className="button-login">
+          {formSubmitted && !loginError && (
+            <p style={{ color: "green" }}>Login successful</p>
+          )}
+          {loginError && <p style={{ color: "red" }}>{loginError}</p>}
+          <button type="button" onClick={validateForm}>
+            Login
+          </button>
         </div>
       </form>
     </div>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { MdShoppingBasket } from "react-icons/md";
+import { FaLocationDot } from "react-icons/fa6";
 import "./Navbar.css";
 import Logo from "../../assets/logo.png";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -50,7 +51,7 @@ export const Navbar = ({ setShowLogin }) => {
       </ul>
 
       <div className="navbar-right col-lg-5 col-md-4 col-sm-4 col-12">
-        <div className="search-container col-lg-7 col-md-12 col-sm-12 col-12">
+        <div className="search-container col-lg-7 col-md-12 col-sm-12 col-7">
           <CiSearch className="ic_search" />
           <input
             type="text"
@@ -61,7 +62,7 @@ export const Navbar = ({ setShowLogin }) => {
           />
         </div>
 
-        <div className="navbar-basket-icon col-lg-1 col-md-2 col-sm-2 col-12">
+        <div className="navbar-basket-icon col-lg-1 col-md-2 col-sm-2 col-1">
           <Link
             to="/cart"
             className="link"
@@ -74,7 +75,11 @@ export const Navbar = ({ setShowLogin }) => {
           <div className="dot"></div>
         </div>
 
-        <div className="col-lg-4 col-md-6 col-sm-6 col-12">
+        <div className="navbar-location-icon col-lg-1 col-md-6 col-sm-6 col-12">
+            <FaLocationDot />
+          </div>
+
+        <div className="col-lg-3 col-md-6 col-sm-6 col-12">
           <button onClick={() => setShowLogin(true)}>Login</button>
         </div>
       </div>

@@ -12,5 +12,16 @@ class AccountService {
             throw error;
         }
     }
+    
+    async signin(account) {
+        try {
+            const response = await axios.post(`${API_BASE_URL}/signin`, account);
+            return response.data;
+        } catch (error){
+            console.error("Login failed: ", error.response ? error.response.data : error.message);
+            throw error;
+        }
+    }
+
 }
 export default new AccountService();

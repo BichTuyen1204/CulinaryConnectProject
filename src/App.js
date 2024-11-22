@@ -31,7 +31,7 @@ const App = () => {
       {showLogin && (
         <Login setShowLogin={setShowLogin} openSignUp={openSignUp} />
       )}
-      {showSignUp && <Sign_up setShowSignUp={setShowSignUp} openLogin={openLogin} />}
+      {showSignUp && (<Sign_up setShowSignUp={setShowSignUp} openLogin={openLogin} />)}
       <BrowserRouter>
         <div className="app">
           <Navbar setShowLogin={setShowLogin} />

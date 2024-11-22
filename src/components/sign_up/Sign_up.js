@@ -5,10 +5,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import AccountService from "../../api/AccountService";
 
-
 const Sign_up = ({ setShowSignUp, openLogin }) => {
-  const [fullName, setFullname] = useState("");
-  const [fullNameError, setFullnameError] = useState("");
+  const [name, setName] = useState("");
+  const [nameError, setNameError] = useState("");
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [phone, setPhone] = useState("");
@@ -23,33 +22,37 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
   const [address, setAddress] = useState("");
   const [addressError, setAddressError] = useState("");
   const [formSubmitted, setFormSubmitted] = useState(false);
-  
+  const [description, setDescription] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
+
   const [account, setAccount] = useState({
-    name: "",
+    username: "",
     email: "",
     phone: "",
     password: "",
     address: "",
+    description: "",
   });
 
   // Receive full name
-  const FullnameChange = (e) => {
+  const NameChange = (e) => {
     const { value } = e.target;
-    setFullname(value);
+    setName(value);
+    setAccount((preState) => ({ ...preState, username: value }));
   };
 
   // Check full name
-  const FullnameBlur = () => {
-    if (fullName.trim() === "") {
-      setFullnameError("Please enter your full name");
-    } else if (fullName.length < 4) {
-      setFullnameError("The full name must be at least 4 characters");
-    } else if (fullName.length > 100) {
-      setFullnameError("The full name must be less than 100 characters");
-    } else if (!/^[\p{L}\s]+$/u.test(fullName)) {
-      setFullnameError("Please enter only alphabetic characters");
+  const NameBlur = () => {
+    if (name.trim() === "") {
+      setNameError("Please enter your full name");
+    } else if (name.length < 4) {
+      setNameError("The full name must be at least 4 characters");
+    } else if (name.length > 100) {
+      setNameError("The full name must be less than 100 characters");
+    } else if (!/^[\p{L}\s]+$/u.test(name)) {
+      setNameError("Please enter only alphabetic characters");
     } else {
-      setFullnameError("");
+      setNameError("");
     }
   };
 
@@ -57,6 +60,7 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
   const EmailChange = (e) => {
     const { value } = e.target;
     setEmail(value);
+    setAccount((preState) => ({ ...preState, email: value }));
   };
 
   // Check email
@@ -90,6 +94,7 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
   const PhoneChange = (e) => {
     const { value } = e.target;
     setPhone(value);
+    setAccount((preState) => ({ ...preState, phone: value }));
   };
 
   // Check phone number
@@ -109,6 +114,7 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
   const AddressChange = (e) => {
     const { value } = e.target;
     setAddress(value);
+    setAccount((preState) => ({ ...preState, address: value }));
   };
 
   const AddressBlur = () => {
@@ -123,6 +129,7 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
   const PasswordChange = (e) => {
     const { value } = e.target;
     setPassword(value);
+    setAccount((preState) => ({ ...preState, password: value }));
   };
 
   // Check password
@@ -177,9 +184,24 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
     setShowRePassword(!showRePassword);
   };
 
+  // Receive description
+  const DescriptionChange = (e) => {
+    const { value } = e.target;
+    setDescription(value);
+    setAccount((preState) => ({ ...preState, description: value }));
+  };
+
+  const DescriptionBlur = () => {
+    if (description.trim() === "") {
+      setDescriptionError("Please enter your description");
+    } else {
+      setDescriptionError("");
+    }
+  };
+
   // Submit
   const validateForm = async () => {
-    FullnameBlur();
+    NameBlur();
     EmailBlur();
     PhoneBlur();
     PasswordBlur();
@@ -187,46 +209,64 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
     AddressBlur();
 
     if (
-      !fullNameError &&
+      !nameError &&
       !emailError &&
       !phoneError &&
       !passwordError &&
       !rePasswordError &&
       !addressError &&
-      fullName &&
+      name &&
       email &&
       phone &&
       password &&
       rePassword &&
       address &&
+      description &&
       !checkPass
     ) {
       setFormSubmitted(true);
       try {
         const response = AccountService.register(account);
         console.log("Account created", response.data);
-        openLogin();
       } catch (error) {
         console.error("Have error when create an account", error);
       }
-      setFullname("");
+      console.log("Submitted Data:", {
+        name,
+        email,
+        phone,
+        password, // Cân nhắc không log mật khẩu vì lý do bảo mật
+        address,
+        description
+    });
+      setName("");
       setEmail("");
       setPhone("");
       setPassword("");
       setRePassword("");
       setAddress("");
+      setDescription("");
 
       setTimeout(() => {
+        openLogin();
         setFormSubmitted(false);
-      }, 20000);
+      }, 5000);
     } else {
       alert("Please fill in all fields correctly before submitting.");
     }
   };
 
+  const handleClose = (e) => {
+    setShowSignUp(false);
+  };
+
+  const handleContainerClick = (e) => {
+    e.stopPropagation();
+  };
+
   return (
-    <div className="sign-up">
-      <form className="sign-up-container">
+    <div className="sign-up" onClick={handleClose}>
+      <form className="sign-up-container" onClick={handleContainerClick}>
         <div className="sign-up-title">
           <h2>Register</h2>
           <div className="icon-closeicon-close">
@@ -240,12 +280,12 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
             <input
               type="name"
               name="name"
-              value={fullName}
-              onChange={FullnameChange}
-              onBlur={FullnameBlur}
+              value={name}
+              onChange={NameChange}
+              onBlur={NameBlur}
               placeholder="Full name"
             />
-            {fullNameError && <p style={{ color: "red" }}>{fullNameError}</p>}
+            {nameError && <p style={{ color: "red" }}>{nameError}</p>}
           </div>
 
           {/* Input email */}
@@ -332,6 +372,29 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
             />
             {addressError && <p style={{ color: "red" }}>{addressError}</p>}
           </div>
+
+          {/* Input description */}
+          <div className="description">
+            <input
+              type="text"
+              name="description"
+              value={description}
+              onChange={DescriptionChange}
+              onBlur={DescriptionBlur}
+              placeholder="Description"
+            />
+            {addressError && <p style={{ color: "red" }}>{addressError}</p>}
+          </div>
+        </div>
+
+        <div className="sign-up-condition">
+          <input type="checkbox" required />
+          <p>By continuing, I agree to the terms of use & privacy policy</p>
+        </div>
+        <div className="part-end-sign-up">
+          <p>
+            Have a new account ? <span onClick={openLogin}>Login here</span>
+          </p>
         </div>
 
         <div>
@@ -341,15 +404,6 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
           <button type="button" onClick={validateForm}>
             Register
           </button>
-        </div>
-        <div className="sign-up-condition">
-          <input type="checkbox" required />
-          <p>By continuing, I agree to the terms of use & privacy policy</p>
-        </div>
-        <div className="part-end-sign-up">
-          <p>
-            Have a new account ? <span onClick={openLogin}>Login here</span>
-          </p>
         </div>
       </form>
     </div>
