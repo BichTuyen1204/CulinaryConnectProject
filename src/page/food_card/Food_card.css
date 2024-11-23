@@ -1,4 +1,18 @@
-.product-page-container {
+.image-menu {
+    width: 100%;
+    height: 165px;
+}
+
+.image-menu-contents {
+    width: 100%;
+    height: 100%;
+}
+
+.image-menu-contents img{
+    width: 100%;
+    height: 100%;
+}
+.food-page-container {
     display: flex;
     max-width: 1200px;
     margin: auto;
@@ -34,7 +48,7 @@
     color: white;
 }
 
-.product-grid {
+.food-grid {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
@@ -42,15 +56,15 @@
     padding: 0 20px;
 }
 
-.product-card {
-    margin: 10px 15px;
+.food-card {
+    margin: 10px 10px;
     border: 1px solid #ccc;
     border-radius: 8px;
     overflow: hidden;
     text-align: center;
 }
 
-.product-card img {
+.food-card img {
     width: 100%;
     height: 150px;
     object-fit: contain;
@@ -60,28 +74,29 @@
     cursor: pointer;
 }
 
-.product-card:hover img {
+.food-card:hover img {
     transform: scale(1.1);
 }
 
-.product-info {
-    padding: 20px;
+.food-info {
+    padding: 10px;
     text-align: start;
 }
 
-.product-price-and-quantity {
+.food-price-and-quantity {
     font-size: 12px;
     margin: 15px 0;
 }
 
-.product-info .product-name {
+.food-info .food-name {
     color: #333;
     font-size: 15px;    
 }
 
-.button-product-card {
+.button-food-card {
     display: flex;
     justify-content: space-between;
+    gap:5px
 }
 
 .bt-add-to-cart, .bt-buy-now {
@@ -109,7 +124,7 @@
 }
 
 @media (max-width: 376px) {
-    .product-page-container {
+    .food-page-container {
         flex-direction: column; /* Đảm bảo mọi thứ đều nằm dọc */
     }
 

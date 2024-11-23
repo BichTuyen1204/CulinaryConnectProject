@@ -227,19 +227,11 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
     ) {
       setFormSubmitted(true);
       try {
-        const response = AccountService.register(account);
+        const response = await AccountService.register(account);
         console.log("Account created", response.data);
       } catch (error) {
         console.error("Have error when create an account", error);
       }
-      console.log("Submitted Data:", {
-        name,
-        email,
-        phone,
-        password, // Cân nhắc không log mật khẩu vì lý do bảo mật
-        address,
-        description
-    });
       setName("");
       setEmail("");
       setPhone("");
