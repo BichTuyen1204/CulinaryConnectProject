@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { MdShoppingBasket } from "react-icons/md";
@@ -6,14 +6,46 @@ import { FaLocationDot } from "react-icons/fa6";
 import "./Navbar.css";
 import Logo from "../../assets/logo.png";
 import "bootstrap/dist/css/bootstrap.min.css";
+import AccountService from "../../api/AccountService";
 
 export const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("home");
   const [searchQuery, setSearchQuery] = useState("");
+  const [username, setUserName] = useState("");
+  const [accountRole, setAccountRole] = useState("");
+  const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
+
+  useEffect(() => {
+    const getAccount = async () => {
+      if (jwtToken !== "") {
+        try {
+          const response = await AccountService.account(jwtToken);
+          console.log("account:", response);
+          setUserName(response.username);
+          setAccountRole(response.role);
+        } catch (error) {
+          console.error("Error fetching account information:", error);
+          console.log(error.response);
+        }
+      } else {
+        setUserName("");
+        setAccountRole("");
+      }
+    };
+    getAccount();
+  }, [jwtToken]);
+
+  const Logout = async() => {
+    localStorage.removeItem("jwtToken");
+    console.log("Logout successful")
+    setUserName("");
+    setAccountRole("");
+    setJwtToken("");
+  }
 
   return (
     <div className="navbar col-12">
@@ -76,12 +108,25 @@ export const Navbar = ({ setShowLogin }) => {
         </div>
 
         <div className="navbar-location-icon col-1">
-            <FaLocationDot className="ic_location" />
-          </div>
-
-        <div className="col-3">
-          <button onClick={() => setShowLogin(true)}>Login</button>
+          <FaLocationDot className="ic_location" />
         </div>
+
+        <nav>
+          <>
+            {username ? (
+              <p>Welcome, {username}</p>
+            ) : (
+              <p>Welcome, Guest</p>
+            )}
+            {username ? (
+              <button onClick={Logout}>Logout</button>
+            ) : (
+              <>
+                <button onClick={() => setShowLogin(true)}>Login</button>
+              </>
+            )}
+          </>
+        </nav>
       </div>
     </div>
   );

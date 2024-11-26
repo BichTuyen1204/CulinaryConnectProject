@@ -10,23 +10,28 @@ import "../footer/Footer.css";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-
 const Footer = () => {
   return (
     <div className="footer" id="footer">
       <div className="footer-content">
         <div className="img-logo-footer">
-        <Link to="/"><img src={Logo} alt="" /></Link>
+          <Link to="/">
+            <img src={Logo} alt="" />
+          </Link>
         </div>
         <div className="footer-content-left">
-            <h2>Access to us</h2>
-            <ul className="ul-icon-social">
+          <h2>Access to us</h2>
+          <div className="ul-icon-social">
               <li>
                 <FaFacebookSquare className="facebook" />
+              </li>
+              <li>
                 <AiFillTikTok className="tiktok" />
+              </li>
+              <li>
                 <IoLogoYoutube className="youtube" />
               </li>
-            </ul>
+          </div>
         </div>
 
         <div className="footer-content-center">

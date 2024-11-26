@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Navbar } from "./components/navbar/Navbar";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Routes, Route, useNavigate, BrowserRouter } from "react-router-dom";
 import { Home } from "./page/home/Home";
 import ExploreMenu from "./components/menu/ExploreMenu";
 import Footer from "./components/footer/Footer";
@@ -13,9 +13,15 @@ import { Food_detail } from "./page/food_detail/Food_detail";
 import Breadcrumb from "./components/bread_crumb/Breadcrumb";
 import Recipe from "./page/recipe/Recipe";
 
-const App = () => {
+const AppContent = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [showSignUp, setShowSignUp] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLoginSuccess = () => {
+    setShowLogin(false);
+    navigate("/");
+  };
 
   const openSignUp = () => {
     setShowLogin(false);
@@ -26,19 +32,12 @@ const App = () => {
     setShowLogin(true);
     setShowSignUp(false);
   };
+
   return (
     <>
-      {showLogin && (
-        <Login setShowLogin={setShowLogin} openSignUp={openSignUp} />
-      )}
-      {showSignUp && (<Sign_up setShowSignUp={setShowSignUp} openLogin={openLogin} />)}
-      <BrowserRouter>
         <div className="app">
           <Navbar setShowLogin={setShowLogin} />
-
-          {/* Thêm Breadcrumb ở đây */}
           <Breadcrumb />
-
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="exploreMenu" element={<ExploreMenu />} />
@@ -48,10 +47,27 @@ const App = () => {
             <Route path="food_detail" element={<Food_detail />} />
             <Route path="recipe" element={<Recipe />} />
           </Routes>
+          {showLogin && (
+            <Login
+              setShowLogin={setShowLogin}
+              openSignUp={openSignUp}
+              onLoginSuccess={handleLoginSuccess}
+            />
+          )}
+          {showSignUp && (
+            <Sign_up setShowSignUp={setShowSignUp} openLogin={openLogin} />
+          )}
         </div>
         <Footer />
-      </BrowserRouter>
     </>
+  );
+};
+
+const App = () => {
+  return (
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
   );
 };
 

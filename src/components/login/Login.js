@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import "../login/Login.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import AccountService from "../../api/AccountService";
 
-const Login = ({ setShowLogin, openSignUp }) => {
+const Login = ({ setShowLogin, openSignUp, onLoginSuccess }) => {
   const [username, setUserName] = useState("");
   const [userNameError, setUserNameError] = useState("");
   const [password, setPassword] = useState("");
@@ -94,12 +94,14 @@ const Login = ({ setShowLogin, openSignUp }) => {
     if (!userNameError && !passwordError && username && password) {
       try {
         const response = await AccountService.signin(account);
-        console.log("Login successful", response.data);
+        console.log("Login successful", response);
         setFormSubmitted(true);
         setLoginError("");
         setTimeout(() => {
-        // openHome();
-        }, 5000);
+          onLoginSuccess();
+          window.location.reload();
+          console.log("Response data:", response);
+        }, 2000);
       } catch (error) {
         console.error(
           "Error when logging in:",
@@ -108,19 +110,20 @@ const Login = ({ setShowLogin, openSignUp }) => {
         if (error.response) {
           switch (error.response.status) {
             case 404:
-              setLoginError("Account does not exist.");
+              setUserNameError("Account does not exist.");
               break;
             case 401:
               setLoginError("Invalid username or password.");
               break;
+            case 500:
+              setPasswordError("Password is incorrect.");
+              break;
             default:
-              setLoginError("An error occurred. Please try again later.");
+              setLoginError("User name does not exist.");
           }
         } else {
           setLoginError("Network error. Please check your connection.");
         }
-        setUserName("");
-        setPassword("");
         setFormSubmitted(false);
       }
     } else {
@@ -129,69 +132,71 @@ const Login = ({ setShowLogin, openSignUp }) => {
   };
 
   return (
-    <div className="login" onClick={handleClose}>
-      <form className="login-container" onClick={handleContainerClick}>
-        <div className="login-title">
-          <h2>Login</h2>
-          <div className="icon-closeicon-close">
-            <IoClose onClick={() => setShowLogin(false)} />
-          </div>
-        </div>
-
-        <div className="login-input">
-          <div className="login-email">
-            <input
-              type="text"
-              name="user name"
-              value={username}
-              onChange={userNameChange}
-              onBlur={userNameBlur}
-              placeholder="Full name"
-            />
-            {userNameError && <p style={{ color: "red" }}>{userNameError}</p>}
-          </div>
-
-          <div className="">
-            <div className="login-password">
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={password}
-                onChange={PasswordChange}
-                onBlur={PasswordBlur}
-                placeholder="Password"
-              />
-              <FontAwesomeIcon
-                className="login_ic_eye"
-                icon={showPassword ? faEyeSlash : faEye}
-                onClick={PasswordVisibility}
-              />
+    <div className="fullscreen-modal">
+      <div className="login" onClick={handleClose}>
+        <form className="login-container" onClick={handleContainerClick}>
+          <div className="login-title">
+            <h2>Login</h2>
+            <div className="icon-closeicon-close">
+              <IoClose onClick={() => setShowLogin(false)} />
             </div>
-            {passwordError && <p style={{ color: "red" }}>{passwordError}</p>}
           </div>
-        </div>
 
-        <div className="login-condition">
-          <input type="checkbox" onChange={handleAgreementChange} />
-          <p>By continuing, I agree to the terms of use & privacy policy</p>
-        </div>
-        <div className="part-end-login">
-          <p>
-            Create a new account ?{" "}
-            <span onClick={openSignUp}>Register here</span>
-          </p>
-        </div>
+          <div className="login-input">
+            <div className="login-email">
+              <input
+                type="text"
+                name="user name"
+                value={username}
+                onChange={userNameChange}
+                onBlur={userNameBlur}
+                placeholder="User name"
+              />
+              {userNameError && <p style={{ color: "red" }}>{userNameError}</p>}
+            </div>
 
-        <div className="button-login">
-          {formSubmitted && !loginError && (
-            <p style={{ color: "green" }}>Login successful</p>
-          )}
-          {loginError && <p style={{ color: "red" }}>{loginError}</p>}
-          <button type="button" onClick={validateForm}>
-            Login
-          </button>
-        </div>
-      </form>
+            <div className="">
+              <div className="login-password">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={password}
+                  onChange={PasswordChange}
+                  onBlur={PasswordBlur}
+                  placeholder="Password"
+                />
+                <FontAwesomeIcon
+                  className="login_ic_eye"
+                  icon={showPassword ? faEyeSlash : faEye}
+                  onClick={PasswordVisibility}
+                />
+              </div>
+              {passwordError && <p style={{ color: "red" }}>{passwordError}</p>}
+            </div>
+          </div>
+
+          <div className="login-condition">
+            <input type="checkbox" onChange={handleAgreementChange} />
+            <p>By continuing, I agree to the terms of use & privacy policy</p>
+          </div>
+          <div className="part-end-login">
+            <p>
+              Create a new account ?{" "}
+              <span onClick={openSignUp}>Register here</span>
+            </p>
+          </div>
+
+          <div className="button-login">
+            {formSubmitted && !loginError && (
+              <p style={{ color: "green" }}>Login successful</p>
+            )}
+            {loginError && <p style={{ color: "red" }}>{loginError}</p>}
+            <button type="button" onClick={validateForm}>
+              Login
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

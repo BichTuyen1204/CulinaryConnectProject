@@ -19,6 +19,7 @@ function Breadcrumb() {
     recipe: "Recipe",
     cart: "Cart",
     contact: "Contact",
+    food_detail: "Food detail"
   };
 
   return (

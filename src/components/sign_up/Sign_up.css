@@ -103,10 +103,18 @@
     margin-top: 5px;
 }
 
+.part-end-sign-up {
+    margin-top: -25px;
+}
+
 .part-end-sign-up p span {
     color: tomato;
     font-weight: 500;
     cursor: pointer;
+}
+
+.info-register {
+    margin-top: -25px;
 }
 
 .sign-up-password input {

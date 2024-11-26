@@ -23,8 +23,12 @@
 }
 
 .ul-icon-social {
-    width: 60px;
-    height: 50px;
+    width: 120px;
+    height: 60px;
+    gap: 15px;
+    display: flex;
+    align-items: center;
+    justify-items: center;
 }
 
 .facebook, .tiktok, .youtube {
@@ -38,10 +42,17 @@
     cursor: pointer;
 }
 
-.footer-content-left, .footer-content-right, .footer-content-center {
+.footer-content-right, .footer-content-center {
     display: flex;
     flex-direction: column;
     align-items: start;
+    gap: 20px;
+}
+
+.footer-content-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 20px;
 }
 

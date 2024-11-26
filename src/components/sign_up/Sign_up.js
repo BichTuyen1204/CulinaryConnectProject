@@ -6,8 +6,8 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import AccountService from "../../api/AccountService";
 
 const Sign_up = ({ setShowSignUp, openLogin }) => {
-  const [name, setName] = useState("");
-  const [nameError, setNameError] = useState("");
+  const [username, setUserName] = useState("");
+  const [usernameError, setUserNameError] = useState("");
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [phone, setPhone] = useState("");
@@ -24,6 +24,8 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [description, setDescription] = useState("");
   const [descriptionError, setDescriptionError] = useState("");
+  const [registerError, setRegisterError] = useState("");
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   const [account, setAccount] = useState({
     username: "",
@@ -37,22 +39,22 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
   // Receive full name
   const NameChange = (e) => {
     const { value } = e.target;
-    setName(value);
+    setUserName(value);
     setAccount((preState) => ({ ...preState, username: value }));
   };
 
   // Check full name
   const NameBlur = () => {
-    if (name.trim() === "") {
-      setNameError("Please enter your full name");
-    } else if (name.length < 4) {
-      setNameError("The full name must be at least 4 characters");
-    } else if (name.length > 100) {
-      setNameError("The full name must be less than 100 characters");
-    } else if (!/^[\p{L}\s]+$/u.test(name)) {
-      setNameError("Please enter only alphabetic characters");
+    if (username.trim() === "") {
+      setUserNameError("Please enter your full name");
+    } else if (username.length < 4) {
+      setUserNameError("The full name must be at least 4 characters");
+    } else if (username.length > 100) {
+      setUserNameError("The full name must be less than 100 characters");
+    } else if (!/^[\p{L}\s]+$/u.test(username)) {
+      setUserNameError("Please enter only alphabetic characters");
     } else {
-      setNameError("");
+      setUserNameError("");
     }
   };
 
@@ -101,7 +103,9 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
   const PhoneBlur = () => {
     if (phone.trim() === "") {
       setPhoneError("Please enter your phone number");
-    } else if (!/^\d{10}$/.test(phone)) {
+    } else if (phone.length < 10 || phone.length > 10) {
+      setPhoneError("Your phone number must be 10 digits");
+    } else if (!/^\d+$/.test(phone)) {
       setPhoneError("Your phone number just only number");
     } else if (!/^0/.test(phone)) {
       setPhoneError("Phone number must start with 0");
@@ -208,15 +212,20 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
     RePasswordBlur();
     AddressBlur();
 
+    if (!agreedToTerms) {
+      alert("Please agree to the terms of use and privacy policy");
+      return;
+    }
+
     if (
-      !nameError &&
+      !usernameError &&
       !emailError &&
       !phoneError &&
       !passwordError &&
       !rePasswordError &&
       !addressError &&
       !descriptionError &&
-      name &&
+      username &&
       email &&
       phone &&
       password &&
@@ -225,25 +234,50 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
       description &&
       !checkPass
     ) {
-      setFormSubmitted(true);
       try {
         const response = await AccountService.register(account);
         console.log("Account created", response.data);
+        setFormSubmitted(true);
+        setRegisterError("");
+        console.log(
+          "Account:",
+          username,
+          email,
+          phone,
+          password,
+          address,
+          description
+        );
+        setTimeout(() => {
+          openLogin();
+          setFormSubmitted(false);
+        }, 5000);
       } catch (error) {
-        console.error("Have error when create an account", error);
-      }
-      setName("");
-      setEmail("");
-      setPhone("");
-      setPassword("");
-      setRePassword("");
-      setAddress("");
-      setDescription("");
-
-      setTimeout(() => {
-        openLogin();
+        if (error.response) {
+          const errorMessage = error.response.data?.message;
+          if (errorMessage) {
+            if (
+              errorMessage.includes(
+                "duplicate key value violates unique constraint"
+              )
+            ) {
+              if (errorMessage.includes("phone")) {
+                setPhoneError("Phone number already exists.");
+              } else if (errorMessage.includes("email")) {
+                setEmailError("Email already exists.");
+              } else if (errorMessage.includes("username")) {
+                setUserNameError("Username already exists.");
+              }
+            }
+          } else {
+            setRegisterError("An error occurred during registration.");
+          }
+        } else {
+          console.error("Network or unknown error occurred:", error);
+          setRegisterError("Network error occurred, please try again.");
+        }
         setFormSubmitted(false);
-      }, 5000);
+      }
     } else {
       alert("Please fill in all fields correctly before submitting.");
     }
@@ -255,6 +289,10 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
 
   const handleContainerClick = (e) => {
     e.stopPropagation();
+  };
+
+  const handleAgreementChange = (e) => {
+    setAgreedToTerms(e.target.checked);
   };
 
   return (
@@ -269,16 +307,16 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
 
         {/* Input full name */}
         <div className="sign-up-input">
-          <div className="sign-up-email">
+          <div className="sign-up-username">
             <input
               type="name"
-              name="name"
-              value={name}
+              name="username"
+              value={username}
               onChange={NameChange}
               onBlur={NameBlur}
               placeholder="Full name"
             />
-            {nameError && <p style={{ color: "red" }}>{nameError}</p>}
+            {usernameError && <p style={{ color: "red" }}>{usernameError}</p>}
           </div>
 
           {/* Input email */}
@@ -376,12 +414,14 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
               onBlur={DescriptionBlur}
               placeholder="Description"
             />
-            {descriptionError && <p style={{ color: "red" }}>{descriptionError}</p>}
+            {descriptionError && (
+              <p style={{ color: "red" }}>{descriptionError}</p>
+            )}
           </div>
         </div>
 
         <div className="sign-up-condition">
-          <input type="checkbox" required />
+          <input type="checkbox" onChange={handleAgreementChange} />
           <p>By continuing, I agree to the terms of use & privacy policy</p>
         </div>
         <div className="part-end-sign-up">
@@ -390,8 +430,8 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
           </p>
         </div>
 
-        <div>
-          {formSubmitted && (
+        <div className="info-register">
+          {formSubmitted && !registerError && (
             <p style={{ color: "green" }}>Register successful</p>
           )}
           <button type="button" onClick={validateForm}>
