@@ -1,205 +1,251 @@
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #fff; /* Đảm bảo có màu nền để border có thể thấy rõ */
-    border-bottom: 2px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff; /* Đảm bảo có màu nền để border có thể thấy rõ */
+  border-bottom: 2px solid #ccc;
 }
 
 .navbar-menu li.active a {
-    color: tomato;
+  color: tomato;
 }
 
 .navbar-menu li a:hover {
-    color: tomato;
+  color: tomato;
 }
 
 .navbar-menu li a {
-    color: #49557e;
-    text-decoration: none;
+  color: #49557e;
+  text-decoration: none;
 }
 
-
 .navbar .logo-navbar {
-    width: 150px;
-    height: 150px;
-    padding: 20px;
+  width: 150px;
+  height: 150px;
+  padding: 20px;
 }
 
 .navbar .logo-navbar img {
-    height: 100%;
-    cursor: pointer;
+  height: 100%;
+  cursor: pointer;
 }
 
 .navbar-menu {
-    display: flex;
-    list-style: none;
-    gap: 20px;
-    color: #49557e;
-    font-size: 18px;
+  display: flex;
+  list-style: none;
+  gap: 20px;
+  color: #49557e;
+  font-size: 18px;
 }
 
 .navbar-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding-right: 40px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding-right: 40px;
 }
 
 .navbar .ic_search,
 .navbar .ic_basket {
-    font-size: 33px;
+  font-size: 33px;
 }
 
 .navbar ul {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .search-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 250px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 250px;
 }
-  
+
 .search-input {
-    width: 100%;
-    padding: 5px 40px 5px 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 15px;
-    outline: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  padding: 5px 40px 5px 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-  
+
 .search-input:focus {
-    border-color: tomato;
+  border-color: tomato;
 }
 
 .ic_search {
-    position: absolute;
-    right: 10px;
-    color: #888;
-    cursor: pointer;
-    width: 25px;
-    transition: color 0.3s;
+  position: absolute;
+  right: 10px;
+  color: #888;
+  cursor: pointer;
+  width: 25px;
+  transition: color 0.3s;
 }
 
 .search-input:focus + .ic_search {
-    color: tomato;  
+  color: tomato;
 }
-  
 
 .navbar button {
-    background: transparent;
-    font-size: 16px;
-    color: #49557e;
-    border: 1px solid tomato;
-    padding: 10px 30px;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: 0.3s;
+  background: transparent;
+  font-size: 16px;
+  color: #49557e;
+  border: 1px solid tomato;
+  padding: 10px 30px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .navbar button:hover {
-    background-color: #fff4f2;
+  background-color: #fff4f2;
 }
 
 .navbar .active {
-    color: tomato;
+  color: tomato;
 }
 
 .navbar li {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .navbar .navbar-basket-icon {
-    position: relative;
+  position: relative;
 }
 
 .navbar-right .ic_basket:hover,
 .navbar-right .ic_search:hover {
-    color: tomato;
-    cursor: pointer;
+  color: tomato;
+  cursor: pointer;
 }
 
 .navbar-right .ic_basket:active,
 .navbar-right .ic_search:active {
-    color: black;
+  color: black;
 }
 
 .navbar .navbar-basket-icon .dot {
-    position: absolute;
-    min-width: 10px;
-    min-height: 10px;
-    background-color: tomato;
-    border-radius: 5px;
-    top: -7px;
-    right: -8px;
+  position: absolute;
+  min-width: 10px;
+  min-height: 10px;
+  background-color: tomato;
+  border-radius: 5px;
+  top: -7px;
+  right: -8px;
 }
 
 .ic_basket {
-    color: #4f4f4f;
+  color: #4f4f4f;
 }
 
 .navbar-location-icon .ic_location {
-    width: 25px;
-    height: 25px;
-    cursor: pointer;
-    margin-top: auto;
-    margin-bottom: auto;
-    color: #4f4f4f;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  margin-top: auto;
+  margin-bottom: auto;
+  color: #4f4f4f;
 }
 
 .navbar-location-icon .ic_location:hover {
-    color: tomato;
+  color: tomato;
 }
 
-.navbar-location-icon .ic_location:active{
-    color: black;
+.navbar-location-icon .ic_location:active {
+  color: black;
 }
 
-@media (max-width:1050px) {
-    .navbar .logo-navbar {
-        width: 150px;
-    }
-    .navbar-menu {
-        gap: 20px;
-        font-size: 17px;
-    }
-    .navbar-right {
-        gap: 30px;
-    }
-    .ic_search, .ic_basket {
-        width: 22px;
-    }
-    .navbar-right button {
-        padding: 8px 25px;
-    }
+.dropdown-toggle::after {
+  display: none !important;
 }
 
-@media (max-width:900px) {
-    .navbar .logo-navbar {
-        width: 150px;
-    }
-    .navbar-menu {
-        gap: 15px;
-        font-size: 16px;
-    }
-    .navbar-right {
-        gap: 20px;
-    }
-    .ic_search, .ic_basket {
-        width: 20px;
-    }
-    .navbar-right button {
-        padding: 7px 20px;
-    }
+.avatar-container {
+  border: 2px solid white;
+  transition: border 0.3s ease;
 }
 
-@media (max-width:750px) {
-    .navbar-menu {
-        display: none;
-    }
+.avatar-container.active {
+  border: 2px solid tomato;
+}
+
+.avatar-container {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar-container.selected {
+  border-color: #ff7f00;
+}
+
+.avatar-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  transition: transform 0.2s ease-in-out;
+}
+
+.avatar-img:hover {
+  transform: scale(1.1);
+}
+
+button {
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+@media (max-width: 1050px) {
+  .navbar .logo-navbar {
+    width: 150px;
+  }
+  .navbar-menu {
+    gap: 20px;
+    font-size: 17px;
+  }
+  .navbar-right {
+    gap: 30px;
+  }
+  .ic_search,
+  .ic_basket {
+    width: 22px;
+  }
+  .navbar-right button {
+    padding: 8px 25px;
+  }
+}
+
+@media (max-width: 900px) {
+  .navbar .logo-navbar {
+    width: 150px;
+  }
+  .navbar-menu {
+    gap: 15px;
+    font-size: 16px;
+  }
+  .navbar-right {
+    gap: 20px;
+  }
+  .ic_search,
+  .ic_basket {
+    width: 20px;
+  }
+  .navbar-right button {
+    padding: 7px 20px;
+  }
+}
+
+@media (max-width: 750px) {
+  .navbar-menu {
+    display: none;
+  }
 }

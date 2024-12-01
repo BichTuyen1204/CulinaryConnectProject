@@ -11,6 +11,10 @@ function Breadcrumb() {
 
   if (pathname === "/") {
     return null;
+  } if (pathname === "/profile") {
+    return null;
+  } if (pathname === "/edit_profile") {
+    return null;
   }
 
   // Mapping các tên đường dẫn sang tên hiển thị
@@ -19,7 +23,7 @@ function Breadcrumb() {
     recipe: "Recipe",
     cart: "Cart",
     contact: "Contact",
-    food_detail: "Food detail"
+    food_detail: "Food detail", 
   };
 
   return (
@@ -31,14 +35,7 @@ function Breadcrumb() {
         {pathnames.map((name, index) => {
           const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
           const isLast = index === pathnames.length - 1;
-
           let displayName = routeNameMap[name];
-
-          // Nếu không tìm thấy trong map, và là số, giả sử đó là id sản phẩm
-          if (!displayName) {
-            displayName = isNaN(name) ? name : "Chi Tiết Sản Phẩm";
-          }
-
           return isLast ? (
             <li
               key={index}

@@ -12,6 +12,8 @@ import { Food_card } from "./page/food_card/Food_card";
 import { Food_detail } from "./page/food_detail/Food_detail";
 import Breadcrumb from "./components/bread_crumb/Breadcrumb";
 import Recipe from "./page/recipe/Recipe";
+import { Profile } from "./page/profile/Profile";
+import { EditProfile } from "./page/edit_profile/EditProfile";
 
 const AppContent = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -46,6 +48,8 @@ const AppContent = () => {
             <Route path="food_card" element={<Food_card />} />
             <Route path="food_detail" element={<Food_detail />} />
             <Route path="recipe" element={<Recipe />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="edit_profile" element={<EditProfile />} />
           </Routes>
           {showLogin && (
             <Login

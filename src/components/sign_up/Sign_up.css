@@ -51,7 +51,7 @@
     color: tomato;
 }
 
-.sign-up-title .icon-closeicon-close:hover {
+.sign-up-title .icon-closeicon-close {
     color: black;
 }
 
@@ -126,7 +126,8 @@
     position: absolute;
     right: 10px;
     top: 50%;
-    transform: translateY(-50%);
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     color: #666;
 }

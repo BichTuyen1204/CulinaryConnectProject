@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom"; // Thêm useLocation
 import { CiSearch } from "react-icons/ci";
 import { MdShoppingBasket } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
+import { IoPersonSharp } from "react-icons/io5";
 import "./Navbar.css";
 import Logo from "../../assets/logo.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AccountService from "../../api/AccountService";
+import { Dropdown } from "react-bootstrap";
 
 export const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("home");
@@ -14,6 +16,11 @@ export const Navbar = ({ setShowLogin }) => {
   const [username, setUserName] = useState("");
   const [accountRole, setAccountRole] = useState("");
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
+  const [showMenu, setShowMenu] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(""); 
+  const [avatarActive, setAvatarActive] = useState(false);
+
+  const location = useLocation();
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -24,12 +31,10 @@ export const Navbar = ({ setShowLogin }) => {
       if (jwtToken !== "") {
         try {
           const response = await AccountService.account(jwtToken);
-          console.log("account:", response);
           setUserName(response.username);
           setAccountRole(response.role);
         } catch (error) {
           console.error("Error fetching account information:", error);
-          console.log(error.response);
         }
       } else {
         setUserName("");
@@ -39,13 +44,24 @@ export const Navbar = ({ setShowLogin }) => {
     getAccount();
   }, [jwtToken]);
 
-  const Logout = async() => {
+  const Logout = async () => {
     localStorage.removeItem("jwtToken");
-    console.log("Logout successful")
     setUserName("");
     setAccountRole("");
     setJwtToken("");
-  }
+    setShowMenu(false);
+    setSelectedItem("");
+    setAvatarActive(false);
+  };
+
+  const handleMenuItemClick = (item) => {
+    setMenu(item);
+    setAvatarActive(false);
+  };
+
+  const handleAvatarClick = () => {
+    setAvatarActive(true);
+  };
 
   return (
     <div className="navbar col-12">
@@ -57,26 +73,26 @@ export const Navbar = ({ setShowLogin }) => {
 
       <ul className="navbar-menu col-5">
         <li
-          onClick={() => setMenu("home")}
-          className={`item ${menu === "home" ? "active" : ""}`}
+          onClick={() => handleMenuItemClick("home")}
+          className={`item ${location.pathname === "/" ? "active" : ""}`}
         >
           <Link to="/">Home</Link>
         </li>
         <li
-          onClick={() => setMenu("menu")}
-          className={`item ${menu === "menu" ? "active" : ""}`}
+          onClick={() => handleMenuItemClick("menu")}
+          className={`item ${location.pathname === "/food_card" ? "active" : ""}`}
         >
           <Link to="/food_card">Menu</Link>
         </li>
         <li
-          onClick={() => setMenu("recipe")}
-          className={`item ${menu === "recipe" ? "active" : ""}`}
+          onClick={() => handleMenuItemClick("recipe")}
+          className={`item ${location.pathname === "/recipe" ? "active" : ""}`}
         >
           <Link to="/recipe">Recipe</Link>
         </li>
         <li
-          onClick={() => setMenu("contact")}
-          className={`item ${menu === "contact" ? "active" : ""}`}
+          onClick={() => handleMenuItemClick("contact")}
+          className={`item ${location.pathname === "/contact" ? "active" : ""}`}
         >
           <Link to="/contact">Contact</Link>
         </li>
@@ -98,7 +114,7 @@ export const Navbar = ({ setShowLogin }) => {
           <Link
             to="/cart"
             className="link"
-            onClick={() => setMenu("icon-cart")}
+            onClick={() => handleMenuItemClick("icon-cart")}
           >
             <MdShoppingBasket
               className={`ic_basket ${menu === "icon-cart" ? "active" : ""}`}
@@ -114,16 +130,107 @@ export const Navbar = ({ setShowLogin }) => {
         <nav>
           <>
             {username ? (
-              <p>Welcome, {username}</p>
+              accountRole === "CUSTOMER" ? (
+                <div className="user-menu">
+                  <Dropdown show={showMenu} align="end">
+                    <Dropdown.Toggle
+                      id="dropdown-custom-components"
+                      variant="link"
+                      className="d-flex align-items-center p-0 border-0"
+                      style={{ background: "transparent", cursor: "pointer" }}
+                      onClick={() => setShowMenu(!showMenu)}                    >
+                      <div
+                        className={`avatar-container ${avatarActive ? "active" : ""}`}
+                        onClick={handleAvatarClick}
+                      >
+                        <img
+                          src="https://randomuser.me/api/portraits/men/1.jpg"
+                          className="avatar-img"
+                          alt="Avatar"
+                        />
+                      </div>
+                    </Dropdown.Toggle>
+
+                    {showMenu && (
+                      <Dropdown.Menu className="dropdown-menu-end">
+                        <Dropdown.Item
+                          as={Link}
+                          to="/profile"
+                          onClick={() => {
+                            handleMenuItemClick("profile");
+                            setShowMenu(false);
+                            setAvatarActive(true);
+                          }}
+                        >
+                          Your profile
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                          as={Link}
+                          to="/"
+                          onClick={() => {
+                            Logout();
+                            setShowMenu(false);
+                          }}
+                        >
+                          Logout
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    )}
+                  </Dropdown>
+                </div>
+              ) : accountRole === "ADMIN" ? (
+                <div className="user-menu">
+                  <Dropdown show={showMenu} align="end">
+                    <Dropdown.Toggle
+                      id="dropdown-custom-components"
+                      variant="link"
+                      className="d-flex align-items-center p-0 border-0"
+                      style={{ background: "transparent", cursor: "pointer" }}
+                      onClick={() => setShowMenu(!showMenu)}
+                    >
+                      <div
+                        className={`avatar-container ${avatarActive ? "active" : ""}`}
+                        onClick={handleAvatarClick}
+                      >
+                        <img
+                          src="https://randomuser.me/api/portraits/men/1.jpg"
+                          className="avatar-img"
+                          alt="Avatar"
+                        />
+                      </div>
+                    </Dropdown.Toggle>
+
+                    {showMenu && (
+                      <Dropdown.Menu className="dropdown-menu-end">
+                        <Dropdown.Item
+                          as={Link}
+                          to="/admin-dashboard"
+                          onClick={() => {
+                            handleMenuItemClick("admin-dashboard");
+                            setShowMenu(false);
+                          }}
+                        >
+                          Admin Dashboard
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                          as={Link}
+                          to="/"
+                          onClick={() => {
+                            Logout();
+                            setShowMenu(false);
+                          }}
+                        >
+                          Logout
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    )}
+                  </Dropdown>
+                </div>
+              ) : (
+                <></>
+              )
             ) : (
-              <p>Welcome, Guest</p>
-            )}
-            {username ? (
-              <button onClick={Logout}>Logout</button>
-            ) : (
-              <>
-                <button onClick={() => setShowLogin(true)}>Login</button>
-              </>
+              <button onClick={() => setShowLogin(true)}>Login</button>
             )}
           </>
         </nav>

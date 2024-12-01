@@ -121,14 +121,6 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
     setAccount((preState) => ({ ...preState, address: value }));
   };
 
-  const AddressBlur = () => {
-    if (address.trim() === "") {
-      setAddressError("Please enter your address");
-    } else {
-      setAddressError("");
-    }
-  };
-
   // Receive password
   const PasswordChange = (e) => {
     const { value } = e.target;
@@ -195,14 +187,6 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
     setAccount((preState) => ({ ...preState, description: value }));
   };
 
-  const DescriptionBlur = () => {
-    if (description.trim() === "") {
-      setDescriptionError("Please enter your description");
-    } else {
-      setDescriptionError("");
-    }
-  };
-
   // Submit
   const validateForm = async () => {
     NameBlur();
@@ -210,7 +194,6 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
     PhoneBlur();
     PasswordBlur();
     RePasswordBlur();
-    AddressBlur();
 
     if (!agreedToTerms) {
       alert("Please agree to the terms of use and privacy policy");
@@ -223,15 +206,11 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
       !phoneError &&
       !passwordError &&
       !rePasswordError &&
-      !addressError &&
-      !descriptionError &&
       username &&
       email &&
       phone &&
       password &&
       rePassword &&
-      address &&
-      description &&
       !checkPass
     ) {
       try {
@@ -307,40 +286,52 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
 
         {/* Input full name */}
         <div className="sign-up-input">
-          <div className="sign-up-username">
-            <input
-              type="name"
-              name="username"
-              value={username}
-              onChange={NameChange}
-              onBlur={NameBlur}
-              placeholder="Full name"
-            />
-            {usernameError && <p style={{ color: "red" }}>{usernameError}</p>}
+          <div className="sign-up-input">
+            <div className="sign-up-username">
+              <label htmlFor="username">
+                Full name <span style={{ color: "red" }}>*</span>
+              </label>
+              <input
+                type="name"
+                id="username"
+                name="username"
+                value={username}
+                onChange={NameChange}
+                onBlur={NameBlur}
+                required
+              />
+              {usernameError && <p style={{ color: "red" }}>{usernameError}</p>}
+            </div>
           </div>
 
           {/* Input email */}
           <div className="sign-up-email">
+            <label htmlFor="username">
+              Email <span style={{ color: "red" }}>*</span>
+            </label>
             <input
               type="email"
               name="email"
               value={email}
               onChange={EmailChange}
               onBlur={EmailBlur}
-              placeholder="Email"
+              required
             />
             {emailError && <p style={{ color: "red" }}>{emailError}</p>}
           </div>
 
           {/* Input phone number */}
           <div className="phone-number">
+            <label htmlFor="username">
+              Phone number <span style={{ color: "red" }}>*</span>
+            </label>
             <input
               type="text"
               name="phone"
               value={phone}
               onChange={PhoneChange}
               onBlur={PhoneBlur}
-              placeholder="Phone number"
+              required
             />
             {phoneError && <p style={{ color: "red" }}>{phoneError}</p>}
           </div>
@@ -348,13 +339,16 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
           {/* Input password */}
           <div className="password">
             <div className="sign-up-password">
+              <label htmlFor="username">
+                Password <span style={{ color: "red" }}>*</span>
+              </label>
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
                 value={password}
                 onChange={PasswordChange}
                 onBlur={PasswordBlur}
-                placeholder="Password"
+                required
               />
               <FontAwesomeIcon
                 className="sign-up_ic_eye"
@@ -368,13 +362,16 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
           {/* Input re-password */}
           <div className="re-password">
             <div className="sign-up-password">
+              <label htmlFor="username">
+                Confirm password <span style={{ color: "red" }}>*</span>
+              </label>
               <input
                 type={showRePassword ? "text" : "password"}
                 name="rePassword"
                 value={rePassword}
                 onChange={ConfirmPasswordChange}
                 onBlur={RePasswordBlur}
-                placeholder="Re-enter password"
+                required
               />
               <FontAwesomeIcon
                 className="sign-up_ic_eye"
@@ -393,26 +390,28 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
 
           {/* Input address */}
           <div className="address">
+            <label htmlFor="username">
+              Address
+            </label>
             <input
               type="text"
               name="address"
               value={address}
               onChange={AddressChange}
-              onBlur={AddressBlur}
-              placeholder="Address"
             />
             {addressError && <p style={{ color: "red" }}>{addressError}</p>}
           </div>
 
           {/* Input description */}
           <div className="description">
+            <label htmlFor="username">
+              Description
+            </label>
             <input
               type="text"
               name="description"
               value={description}
               onChange={DescriptionChange}
-              onBlur={DescriptionBlur}
-              placeholder="Description"
             />
             {descriptionError && (
               <p style={{ color: "red" }}>{descriptionError}</p>
