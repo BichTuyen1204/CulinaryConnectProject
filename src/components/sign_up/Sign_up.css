@@ -139,3 +139,11 @@
 .sign-up-input input:focus {
     border: 1px solid tomato;
 }
+
+.part-end-sign-up p span:hover{
+    color: rgb(255, 148, 129);
+}
+
+.info-register button:hover{
+    background-color: rgb(255, 148, 129);
+}

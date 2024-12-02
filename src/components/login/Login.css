@@ -1,119 +1,147 @@
 .login {
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #00000090;
-    display: grid;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #00000090;
+  display: grid;
 }
 
 .login-container {
-    place-self: center;
-    width: max(23vw, 330px);
-    color: #808080;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-    padding: 25px 30px;
-    border-radius: 8px;
-    font-size: 14px;
-    animation: fadeIn 0.5s;
+  place-self: center;
+  width: max(23vw, 330px);
+  color: #808080;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding: 25px 30px;
+  border-radius: 8px;
+  font-size: 14px;
+  animation: fadeIn 0.5s;
 }
 
 .login-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: black;
 }
 
 .login-title .icon-closeicon-close {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .login-title .icon-closeicon-close:hover {
-    color: tomato;
+  color: tomato;
 }
 
 .login-title .icon-closeicon-close:hover {
-    color: black;
+  color: black;
 }
 
 .login-input {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .login-input input {
-    width: 100%;
-    outline: none;
-    border: 1px solid #d2d2d2;
-    padding: 10px;
-    border-radius: 4px;
+  width: 100%;
+  outline: none;
+  border: 1px solid #d2d2d2;
+  padding: 10px;
+  border-radius: 4px;
 }
 
 .login-input input:focus {
-    border: 1px solid tomato;
+  border: 1px solid tomato;
 }
 
 .login-input .login-password {
-    position: relative;
-    width: 100%;
+  position: relative;
+  width: 100%;
 }
 
 .login-input .login-password .login_ic_eye {
-    position: absolute;
+  position: absolute;
 }
 
 .login-container button {
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    color: white;
-    background-color: tomato;
-    font-size: 15px;
-    cursor: pointer;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  color: white;
+  background-color: tomato;
+  font-size: 15px;
+  cursor: pointer;
 }
 
 .login-condition {
-    display: flex;
-    align-items: start;
-    gap: 8px;
-    margin-top: -15px;
+  display: flex;
+  align-items: start;
+  gap: 8px;
+  margin-top: -15px;
 }
 
 .login-condition input {
-    margin-top: 5px;
+  margin-top: 5px;
 }
 
 .part-end-login p {
-    margin-bottom: 0px;
+  margin-bottom: 0px;
 }
 
 .part-end-login p span {
-    color: tomato;
-    font-weight: 500;
-    cursor: pointer;
+  color: tomato;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.part-end-login p span:hover {
+  color: rgb(255, 148, 129);
 }
 
 .login-password input {
-    width: 100%;
-    padding-right: 2.5rem;
-  }
+  width: 100%;
+  padding-right: 2.5rem;
+}
 
 .login_ic_eye {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: #666;
-  }
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+}
 
 .button-login button {
-    width: 100%;
+  width: 100%;
+}
+
+.button-login button:hover {
+  background-color: rgb(255, 148, 129);
+}
+
+.forgot-pass {
+  margin-top: -25px;
+}
+
+.forgot-pass p {
+  color: black;
+  font-size: 500;
+  width: fit-content;
+  margin-left: auto;
+}
+
+.forgot-pass p:hover {
+  color: rgb(61, 190, 255);
+  cursor: pointer;
+}
+
+.part-end-login {
+  margin-top: -25px;
 }

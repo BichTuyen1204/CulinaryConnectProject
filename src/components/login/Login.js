@@ -134,7 +134,14 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess }) => {
   return (
     <div className="fullscreen-modal">
       <div className="login" onClick={handleClose}>
-        <form className="login-container" onClick={handleContainerClick}>
+        <form
+          className="login-container"
+          onClick={handleContainerClick}
+          onSubmit={(e) => {
+              e.preventDefault();
+              validateForm();
+          }}
+        >
           <div className="login-title">
             <h2>Login</h2>
             <div className="icon-closeicon-close">
@@ -175,10 +182,18 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess }) => {
             </div>
           </div>
 
+          {/* Check box */}
           <div className="login-condition">
             <input type="checkbox" onChange={handleAgreementChange} />
             <p>By continuing, I agree to the terms of use & privacy policy</p>
           </div>
+
+          {/* Forgot password */}
+          <div className="forgot-pass">
+            <p className="">Forgot password?</p>
+          </div>
+
+          {/* Register */}
           <div className="part-end-login">
             <p>
               Create a new account ?{" "}
@@ -186,6 +201,7 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess }) => {
             </p>
           </div>
 
+          {/* Button login */}
           <div className="button-login">
             {formSubmitted && !loginError && (
               <p style={{ color: "green" }}>Login successful</p>

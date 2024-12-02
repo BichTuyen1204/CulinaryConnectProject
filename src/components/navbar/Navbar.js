@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom"; // Thêm useLocation
+import React, { useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { MdShoppingBasket } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
@@ -9,6 +9,8 @@ import Logo from "../../assets/logo.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AccountService from "../../api/AccountService";
 import { Dropdown } from "react-bootstrap";
+import { TbLogout } from "react-icons/tb";
+import { CgProfile } from "react-icons/cg";
 
 export const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("home");
@@ -17,9 +19,9 @@ export const Navbar = ({ setShowLogin }) => {
   const [accountRole, setAccountRole] = useState("");
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
   const [showMenu, setShowMenu] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(""); 
+  const [selectedItem, setSelectedItem] = useState("");
   const [avatarActive, setAvatarActive] = useState(false);
-
+  const dropdownRef = useRef(null);
   const location = useLocation();
 
   const handleSearchChange = (e) => {
@@ -57,11 +59,31 @@ export const Navbar = ({ setShowLogin }) => {
   const handleMenuItemClick = (item) => {
     setMenu(item);
     setAvatarActive(false);
+    console.log(`Clicked ${item}`);
   };
 
   const handleAvatarClick = () => {
     setAvatarActive(true);
   };
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setShowMenu(false);
+      setAvatarActive(false);
+    }
+  };
+
+  useEffect(() => {
+    if (showMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showMenu]);
 
   return (
     <div className="navbar col-12">
@@ -80,7 +102,9 @@ export const Navbar = ({ setShowLogin }) => {
         </li>
         <li
           onClick={() => handleMenuItemClick("menu")}
-          className={`item ${location.pathname === "/food_card" ? "active" : ""}`}
+          className={`item ${
+            location.pathname === "/food_card" ? "active" : ""
+          }`}
         >
           <Link to="/food_card">Menu</Link>
         </li>
@@ -131,16 +155,19 @@ export const Navbar = ({ setShowLogin }) => {
           <>
             {username ? (
               accountRole === "CUSTOMER" ? (
-                <div className="user-menu">
+                <div className="user-menu" ref={dropdownRef}>
                   <Dropdown show={showMenu} align="end">
                     <Dropdown.Toggle
                       id="dropdown-custom-components"
                       variant="link"
                       className="d-flex align-items-center p-0 border-0"
                       style={{ background: "transparent", cursor: "pointer" }}
-                      onClick={() => setShowMenu(!showMenu)}                    >
+                      onClick={() => setShowMenu(!showMenu)}
+                    >
                       <div
-                        className={`avatar-container ${avatarActive ? "active" : ""}`}
+                        className={`avatar-container ${
+                          avatarActive ? "active" : ""
+                        }`}
                         onClick={handleAvatarClick}
                       >
                         <img
@@ -156,23 +183,26 @@ export const Navbar = ({ setShowLogin }) => {
                         <Dropdown.Item
                           as={Link}
                           to="/profile"
+                          className={`dropdown-item ${location.pathname === "/profile" ? "active-link" : ""}`}
                           onClick={() => {
                             handleMenuItemClick("profile");
                             setShowMenu(false);
                             setAvatarActive(true);
                           }}
                         >
-                          Your profile
+                          <CgProfile style={{ marginRight: "8px" }} /> Your
+                          profile
                         </Dropdown.Item>
                         <Dropdown.Item
                           as={Link}
                           to="/"
+                          className="dropdown-item"
                           onClick={() => {
                             Logout();
                             setShowMenu(false);
                           }}
                         >
-                          Logout
+                          <TbLogout style={{ marginRight: "8px" }} /> Logout
                         </Dropdown.Item>
                       </Dropdown.Menu>
                     )}
@@ -189,7 +219,9 @@ export const Navbar = ({ setShowLogin }) => {
                       onClick={() => setShowMenu(!showMenu)}
                     >
                       <div
-                        className={`avatar-container ${avatarActive ? "active" : ""}`}
+                        className={`avatar-container ${
+                          avatarActive ? "active" : ""
+                        }`}
                         onClick={handleAvatarClick}
                       >
                         <img

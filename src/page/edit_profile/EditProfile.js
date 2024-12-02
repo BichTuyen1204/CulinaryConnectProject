@@ -412,71 +412,87 @@ export const EditProfile = ({ openLogin }) => {
         {activeTab === "profile" && (
           <div className="edit-profile-info">
             <div className="mt-3">
-              <div>
+              {/* Input user name */}
+              <div className="input-container">
                 <p>
                   <strong>User name:</strong>
                 </p>
-                <input
-                  type="text"
-                  name="username"
-                  value={username}
-                  onChange={NameChange}
-                  onBlur={NameBlur}
-                />
+                <div className="input-wrapper">
+                  <input
+                    type="text"
+                    name="username"
+                    value={username}
+                    onChange={NameChange}
+                    onBlur={NameBlur}
+                  />
+                </div>
                 {usernameError && (
                   <p style={{ color: "red" }}>{usernameError}</p>
                 )}
               </div>
-              <div>
+
+              {/* Input email */}
+              <div className="input-container">
                 <p className="mt-3">
                   <strong>Email:</strong>
                 </p>
-                <input
-                  type="email"
-                  name="email"
-                  value={email}
-                  onChange={EmailChange}
-                  onBlur={EmailBlur}
-                />
+                <div className="input-wrapper">
+                  <input
+                    type="email"
+                    name="email"
+                    value={email}
+                    onChange={EmailChange}
+                    onBlur={EmailBlur}
+                  />
+                </div>
                 {emailError && <p style={{ color: "red" }}>{emailError}</p>}
               </div>
 
-              <div>
+              {/* Input phone */}
+              <div className="input-container">
                 <p className="mt-3">
                   <strong>Phone:</strong>
                 </p>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={phone}
-                  onChange={PhoneChange}
-                  onBlur={PhoneBlur}
-                />
+                <div className="input-wrapper">
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={phone}
+                    onChange={PhoneChange}
+                    onBlur={PhoneBlur}
+                  />
+                </div>
                 {phoneError && <p style={{ color: "red" }}>{phoneError}</p>}
               </div>
 
-              <div>
+              {/* Input address */}
+              <div className="input-container">
                 <p className="mt-3">
                   <strong>Address:</strong>
                 </p>
-                <input
-                  type="text"
-                  name="address"
-                  value={address}
-                  onChange={AddressChange}
-                />
+                <div className="input-wrapper">
+                  <input
+                    type="text"
+                    name="address"
+                    value={address}
+                    onChange={AddressChange}
+                  />
+                </div>
               </div>
 
-              <div>
+              {/* Input bio */}
+              <div className="input-container">
                 <p className="mt-3">
                   <strong>Bio:</strong>
                 </p>
-                <input
-                  type="text"
-                  name="description"
-                  value={description}
-                  onChange={DescriptionChange}
-                />
+                <div className="input-wrapper">
+                  <input
+                    type="text"
+                    name="description"
+                    value={description}
+                    onChange={DescriptionChange}
+                  />
+                </div>
               </div>
             </div>
             <div className="">
@@ -518,64 +534,70 @@ export const EditProfile = ({ openLogin }) => {
           <div className="edit-profile-info">
             <div className="mt-3">
               {/* Input old password */}
-              <div>
+              <div className="input-container">
                 <p>
                   <strong>Old Password:</strong>
                 </p>
-                <input
-                  type={showOldPassword ? "text" : "password"}
-                  name="oldPassword"
-                  value={oldPass}
-                  onChange={OldPasswordChange}
-                  onBlur={OldPassBlur}
-                />
-                <FontAwesomeIcon
-                  className="icon-eye-password position-absolute mt-2"
-                  icon={showOldPassword ? faEyeSlash : faEye}
-                  onClick={OldPasswordVisibility}
-                />
+                <div className="input-wrapper">
+                  <input
+                    type={showOldPassword ? "text" : "password"}
+                    name="oldPassword"
+                    value={oldPass}
+                    onChange={OldPasswordChange}
+                    onBlur={OldPassBlur}
+                  />
+                  <FontAwesomeIcon
+                    className="icon-eye-password"
+                    icon={showOldPassword ? faEyeSlash : faEye}
+                    onClick={OldPasswordVisibility}
+                  />
+                </div>
                 {oldPassError && <p style={{ color: "red" }}>{oldPassError}</p>}
               </div>
 
               {/* Input new password */}
-              <div>
+              <div className="input-container">
                 <p className="mt-3">
                   <strong>New Password:</strong>
                 </p>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="newPassword"
-                  value={password}
-                  onChange={PasswordChange}
-                  onBlur={PasswordBlur}
-                />
-                <FontAwesomeIcon
-                  className="icon-eye-password position-absolute mt-2"
-                  icon={showPassword ? faEyeSlash : faEye}
-                  onClick={PasswordVisibility}
-                />
+                <div className="input-wrapper">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="newPassword"
+                    value={password}
+                    onChange={PasswordChange}
+                    onBlur={PasswordBlur}
+                  />
+                  <FontAwesomeIcon
+                    className="icon-eye-password"
+                    icon={showPassword ? faEyeSlash : faEye}
+                    onClick={PasswordVisibility}
+                  />
+                </div>
                 {!checkPass && passwordError && (
                   <p style={{ color: "red" }}>{passwordError}</p>
                 )}
               </div>
 
               {/* Input confirm password */}
-              <div>
+              <div className="input-container">
                 <p className="mt-3">
                   <strong>Confirm New Password:</strong>
                 </p>
-                <input
-                  type={showRePassword ? "text" : "password"}
-                  name="confirmPassword"
-                  value={rePassword}
-                  onChange={ConfirmPasswordChange}
-                  onBlur={RePasswordBlur}
-                />
-                <FontAwesomeIcon
-                  className="icon-eye-password position-absolute mt-2"
-                  icon={showRePassword ? faEyeSlash : faEye}
-                  onClick={RePasswordVisibility}
-                />
+                <div className="input-wrapper">
+                  <input
+                    type={showRePassword ? "text" : "password"}
+                    name="confirmPassword"
+                    value={rePassword}
+                    onChange={ConfirmPasswordChange}
+                    onBlur={RePasswordBlur}
+                  />
+                  <FontAwesomeIcon
+                    className="icon-eye-password"
+                    icon={showRePassword ? faEyeSlash : faEye}
+                    onClick={RePasswordVisibility}
+                  />
+                </div>
                 {rePasswordError && !checkPass && (
                   <p style={{ color: "red" }}>{rePasswordError}</p>
                 )}

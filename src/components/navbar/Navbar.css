@@ -168,14 +168,14 @@
 }
 
 .avatar-container.active {
-  border: 2px solid tomato;
+  border: 2px solid rgb(0, 198, 0);
 }
 
 .avatar-container {
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  border: 2px solid #ddd;
+  border: 2px solid tomato;
   transition: all 0.3s ease;
   display: flex;
   justify-content: center;
@@ -187,8 +187,8 @@
 }
 
 .avatar-img {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
   border: none;
   transition: transform 0.2s ease-in-out;
@@ -202,6 +202,21 @@ button {
   padding: 10px 15px;
   font-size: 16px;
   cursor: pointer;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: tomato;
+  color: #fff;
+}
+
+.dropdown-menu .dropdown-item.active {
+  background-color: tomato;
+  color: #fff;
+}
+
+.dropdown-menu .dropdown-item.active-link {
+  background-color: tomato;
+  color: #fff;
 }
 
 @media (max-width: 1050px) {

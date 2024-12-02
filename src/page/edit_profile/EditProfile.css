@@ -94,7 +94,6 @@
   margin: 0 5px;
 }
 
-
 .tabs button.active{
   background-color: hsl(0, 0%, 47%);
   color: white;
@@ -102,4 +101,38 @@
 
 .text-or {
   margin: 10px 0px;
+}
+
+.input-container {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 4px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.icon-eye-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.input-wrapper input:focus {
+  border-color: tomato;
+  outline: none;
+}
+
+.input-wrapper input:hover {
+  border-color: tomato;
 }
