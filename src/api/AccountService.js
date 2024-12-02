@@ -65,11 +65,31 @@ class AccountService {
           },
         }
       );
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Update failed: ",
+        error.response ? error.response.data : error.message
+      );
+      throw error;
+    }
+  }
 
-      const newJwtToken = response.data.accessToken;
-      if (newJwtToken) {
-        sessionStorage.setItem("jwtToken", newJwtToken);
+  async updatePass(account) {
+    try {
+      const jwtToken = sessionStorage.getItem("jwtToken");
+      if (!jwtToken) {
+        throw new Error("No JWT token found. Please log in again.");
       }
+      const response = await axios.post(
+        `${API_BASE_URL_2}/edit/password`,
+        account,
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       console.error(

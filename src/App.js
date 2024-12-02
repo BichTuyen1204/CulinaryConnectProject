@@ -49,7 +49,7 @@ const AppContent = () => {
             <Route path="food_detail" element={<Food_detail />} />
             <Route path="recipe" element={<Recipe />} />
             <Route path="profile" element={<Profile />} />
-            <Route path="edit_profile" element={<EditProfile />} />
+            <Route path="edit_profile" element={<EditProfile openLogin={openLogin} />} />
           </Routes>
           {showLogin && (
             <Login

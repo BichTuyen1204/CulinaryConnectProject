@@ -14,15 +14,6 @@ export const Profile = () => {
 
   useEffect(() => {
     const getAccount = async () => {
-      const savedUserInfo = sessionStorage.getItem("userInfo");
-      if (savedUserInfo) {
-        const userInfo = JSON.parse(savedUserInfo);
-        setUserName(userInfo.username);
-        setEmail(userInfo.email);
-        setPhone(userInfo.phone);
-        setAddress(userInfo.address);
-        setDescription(userInfo.description);
-      }
       if (jwtToken !== null) {
         try {
           const response = await AccountService.account(jwtToken);

@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import "./EditProfile.css";
 import { Link } from "react-router-dom";
 import AccountService from "../../api/AccountService";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export const EditProfile = () => {
+export const EditProfile = ({ openLogin }) => {
   const [username, setUserName] = useState("");
   const [usernameError, setUserNameError] = useState("");
   const [email, setEmail] = useState("");
@@ -12,10 +14,27 @@ export const EditProfile = () => {
   const [phoneError, setPhoneError] = useState("");
   const [address, setAddress] = useState("");
   const [description, setDescription] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [oldPass, setOldPass] = useState("");
+  const [oldPassError, setOldPassError] = useState("");
+  const [rePassword, setRePassword] = useState("");
+  const [rePasswordError, setRePasswordError] = useState("");
+  const [checkPass, setCheckPass] = useState(false);
+  const [showRePassword, setShowRePassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showOldPassword, setShowOldPassword] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formSubmittedPass, setFormSubmittedPass] = useState(false);
   const [updateError, setUpdateError] = useState("");
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
   const [activeTab, setActiveTab] = useState("profile");
+  const [noChangeError, setNoChangeError] = useState("");
+  const [initialUsername, setInitialUsername] = useState("");
+  const [initialEmail, setInitialEmail] = useState("");
+  const [initialPhone, setInitialPhone] = useState("");
+  const [initialAddress, setInitialAddress] = useState("");
+  const [initialDescription, setInitialDescription] = useState("");
 
   const [account, setAccount] = useState({
     username: "",
@@ -23,6 +42,8 @@ export const EditProfile = () => {
     phone: "",
     address: "",
     description: "",
+    oldPassword: "",
+    password: "",
   });
 
   const user = {
@@ -121,6 +142,86 @@ export const EditProfile = () => {
     setAccount((preState) => ({ ...preState, description: value }));
   };
 
+  // Receive old password
+  const OldPasswordChange = (e) => {
+    const { value } = e.target;
+    setOldPass(value);
+    setAccount((preState) => ({ ...preState, oldPassword: value }));
+  };
+
+  // Check old password
+  const OldPassBlur = () => {
+    const enteredPassword = oldPass.trim();
+    if (enteredPassword === "") {
+      setOldPassError("Please enter your old password");
+    } else if (enteredPassword.length < 6) {
+      setOldPassError("Password must be longer than 6 characters");
+    } else if (enteredPassword.length > 30) {
+      setOldPassError("Password must be less than 30 characters");
+    } else if (enteredPassword === password) {
+      setOldPassError("Old password cannot be the same as new password");
+    } else {
+      setOldPassError("");
+    }
+  };
+
+  // Receive password
+  const PasswordChange = (e) => {
+    const { value } = e.target;
+    setPassword(value);
+    setAccount((preState) => ({ ...preState, password: value }));
+  };
+
+  // Check password
+  const PasswordBlur = () => {
+    const enteredPassword = password.trim();
+    if (enteredPassword === "") {
+      setPasswordError("Please enter your password");
+    } else if (enteredPassword.length < 6) {
+      setPasswordError("Password must be longer than 6 characters");
+    } else if (enteredPassword.length > 30) {
+      setPasswordError("Password must be less than 30 characters");
+    } else if (enteredPassword === oldPass) {
+      setPasswordError("New password cannot be the same as old password");
+    } else {
+      setPasswordError("");
+    }
+  };
+
+  // Receive re-password
+  const ConfirmPasswordChange = (e) => {
+    const value = e.target.value;
+    setRePassword(value);
+  };
+
+  // Check re-password
+  const RePasswordBlur = () => {
+    const enteredRePassword = rePassword.trim();
+    if (enteredRePassword === "") {
+      setRePasswordError("Please enter your password");
+    } else if (enteredRePassword.length < 6 || enteredRePassword.length > 30) {
+      setRePasswordError("Password must be between 6 and 30 characters");
+    } else if (enteredRePassword !== password) {
+      setRePasswordError("The password do not match");
+    } else {
+      setRePasswordError("");
+    }
+  };
+
+  // Show and hidden re-password
+  const RePasswordVisibility = () => {
+    setShowRePassword(!showRePassword);
+  };
+
+  // Show and hidden password
+  const PasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const OldPasswordVisibility = () => {
+    setShowOldPassword(!showOldPassword);
+  };
+
   //Call infor
   useEffect(() => {
     const getAccount = async () => {
@@ -133,6 +234,11 @@ export const EditProfile = () => {
           setPhone(response.phone);
           setAddress(response.address);
           setDescription(response.profileDescription);
+          setInitialUsername(response.username);
+          setInitialEmail(response.email);
+          setInitialPhone(response.phone);
+          setInitialAddress(response.address);
+          setInitialDescription(response.profileDescription);
         } catch (error) {
           console.error("Error fetching account information:", error);
         }
@@ -147,9 +253,30 @@ export const EditProfile = () => {
     getAccount();
   }, [jwtToken]);
 
+  //Check user input something or not
+  const handleUserChange = () => {
+    if (
+      username === initialUsername &&
+      email === initialEmail &&
+      phone === initialPhone &&
+      address === initialAddress &&
+      description === initialDescription
+    ) {
+      setNoChangeError("Please change at least one field to save.");
+      return false;
+    }
+    setNoChangeError("");
+    console.log("Saving changes...");
+    return true;
+  };
+
   //Update account
   const updateAccount = async (e) => {
     e.preventDefault();
+    const hasChange = handleUserChange();
+    if (!hasChange) {
+      return;
+    }
     NameBlur();
     EmailBlur();
     PhoneBlur();
@@ -163,12 +290,10 @@ export const EditProfile = () => {
     ) {
       try {
         const response = await AccountService.updateInfo(account);
-        if (response.success) {
-          const newJwtToken = response.accessToken;
-          sessionStorage.setItem("jwtToken", newJwtToken);
-        }
         console.log("Account updated", response);
         setFormSubmitted(true);
+        setNoChangeError(false);
+        setUpdateError(false);
       } catch (error) {
         if (error.response) {
           const errorMessage = error.response.data?.message;
@@ -188,6 +313,8 @@ export const EditProfile = () => {
             }
           } else {
             setUpdateError("An error occurred during update.");
+            setFormSubmitted(false);
+            setNoChangeError(false);
           }
         } else {
           console.error("Network or unknown error occurred:", error);
@@ -197,6 +324,60 @@ export const EditProfile = () => {
       }
     } else {
       alert("Please fill in all fields correctly before submitting.");
+    }
+  };
+
+  //Update pass
+  const updatePass = async (e) => {
+    e.preventDefault();
+    OldPassBlur();
+    PasswordBlur();
+    RePasswordBlur();
+    if (
+      !oldPassError &&
+      !passwordError &&
+      !rePasswordError &&
+      oldPass &&
+      password &&
+      rePassword &&
+      !checkPass
+    ) {
+      try {
+        await AccountService.updatePass(account);
+        console.log("Updated info:", account);
+        setFormSubmittedPass(true);
+        setUpdateError(null);
+        setOldPass("");
+        setPassword("");
+        setRePassword("");
+        setTimeout(() => {
+          openLogin();
+          setFormSubmittedPass(false);
+        }, 1000);
+      } catch (error) {
+        // Handle errors
+        if (error.response) {
+          const { data } = error.response;
+          if (data?.errors) {
+            data.errors.forEach((err) => {
+              if (err.fieldName === "oldPassword") {
+                setOldPassError(err.message || "Invalid old password.");
+              } else if (err.fieldName === "password") {
+                setPasswordError(err.message || "Invalid new password.");
+              }
+            });
+          } else if (data?.cause === "BadCredentialsException") {
+            setOldPassError("Incorrect old password.");
+          } else {
+            setUpdateError("An error occurred while updating the password.");
+          }
+        } else {
+          console.error("Network or unknown error occurred:", error);
+          setUpdateError("Network error occurred, please try again.");
+        }
+
+        setFormSubmittedPass(false);
+      }
     }
   };
 
@@ -299,12 +480,25 @@ export const EditProfile = () => {
               </div>
             </div>
             <div className="">
-              {formSubmitted && (
-                <p style={{ color: "green" }}>Update successful</p>
+              {noChangeError && (
+                <p className="mt-2" style={{ color: "red" }}>
+                  {noChangeError}
+                </p>
               )}
+              {formSubmitted && (
+                <p className="mt-2" style={{ color: "green" }}>
+                  Update successful
+                </p>
+              )}
+              {updateError && (
+                <p className="mt-2" style={{ color: "red" }}>
+                  {updateError}
+                </p>
+              )}
+
               <Link to="/profile">
                 <button
-                  className="bt-edit-profile mt-5"
+                  className="bt-edit-profile mt-3"
                   onClick={updateAccount}
                 >
                   Save
@@ -314,7 +508,7 @@ export const EditProfile = () => {
                 OR
               </p>
               <Link to="/profile">
-                <button className="bt-cancel-profile">Cancel</button>
+                <button className="bt-cancel-profile">Back</button>
               </Link>
             </div>
           </div>
@@ -323,28 +517,84 @@ export const EditProfile = () => {
         {activeTab === "password" && (
           <div className="edit-profile-info">
             <div className="mt-3">
+              {/* Input old password */}
               <div>
                 <p>
                   <strong>Old Password:</strong>
                 </p>
-                <input type="password" name="oldPassword" />
+                <input
+                  type={showOldPassword ? "text" : "password"}
+                  name="oldPassword"
+                  value={oldPass}
+                  onChange={OldPasswordChange}
+                  onBlur={OldPassBlur}
+                />
+                <FontAwesomeIcon
+                  className="icon-eye-password position-absolute mt-2"
+                  icon={showOldPassword ? faEyeSlash : faEye}
+                  onClick={OldPasswordVisibility}
+                />
+                {oldPassError && <p style={{ color: "red" }}>{oldPassError}</p>}
               </div>
+
+              {/* Input new password */}
               <div>
                 <p className="mt-3">
                   <strong>New Password:</strong>
                 </p>
-                <input type="password" name="newPassword" />
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="newPassword"
+                  value={password}
+                  onChange={PasswordChange}
+                  onBlur={PasswordBlur}
+                />
+                <FontAwesomeIcon
+                  className="icon-eye-password position-absolute mt-2"
+                  icon={showPassword ? faEyeSlash : faEye}
+                  onClick={PasswordVisibility}
+                />
+                {!checkPass && passwordError && (
+                  <p style={{ color: "red" }}>{passwordError}</p>
+                )}
               </div>
 
+              {/* Input confirm password */}
               <div>
                 <p className="mt-3">
                   <strong>Confirm New Password:</strong>
                 </p>
-                <input type="password" name="confirmPassword" />
+                <input
+                  type={showRePassword ? "text" : "password"}
+                  name="confirmPassword"
+                  value={rePassword}
+                  onChange={ConfirmPasswordChange}
+                  onBlur={RePasswordBlur}
+                />
+                <FontAwesomeIcon
+                  className="icon-eye-password position-absolute mt-2"
+                  icon={showRePassword ? faEyeSlash : faEye}
+                  onClick={RePasswordVisibility}
+                />
+                {rePasswordError && !checkPass && (
+                  <p style={{ color: "red" }}>{rePasswordError}</p>
+                )}
               </div>
             </div>
+            {formSubmittedPass && (
+              <p className="mt-2" style={{ color: "green" }}>
+                Update successful
+              </p>
+            )}
+            {updateError && (
+              <p className="mt-2" style={{ color: "red" }}>
+                {updateError}
+              </p>
+            )}
             <Link to="/profile">
-              <button className="bt-edit-profile mt-5">Save</button>
+              <button className="bt-edit-profile mt-3" onClick={updatePass}>
+                Save
+              </button>
             </Link>
             <p className="text-or text-center align-items-center justify-content-center">
               OR

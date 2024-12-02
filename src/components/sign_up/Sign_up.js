@@ -230,7 +230,7 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
         setTimeout(() => {
           openLogin();
           setFormSubmitted(false);
-        }, 5000);
+        }, 1000);
       } catch (error) {
         if (error.response) {
           const errorMessage = error.response.data?.message;

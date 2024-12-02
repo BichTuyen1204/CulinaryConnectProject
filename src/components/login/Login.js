@@ -101,7 +101,7 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess }) => {
           onLoginSuccess();
           window.location.reload();
           console.log("Response data:", response);
-        }, 2000);
+        }, 1000);
       } catch (error) {
         console.error(
           "Error when logging in:",
