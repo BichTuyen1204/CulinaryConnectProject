@@ -136,3 +136,22 @@
 .button-buy-now {
     margin-left: 7px;
 }
+
+.productdisplay-img-wrapper {
+  text-align: center;
+}
+
+.productdisplay-img-large {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.productdisplay-img-thumbnails {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.thumbnail-img.active {
+  border: 1px solid tomato;
+}

@@ -45,6 +45,11 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-decoration: none;
+}
+
+.food-item-name p:hover{
+    color: #555;
 }
 
 .price-and-quantity {
@@ -91,4 +96,9 @@
 .button-in-item .button-addtocart,
 .button-in-item .button-buynow {
     cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
 }

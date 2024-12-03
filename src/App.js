@@ -14,6 +14,7 @@ import Breadcrumb from "./components/bread_crumb/Breadcrumb";
 import Recipe from "./page/recipe/Recipe";
 import { Profile } from "./page/profile/Profile";
 import { EditProfile } from "./page/edit_profile/EditProfile";
+import FoodDisplay from "./components/food_display/FoodDisplay";
 
 const AppContent = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -46,7 +47,9 @@ const AppContent = () => {
             <Route path="cart" element={<Cart />} />
             <Route path="contact" element={<Contact />} />
             <Route path="food_card" element={<Food_card />} />
+            <Route path="food_detail/:id" element={<Food_detail />} />
             <Route path="food_detail" element={<Food_detail />} />
+            <Route path="food_display" element={<FoodDisplay/>} />
             <Route path="recipe" element={<Recipe />} />
             <Route path="profile" element={<Profile />} />
             <Route path="edit_profile" element={<EditProfile openLogin={openLogin} />} />
