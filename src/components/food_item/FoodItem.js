@@ -1,8 +1,16 @@
 import React from "react";
 import "./FoodItem.css";
 import { Link } from "react-router-dom";
+import CartService from "../../api/CartService";
 
 const FoodItem = ({ product }) => {
+  const addToCart = async () => {
+    try {
+      const response = await CartService.addToCart(product.id, product.quantity = 1);
+      console.log("product in cart", response);
+      return response;
+    } catch (error) {}
+  };
   return (
     <div className="food-item">
       <Link to={`/food_detail/${product.id}`}>
@@ -25,14 +33,20 @@ const FoodItem = ({ product }) => {
               <strong>Price:</strong> {product.price}
             </p>
             <p className="food-item-quantity">
-              <strong className="link">Quantity:</strong> {product.availableQuantity}
+              <strong className="link">Quantity:</strong>{" "}
+              {product.availableQuantity}
             </p>
           </div>
         </div>
       </Link>
 
       <div className="button-in-item">
-        <button className="button-addtocart">Add to cart</button>
+        <button
+          className="button-addtocart"
+          onClick={addToCart}
+        >
+          Add to cart
+        </button>
         <button className="button-buynow">Buy now</button>
       </div>
     </div>

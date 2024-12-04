@@ -19,8 +19,10 @@
     border: 1px solid #e2e2e2;
 }
 
-.ic_close svg {
+.ic_close {
     cursor: pointer;
+    width: fit-content;
+
 }
 
 .cart-items-item .ic_close:hover {
