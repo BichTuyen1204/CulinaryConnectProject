@@ -15,6 +15,7 @@ import Recipe from "./page/recipe/Recipe";
 import { Profile } from "./page/profile/Profile";
 import { EditProfile } from "./page/edit_profile/EditProfile";
 import FoodDisplay from "./components/food_display/FoodDisplay";
+import FoodItem from "./components/food_item/FoodItem";
 
 const AppContent = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -52,6 +53,7 @@ const AppContent = () => {
             <Route path="food_display" element={<FoodDisplay/>} />
             <Route path="recipe" element={<Recipe />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="food_item" element={<FoodItem openLogin={openLogin} />} />
             <Route path="edit_profile" element={<EditProfile openLogin={openLogin} />} />
           </Routes>
           {showLogin && (

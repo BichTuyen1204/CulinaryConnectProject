@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Food_card.css";
 import Chicken from "../../assets/Chicken.png";
 import Fish from "../../assets/ca_dieu_hong.png";
@@ -6,9 +6,13 @@ import Shrimp from "../../assets/shrimp.png";
 import Beef from "../../assets/Beef.png";
 import image from "../../assets/image_food_menu.jpg";
 import "bootstrap/dist/css/bootstrap.min.css";
+import ProductService from "../../api/ProductService";
+import { useParams } from "react-router-dom";
 
 export const Food_card = () => {
   const categories = ["All", "Fruits", "Vegetables", "Beverages", "Bakery"];
+  const [product, setProduct] = useState("");
+  const { id } = useParams();
   const foods = [
     { name: "Apple", price: "1.99", image: Fish, quantity: "1" },
     { name: "Banana", price: "0.99", image: Chicken },
@@ -26,11 +30,30 @@ export const Food_card = () => {
     { name: "Carrot Juice", price: "2.49", image: Shrimp },
   ];
 
+  const getDataDetail = async (id) => {
+    try {
+      const response = await ProductService.getProductDetail(id);
+      console.log("Response data:", response);
+      console.log("Product ID from URL:", id);
+      setProduct(response);
+    } catch (error) {
+      console.error("Fail load data:", error);
+    }
+  };
+  useEffect(() => {
+    if (id) {
+      getDataDetail(id);
+      window.scrollTo(0, 0);
+    } else {
+      console.error("ID is undefined");
+    }
+  }, [id]);
+
   return (
     <div>
       <div className="image-menu">
         <div className="image-menu-contents">
-          <img src={image} alt=""/>
+          <img src={image} alt="" />
         </div>
       </div>
       <div className="food-page-container col-12 mt-5">

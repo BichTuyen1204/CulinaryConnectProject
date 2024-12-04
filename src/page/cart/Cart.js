@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../cart/Cart.css";
 import { IoClose } from "react-icons/io5";
 import CartService from "../../api/CartService";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   const [totalPrice, setTotalPrice] = useState(0);
@@ -31,6 +32,7 @@ const Cart = () => {
       const response = await CartService.deleteCart(id);
       if (response === true) {
         getAllProduct();
+        console.log("Delete successful", response)
       } else {
         console.error("Error deleting product:", response);
       }
@@ -81,10 +83,13 @@ const Cart = () => {
           products.map((item, index) => (
             <div key={index}>
               <div className="cart-items-titile cart-items-item">
+                <Link to={`/food_detail/${item.product.id}`}>
                 <img
                   src={item.product.imageUrl}
                   alt={item.product.productName}
                 />
+                </Link>
+                
                 <p>{item.product.productName}</p>
                 <p>{item.product.price} đ</p>
                 <p>{item.amount}</p>

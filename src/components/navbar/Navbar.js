@@ -47,13 +47,14 @@ export const Navbar = ({ setShowLogin }) => {
   }, [jwtToken]);
 
   const Logout = async () => {
-    localStorage.removeItem("jwtToken");
+    sessionStorage.removeItem("jwtToken");
     setUserName("");
     setAccountRole("");
     setJwtToken("");
     setShowMenu(false);
     setSelectedItem("");
     setAvatarActive(false);
+    console.log("Logout successful:")
   };
 
   const handleMenuItemClick = (item) => {
@@ -134,22 +135,26 @@ export const Navbar = ({ setShowLogin }) => {
           />
         </div>
 
-        <div className="navbar-basket-icon col-1">
-          <Link
-            to="/cart"
-            className="link"
-            onClick={() => handleMenuItemClick("icon-cart")}
-          >
-            <MdShoppingBasket
-              className={`ic_basket ${menu === "icon-cart" ? "active" : ""}`}
-            />
-          </Link>
-          <div className="dot"></div>
-        </div>
+        {accountRole === "CUSTOMER" && (
+          <div className="navbar-basket-icon col-1">
+            <Link
+              to="/cart"
+              className="link"
+              onClick={() => handleMenuItemClick("icon-cart")}
+            >
+              <MdShoppingBasket
+                className={`ic_basket ${menu === "icon-cart" ? "active" : ""}`}
+              />
+            </Link>
+            <div className="dot"></div>
+          </div>
+        )}
 
-        <div className="navbar-location-icon col-1">
-          <FaLocationDot className="ic_location" />
-        </div>
+        {accountRole === "CUSTOMER" && (
+          <div className="navbar-location-icon col-1">
+            <FaLocationDot className="ic_location" />
+          </div>
+        )}
 
         <nav>
           <>
@@ -183,7 +188,11 @@ export const Navbar = ({ setShowLogin }) => {
                         <Dropdown.Item
                           as={Link}
                           to="/profile"
-                          className={`dropdown-item ${location.pathname === "/profile" ? "active-link" : ""}`}
+                          className={`dropdown-item ${
+                            location.pathname === "/profile"
+                              ? "active-link"
+                              : ""
+                          }`}
                           onClick={() => {
                             handleMenuItemClick("profile");
                             setShowMenu(false);

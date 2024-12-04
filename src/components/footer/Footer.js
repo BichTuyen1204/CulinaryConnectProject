@@ -20,7 +20,7 @@ const Footer = () => {
           </Link>
         </div>
         <div className="footer-content-left">
-          <h2>Access to us</h2>
+          <h2><strong>Access to us</strong></h2>
           <div className="ul-icon-social">
               <li>
                 <FaFacebookSquare className="facebook" />
@@ -35,7 +35,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-content-center">
-          <h2>Culinary Connect</h2>
+          <h2><strong>Culinary Connect</strong></h2>
           <ul>
             <li className="li-home">Home</li>
             <li className="li-aboutus">About us</li>

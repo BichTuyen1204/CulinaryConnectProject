@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
 import "./Food_detail.css";
-import Fish from "../../assets/ca_dieu_hong.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ProductService from "../../api/ProductService";
 import { useParams } from "react-router-dom";
+import AccountService from "../../api/AccountService";
+import CartService from "../../api/CartService";
+import { FaLeaf, FaBox, FaInfoCircle, FaCheckCircle } from "react-icons/fa";
 
 export const Food_detail = () => {
-  const [product, setProduct] = useState("");
-  const { id } = useParams();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
+  const { id } = useParams();
+  const [product, setProduct] = useState({});
+  const [username, setUserName] = useState("");
+  const [accountRole, setAccountRole] = useState("");
   const images = product.imagesUrl || [];
+  const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
 
   // Xử lý khi nhấn nút Prev
   const handlePrevClick = () => {
@@ -50,6 +54,37 @@ export const Food_detail = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+    const getAccount = async () => {
+      if (jwtToken !== "") {
+        try {
+          const response = await AccountService.account(jwtToken);
+          setUserName(response.username);
+          setAccountRole(response.role);
+        } catch (error) {
+          console.error("Error fetching account information:", error);
+        }
+      } else {
+        setUserName("");
+        setAccountRole("");
+      }
+    };
+    getAccount();
+  }, [jwtToken]);
+
+  const addToCart = async () => {
+    if (!jwtToken) {
+      return;
+    }
+    try {
+      const response = await CartService.addToCart(
+        product.id,
+        (product.quantity = 1)
+      );
+      console.log("Add product successful:", response);
+      return response;
+    } catch (error) {}
+  };
   return (
     <div>
       <div>
@@ -62,17 +97,24 @@ export const Food_detail = () => {
                     {/* Hình lớn */}
                     <div
                       className="productdisplay-img-large"
-                      style={{ position: "relative" }}
+                      style={{
+                        position: "relative",
+                        alignItems: "center",
+                        justifyItems: "center",
+                      }}
                     >
                       <img
-                        className="productdisplay-main-img img-detail"
+                        className="productdisplay-main-img"
                         src={images[currentImageIndex]}
                         alt="Product"
                         style={{
                           width: "100%",
-                          height: "auto",
+                          height: "100%",
+                          objectFit: "fill",
                           border: "1px solid #ddd",
                           borderRadius: "5px",
+                          alignItems: "center",
+                          justifyItems: "center",
                         }}
                       />
                       {/* Nút Previous */}
@@ -165,6 +207,13 @@ export const Food_detail = () => {
                           <p className="product-data">{product.description}</p>
                         </div>
 
+                        <div className="d-flex gap-10 align-items-center my-2">
+                          <h3 className="product-heading">
+                            Days Before Expiry:{" "}
+                          </h3>
+                          <p className="product-data">{product.description}</p>
+                        </div>
+
                         <div className="d-flex align-items-center gap-15 flex-row mt-2 mb-3">
                           <h3 className="product-heading">Quantity: </h3>
                           <p className="product-data">
@@ -177,35 +226,74 @@ export const Food_detail = () => {
                         <button
                           className="button button-food-detail"
                           type="submit"
-                          // onClick={() => handleAddToCart(product.idBook)}
-                          // disabled={product.quantity === 0}
+                          onClick={addToCart}
                         >
                           Add to cart
                         </button>
-                        {/* <PopupCart
-                            trigger={buttonPopup}
-                            setTrigger={setButtonPopup}
-                          >
-                            <h3 className="text-in-popup">{titleInfo}</h3>
-                            <p>{contentInfo}</p>
-                          </PopupCart> */}
 
                         <button
                           className="button button-food-detail button-buy-now"
                           type="submit"
-                          // onClick={() => handleBuyNow(product.idBook)}
-                          // disabled={product.quantity === 0}
                         >
                           Buy now
                         </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-                        {/* <PopuBuyNow
-                            trigger={buttonPopupBuyNow}
-                            setTrigger={setButtonPopupBuyNow}
-                          >
-                            <h3 className="text-in-popup">{titleInfoBuy}</h3>
-                            <p>{contentInfoBuy}</p>
-                          </PopuBuyNow> */}
+                {/* Information about product */}
+                <div className="product-detail-container mt-5">
+                  <div className="product-info">
+                    <p className="product-name">Information product</p>
+                    <p className="product-description">{product.description}</p>
+
+                    <div className="product-details">
+                      <div className="detail-item">
+                        <FaLeaf className="detail-icon" />
+                        <span className="detail-label">Name of product:</span>
+                        <span className="detail-value">{product.category}</span>
+                      </div>
+                      <div className="detail-item">
+                        <FaBox className="detail-icon" />
+                        <span className="detail-label">Weight:</span>
+                        <span className="detail-value">{product.weight}</span>
+                      </div>
+                      <div className="detail-item">
+                        <FaInfoCircle className="detail-icon" />
+                        <span className="detail-label">Category:</span>
+                        <span className="detail-value">
+                          {product.ingredients}
+                        </span>
+                      </div>
+                      <div className="detail-item">
+                        <FaCheckCircle className="detail-icon" />
+                        <span className="detail-label">Hương vị:</span>
+                        <span className="detail-value">{product.flavor}</span>
+                      </div>
+                      <div className="detail-item">
+                        <FaCheckCircle className="detail-icon" />
+                        <span className="detail-label">Độ đạm:</span>
+                        <span className="detail-value">{product.protein}</span>
+                      </div>
+                      <div className="detail-item">
+                        <FaLeaf className="detail-icon" />
+                        <span className="detail-label">Thích hợp:</span>
+                        <span className="detail-value">
+                          {product.suitableFor}
+                        </span>
+                      </div>
+                      <div className="detail-item">
+                        <FaBox className="detail-icon" />
+                        <span className="detail-label">Expiry date:</span>
+                        <span className="detail-value">{product.daysBeforeExpiry}</span>
+                      </div>
+                      <div className="detail-item">
+                        <FaInfoCircle className="detail-icon" />
+                        <span className="detail-label">Sản xuất:</span>
+                        <span className="detail-value">
+                          {product.production}
+                        </span>
                       </div>
                     </div>
                   </div>
