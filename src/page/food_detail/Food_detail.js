@@ -5,7 +5,9 @@ import ProductService from "../../api/ProductService";
 import { useParams } from "react-router-dom";
 import AccountService from "../../api/AccountService";
 import CartService from "../../api/CartService";
-import { FaLeaf, FaBox, FaInfoCircle, FaCheckCircle } from "react-icons/fa";
+import { FaLeaf, FaBox, FaInfoCircle } from "react-icons/fa";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export const Food_detail = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -15,6 +17,7 @@ export const Food_detail = () => {
   const [accountRole, setAccountRole] = useState("");
   const images = product.imagesUrl || [];
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
+  const [popupAddDetail, setPopupAddDetail] = useState(false);
 
   // Xử lý khi nhấn nút Prev
   const handlePrevClick = () => {
@@ -81,6 +84,10 @@ export const Food_detail = () => {
         product.id,
         (product.quantity = 1)
       );
+      setPopupAddDetail(true);
+      setTimeout(() => {
+        setPopupAddDetail(false);
+      }, 1000);
       console.log("Add product successful:", response);
       return response;
     } catch (error) {}
@@ -211,7 +218,9 @@ export const Food_detail = () => {
                           <h3 className="product-heading">
                             Days Before Expiry:{" "}
                           </h3>
-                          <p className="product-data">{product.description}</p>
+                          <p className="product-data">
+                            {product.daysBeforeExpiry}
+                          </p>
                         </div>
 
                         <div className="d-flex align-items-center gap-15 flex-row mt-2 mb-3">
@@ -237,6 +246,13 @@ export const Food_detail = () => {
                         >
                           Buy now
                         </button>
+                        {popupAddDetail && (
+                          <div className="popup-add-detail">
+                            <div className="popup-content-detail">
+                              <h5>Added to cart !</h5>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -247,12 +263,11 @@ export const Food_detail = () => {
                   <div className="product-info">
                     <p className="product-name">Information product</p>
                     <p className="product-description">{product.description}</p>
-
                     <div className="product-details">
                       <div className="detail-item">
                         <FaLeaf className="detail-icon" />
                         <span className="detail-label">Name of product:</span>
-                        <span className="detail-value">{product.category}</span>
+                        <span className="detail-value">{product.name}</span>
                       </div>
                       <div className="detail-item">
                         <FaBox className="detail-icon" />
@@ -263,38 +278,28 @@ export const Food_detail = () => {
                         <FaInfoCircle className="detail-icon" />
                         <span className="detail-label">Category:</span>
                         <span className="detail-value">
-                          {product.ingredients}
-                        </span>
-                      </div>
-                      <div className="detail-item">
-                        <FaCheckCircle className="detail-icon" />
-                        <span className="detail-label">Hương vị:</span>
-                        <span className="detail-value">{product.flavor}</span>
-                      </div>
-                      <div className="detail-item">
-                        <FaCheckCircle className="detail-icon" />
-                        <span className="detail-label">Độ đạm:</span>
-                        <span className="detail-value">{product.protein}</span>
-                      </div>
-                      <div className="detail-item">
-                        <FaLeaf className="detail-icon" />
-                        <span className="detail-label">Thích hợp:</span>
-                        <span className="detail-value">
-                          {product.suitableFor}
+                          {product.productTypes}
                         </span>
                       </div>
                       <div className="detail-item">
                         <FaBox className="detail-icon" />
                         <span className="detail-label">Expiry date:</span>
-                        <span className="detail-value">{product.daysBeforeExpiry}</span>
+                        <span className="detail-value">
+                          {product.daysBeforeExpiry}
+                        </span>
                       </div>
                       <div className="detail-item">
                         <FaInfoCircle className="detail-icon" />
-                        <span className="detail-label">Sản xuất:</span>
+                        <span className="detail-label">Production site:</span>
                         <span className="detail-value">
                           {product.production}
                         </span>
                       </div>
+                    </div>
+                    <div className="markdown-content">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {product.articleMD}
+                      </ReactMarkdown>
                     </div>
                   </div>
                 </div>

@@ -15,7 +15,7 @@ function Breadcrumb() {
     return null;
   } if (pathname === "/edit_profile") {
     return null;
-  }
+  } 
 
   // Mapping các tên đường dẫn sang tên hiển thị
   const routeNameMap = {

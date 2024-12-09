@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import AccountService from "../../api/AccountService";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FaPen } from "react-icons/fa6";
 
 export const EditProfile = ({ openLogin }) => {
   const [username, setUserName] = useState("");
@@ -14,6 +15,7 @@ export const EditProfile = ({ openLogin }) => {
   const [phoneError, setPhoneError] = useState("");
   const [address, setAddress] = useState("");
   const [description, setDescription] = useState("");
+  const [imgUser, setImgUser] = useState(null);
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [oldPass, setOldPass] = useState("");
@@ -44,11 +46,64 @@ export const EditProfile = ({ openLogin }) => {
     description: "",
     oldPassword: "",
     password: "",
+    profilePictureUri: "",
+    url:""
   });
 
-  const user = {
-    avatarUrl: "https://randomuser.me/api/portraits/men/1.jpg",
+  //Receive img
+  // const ImgChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (!file) {
+  //     alert("No file selected.");
+  //     return;
+  //   }
+  //   setImgUser(file);
+  //   const previewUrl = URL.createObjectURL(file);
+  //   setAccount((preState) => ({
+  //     ...preState,
+  //     url: previewUrl, 
+  //   }));
+  // };
+
+  const ImgChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) {
+      alert("No file selected.");
+      return;
+    }
+  
+    // Hiển thị ảnh preview ngay lập tức
+    const previewUrl = URL.createObjectURL(file);
+    setAccount((preState) => ({
+      ...preState,
+      url: previewUrl, // Cập nhật URL để preview
+    }));
+  
+    setImgUser(file); // Lưu file vào state
+  
+    // Gọi API để cập nhật ảnh ngay lập tức
+    try {
+      const formData = new FormData();
+      formData.append("file", file); // Append file trực tiếp vào formData
+  
+      const response = await AccountService.updateImage(formData); // Gửi request
+      console.log("Response from server:", response);
+  
+      if (response && response.url) {
+        setAccount((prevState) => ({
+          ...prevState,
+          profilePictureUri: response.url, // Cập nhật URL từ server
+        }));
+        alert("Profile picture updated successfully!");
+      } else {
+        alert("Failed to retrieve new profile picture URL.");
+      }
+    } catch (error) {
+      console.error("Image update failed: ", error);
+      alert("Failed to update image.");
+    }
   };
+  
 
   // Receive full name
   const NameChange = (e) => {
@@ -234,6 +289,7 @@ export const EditProfile = ({ openLogin }) => {
           setPhone(response.phone);
           setAddress(response.address);
           setDescription(response.profileDescription);
+          setImgUser(response.profilePictureUri);
           setInitialUsername(response.username);
           setInitialEmail(response.email);
           setInitialPhone(response.phone);
@@ -369,7 +425,7 @@ export const EditProfile = ({ openLogin }) => {
           } else if (data?.cause === "BadCredentialsException") {
             setOldPassError("Incorrect old password.");
           } else {
-            setUpdateError("An error occurred while updating the password.");
+            setUpdateError("Invalid old password.");
           }
         } else {
           console.error("Network or unknown error occurred:", error);
@@ -381,14 +437,52 @@ export const EditProfile = ({ openLogin }) => {
     }
   };
 
+//   const updateImgUser = async () => {
+//   try {
+//     const formData = new FormData();
+//     formData.append("file", imgUser);
+
+//     console.log("FormData:", formData.get("file"));
+
+//     const response = await AccountService.updateImage(formData);
+//     console.log("Response from server:", response);
+
+//     if (response && response.url) {
+//       setAccount({
+//         ...account,
+//         profilePictureUri: response.url,
+//       });
+//       alert("Profile picture updated successfully!");
+//     } else {
+//       alert("Failed to retrieve new profile picture URL.");
+//     }
+//   } catch (error) {
+//     console.error("Image update failed: ", error);
+//   }
+// };
+
+
   return (
     <div className="edit-profile-container col-12">
       <div className="edit-profile-header col-3 align-items-center">
         <img
           className="edit-profile-avatar"
-          src={user.avatarUrl}
-          alt="Avatar"
+          src={account.profilePictureUri || "default-avatar.png"}
+          alt="Profile"
         />
+
+        <div className="bg-img" value={imgUser}>
+          <input
+            type="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            id="upload-file"
+            onChange={ImgChange}
+          />
+          <label htmlFor="upload-file" style={{ cursor: 'pointer' }}>
+            <FaPen className="ic_pen" />
+          </label>
+        </div>
       </div>
       <div className="tabs mt-4">
         <button

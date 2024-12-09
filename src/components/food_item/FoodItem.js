@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "./FoodItem.css";
 import { Link } from "react-router-dom";
 import CartService from "../../api/CartService";
@@ -9,7 +8,7 @@ const FoodItem = ({ product }) => {
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
   const [username, setUserName] = useState("");
   const [accountRole, setAccountRole] = useState("");
-  const navigate = useNavigate();
+  const [popupAdd, setPopupAdd] = useState(false);
 
   useEffect(() => {
     const getAccount = async () => {
@@ -19,7 +18,6 @@ const FoodItem = ({ product }) => {
           setUserName(response.username);
           setAccountRole(response.role);
         } catch (error) {
-          console.error("Error fetching account information:", error);
         }
       } else {
         setUserName("");
@@ -38,9 +36,15 @@ const FoodItem = ({ product }) => {
         product.id,
         (product.quantity = 1)
       );
+      setPopupAdd(true);
+      setTimeout(() => {
+        setPopupAdd(false);
+      }, 1000);
       console.log("product in cart", response);
       return response;
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
+    }
   };
   return (
     <div className="food-item">
@@ -73,26 +77,18 @@ const FoodItem = ({ product }) => {
         </div>
       </Link>
 
-      {accountRole === "CUSTOMER" && (
-        <div className="button-in-item">
-          <button className="button-addtocart" onClick={addToCart}>
-            Add to cart
-          </button>
-          <button className="button-buynow">Buy now</button>
-        </div>
-      )}
-      {accountRole === "" && (
-        <div className="button-in-item">
-          <button className="button-addtocart" onClick={addToCart}>
-            Add to cart
-          </button>
-          <button className="button-buynow">Buy now</button>
-        </div>
-      )}
-      {accountRole === "ADMIN" && (
-        <div className="button-in-item">
-          <button className="button-addtocart">Add to cart</button>
-          <button className="button-buynow">Buy now</button>
+      <div className="button-in-item">
+        <button className="button-addtocart" onClick={addToCart}>
+          Add to cart
+        </button>
+        <button className="button-buynow">Buy now</button>
+      </div>
+
+      {popupAdd && (
+        <div className="popup">
+          <div className="popup-content">
+            <h5>Added to cart !</h5>
+          </div>
         </div>
       )}
     </div>

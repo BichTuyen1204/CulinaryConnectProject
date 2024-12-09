@@ -10,6 +10,7 @@ export const Profile = () => {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [description, setDescription] = useState("");
+  const [imgUser, setImgUser] = useState("");
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
 
   useEffect(() => {
@@ -22,6 +23,7 @@ export const Profile = () => {
           setPhone(response.phone);
           setAddress(response.address);
           setDescription(response.profileDescription);
+          setImgUser(response.profilePictureUri);
         } catch (error) {
           console.error("Error fetching account information:", error);
         }
@@ -36,15 +38,12 @@ export const Profile = () => {
     getAccount();
   }, [jwtToken]);
 
-  const user = {
-    avatarUrl: "https://randomuser.me/api/portraits/men/1.jpg",
-  };
   return (
     <div className="profile-container d-flex col-12">
       <div className="profile-header col-3 row align-items-center justify-content-center">
         <img
           className="profile-avatar col-12 border-orange"
-          src={user.avatarUrl}
+          src={imgUser}
           alt="Avatar"
         />
         <h1 className="profile-name col-12 text-center">{}</h1>

@@ -39,35 +39,41 @@ const AppContent = () => {
 
   return (
     <>
-        <div className="app">
-          <Navbar setShowLogin={setShowLogin} />
-          <Breadcrumb />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="exploreMenu" element={<ExploreMenu />} />
-            <Route path="cart" element={<Cart />} />
-            <Route path="contact" element={<Contact />} />
-            <Route path="food_card" element={<Food_card />} />
-            <Route path="food_detail/:id" element={<Food_detail />} />
-            <Route path="food_detail" element={<Food_detail />} />
-            <Route path="food_display" element={<FoodDisplay/>} />
-            <Route path="recipe" element={<Recipe />} />
-            <Route path="profile" element={<Profile />} />
-            <Route path="food_item" element={<FoodItem openLogin={openLogin} />} />
-            <Route path="edit_profile" element={<EditProfile openLogin={openLogin} />} />
-          </Routes>
-          {showLogin && (
-            <Login
-              setShowLogin={setShowLogin}
-              openSignUp={openSignUp}
-              onLoginSuccess={handleLoginSuccess}
-            />
-          )}
-          {showSignUp && (
-            <Sign_up setShowSignUp={setShowSignUp} openLogin={openLogin} />
-          )}
-        </div>
-        <Footer />
+      <div className="app">
+        <Navbar setShowLogin={setShowLogin} />
+        <Breadcrumb />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="exploreMenu" element={<ExploreMenu />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="food_card" element={<Food_card />} />
+          <Route path="food_detail/:id" element={<Food_detail />} />
+          <Route path="food_detail" element={<Food_detail />} />
+          <Route path="food_display" element={<FoodDisplay />} />
+          <Route path="recipe" element={<Recipe />} />
+          <Route path="profile" element={<Profile />} />
+          <Route
+            path="food_item"
+            element={<FoodItem openLogin={openLogin} />}
+          />
+          <Route
+            path="edit_profile"
+            element={<EditProfile openLogin={openLogin} />}
+          />
+        </Routes>
+        {showLogin && (
+          <Login
+            setShowLogin={setShowLogin}
+            openSignUp={openSignUp}
+            onLoginSuccess={handleLoginSuccess}
+          />
+        )}
+        {showSignUp && (
+          <Sign_up setShowSignUp={setShowSignUp} openLogin={openLogin} />
+        )}
+      </div>
+      <Footer />
     </>
   );
 };

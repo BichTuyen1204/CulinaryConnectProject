@@ -97,3 +97,7 @@ a {
     text-decoration: none;
     color: inherit;
 }
+
+.popup-content h5 {
+    color: green;
+}

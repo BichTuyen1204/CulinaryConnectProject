@@ -22,6 +22,25 @@ class AccountService {
       const response = await axios.post(`${API_BASE_URL}/signin`, account);
       const jwtToken = response.data.accessToken;
       sessionStorage.setItem("jwtToken", jwtToken);
+      console.log("Data user: ", response);
+    } catch (error) {
+      console.error(
+        "Login failed: ",
+        error.response ? error.response.data : error.message
+      );
+      throw error;
+    }
+  }
+
+  async signinGoogle(credential) {
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}/oauth2/authorization/google`,
+        credential
+      );
+      const jwtToken = response;
+      sessionStorage.setItem("jwtToken", jwtToken);
+      console.log("Stored JWT Token: ", sessionStorage.getItem("jwtToken"));
     } catch (error) {
       console.error(
         "Login failed: ",
@@ -42,8 +61,29 @@ class AccountService {
       );
       return response.data;
     } catch (error) {
+    }
+  }
+
+  async updateImage(formData) {
+    try {
+      const jwtToken = sessionStorage.getItem("jwtToken");
+      if (!jwtToken) {
+        throw new Error("No JWT token found. Please log in again.");
+      }
+      const response = await axios.post(
+        `${API_BASE_URL_2}/edit/profile/picture`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
       console.error(
-        "Error fetching account details: ",
+        "Update failed: ",
         error.response ? error.response.data : error.message
       );
       throw error;

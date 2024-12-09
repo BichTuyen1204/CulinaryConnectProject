@@ -30,13 +30,40 @@ class CartService {
     }
   }
 
+  async updateCart(id, quantity) {
+    try {
+      const jwtToken = sessionStorage.getItem("jwtToken");
+      if (!jwtToken) {
+        throw new Error("No JWT token found. Please login.");
+      }
+      const response = await axios.put(
+        `${API_BASE_URL}/cart/set`,
+        {},
+        {
+          params: { id, quantity },
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+      console.log("Update product successful:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Error update product: ",
+        error.response ? error.response.data : error.message
+      );
+      throw error;
+    }
+  }
+
   async getAllInCart() {
     const jwtToken = sessionStorage.getItem("jwtToken");
     if (!jwtToken) {
       throw new Error("No JWT token found. Please login.");
     }
     try {
-      const response = await axios.get(`${API_BASE_URL}/cart`, {
+      const response = await axios.get(`${API_BASE_URL}/cart/fetch`, {
         headers: {
           Authorization: `Bearer ${jwtToken}`,
         },

@@ -51,8 +51,6 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
       setUserNameError("The full name must be at least 4 characters");
     } else if (username.length > 100) {
       setUserNameError("The full name must be less than 100 characters");
-    } else if (!/^[\p{L}\s]+$/u.test(username)) {
-      setUserNameError("Please enter only alphabetic characters");
     } else {
       setUserNameError("");
     }

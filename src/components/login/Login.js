@@ -4,6 +4,7 @@ import "../login/Login.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import AccountService from "../../api/AccountService";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 const Login = ({ setShowLogin, openSignUp, onLoginSuccess }) => {
   const [username, setUserName] = useState("");
@@ -14,10 +15,12 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess }) => {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [loginError, setLoginError] = useState("");
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
 
   const [account, setAccount] = useState({
     username: "",
     password: "",
+    token: "",
   });
 
   // Receives username
@@ -35,8 +38,6 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess }) => {
       setUserNameError("The full name must be at least 4 characters");
     } else if (username.length > 100) {
       setUserNameError("The full name must be less than 100 characters");
-    } else if (!/^[\p{L}\s]+$/u.test(username)) {
-      setUserNameError("Please enter only alphabetic characters");
     } else {
       setUserNameError("");
     }
@@ -131,6 +132,29 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess }) => {
     }
   };
 
+  const handleLoginSuccess = (account) => {
+    fetch("http://localhost:8080/oauth2/authorization/google", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ token: account.token }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Backend Response:", data);
+        sessionStorage.setItem("jwtToken", jwtToken);
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.error("Error with Google login", err);
+      });
+  };
+
+  const handleLoginFailure = (error) => {
+    console.error("Google login failed", error);
+  };
+
   return (
     <div className="fullscreen-modal">
       <div className="login" onClick={handleClose}>
@@ -138,8 +162,8 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess }) => {
           className="login-container"
           onClick={handleContainerClick}
           onSubmit={(e) => {
-              e.preventDefault();
-              validateForm();
+            e.preventDefault();
+            validateForm();
           }}
         >
           <div className="login-title">
@@ -207,9 +231,23 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess }) => {
               <p style={{ color: "green" }}>Login successful</p>
             )}
             {loginError && <p style={{ color: "red" }}>{loginError}</p>}
-            <button type="button" onClick={validateForm}>
+            <button
+              className="login-button"
+              type="button"
+              onClick={validateForm}
+            >
               Login
             </button>
+            <div className="text-center p-2">OR</div>
+            <GoogleOAuthProvider clientId="212155081312-rm2njn1ej89c03u4b6ksoiec9uff2hjb.apps.googleusercontent.com">
+              <div>
+                  <GoogleLogin
+                    onSuccess={handleLoginSuccess}
+                    onError={handleLoginFailure}
+                    useOneTap
+                  />
+              </div>
+            </GoogleOAuthProvider>
           </div>
         </form>
       </div>
