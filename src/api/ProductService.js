@@ -8,7 +8,6 @@ class ProductService {
     try {
       const debugResponse = await axios.get(`${API_BASE_URL}/map`);
       const response = await axios.get(`${API_BASE_URL_2}/product/all`);
-      console.log("Product data:", response.data);
       return response.data;
     } catch (error) {
       console.error(

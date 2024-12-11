@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import './Breadcrumb.css';
+import "./Breadcrumb.css";
 function Breadcrumb() {
   const location = useLocation();
   const pathname = location.pathname;
@@ -11,11 +11,28 @@ function Breadcrumb() {
 
   if (pathname === "/") {
     return null;
-  } if (pathname === "/profile") {
+  }
+  if (pathname === "/profile") {
     return null;
-  } if (pathname === "/edit_profile") {
+  }
+  if (pathname === "/edit_profile") {
     return null;
-  } 
+  }
+  if (pathname === "/sign_in") {
+    return null;
+  }
+  if (pathname === "/regiter") {
+    return null;
+  }
+  if (pathname === "/token") {
+    return null;
+  }
+  if (pathname === "/food_detail/:id") {
+    return null;
+  }
+  if (pathname === "/food_detail") {
+    return null;
+  }
 
   // Mapping các tên đường dẫn sang tên hiển thị
   const routeNameMap = {
@@ -23,7 +40,7 @@ function Breadcrumb() {
     recipe: "Recipe",
     cart: "Cart",
     contact: "Contact",
-    food_detail: "Food detail", 
+    order: "Order",
   };
 
   return (

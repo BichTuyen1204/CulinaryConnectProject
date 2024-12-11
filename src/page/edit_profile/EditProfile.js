@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./EditProfile.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AccountService from "../../api/AccountService";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FaPen } from "react-icons/fa6";
 
-export const EditProfile = ({ openLogin }) => {
+export const EditProfile = () => {
   const [username, setUserName] = useState("");
   const [usernameError, setUserNameError] = useState("");
   const [email, setEmail] = useState("");
@@ -37,6 +37,7 @@ export const EditProfile = ({ openLogin }) => {
   const [initialPhone, setInitialPhone] = useState("");
   const [initialAddress, setInitialAddress] = useState("");
   const [initialDescription, setInitialDescription] = useState("");
+  const navigate = useNavigate();
 
   const [account, setAccount] = useState({
     username: "",
@@ -47,23 +48,8 @@ export const EditProfile = ({ openLogin }) => {
     oldPassword: "",
     password: "",
     profilePictureUri: "",
-    url:""
+    url: "",
   });
-
-  //Receive img
-  // const ImgChange = (e) => {
-  //   const file = e.target.files[0];
-  //   if (!file) {
-  //     alert("No file selected.");
-  //     return;
-  //   }
-  //   setImgUser(file);
-  //   const previewUrl = URL.createObjectURL(file);
-  //   setAccount((preState) => ({
-  //     ...preState,
-  //     url: previewUrl, 
-  //   }));
-  // };
 
   const ImgChange = async (e) => {
     const file = e.target.files[0];
@@ -71,30 +57,27 @@ export const EditProfile = ({ openLogin }) => {
       alert("No file selected.");
       return;
     }
-  
-    // Hiển thị ảnh preview ngay lập tức
     const previewUrl = URL.createObjectURL(file);
     setAccount((preState) => ({
       ...preState,
-      url: previewUrl, // Cập nhật URL để preview
+      url: previewUrl,
     }));
-  
-    setImgUser(file); // Lưu file vào state
-  
-    // Gọi API để cập nhật ảnh ngay lập tức
+
+    setImgUser(file);
     try {
       const formData = new FormData();
-      formData.append("file", file); // Append file trực tiếp vào formData
-  
-      const response = await AccountService.updateImage(formData); // Gửi request
+      formData.append("file", file);
+
+      const response = await AccountService.updateImage(formData);
       console.log("Response from server:", response);
-  
+
       if (response && response.url) {
         setAccount((prevState) => ({
           ...prevState,
-          profilePictureUri: response.url, // Cập nhật URL từ server
+          profilePictureUri: response.url,
         }));
         alert("Profile picture updated successfully!");
+        window.location.reload();
       } else {
         alert("Failed to retrieve new profile picture URL.");
       }
@@ -103,7 +86,6 @@ export const EditProfile = ({ openLogin }) => {
       alert("Failed to update image.");
     }
   };
-  
 
   // Receive full name
   const NameChange = (e) => {
@@ -279,8 +261,11 @@ export const EditProfile = ({ openLogin }) => {
 
   //Call infor
   useEffect(() => {
-    const getAccount = async () => {
-      if (jwtToken !== "") {
+    if (!username) {
+      navigate("/sign_in");
+      return; 
+    } else {
+      const getAccount = async () => {
         try {
           const response = await AccountService.account(jwtToken);
           setAccount(response);
@@ -298,16 +283,10 @@ export const EditProfile = ({ openLogin }) => {
         } catch (error) {
           console.error("Error fetching account information:", error);
         }
-      } else {
-        setUserName("");
-        setEmail("");
-        setPhone("");
-        setAddress("");
-        setDescription("");
-      }
-    };
-    getAccount();
-  }, [jwtToken]);
+      };
+      getAccount();
+    }
+  }, [jwtToken, navigate]);
 
   //Check user input something or not
   const handleUserChange = () => {
@@ -407,7 +386,7 @@ export const EditProfile = ({ openLogin }) => {
         setPassword("");
         setRePassword("");
         setTimeout(() => {
-          openLogin();
+          navigate("/sign_in");
           setFormSubmittedPass(false);
         }, 1000);
       } catch (error) {
@@ -425,7 +404,7 @@ export const EditProfile = ({ openLogin }) => {
           } else if (data?.cause === "BadCredentialsException") {
             setOldPassError("Incorrect old password.");
           } else {
-            setUpdateError("Invalid old password.");
+            setOldPassError("Invalid old password.");
           }
         } else {
           console.error("Network or unknown error occurred:", error);
@@ -437,37 +416,12 @@ export const EditProfile = ({ openLogin }) => {
     }
   };
 
-//   const updateImgUser = async () => {
-//   try {
-//     const formData = new FormData();
-//     formData.append("file", imgUser);
-
-//     console.log("FormData:", formData.get("file"));
-
-//     const response = await AccountService.updateImage(formData);
-//     console.log("Response from server:", response);
-
-//     if (response && response.url) {
-//       setAccount({
-//         ...account,
-//         profilePictureUri: response.url,
-//       });
-//       alert("Profile picture updated successfully!");
-//     } else {
-//       alert("Failed to retrieve new profile picture URL.");
-//     }
-//   } catch (error) {
-//     console.error("Image update failed: ", error);
-//   }
-// };
-
-
   return (
     <div className="edit-profile-container col-12">
       <div className="edit-profile-header col-3 align-items-center">
         <img
           className="edit-profile-avatar"
-          src={account.profilePictureUri || "default-avatar.png"}
+          src={imgUser || "default-avatar.png"}
           alt="Profile"
         />
 
@@ -475,11 +429,11 @@ export const EditProfile = ({ openLogin }) => {
           <input
             type="file"
             accept="image/*"
-            style={{ display: 'none' }}
+            style={{ display: "none" }}
             id="upload-file"
             onChange={ImgChange}
           />
-          <label htmlFor="upload-file" style={{ cursor: 'pointer' }}>
+          <label htmlFor="upload-file" style={{ cursor: "pointer" }}>
             <FaPen className="ic_pen" />
           </label>
         </div>

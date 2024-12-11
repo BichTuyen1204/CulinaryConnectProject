@@ -87,7 +87,16 @@
 
 .input-quantity {
   align-items: center;
-  margin-bottom: 1rem;
+}
+
+.input-quantity input {
+  margin: 0px 5px;
+  border-radius: 5px;
+}
+
+.input-quantity input:focus {
+  outline: none;
+  border: 1px solid tomato;
 }
 
 .decrease-quantity {

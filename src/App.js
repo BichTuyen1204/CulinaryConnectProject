@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { Navbar } from "./components/navbar/Navbar";
-import { Routes, Route, useNavigate, BrowserRouter } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useNavigate,
+  BrowserRouter,
+  Switch,
+} from "react-router-dom";
 import { Home } from "./page/home/Home";
 import ExploreMenu from "./components/menu/ExploreMenu";
 import Footer from "./components/footer/Footer";
@@ -14,8 +20,15 @@ import Breadcrumb from "./components/bread_crumb/Breadcrumb";
 import Recipe from "./page/recipe/Recipe";
 import { Profile } from "./page/profile/Profile";
 import { EditProfile } from "./page/edit_profile/EditProfile";
-import FoodDisplay from "./components/food_display/FoodDisplay";
-import FoodItem from "./components/food_item/FoodItem";
+import { Order } from "./page/order/Order";
+import { FoodItem } from "./components/food_item/FoodItem";
+import { FoodDisplay } from "./components/food_display/FoodDisplay";
+import Register from "./components/register/Register";
+import SignIn from "./components/sign_in/SignIn";
+import Invoice from "./page/invoice/Invoice";
+import OrderConfirmation from "./page/order_confirm/OrderConfirmation";
+import Google from "./page/google/Google";
+import OrderDetail from "./page/order_detail/OrderDetail";
 
 const AppContent = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -53,14 +66,15 @@ const AppContent = () => {
           <Route path="food_display" element={<FoodDisplay />} />
           <Route path="recipe" element={<Recipe />} />
           <Route path="profile" element={<Profile />} />
-          <Route
-            path="food_item"
-            element={<FoodItem openLogin={openLogin} />}
-          />
-          <Route
-            path="edit_profile"
-            element={<EditProfile openLogin={openLogin} />}
-          />
+          <Route path="order" element={<Order />} />
+          <Route path="food_item" element={<FoodItem />} />
+          <Route path="edit_profile" element={<EditProfile />} />
+          <Route path="sign_in" element={<SignIn />} />
+          <Route path="register" element={<Register />} />
+          <Route path="token" element={<Google />} />
+          <Route path="invoice" element={<Invoice />} />
+          <Route path="order_confirm/:id" element={<OrderConfirmation />} />
+          <Route path="order_detail/:id" element={<OrderDetail />} />
         </Routes>
         {showLogin && (
           <Login

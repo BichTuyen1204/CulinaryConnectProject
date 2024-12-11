@@ -32,24 +32,6 @@ class AccountService {
     }
   }
 
-  async signinGoogle(credential) {
-    try {
-      const response = await axios.get(
-        `${API_BASE_URL}/oauth2/authorization/google`,
-        credential
-      );
-      const jwtToken = response;
-      sessionStorage.setItem("jwtToken", jwtToken);
-      console.log("Stored JWT Token: ", sessionStorage.getItem("jwtToken"));
-    } catch (error) {
-      console.error(
-        "Login failed: ",
-        error.response ? error.response.data : error.message
-      );
-      throw error;
-    }
-  }
-
   async account(jwtToken) {
     try {
       const response = await axios.get(

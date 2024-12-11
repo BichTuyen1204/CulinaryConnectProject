@@ -4,8 +4,9 @@ import "../login/Login.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import AccountService from "../../api/AccountService";
+import { Link, useNavigate } from "react-router-dom";
 
-const Login = ({ setShowLogin, openSignUp, onLoginSuccess }) => {
+const SignIn = () => {
   const [username, setUserName] = useState("");
   const [userNameError, setUserNameError] = useState("");
   const [password, setPassword] = useState("");
@@ -15,11 +16,21 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess }) => {
   const [loginError, setLoginError] = useState("");
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
+  const [isOpen, setIsOpen] = useState(true);
+  const navigate = useNavigate();
 
   const [account, setAccount] = useState({
     username: "",
     password: "",
+    token: "",
   });
+
+  const closeLogin = () => {
+    setIsOpen(false);
+    navigate("/");
+  };
+
+  if (!isOpen) return null;
 
   // Receives username
   const userNameChange = (e) => {
@@ -68,7 +79,8 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess }) => {
   };
 
   const handleClose = (e) => {
-    setShowLogin(false);
+    setIsOpen(false); // Đóng form login
+    navigate("/");
   };
 
   const handleContainerClick = (e) => {
@@ -97,7 +109,7 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess }) => {
         setFormSubmitted(true);
         setLoginError("");
         setTimeout(() => {
-          onLoginSuccess();
+          closeLogin();
           window.location.reload();
           console.log("Response data:", response);
         }, 1000);
@@ -148,7 +160,7 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess }) => {
           <div className="login-title">
             <h2>Login</h2>
             <div className="icon-closeicon-close">
-              <IoClose onClick={() => setShowLogin(false)} />
+              <IoClose onClick={closeLogin} />
             </div>
           </div>
 
@@ -200,7 +212,7 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess }) => {
           <div className="part-end-login">
             <p>
               Create a new account ?{" "}
-              <span onClick={openSignUp}>Register here</span>
+              <span><Link to="/register">Register here</Link></span>
             </p>
           </div>
 
@@ -225,4 +237,4 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess }) => {
     </div>
   );
 };
-export default Login;
+export default SignIn;

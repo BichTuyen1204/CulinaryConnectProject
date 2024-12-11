@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Profile.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AccountService from "../../api/AccountService";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Profile = () => {
   const [username, setUserName] = useState("");
@@ -12,10 +12,17 @@ export const Profile = () => {
   const [description, setDescription] = useState("");
   const [imgUser, setImgUser] = useState("");
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const getAccount = async () => {
-      if (jwtToken !== null) {
+    window.scrollTo(0, 0);
+}, []);
+
+  useEffect(() => {
+    if (!jwtToken) {
+      navigate("/sign_in");
+    } else {
+      const getAccount = async () => {
         try {
           const response = await AccountService.account(jwtToken);
           setUserName(response.username);
@@ -26,33 +33,27 @@ export const Profile = () => {
           setImgUser(response.profilePictureUri);
         } catch (error) {
           console.error("Error fetching account information:", error);
+          sessionStorage.removeItem("jwtToken");
+          navigate("/login");
         }
-      } else {
-        setUserName("");
-        setEmail("");
-        setPhone("");
-        setAddress("");
-        setDescription("");
-      }
-    };
-    getAccount();
-  }, [jwtToken]);
-
+      };
+      getAccount();
+    }
+  }, [jwtToken, navigate]);
   return (
     <div className="profile-container d-flex col-12">
       <div className="profile-header col-3 row align-items-center justify-content-center">
         <img
           className="profile-avatar col-12 border-orange"
-          src={imgUser}
+          src={imgUser || "/default-avatar.png"}
           alt="Avatar"
         />
-        <h1 className="profile-name col-12 text-center">{}</h1>
       </div>
 
       <div className="col-center col-1"></div>
 
       <div className="profile-info col-8 mt-5">
-        <h2 className="">Profile Information</h2>
+        <h2>Profile Information</h2>
         <div className="mt-3">
           <p>
             <strong>User name:</strong> {username}
@@ -71,7 +72,7 @@ export const Profile = () => {
           </p>
         </div>
         <Link to="/edit_profile">
-        <button className="bt-edit-profile mt-3">Edit Your Profile</button>
+          <button className="bt-edit-profile mt-3">Edit Your Profile</button>
         </Link>
       </div>
     </div>

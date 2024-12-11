@@ -1,0 +1,133 @@
+.order-page {
+  width: 90%;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+}
+
+.order-tabs {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  font-size: 14px;
+}
+
+.tab.active {
+  border-bottom: 2px solid red;
+  color: red;
+  font-weight: bold;
+}
+
+.order-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.order-card {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.order-summary {
+  margin-bottom: 15px;
+}
+
+.total-amount-size {
+  font-size: 1.1rem;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 5px 20px;
+  flex-wrap: wrap;  /* Đảm bảo các sản phẩm không bị cắt ngắn */
+}
+
+
+.order-info {
+  display: flex;
+  align-items: center;
+}
+
+.order-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  margin-right: 15px;
+  border-radius: 5px;
+}
+
+.order-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.order-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.order-quantity {
+  color: #555;
+  font-size: 14px;
+}
+
+.order-price {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.price-highlight {
+  color: red;
+  font-weight: bold;
+}
+
+
+.contact-seller-btn {
+  background: red;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.contact-seller-btn:hover {
+  background: darkred;
+}
+
+.order-tabs {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  font-size: 14px;
+}
+
+.tab.active {
+  border-bottom: 2px solid red;
+  color: red;
+  font-weight: bold;
+}

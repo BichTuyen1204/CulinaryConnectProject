@@ -199,7 +199,25 @@ export const Food_detail = () => {
 
                       <div className="border-bottom">
                         <p className="price text-dark link">
-                          Price: {product.price} VNĐ
+                          Price:
+                          {product.salePercent > 0 ? (
+                            <>
+                              <span className="mx-1 original-price">
+                                ${Number(product.price).toFixed(2)}
+                              </span>
+                              <span className="discounted-price">
+                                $
+                                {(
+                                  Number(product.price) -
+                                  (Number(product.price) *
+                                    Number(product.salePercent)) /
+                                    100
+                                ).toFixed(2)}
+                              </span>
+                            </>
+                          ) : (
+                            <span className="mx-1">${Number(product.price).toFixed(2)}</span>
+                          )}
                         </p>
                       </div>
 
@@ -211,7 +229,7 @@ export const Food_detail = () => {
 
                         <div className="d-flex gap-10 align-items-center my-2">
                           <h3 className="product-heading">Weight: </h3>
-                          <p className="product-data">{product.description}</p>
+                          <p className="product-data">{}</p>
                         </div>
 
                         <div className="d-flex gap-10 align-items-center my-2">
@@ -222,6 +240,23 @@ export const Food_detail = () => {
                             {product.daysBeforeExpiry}
                           </p>
                         </div>
+
+                        {product.salePercent > 0 ? (
+                          <div className="d-flex gap-10 align-items-center my-2">
+                            <h3
+                              className="product-heading"
+                              style={{ color: "red" }}
+                            >
+                              <strong>Sale:</strong>{" "}
+                            </h3>
+                            <p
+                              className="product-data"
+                              style={{ color: "red" }}
+                            >
+                              <strong>{product.salePercent} %</strong>
+                            </p>
+                          </div>
+                        ) : null}
 
                         <div className="d-flex align-items-center gap-15 flex-row mt-2 mb-3">
                           <h3 className="product-heading">Quantity: </h3>

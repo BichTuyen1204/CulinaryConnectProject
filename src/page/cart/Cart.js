@@ -10,6 +10,7 @@ const Cart = () => {
   const [products, setProducts] = useState([]);
   const [items, setItems] = useState([]);
   const [popupDelete, setPopupDelete] = useState(false);
+  const [productIdToDelete, setProductIdToDelete] = useState(null);
 
   // Increase
   const increaseQuantity = (id) => {
@@ -39,8 +40,16 @@ const Cart = () => {
     );
   };
 
+  // Open popup delete
+  const openModal = (id) => {
+    setPopupDelete(true);
+    setProductIdToDelete(id);
+  };
+
+  // Close popup delete
   const cancelDelete = () => {
     setPopupDelete(false);
+    setProductIdToDelete(null);
   };
 
   // Change input
@@ -101,9 +110,10 @@ const Cart = () => {
   }, []);
 
   // Delete product
-  const deleteProduct = async (id) => {
+  const deleteProduct = async () => {
     try {
-      const response = await CartService.deleteCart(id);
+      const response = await CartService.deleteCart(productIdToDelete);
+      setProductIdToDelete(null);
       setPopupDelete(false);
       if (response === true) {
         getAllProduct();
@@ -114,10 +124,6 @@ const Cart = () => {
     } catch (error) {
       console.error("Failed to delete product:", error);
     }
-  };
-
-  const openModal = () => {
-    setPopupDelete(true);
   };
 
   const updateProduct = async (id, quantity) => {
@@ -134,12 +140,16 @@ const Cart = () => {
     let total = 0;
     let quantity = 0;
     items.forEach((item) => {
-      total += item.product.price * item.amount;
+      const price = item.product.salePercent > 0
+        ? item.product.price - (item.product.price * item.product.salePercent) / 100
+        : item.product.price;
+      total += price * item.amount;
       quantity += item.amount;
     });
-    setTotalPrice(total.toFixed(1));
+    setTotalPrice(total.toFixed(2));
     setTotalQuantity(quantity);
   };
+  
 
   useEffect(() => {
     const initializedItems = products.map((product) => ({
@@ -159,26 +169,46 @@ const Cart = () => {
         <div className="cart-items-titile">
           <p>Image</p>
           <p>Title</p>
-          <p>Price</p>
+          <p className="mx-4">Price</p>
           <p className="quantity">Quantity</p>
           <p>Total</p>
           <p>Remove</p>
         </div>
-        <hr />
+        <hr className="mt-2" />
         {Array.isArray(products) && products.length > 0 ? (
           items.map((item, index) => (
             <div key={index}>
               <div className="cart-items-titile cart-items-item">
-                <Link to={`/food_detail/${item.product.id}`}>
-                  <img
-                    src={item.product.imageUrl}
-                    alt={item.product.productName}
-                  />
-                </Link>
+                <div className="mb-3">
+                  <Link to={`/food_detail/${item.product.id}`}>
+                    <img
+                      src={item.product.imageUrl}
+                      alt={item.product.productName}
+                    />
+                  </Link>
+                </div>
 
-                <p>{item.product.productName}</p>
-                <p>{item.product.price} đ</p>
-                <div className="d-flex input-quantity">
+                <p className="mb-4">{item.product.productName}</p>
+                <div className="mb-4">
+                  {item.product.salePercent > 0 ? (
+                    <>
+                      <span className="original-price">
+                        ${item.product.price.toFixed(2)}
+                      </span>{" "}
+                      <span className="discounted-price">
+                        $
+                        {(
+                          item.product.price -
+                          (item.product.price * item.product.salePercent) / 100
+                        ).toFixed(2)}
+                      </span>
+                    </>
+                  ) : (
+                    <span>${item.product.price.toFixed(2)}</span>
+                  )}
+                </div>
+
+                <div className="d-flex input-quantity mb-4">
                   <button
                     className="decrease-quantity"
                     onClick={() => decreaseQuantity(item.product.id)}
@@ -200,22 +230,38 @@ const Cart = () => {
                   </button>
                 </div>
 
-                <p className="total">
-                  {(item.product.price * item.amount).toFixed(1)} đ
+                <p className="mb-4">
+                  $
+                  {item.product.salePercent > 0
+                    ? ((item.product.price - (item.product.price * item.product.salePercent) / 100) * item.amount).toFixed(2)
+                    : (item.product.price * item.amount).toFixed(2)}
                 </p>
                 <p className="ic_close">
                   <IoClose
-                    className="ic_remove"
+                    className="ic_remove mb-4"
                     onClick={() => openModal(item.product.id)}
                   />
                 </p>
+
                 {popupDelete && (
                   <div className="popup">
                     <div className="popup-content">
-                      <h5 className="info-delete">Are you sure you want to delete this product?</h5>
+                      <h5 className="info-delete">
+                        Are you sure you want to delete this product?
+                      </h5>
                       <div className="popup-buttons">
-                        <button className="button-delete" onClick={() => deleteProduct(item.product.id)}>Delete</button>
-                        <button className="button-cancel" onClick={cancelDelete}>Cancel</button>
+                        <button
+                          className="button-delete"
+                          onClick={() => deleteProduct(item.product.id)}
+                        >
+                          Delete
+                        </button>
+                        <button
+                          className="button-cancel"
+                          onClick={cancelDelete}
+                        >
+                          Cancel
+                        </button>
                       </div>
                       <IoClose className="popup-close" onClick={cancelDelete} />
                     </div>
@@ -238,7 +284,7 @@ const Cart = () => {
         </div>
         <div className="total-price-first">
           <p>
-            <strong>Total price: </strong> {totalPrice} đ
+            <strong>Total price: </strong> $ {totalPrice}
           </p>
         </div>
       </div>
@@ -249,10 +295,13 @@ const Cart = () => {
             <button>Go to menu</button>
           </div>
         </Link>
-
-        <div className="button-go-checkout">
-          <button>Check out</button>
-        </div>
+        {products.length > 0 ? (
+          <div className="button-go-checkout">
+            <button>
+              <Link to="/order">Check out</Link>
+            </button>
+          </div>
+        ) : null}
       </div>
     </div>
   );

@@ -1,103 +1,118 @@
 .food-item {
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-    border-radius: 15px;
-    box-shadow: 0px 0px 10px #00000015;
-    transition: 0.3s;
-    animation: fadeIn 1s;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px #00000015;
+  transition: 0.3s;
+  animation: fadeIn 1s;
+}
+
+p {
+  margin-bottom: 0 !important;
 }
 
 .food-item .food-item-img-container {
-    width: 100%;
-    height: 200px;
-    border-radius: 15px;
-    cursor: pointer;
+  width: 100%;
+  height: 200px;
+  border-radius: 15px;
+  cursor: pointer;
 }
 
-.food-item .food-item-img-container .food-item-image{
-    width: 100%;
-    height: 100%;
-    padding: 6px;
-    border-radius: 15px;
-    object-fit: fill;
-    transition: transform 0.3s ease-in-out;
-    display: block;
+.food-item .food-item-img-container .food-item-image {
+  width: 100%;
+  height: 100%;
+  padding: 6px;
+  border-radius: 15px;
+  object-fit: fill;
+  transition: transform 0.3s ease-in-out;
+  display: block;
 }
 
-.food-item .food-item-img-container:hover img{
-    transform: scale(1.07);
+.food-item .food-item-img-container:hover img {
+  transform: scale(1.07);
 }
 
 .food-item-info {
-    padding: 10px;
+  padding: 10px;
 }
 
-.food-item-name p{
-    max-width: 100%;
-    font-size: 17px;
-    font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-decoration: none;
+.food-item-name p {
+  max-width: 100%;
+  font-size: 17px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-decoration: none;
 }
 
-.food-item-name p:hover{
-    color: #555;
+.food-item-name p:hover {
+  color: #555;
 }
 
 .price-and-quantity {
-    margin-top: 20px;
-    margin-bottom: 10px;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 .food-item-info .food-item-price {
-    color: tomato;
-    font-size: 13px;
-    font-weight: 500;
-    margin-top: 10px;
-    margin-bottom: 5px;
+  color: red;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .food-item-info .food-item-quantity {
-    font-size: 13px;
-    font-weight: 500;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .button-in-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
 }
 
-.button-in-item button{
-    background-color: tomato;
-    border: 1px solid rgb(255, 255, 255);
-    padding: 5px 15px;
-    color: white;
-    font-size: 12px;
+.button-in-item button {
+  background-color: tomato;
+  border: 1px solid rgb(255, 255, 255);
+  padding: 5px 15px;
+  color: white;
+  font-size: 12px;
 }
 
-.button-in-item button:hover{
-    background-color: rgb(250, 177, 164);
+.button-in-item button:hover {
+  background-color: rgb(250, 177, 164);
 }
 
-.button-in-item button:active{
-    background-color: tomato;
+.button-in-item button:active {
+  background-color: tomato;
 }
 
 .button-in-item .button-addtocart,
 .button-in-item .button-buynow {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 a {
-    text-decoration: none;
-    color: inherit;
+  text-decoration: none;
+  color: inherit;
 }
 
 .popup-content h5 {
-    color: green;
+  color: green;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #333;
+  margin-right: 8px;
+}
+
+.discounted-price {
+  color: red;
+  font-weight: bold;
 }

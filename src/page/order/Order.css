@@ -1,0 +1,230 @@
+.website-name {
+  color: tomato;
+  font-weight: 700;
+}
+
+.ic_edit_order {
+  width: 28px;
+  height: 28px;
+  transition: all 0.2s;
+}
+
+.ic_edit_order:hover {
+  color: tomato;
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
+.ic_edit_order:active {
+  color: #555;
+}
+
+.font-size-top {
+  font-size: 1.4rem;
+}
+
+.check-out-img-general {
+  width: 4rem;
+  height: 6rem;
+}
+
+.check-out-img {
+  width: 100%;
+  height: 65px;
+  border-radius: 5px;
+}
+
+.checkout-badge {
+  top: -10px;
+  right: -10px;
+  background-color: #4c4c4c;
+  width: 25px;
+  border-radius: 50%;
+}
+
+.name-product-order {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.total {
+  font-size: 18px;
+  color: #1c1c1b;
+}
+
+.total-price {
+  font-size: 20px;
+  color: #777777;
+}
+
+.checkout-form-wrapper {
+  background-color: white;
+}
+
+.form-group-note .form-control-note {
+  border-radius: 3px;
+  margin-right: 15px;
+  border: 1px solid #777777;
+  width: 100%;
+  height: 100px;
+  padding: 12px;
+  box-sizing: border-box;
+  text-align: left;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.form-group-note .form-control-note::placeholder {
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.form-group .form-control {
+  border: none;
+  border-radius: 0%;
+  border-bottom: 1px solid black;
+}
+
+.form-group-voucher .form-control-coupon {
+  border-radius: 3px;
+  margin-right: 15px;
+  border: 1px solid #777777;
+  width: 100%;
+  padding: 2px 12px;
+}
+
+.form-group-voucher input:focus, .form-group-note input:focus  {
+  border: 1px solid tomato !important;
+  outline: none;
+}
+
+.form-group-voucher button{
+    width: fit-content;
+    padding: 4px 15px;
+    background-color: #555;
+    color: white;
+    border: 1px solid;
+    font-size: 0.9rem;
+    border-radius: 3px;
+}
+
+.form-group-voucher input::placeholder {
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.form-group-voucher button:hover {
+    background-color: #8b8b8b;
+}
+
+.form-group-voucher button:active {
+    background-color: #555;
+}
+
+.form-control:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: tomato;
+}
+
+.input-note {
+  width: 100%;
+  outline: none;
+}
+
+.input-note:focus {
+  border: 1px solid tomato;
+}
+
+.input-coupon {
+  width: 100%;
+}
+
+.button-go-to-cart {
+  color: #110600;
+}
+
+.price-checkout {
+  float: right;
+}
+
+.form-group .input-group .input-checkout .form-control:focus {
+  box-shadow: none;
+  border: none;
+  border-bottom: 1px solid var(--color-ff4000);
+}
+
+.popup-successful-order {
+  border-radius: 10px;
+}
+
+.info-cod {
+  font-weight: 500;
+}
+
+.button-order {
+  width: fit-content;
+  margin: auto;
+}
+
+.button-order button {
+  padding: 5px 20px;
+  background-color: tomato;
+  border: 1px solid;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.button-go-to-cart button {
+  padding: 3px 15px;
+  background-color: white;
+  border: 1px solid #333;
+  color: #333;
+  font-size: 0.9rem;
+  border-radius: 5px;
+}
+
+.button-go-to-cart button:hover {
+  background-color: #333;
+  border: 1px solid white;
+  color: white;
+}
+
+.button-order button:hover {
+  background-color: rgb(255, 145, 125);
+}
+
+.button-order button:active {
+  background-color: tomato;
+}
+
+.popup-inner {
+  border-radius: 10px;
+}
+
+.form-group .input-checkout-infor:focus {
+  box-shadow: none;
+  outline: none;
+  border-bottom: 1px solid tomato;
+}
+
+.flex-grow-1 .select-checkout-address {
+  cursor: pointer;
+}
+
+.flex-grow-1 .select-checkout-address:focus {
+  box-shadow: none;
+  outline: none;
+  border: 1px solid #538641;
+}
+
+.input-checkout .select-checkout-address:focus {
+  box-shadow: none;
+  outline: none;
+  border: 1px solid #538641;
+}
+
+.total-amount-price {
+  color: rgb(255, 23, 23);
+}

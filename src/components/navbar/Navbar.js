@@ -78,6 +78,7 @@ export const Navbar = ({ setShowLogin }) => {
     setSelectedItem("");
     setAvatarActive(false);
     console.log("Logout successful:");
+    window.location.reload();
   };
 
   const handleMenuItemClick = (item) => {
@@ -143,6 +144,12 @@ export const Navbar = ({ setShowLogin }) => {
           className={`item ${location.pathname === "/contact" ? "active" : ""}`}
         >
           <Link to="/contact">Contact</Link>
+        </li>
+        <li
+          onClick={() => handleMenuItemClick("invoice")}
+          className={`item ${location.pathname === "/invoice" ? "active" : ""}`}
+        >
+          <Link to="/invoice">Order</Link>
         </li>
       </ul>
 
@@ -212,9 +219,8 @@ export const Navbar = ({ setShowLogin }) => {
                       onClick={handleAvatarClick}
                     >
                       <img
-                        src={imgUser}
-                        className="avatar-img"
-                        alt="Avatar"
+                        src={imgUser ? imgUser : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtuphMb4mq-EcVWhMVT8FCkv5dqZGgvn_QiA&s"}
+                        className="avatar-img" alt=""
                       />
                     </div>
                   </Dropdown.Toggle>

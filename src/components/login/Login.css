@@ -75,7 +75,7 @@
   border-radius: 4px;
   color: white;
   background-color: tomato;
-  font-size: 15px;
+  font-size: 0.9rem;
   cursor: pointer;
 }
 
@@ -147,11 +147,16 @@
 }
 
 .button-google {
-  background: linear-gradient(55deg, #4285F4, #34A853); /* Các màu của Google */
+  background: linear-gradient(55deg, #4285F4, #34A853, tomato); /* Các màu của Google */
   color: white;
   border: none;
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 0.9rem;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.button-google:hover {
+  background: linear-gradient(55deg, tomato, #0A9F49, #4285F4); /* Thay đổi màu khi hover */
+  color: #fff; /* Màu chữ vẫn trắng khi hover */
 }

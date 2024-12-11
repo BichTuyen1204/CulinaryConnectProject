@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./FoodDisplay.css";
-import FoodItem from "../food_item/FoodItem";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ProductService from "../../api/ProductService";
+import { FoodItem } from "../food_item/FoodItem";
 
-const FoodDisplay = () => {
+export const FoodDisplay = () => {
   const [products, setProducts] = useState([]);
   const showProduct = async () => {
     try {
@@ -33,4 +33,3 @@ const FoodDisplay = () => {
     </div>
   );
 };
-export default FoodDisplay;

@@ -1,0 +1,70 @@
+.confirmation-container {
+  display: flex;
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  height: 70vh; /* Chiều cao của phần tử cha bằng chiều cao của viewport */
+  background-color: white; /* Màu nền của trang */
+}
+
+.confirmation-box {
+  text-align: center;
+  background-color: #ffffff;
+  padding: 30px 40px;
+  border-radius: 0px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 550px;
+  max-width: 90%;
+}
+
+.info-google {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.checkbox {
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+h2 {
+  font-size: 18px;
+  color: #333;
+  margin: 0;
+}
+
+.confirmation-buttons {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.yes-button,
+.no-button {
+  padding: 5px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 2px;
+  width: 170px;
+}
+
+.yes-button {
+  background-color: #0099ff;
+  color: white;
+}
+
+.no-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.yes-button:hover {
+  background-color: #62c6ff;
+}
+
+.no-button:hover {
+  background-color: #e53935;
+}
