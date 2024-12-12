@@ -25,6 +25,7 @@ export const Order = () => {
   const navigate = useNavigate();
   const [popupBuy, setPopupBuy] = useState(false);
   const [salePercent, setSalePercent] = useState(null);
+  const [popupOrderSuccessful, setPopupOrderSuccessful] = useState(false);
 
   const [orderData, setOrderData] = useState({
     couponId: "",
@@ -32,7 +33,7 @@ export const Order = () => {
     phoneNumber: "",
     receiver: "",
     note: "",
-    paymentMethod: "BANKING",
+    paymentMethod: "",
     product: {},
   });
 
@@ -103,6 +104,14 @@ export const Order = () => {
     } catch (error) {
       console.error("Failed to fetch coupon:", error);
     }
+  };
+
+  const handleProceedToPayment = () => {
+    if (!pay) {
+      alert("Please select a payment method.");
+      return;
+    }
+    setPopupBuy(true);
   };
 
   // Call user info
@@ -178,10 +187,6 @@ export const Order = () => {
   // Order
   const handleSubmitOrder = async (e) => {
     e.preventDefault();
-    // if (!pay) {
-    //   alert("Please select a payment method.");
-    //   return;
-    // }
     setOrderData((prev) => ({
       ...prev,
       couponId: couponId,
@@ -191,8 +196,11 @@ export const Order = () => {
     try {
       const response = await OrderService.createOrder(orderData, jwtToken);
       console.log("Order created successfully:", response);
-      alert("Order created successfully!");
-      navigate("/invoice", { state: { jwtToken } });
+      setPopupBuy(false);
+      setPopupOrderSuccessful(true);
+      setTimeout(() => {
+        navigate("/invoice", { state: { jwtToken } });
+      }, 2000);
     } catch (error) {
       console.error("Error creating order:", error);
       alert("Failed to create order.");
@@ -340,9 +348,10 @@ export const Order = () => {
                       <input
                         class="form-check-input"
                         type="radio"
-                        name="flexRadioDefault"
+                        name="paymentMethod"
                         id="COD"
-                        value={pay}
+                        value="COD"
+                        checked={pay === "COD"}
                         onChange={PayChange}
                       />
                       <label class="form-check-label" for="cod">
@@ -354,9 +363,10 @@ export const Order = () => {
                       <input
                         class="form-check-input"
                         type="radio"
-                        name="flexRadioDefault"
+                        name="paymentMethod"
                         id="BANKING"
-                        value={pay}
+                        value="BANKING"
+                        checked={pay === "BANKING"}
                         onChange={PayChange}
                       />
                       <label class="form-check-label" for="banking">
@@ -496,7 +506,7 @@ export const Order = () => {
               </div>
 
               <div className="col-5 mt-3 button-order">
-                <button type="submit" onClick={() => openModal()}>
+                <button type="submit" onClick={handleProceedToPayment}>
                   Proceed to Payment
                 </button>
               </div>
@@ -519,6 +529,16 @@ export const Order = () => {
                       </button>
                     </div>
                     <IoClose className="popup-close" onClick={cancelBuy} />
+                  </div>
+                </div>
+              )}
+
+              {popupOrderSuccessful && (
+                <div className="popup">
+                  <div className="popup-content">
+                    <h5 className="info-delete" style={{ color: "green" }}>
+                      Your order has been successfully placed
+                    </h5>
                   </div>
                 </div>
               )}

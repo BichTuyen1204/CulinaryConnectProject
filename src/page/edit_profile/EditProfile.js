@@ -261,7 +261,7 @@ export const EditProfile = () => {
 
   //Call infor
   useEffect(() => {
-    if (!username) {
+    if (!jwtToken) {
       navigate("/sign_in");
       return; 
     } else {

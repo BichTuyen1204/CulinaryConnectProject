@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { MdShoppingBasket } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
@@ -26,6 +26,7 @@ export const Navbar = ({ setShowLogin }) => {
   const location = useLocation();
   const [products, setProducts] = useState([]);
   const [imgUser, setImgUser] = useState(null);
+  const navigate = useNavigate();
 
   // Call all product in cart
   const getAllProduct = async () => {
@@ -78,6 +79,7 @@ export const Navbar = ({ setShowLogin }) => {
     setSelectedItem("");
     setAvatarActive(false);
     console.log("Logout successful:");
+    navigate("/")
     window.location.reload();
   };
 
@@ -109,6 +111,10 @@ export const Navbar = ({ setShowLogin }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showMenu]);
+
+  function goToNewPage() {
+    window.location.href = '/cart';
+  }
 
   return (
     <div className="navbar col-12">

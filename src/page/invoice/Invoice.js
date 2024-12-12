@@ -18,7 +18,14 @@ const Invoice = () => {
     { id: "CANCELLED", label: "CANCELLED" },
   ];
 
-  // Gọi API để lấy danh sách đơn hàng
+  const statusMap = {
+    ON_CONFIRM: "ON CONFIRM",
+    ON_PROCESSING: "ON PROCESSING",
+    ON_SHIPPING: "ON SHIPPING",
+    SHIPPED: "SHIPPED",
+    CANCELLED: "CANCELLED",
+  };
+
   const fetchOrders = async (status) => {
     if (!jwtToken) {
       navigate("/sign_in");
@@ -60,13 +67,28 @@ const Invoice = () => {
       {/* Nội dung của tab */}
       <div className="order-content">
         {orders.map((order, index) => (
-          <Link to={`/order_detail/${order.id}`}>
-            <div key={index} className="order-card">
+          <Link to={`/order_detail/${order.id}`} key={index}>
+            <div className="order-card">
               {/* Hiển thị thông tin đơn hàng */}
-              <div className="order-summary">
-                <p>
-                  <strong>Date:</strong> {new Date(order.date).toLocaleString()}
-                </p>
+              <div className="col-12 d-flex px-4">
+                <div className="order-summary col-10">
+                  <p className="d-flex">
+                    <strong>Date :</strong>
+                    <p className="mx-1">
+                    {new Date(order.date).toLocaleString()}
+                    </p>
+                  </p>
+                </div>
+                <div className="col-2">
+                  <p className="d-flex">
+                    <strong>Status : </strong>
+                    <p className="mx-1">
+                      <strong style={{ color: "red" }}>
+                        {statusMap[order.status] || "Unknown Status"}
+                      </strong>
+                    </p>
+                  </p>
+                </div>
               </div>
 
               {/* Hiển thị các sản phẩm trong đơn hàng */}

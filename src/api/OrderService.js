@@ -78,10 +78,35 @@ class OrderService {
     }
   }
 
-  async getOrderDetail(id){
+  async getOrderDetail(id) {
     try {
+      const jwtToken = sessionStorage.getItem("jwtToken");
       const response = await axios.get(
-        `${API_BASE_URL_2}/fetch/detail/${id}`);
+        `${API_BASE_URL}/fetch/detail?id=${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error during API call:", error.response || error.message);
+      throw error;
+    }
+  }
+
+  async deleteOrderDetail(id) {
+    try {
+      const jwtToken = sessionStorage.getItem("jwtToken");
+      const response = await axios.delete(`${API_BASE_URL}/cancel?id=${id}`, {
+        params: { id },
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+          "Content-Type": "application/json",
+        },
+      });
       return response.data;
     } catch (error) {
       console.error("Error during API call:", error.response || error.message);

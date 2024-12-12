@@ -34,7 +34,7 @@ export const Profile = () => {
         } catch (error) {
           console.error("Error fetching account information:", error);
           sessionStorage.removeItem("jwtToken");
-          navigate("/login");
+          navigate("/sign_in");
         }
       };
       getAccount();
