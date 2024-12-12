@@ -38,8 +38,13 @@
   top: -10px;
   right: -10px;
   background-color: #4c4c4c;
-  width: 25px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
+}
+
+.text-quantity {
+  margin-top: 2px;
 }
 
 .name-product-order {

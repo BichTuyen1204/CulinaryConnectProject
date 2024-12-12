@@ -8,6 +8,13 @@ const Invoice = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [currentTab, setCurrentTab] = useState("ALL");
+  useEffect(() => {
+    // Kiểm tra nếu trang chưa được load lại
+    if (!sessionStorage.getItem("cartPageReloaded")) {
+      sessionStorage.setItem("cartPageReloaded", "true");
+      window.location.reload();
+    }
+  }, []);
 
   const tabs = [
     { id: "ALL", label: "ALL" },
@@ -75,11 +82,11 @@ const Invoice = () => {
                   <p className="d-flex">
                     <strong>Date :</strong>
                     <p className="mx-1">
-                    {new Date(order.date).toLocaleString()}
+                      {new Date(order.date).toLocaleString()}
                     </p>
                   </p>
                 </div>
-                <div className="col-2">
+                <div className="col-3">
                   <p className="d-flex">
                     <strong>Status : </strong>
                     <p className="mx-1">

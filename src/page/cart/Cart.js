@@ -12,11 +12,21 @@ const Cart = () => {
   const [popupDelete, setPopupDelete] = useState(false);
   const [productIdToDelete, setProductIdToDelete] = useState(null);
 
+  useEffect(() => {
+    if (!sessionStorage.getItem("cartPageReloaded")) {
+      sessionStorage.setItem("cartPageReloaded", "true");
+      window.location.reload();
+    }
+  }, []);
+
   // Increase
   const increaseQuantity = (id) => {
     setItems((prevItems) =>
       prevItems.map((item) => {
         if (item.product.id === id) {
+          if (item.amount >= item.product.availableQuantity) {
+            return item;
+          }
           const newAmount = item.amount + 1;
           updateProduct(id, newAmount);
           return { ...item, amount: newAmount };
@@ -79,6 +89,8 @@ const Cart = () => {
   // Check input quantity
   const handleBlur = (id, e) => {
     const value = e.target.value;
+    const maxQuantity = items.find((item) => item.product.id === id).product
+      .availableQuantity;
     if (value === "") {
       setItems((prevItems) =>
         prevItems.map((item) =>
@@ -86,6 +98,14 @@ const Cart = () => {
         )
       );
       updateProduct(id, 1);
+    } else if (parseInt(value, 10) > maxQuantity) {
+      // Nếu vượt quá số lượng tồn kho, đặt lại về số lượng tối đa
+      setItems((prevItems) =>
+        prevItems.map((item) =>
+          item.product.id === id ? { ...item, amount: maxQuantity } : item
+        )
+      );
+      updateProduct(id, maxQuantity);
     }
   };
 
@@ -140,16 +160,17 @@ const Cart = () => {
     let total = 0;
     let quantity = 0;
     items.forEach((item) => {
-      const price = item.product.salePercent > 0
-        ? item.product.price - (item.product.price * item.product.salePercent) / 100
-        : item.product.price;
+      const price =
+        item.product.salePercent > 0
+          ? item.product.price -
+            (item.product.price * item.product.salePercent) / 100
+          : item.product.price;
       total += price * item.amount;
       quantity += item.amount;
     });
     setTotalPrice(total.toFixed(2));
     setTotalQuantity(quantity);
   };
-  
 
   useEffect(() => {
     const initializedItems = products.map((product) => ({
@@ -233,7 +254,12 @@ const Cart = () => {
                 <p className="mb-4">
                   $
                   {item.product.salePercent > 0
-                    ? ((item.product.price - (item.product.price * item.product.salePercent) / 100) * item.amount).toFixed(2)
+                    ? (
+                        (item.product.price -
+                          (item.product.price * item.product.salePercent) /
+                            100) *
+                        item.amount
+                      ).toFixed(2)
                     : (item.product.price * item.amount).toFixed(2)}
                 </p>
                 <p className="ic_close">

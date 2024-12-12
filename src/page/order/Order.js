@@ -87,24 +87,29 @@ export const Order = () => {
   };
 
   //Call coupon
-  const getCoupon = async () => {
-    try {
-      if (!couponId) {
-        setError("Please enter a coupon ID.");
-        return;
-      }
-      setError("");
-      const response = await OrderService.getCoupon(couponId);
-      if (response) {
-        const discountAmount = (totalPrice * response.salePercent) / 100;
-        setCoupon(discountAmount);
-        setSalePercent(response.salePercent);
-      } else {
-      }
-    } catch (error) {
-      console.error("Failed to fetch coupon:", error);
+  // Call coupon
+const getCoupon = async () => {
+  try {
+    if (!couponId) {
+      setError("Please enter a coupon ID.");
+      return;
     }
-  };
+    setError("");
+    const response = await OrderService.getCoupon(couponId);
+    if (response) {
+      const discountAmount = (totalPrice * response.salePercent) / 100;
+      setCoupon(discountAmount);
+      setSalePercent(response.salePercent);
+    } else {
+      setError("Coupon ID does not exist or is invalid.");
+      return;
+    }
+  } catch (error) {
+    console.error("Failed to fetch coupon:", error);
+    setError("An error occurred while applying the coupon.");
+  }
+};
+
 
   const handleProceedToPayment = () => {
     if (!pay) {
@@ -332,7 +337,7 @@ export const Order = () => {
                       </div>
                     )}
                     {error && (
-                      <div className="error-message mt-3">
+                      <div className="error-message mt-3" style={{color: "red"}}>
                         <strong>{error}</strong>
                       </div>
                     )}
@@ -404,8 +409,8 @@ export const Order = () => {
                   <div className="d-flex gap-10 align-items-center mb-2">
                     <div className="d-flex gap-10 col-9">
                       <div className="position-relative col-2">
-                        <span className="checkout-badge badge text-white p-2 position-absolute">
-                          {item.amount}
+                        <span className="checkout-badge text-center badge text-white p-2 position-absolute">
+                          <p className="text-quantity text-center">{item.amount}</p>
                         </span>
                         <div className="col-12">
                           <img

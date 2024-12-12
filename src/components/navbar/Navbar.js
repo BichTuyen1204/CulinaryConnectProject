@@ -38,8 +38,7 @@ export const Navbar = ({ setShowLogin }) => {
         console.error("Invalid response format:", response);
         setProducts([]);
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -60,8 +59,7 @@ export const Navbar = ({ setShowLogin }) => {
           setUserName(response.username);
           setAccountRole(response.role);
           setImgUser(response.profilePictureUri);
-        } catch (error) {
-        }
+        } catch (error) {}
       } else {
         setUserName("");
         setAccountRole("");
@@ -79,7 +77,7 @@ export const Navbar = ({ setShowLogin }) => {
     setSelectedItem("");
     setAvatarActive(false);
     console.log("Logout successful:");
-    navigate("/")
+    navigate("/");
     window.location.reload();
   };
 
@@ -111,10 +109,6 @@ export const Navbar = ({ setShowLogin }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showMenu]);
-
-  function goToNewPage() {
-    window.location.href = '/cart';
-  }
 
   return (
     <div className="navbar col-12">
@@ -151,12 +145,16 @@ export const Navbar = ({ setShowLogin }) => {
         >
           <Link to="/contact">Contact</Link>
         </li>
-        <li
-          onClick={() => handleMenuItemClick("invoice")}
-          className={`item ${location.pathname === "/invoice" ? "active" : ""}`}
-        >
-          <Link to="/invoice">Order</Link>
-        </li>
+        {jwtToken ? (
+          <li
+            onClick={() => handleMenuItemClick("invoice")}
+            className={`item ${
+              location.pathname === "/invoice" ? "active" : ""
+            }`}
+          >
+            <Link to="/invoice">Order</Link>
+          </li>
+        ) : null}
       </ul>
 
       <div className="navbar-right col-5">
@@ -225,8 +223,13 @@ export const Navbar = ({ setShowLogin }) => {
                       onClick={handleAvatarClick}
                     >
                       <img
-                        src={imgUser ? imgUser : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtuphMb4mq-EcVWhMVT8FCkv5dqZGgvn_QiA&s"}
-                        className="avatar-img" alt=""
+                        src={
+                          imgUser
+                            ? imgUser
+                            : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtuphMb4mq-EcVWhMVT8FCkv5dqZGgvn_QiA&s"
+                        }
+                        className="avatar-img"
+                        alt=""
                       />
                     </div>
                   </Dropdown.Toggle>

@@ -41,6 +41,7 @@ function Breadcrumb() {
     cart: "Cart",
     contact: "Contact",
     order: "Order",
+    invoice: "Order"
   };
 
   return (
