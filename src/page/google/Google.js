@@ -64,9 +64,9 @@ const Google = () => {
   return (
     <div>
       {token ? (
-        <div className="confirmation-container mt-5">
+        <div class="confirmation-container">
           <div className="confirmation-box">
-            <h3 className="mb-4">Is this your email?</h3>
+            <h3 className="mb-4">Are you sure you want to select this email?</h3>
             <div className="info-google d-flex text-center">
               <input
                 type="checkbox"
@@ -90,7 +90,7 @@ const Google = () => {
               </button>
             </div>
           </div>
-        </div>
+          </div>
       ) : (
         <p className="mt-5 text-center">Could not find the email you registered with.</p>
       )}

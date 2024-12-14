@@ -21,6 +21,7 @@ export const Profile = () => {
   useEffect(() => {
     if (!jwtToken) {
       navigate("/sign_in");
+      return;
     } else {
       const getAccount = async () => {
         try {

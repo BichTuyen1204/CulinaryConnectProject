@@ -109,7 +109,7 @@ const OrderDetail = () => {
   };
 
   return (
-    <div className="order-detail">
+    <div className="order-detail mt-5">
       <Link to="/invoice">
         <IoArrowBackSharp />
       </Link>

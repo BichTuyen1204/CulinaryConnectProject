@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../cart/Cart.css";
 import { IoClose } from "react-icons/io5";
 import CartService from "../../api/CartService";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { CartContext } from "../../components/context/Context";
 
 const Cart = () => {
   const [totalPrice, setTotalPrice] = useState(0);
@@ -11,43 +12,66 @@ const Cart = () => {
   const [items, setItems] = useState([]);
   const [popupDelete, setPopupDelete] = useState(false);
   const [productIdToDelete, setProductIdToDelete] = useState(null);
+  const { cartItems, removeFromCart, updateCart } = useContext(CartContext);
 
   useEffect(() => {
-    if (!sessionStorage.getItem("cartPageReloaded")) {
-      sessionStorage.setItem("cartPageReloaded", "true");
-      window.location.reload();
-    }
-  }, []);
+    let total = 0;
+    let quantity = 0;
+    cartItems.forEach((item) => {
+      const price =
+        item.product.salePercent > 0
+          ? item.product.price - (item.product.price * item.product.salePercent) / 100
+          : item.product.price;
+      total += price * item.amount;
+      quantity += item.amount;
+    });
+    setTotalPrice(total.toFixed(2));
+    setTotalQuantity(quantity);
+  }, [cartItems]);
 
   // Increase
+  // const increaseQuantity = (id) => {
+  //   setItems((prevItems) =>
+  //     prevItems.map((item) => {
+  //       if (item.product.id === id) {
+  //         if (item.amount >= item.product.availableQuantity) {
+  //           return item;
+  //         }
+  //         const newAmount = item.amount + 1;
+  //         updateProduct(id, newAmount);
+  //         return { ...item, amount: newAmount };
+  //       }
+  //       return item;
+  //     })
+  //   );
+  // };
+
   const increaseQuantity = (id) => {
-    setItems((prevItems) =>
-      prevItems.map((item) => {
-        if (item.product.id === id) {
-          if (item.amount >= item.product.availableQuantity) {
-            return item;
-          }
-          const newAmount = item.amount + 1;
-          updateProduct(id, newAmount);
-          return { ...item, amount: newAmount };
-        }
-        return item;
-      })
-    );
+    const item = cartItems.find(item => item.product.id === id);
+    if (item.amount < item.product.availableQuantity) {
+      updateCart(id, item.amount + 1);
+    }
   };
 
   // Decrease
+  // const decreaseQuantity = (id) => {
+  //   setItems((prevItems) =>
+  //     prevItems.map((item) => {
+  //       if (item.product.id === id && item.amount > 1) {
+  //         const newAmount = item.amount - 1;
+  //         updateProduct(id, newAmount);
+  //         return { ...item, amount: newAmount };
+  //       }
+  //       return item;
+  //     })
+  //   );
+  // };
+
   const decreaseQuantity = (id) => {
-    setItems((prevItems) =>
-      prevItems.map((item) => {
-        if (item.product.id === id && item.amount > 1) {
-          const newAmount = item.amount - 1;
-          updateProduct(id, newAmount);
-          return { ...item, amount: newAmount };
-        }
-        return item;
-      })
-    );
+    const item = cartItems.find(item => item.product.id === id);
+    if (item.amount > 1) {
+      updateCart(id, item.amount - 1);
+    }
   };
 
   // Open popup delete
@@ -63,26 +87,36 @@ const Cart = () => {
   };
 
   // Change input
+  // const handleQuantityChange = (id, e) => {
+  //   let value = e.target.value;
+  //   value = value.replace(/[^0-9]/g, "");
+  //   if (value.length < 1 && value[0] === "0") {
+  //     value = value.slice(1);
+  //   }
+  //   if (value === "") {
+  //     setItems((prevItems) =>
+  //       prevItems.map((item) =>
+  //         item.product.id === id ? { ...item, amount: "" } : item
+  //       )
+  //     );
+  //   } else {
+  //     const newAmount = parseInt(value, 10);
+  //     setItems((prevItems) =>
+  //       prevItems.map((item) =>
+  //         item.product.id === id ? { ...item, amount: newAmount } : item
+  //       )
+  //     );
+  //     updateProduct(id, newAmount);
+  //   }
+  // };
+
   const handleQuantityChange = (id, e) => {
-    let value = e.target.value;
-    value = value.replace(/[^0-9]/g, "");
-    if (value.length < 1 && value[0] === "0") {
-      value = value.slice(1);
-    }
+    let value = e.target.value.replace(/[^0-9]/g, "");
     if (value === "") {
-      setItems((prevItems) =>
-        prevItems.map((item) =>
-          item.product.id === id ? { ...item, amount: "" } : item
-        )
-      );
+      updateCart(id, 1);
     } else {
-      const newAmount = parseInt(value, 10);
-      setItems((prevItems) =>
-        prevItems.map((item) =>
-          item.product.id === id ? { ...item, amount: newAmount } : item
-        )
-      );
-      updateProduct(id, newAmount);
+      const newAmount = Math.min(parseInt(value, 10), cartItems.find(item => item.product.id === id).product.availableQuantity);
+      updateCart(id, newAmount);
     }
   };
 
@@ -99,7 +133,6 @@ const Cart = () => {
       );
       updateProduct(id, 1);
     } else if (parseInt(value, 10) > maxQuantity) {
-      // Nếu vượt quá số lượng tồn kho, đặt lại về số lượng tối đa
       setItems((prevItems) =>
         prevItems.map((item) =>
           item.product.id === id ? { ...item, amount: maxQuantity } : item
@@ -131,18 +164,10 @@ const Cart = () => {
 
   // Delete product
   const deleteProduct = async () => {
-    try {
-      const response = await CartService.deleteCart(productIdToDelete);
+    if (productIdToDelete) {
+      removeFromCart(productIdToDelete);
       setProductIdToDelete(null);
       setPopupDelete(false);
-      if (response === true) {
-        getAllProduct();
-        console.log("Delete successful", response);
-      } else {
-        console.error("Error deleting product:", response);
-      }
-    } catch (error) {
-      console.error("Failed to delete product:", error);
     }
   };
 
@@ -196,9 +221,9 @@ const Cart = () => {
           <p>Remove</p>
         </div>
         <hr className="mt-2" />
-        {Array.isArray(products) && products.length > 0 ? (
-          items.map((item, index) => (
-            <div key={index}>
+        {cartItems.length > 0 ? (
+          cartItems.map((item) => (
+            <div key={item.product.id}>
               <div className="cart-items-titile cart-items-item">
                 <div className="mb-3">
                   <Link to={`/food_detail/${item.product.id}`}>

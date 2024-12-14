@@ -263,7 +263,7 @@ export const EditProfile = () => {
   useEffect(() => {
     if (!jwtToken) {
       navigate("/sign_in");
-      return; 
+      return;
     } else {
       const getAccount = async () => {
         try {

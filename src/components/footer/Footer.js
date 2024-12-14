@@ -46,8 +46,8 @@ const Footer = () => {
           <h2>
             <strong>Contact</strong>
           </h2>
-          <div class="address-links">
-            <li class="address1">
+          <div className="address-links">
+            <li className="address1">
               <FaBuilding className="address" />
               14 Nguyen Van Cu, An Khanh, Ninh Kieu, Can Tho
             </li>

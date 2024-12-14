@@ -205,9 +205,11 @@ const getCoupon = async () => {
       setPopupOrderSuccessful(true);
       setTimeout(() => {
         navigate("/invoice", { state: { jwtToken } });
+        window.location.reload();
       }, 2000);
     } catch (error) {
       console.error("Error creating order:", error);
+      console.log("Order created successfully:", error.response);
       alert("Failed to create order.");
     }
   };
@@ -333,7 +335,7 @@ const getCoupon = async () => {
                     {/* Hiển thị thông tin coupon hoặc lỗi */}
                     {salePercent && (
                       <div className="coupon-info mt-3">
-                        <strong>{salePercent}%</strong>
+                        <strong>Sale: {salePercent}%</strong>
                       </div>
                     )}
                     {error && (

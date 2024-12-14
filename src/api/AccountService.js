@@ -33,16 +33,18 @@ class AccountService {
   }
 
   async account(jwtToken) {
-    try {
-      const response = await axios.get(
-        `${API_BASE_URL}/account`,
-        {
+    if (!jwtToken || jwtToken.trim() === "") {
+      return null;
+    } else {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/account`, {
           headers: { Authorization: `Bearer ${jwtToken}` },
-        },
-        jwtToken
-      );
-      return response.data;
-    } catch (error) {
+        });
+        return response.data;
+      } catch (error) {
+        console.error("Error in setting up the request:", error.message);
+        return null;
+      }
     }
   }
 

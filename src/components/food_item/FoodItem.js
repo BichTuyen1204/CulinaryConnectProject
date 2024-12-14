@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./FoodItem.css";
 import { Link, useNavigate } from "react-router-dom";
 import CartService from "../../api/CartService";
 import AccountService from "../../api/AccountService";
+import { CartContext } from "../context/Context";
 
 export const FoodItem = ({ product }) => {
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
@@ -10,6 +11,7 @@ export const FoodItem = ({ product }) => {
   const [accountRole, setAccountRole] = useState("");
   const [popupAdd, setPopupAdd] = useState(false);
   const navigate = useNavigate();
+  const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
     const getAccount = async () => {
@@ -27,20 +29,32 @@ export const FoodItem = ({ product }) => {
     getAccount();
   }, [jwtToken]);
 
-  const addToCart = async () => {
-    try {
-      const response = await CartService.addToCart(
-        product.id,
-        (product.quantity = 1)
-      );
+  // const addToCart = async () => {
+  //   try {
+  //     const response = await CartService.addToCart(
+  //       product.id,
+  //       (product.quantity = 1)
+  //     );
+  //     setPopupAdd(true);
+  //     setTimeout(() => {
+  //       setPopupAdd(false);
+  //     }, 1000);
+  //     console.log("product in cart", response);
+  //     return response;
+  //   } catch (error) {
+  //     console.error("Error adding product to cart:", error);
+  //   }
+  // };
+
+  const handleAddToCart = async () => {
+    if (username) {
+      await addToCart(product);
       setPopupAdd(true);
       setTimeout(() => {
         setPopupAdd(false);
       }, 1000);
-      console.log("product in cart", response);
-      return response;
-    } catch (error) {
-      console.error("Error adding product to cart:", error);
+    } else {
+      navigate("/sign_in");
     }
   };
   return (
@@ -88,15 +102,11 @@ export const FoodItem = ({ product }) => {
 
               {product.availableQuantity > 0 ? (
                 <p className="food-item-quantity mt-2">
-                  <strong className="link">
-                    Quantity: In stock
-                  </strong>{" "}
+                  <strong className="link">Quantity: In stock</strong>
                 </p>
               ) : product.availableQuantity === 0 ? (
                 <p className="food-item-quantity mt-2">
-                  <strong className="link">
-                    Quantity: Out stock
-                  </strong>{" "}
+                  <strong className="link">Quantity: Out of stock</strong>
                 </p>
               ) : null}
 
@@ -148,7 +158,11 @@ export const FoodItem = ({ product }) => {
 
       {username ? (
         <div className="button-in-item">
-          <button className="button-addtocart" onClick={addToCart}>
+          <button
+            className="button-addtocart"
+            onClick={handleAddToCart}
+            disabled={product.availableQuantity === 0}
+          >
             Add to cart
           </button>
           <button className="button-buynow">Buy now</button>

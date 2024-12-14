@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { MdShoppingBasket } from "react-icons/md";
@@ -12,6 +12,7 @@ import { Dropdown } from "react-bootstrap";
 import { TbLogout } from "react-icons/tb";
 import { CgProfile } from "react-icons/cg";
 import CartService from "../../api/CartService";
+import { CartContext } from "../context/Context";
 
 export const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("home");
@@ -27,6 +28,7 @@ export const Navbar = ({ setShowLogin }) => {
   const [products, setProducts] = useState([]);
   const [imgUser, setImgUser] = useState(null);
   const navigate = useNavigate();
+  const { cartCount } = useContext(CartContext);
 
   // Call all product in cart
   const getAllProduct = async () => {
@@ -45,7 +47,7 @@ export const Navbar = ({ setShowLogin }) => {
     getAllProduct();
   }, []);
 
-  const totalProduct = products.length;
+  // const totalProduct = products.length;
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -184,7 +186,7 @@ export const Navbar = ({ setShowLogin }) => {
                     }`}
                   />
                 </Link>
-                <div className="dot text-center">{totalProduct}</div>
+                {cartCount > 0 && <div className="dot text-center">{cartCount}</div>}
               </div>
             ) : (
               <div></div>

@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Breadcrumb.css";
+
 function Breadcrumb() {
   const location = useLocation();
   const pathname = location.pathname;
@@ -9,28 +10,23 @@ function Breadcrumb() {
   // Tách đường dẫn thành các phần
   const pathnames = pathname.split("/").filter((x) => x);
 
-  if (pathname === "/") {
+  // Điều kiện để không hiển thị breadcrumb cho các trang cụ thể
+  const hiddenPaths = [
+    "/",
+    "/profile",
+    "/edit_profile",
+    "/sign_in",
+    "/register",
+    "/token",
+    "/food_detail",
+    "/food_detail/:id",
+    "/order_detail/:id"
+  ];
+
+  if (hiddenPaths.includes(pathname) || pathname.includes("food_detail")) {
     return null;
   }
-  if (pathname === "/profile") {
-    return null;
-  }
-  if (pathname === "/edit_profile") {
-    return null;
-  }
-  if (pathname === "/sign_in") {
-    return null;
-  }
-  if (pathname === "/regiter") {
-    return null;
-  }
-  if (pathname === "/token") {
-    return null;
-  }
-  if (pathname === "/food_detail/:id") {
-    return null;
-  }
-  if (pathname === "/food_detail") {
+  if (hiddenPaths.includes(pathname) || pathname.includes("order_detail")) {
     return null;
   }
 
@@ -41,7 +37,7 @@ function Breadcrumb() {
     cart: "Cart",
     contact: "Contact",
     order: "Order",
-    invoice: "Order"
+    invoice: "Invoice"
   };
 
   return (
@@ -53,7 +49,8 @@ function Breadcrumb() {
         {pathnames.map((name, index) => {
           const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
           const isLast = index === pathnames.length - 1;
-          let displayName = routeNameMap[name];
+          let displayName = routeNameMap[name] || name; // Nếu không có tên hiển thị trong map, sử dụng tên mặc định
+
           return isLast ? (
             <li
               key={index}
@@ -72,4 +69,5 @@ function Breadcrumb() {
     </nav>
   );
 }
+
 export default Breadcrumb;
