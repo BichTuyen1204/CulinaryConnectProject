@@ -30,5 +30,20 @@ class ProductService {
       throw error;
     }
   }
+
+  async getProductsByCategory(category) {
+   
+    try {
+      const response = await axios.get(`${API_BASE_URL_2}/product/category/${category}`);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Error during API calls: ",
+        error.response ? error.response.data : error.message
+      );
+      throw error;
+    }
+  }
+
 }
 export default new ProductService();

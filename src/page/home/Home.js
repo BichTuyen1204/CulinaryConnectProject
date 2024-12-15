@@ -4,6 +4,8 @@ import '../home/Home.css';
 import Header from "../../components/header/Header";
 import ExploreMenu from "../../components/menu/ExploreMenu";
 import { FoodDisplay } from "../../components/food_display/FoodDisplay";
+import MenuPage from "../../components/parent/FoodDisplayAndCategory";
+
 
 export const Home = () => {
     const [category, setCategory] = useState("All");
@@ -31,8 +33,7 @@ export const Home = () => {
     return (
         <div>
             <Header />
-            <ExploreMenu category={category} setCategory={setCategory} />
-            <FoodDisplay />
+            <MenuPage />
         </div>
     );
 };

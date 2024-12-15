@@ -1,28 +1,24 @@
-import menu_1 from './ca_dieu_hong.png';
-import menu_2 from './Chicken.png';
-import menu_3 from './Beef.png';
-import menu_4 from './Pork.png';
+import menu_mealkit from './meals_icon.png';
+import menu_meat from './meat_icon.png';
+import menu_seasoning from './seasoning_icon.png';
+import menu_vegetable from './vegetable_icon.png';
 import menu_5 from './shrimp.png';
 
 export const menu_list = [
     {
-        menu_name: "Fish",
-        menu_img: menu_1
+        menu_name: "Meal Kit",
+        menu_img: menu_mealkit
     },
     {
-        menu_name: "Chicken",
-        menu_img: menu_2
+        menu_name: "Vegetable",
+        menu_img: menu_vegetable
     },
     {
-        menu_name: "Beef",
-        menu_img: menu_3
+        menu_name: "Meat",
+        menu_img: menu_meat
     },
     {
-        menu_name: "Pork",
-        menu_img: menu_4
-    },
-    {
-        menu_name: "Shrimp",
-        menu_img: menu_5
+        menu_name: "Season",
+        menu_img: menu_seasoning
     }
 ]
