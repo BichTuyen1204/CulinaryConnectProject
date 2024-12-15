@@ -54,7 +54,7 @@ export const Food_card = () => {
   const applyFilters = (data) => {
     let filtered = data;
 
-    // Apply search query filtering
+    // If search query is empty, reset the filtered list to all products
     if (searchQuery.trim()) {
       filtered = filtered.filter((product) =>
         product.productName.toLowerCase().includes(searchQuery.toLowerCase())
