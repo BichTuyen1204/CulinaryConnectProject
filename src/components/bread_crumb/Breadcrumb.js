@@ -37,7 +37,8 @@ function Breadcrumb() {
     cart: "Cart",
     contact: "Contact",
     order: "Order",
-    invoice: "Invoice"
+    invoice: "Invoice",
+    blog: "Blog"
   };
 
   return (

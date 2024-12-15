@@ -24,6 +24,7 @@ import OrderConfirmation from "./page/order_confirm/OrderConfirmation";
 import Google from "./page/google/Google";
 import OrderDetail from "./page/order_detail/OrderDetail";
 import { CartProvider } from "./components/context/Context";
+import Blog from "./page/blog/Blog";
 
 const AppContent = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -71,6 +72,7 @@ const AppContent = () => {
             <Route path="invoice" element={<Invoice />} />
             <Route path="order_confirm/:id" element={<OrderConfirmation />} />
             <Route path="order_detail/:id" element={<OrderDetail />} />
+            <Route path="blog" element={<Blog />} />
           </Routes>
           {showLogin && (
             <Login

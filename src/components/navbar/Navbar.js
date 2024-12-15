@@ -151,6 +151,17 @@ export const Navbar = ({ setShowLogin }) => {
           <li
             onClick={() => handleMenuItemClick("invoice")}
             className={`item ${
+              location.pathname === "/blog" ? "active" : ""
+            }`}
+          > <Link to="/blog">Blog</Link></li>
+        ) : (
+          null
+        )}
+
+        {jwtToken ? (
+          <li
+            onClick={() => handleMenuItemClick("invoice")}
+            className={`item ${
               location.pathname === "/invoice" ? "active" : ""
             }`}
           >
@@ -186,7 +197,9 @@ export const Navbar = ({ setShowLogin }) => {
                     }`}
                   />
                 </Link>
-                {cartCount > 0 && <div className="dot text-center">{cartCount}</div>}
+                {cartCount > 0 && (
+                  <div className="dot text-center">{cartCount}</div>
+                )}
               </div>
             ) : (
               <div></div>
