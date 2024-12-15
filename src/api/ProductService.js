@@ -45,5 +45,19 @@ class ProductService {
     }
   }
 
+  
+  async getProductsBySearch(keyword) {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/public/search/product?keyword=${keyword}`);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Error during API calls: ",
+        error.response ? error.response.data : error.message
+      );
+      throw error;
+    }
+  }
+  
 }
 export default new ProductService();
