@@ -60,44 +60,46 @@ const Blog = () => {
         <div className="logo">CULINARY CONNECT</div>
         <input
           type="text"
-          placeholder="Tìm kiếm..."
+          placeholder="Search..."
           className="search-bar"
           value={searchTerm}
           onChange={handleSearch}
         />
         <div className="saved-items">
-          <span>Món ăn đã lưu: {savedItems.length}</span>
+          <span>Saved Dishes: {savedItems.length}</span>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="main-content">
-        {/* Danh Sách Blog */}
-        <div className="blog-list">
-          {filteredPosts.map((post) => (
-            <div key={post.id} className="blog-post">
-              <img src={post.image} alt={post.title} className="post-image" />
-              <div className="post-content">
-                <h2>{post.title}</h2>
-                <p>{post.description}</p>
-                <button onClick={() => handleSave(post)}>Lưu Món Ăn</button>
+      <div className="container-bg col-12 mt-3">
+        <main className="main-content col-12">
+          {/* Danh Sách Blog */}
+          <div className="blog-list col-12">
+            {filteredPosts.map((post) => (
+              <div key={post.id} className="blog-post">
+                <img src={post.image} alt={post.title} className="post-image" />
+                <div className="post-content">
+                  <h2>{post.title}</h2>
+                  <p>{post.description}</p>
+                  <button className="button-save-dish" onClick={() => handleSave(post)}>Save Dish</button>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Phần Bài Viết Liên Quan */}
-        <div className="related-posts">
-          <h3>Bài viết liên quan</h3>
-          <ul>
-            {relatedPosts.map((post) => (
-              <li key={post.id}>
-                <a href={`#post-${post.id}`}>{post.title}</a>
-              </li>
             ))}
-          </ul>
-        </div>
-      </main>
+          </div>
+
+          {/* Phần Bài Viết Liên Quan */}
+          <div className="related-posts">
+            <h3>Bài viết liên quan</h3>
+            <ul>
+              {relatedPosts.map((post) => (
+                <li key={post.id}>
+                  <a href={`#post-${post.id}`}>{post.title}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </main>
+      </div>
     </div>
   );
 };

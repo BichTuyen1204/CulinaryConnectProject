@@ -32,7 +32,6 @@ class ProductService {
   }
 
   async getProductsByCategory(category) {
-   
     try {
       const response = await axios.get(`${API_BASE_URL_2}/product/category/${category}`);
       return response.data;
