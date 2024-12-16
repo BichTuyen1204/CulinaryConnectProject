@@ -47,15 +47,16 @@ export const Navbar = ({ setShowLogin }) => {
   }, []);
 
   const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
+    setSearchQuery(e.target.value); 
   };
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
+  
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      navigate(`/food_card`);
+    } else {
       navigate(`/food_card?search=${encodeURIComponent(searchQuery)}`);
     }
-  };
+  }, [searchQuery, navigate]);
 
   useEffect(() => {
     const getAccount = async () => {
@@ -165,19 +166,16 @@ export const Navbar = ({ setShowLogin }) => {
       </ul>
 
       <div className="navbar-right col-5">
-        <div className="search-container col-7">
-          <form className="col-12" onSubmit={handleSearchSubmit}>
-            <CiSearch className="ic_search" />
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={handleSearchChange}
-              className="search-input"
-            />
-            <button type="submit" style={{ display: "none" }} />
-          </form>
-        </div>
+      <div className="search-container col-7">
+        <CiSearch className="ic_search" />
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={handleSearchChange} // Update search query on input change
+          className="search-input"
+        />
+      </div>
 
         <nav>
           <>
