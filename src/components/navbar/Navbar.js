@@ -45,16 +45,14 @@ export const Navbar = ({ setShowLogin }) => {
   useEffect(() => {
     getAllProduct();
   }, []);
-  // const totalProduct = products.length;
+
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
-  // Handle search form submission to navigate to food_card page
   const handleSearchSubmit = (e) => {
-    e.preventDefault(); // Prevent form from reloading the page
+    e.preventDefault();
     if (searchQuery.trim()) {
-      // Navigate to food_card page with the search query as a parameter
       navigate(`/food_card?search=${encodeURIComponent(searchQuery)}`);
     }
   };
@@ -153,11 +151,22 @@ export const Navbar = ({ setShowLogin }) => {
             <Link to="/invoice">Order</Link>
           </li>
         ) : null}
+
+        {jwtToken ? (
+          <li
+            onClick={() => handleMenuItemClick("blog")}
+            className={`item ${
+              location.pathname === "/blog" ? "active" : ""
+            }`}
+          >
+            <Link to="/blog">Blog</Link>
+          </li>
+        ) : null}
       </ul>
 
       <div className="navbar-right col-5">
         <div className="search-container col-7">
-          <form onSubmit={handleSearchSubmit}>
+          <form className="col-12" onSubmit={handleSearchSubmit}>
             <CiSearch className="ic_search" />
             <input
               type="text"

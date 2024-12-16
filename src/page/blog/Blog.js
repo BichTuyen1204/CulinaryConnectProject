@@ -1,57 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../blog/Blog.css";
-const Blog = () => {
-  const initialPosts = [
-    {
-      id: 1,
-      title: "Món Phở Truyền Thống",
-      description:
-        "Một trong những món ăn nổi tiếng nhất của Việt Nam với nước dùng thơm ngon và sợi phở mềm mại.",
-      image: "https://via.placeholder.com/200x150?text=Phở",
-    },
-    {
-      id: 2,
-      title: "Bún Chả Hà Nội",
-      description:
-        "Món ăn đặc sản của thủ đô Hà Nội với thịt nướng thơm lừng và bún tươi.",
-      image: "https://via.placeholder.com/200x150?text=Bún+Chả",
-    },
-    {
-      id: 3,
-      title: "Gỏi Cuốn Tươi",
-      description:
-        "Món gỏi cuốn thanh mát với tôm, thịt, rau sống và nước chấm đặc biệt.",
-      image: "https://via.placeholder.com/200x150?text=Gỏi+Cuốn",
-    },
-    {
-      id: 4,
-      title: "Cà Phê Sữa Đá",
-      description:
-        "Thức uống phổ biến của người Việt với hương vị đậm đà và ngọt ngào.",
-      image: "https://via.placeholder.com/200x150?text=Cà+Phê",
-    },
-    // Thêm các bài viết khác ở đây
-  ];
+import BlogService from "../../api/BlogService";
+import { Link, useNavigate } from "react-router-dom";
 
-  const [posts, setPosts] = useState(initialPosts);
+const Blog = () => {
+  const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [savedItems, setSavedItems] = useState([]);
-
+  const [blog, setBlog] = useState([]);
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  const handleSave = (post) => {
-    if (!savedItems.find((item) => item.id === post.id)) {
-      setSavedItems([...savedItems, post]);
-    }
-  };
+  // const handleSave = (post) => {
+  //   if (!savedItems.find((item) => item.id === post.id)) {
+  //     setSavedItems([...savedItems, post]);
+  //   }
+  // };
 
-  const filteredPosts = posts.filter((post) =>
-    post.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const relatedPosts = posts.filter((post) => post.id !== 1).slice(0, 3);
+  useEffect(() => {
+    const getAllBlog = async () => {
+      if (jwtToken !== "") {
+        try {
+          const response = await BlogService.getAllBlog(jwtToken);
+          setBlog(response);
+          window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+        } catch (error) {}
+      } else {
+        navigate("/sign_in");
+      }
+    };
+    getAllBlog();
+  }, [jwtToken]);
 
   return (
     <div className="App">
@@ -75,20 +56,29 @@ const Blog = () => {
         <main className="main-content col-12">
           {/* Danh Sách Blog */}
           <div className="blog-list col-12">
-            {filteredPosts.map((post) => (
-              <div key={post.id} className="blog-post">
-                <img src={post.image} alt={post.title} className="post-image" />
-                <div className="post-content">
-                  <h2>{post.title}</h2>
-                  <p>{post.description}</p>
-                  <button className="button-save-dish" onClick={() => handleSave(post)}>Save Dish</button>
+            
+              {blog.map((post) => (
+                <Link to={`/blog_detail/${post.id}`}>
+                <div key={post.id} className="blog-post">
+                  <img src={post.imageUrl} alt="" className="post-image" />
+                  <div className="post-content">
+                    <h2>{post.title}</h2>
+                    <p>{post.description}</p>
+                    <button
+                      className="button-save-dish"
+                      // onClick={() => handleSave(post)}
+                    >
+                      Save Dish
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+                </Link>
+              ))}
+            
           </div>
 
           {/* Phần Bài Viết Liên Quan */}
-          <div className="related-posts">
+          {/* <div className="related-posts">
             <h3>Bài viết liên quan</h3>
             <ul>
               {relatedPosts.map((post) => (
@@ -97,7 +87,7 @@ const Blog = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
         </main>
       </div>
     </div>

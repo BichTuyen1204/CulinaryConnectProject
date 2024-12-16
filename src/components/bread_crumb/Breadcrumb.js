@@ -20,13 +20,17 @@ function Breadcrumb() {
     "/token",
     "/food_detail",
     "/food_detail/:id",
-    "/order_detail/:id"
+    "/order_detail/:id",
+    "/blog_detail/:id"
   ];
 
   if (hiddenPaths.includes(pathname) || pathname.includes("food_detail")) {
     return null;
   }
   if (hiddenPaths.includes(pathname) || pathname.includes("order_detail")) {
+    return null;
+  }
+  if (hiddenPaths.includes(pathname) || pathname.includes("blog_detail")) {
     return null;
   }
 

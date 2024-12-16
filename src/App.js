@@ -25,6 +25,7 @@ import Google from "./page/google/Google";
 import OrderDetail from "./page/order_detail/OrderDetail";
 import { CartProvider } from "./components/context/Context";
 import Blog from "./page/blog/Blog";
+import BlogDetail from "./page/blog_detail/BlogDetail";
 
 const AppContent = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -44,6 +45,23 @@ const AppContent = () => {
   const openLogin = () => {
     setShowLogin(true);
     setShowSignUp(false);
+  };
+
+  const blogData = {
+    "blog": {
+      "id": "B01",
+      "title": "Pepperoni PIZZA 🍕 ",
+      "description": "Pepperoni PIZZA 🍕 ",
+      "markdownText": "# The Delicious World of Pepperoni Pizza\n\nPepperoni pizza is...",
+      "infos": {
+        "SERVING": "4",
+        "COOK_TIME": "20-25 min"
+      },
+      "tags": ["pizza", "pepperonie"],
+      "relatedProduct": ["MK01"],
+      "imageUrl": "https://th.bing.com/th/id/OIP.5ss0Np4_jqHlZAkJsGsrTQHaFj?rs=1&pid=ImgDetMain"
+    },
+    "bookmark": false
   };
 
   return (
@@ -73,6 +91,7 @@ const AppContent = () => {
             <Route path="order_confirm/:id" element={<OrderConfirmation />} />
             <Route path="order_detail/:id" element={<OrderDetail />} />
             <Route path="blog" element={<Blog />} />
+            <Route path="blog_detail/:id" element={<BlogDetail blogData={blogData} />} />
           </Routes>
           {showLogin && (
             <Login
