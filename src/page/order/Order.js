@@ -192,6 +192,12 @@ const getCoupon = async () => {
   // Order
   const handleSubmitOrder = async (e) => {
     e.preventDefault();
+
+    if (!address.trim()) {
+      alert("Error: Shipping address cannot be empty!");
+      return; 
+    }
+
     setOrderData((prev) => ({
       ...prev,
       couponId: couponId,
@@ -287,19 +293,20 @@ const getCoupon = async () => {
 
                   {/* Shipping Address start */}
                   <div className="form-group mt-4">
-                    <label htmlFor="phoneNumber">
+                    <label htmlFor="shippingAddress">
                       <strong>Shipping Address :</strong>
                     </label>
                     <input
                       type="text"
-                      className={`form-control input-checkout-infor `}
-                      id="phoneNumber"
+                      className="form-control input-checkout-infor"
+                      id="shippingAddress"
                       placeholder="Enter your shipping address"
                       value={address}
-                      readOnly
+                      onChange={(e) => setAddress(e.target.value)} // Update the address state
                     />
                   </div>
                   {/* Shipping Address end */}
+
 
                   {/* Note start */}
                   <div className="form-group-note mt-4">

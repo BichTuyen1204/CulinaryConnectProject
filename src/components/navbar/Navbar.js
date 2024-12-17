@@ -50,13 +50,14 @@ export const Navbar = ({ setShowLogin }) => {
     setSearchQuery(e.target.value); 
   };
   
-  useEffect(() => {
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Prevent page reload
     if (searchQuery.trim() === "") {
       navigate(`/food_card`);
     } else {
       navigate(`/food_card?search=${encodeURIComponent(searchQuery)}`);
     }
-  }, [searchQuery, navigate]);
+  };
 
   useEffect(() => {
     const getAccount = async () => {
@@ -166,16 +167,18 @@ export const Navbar = ({ setShowLogin }) => {
       </ul>
 
       <div className="navbar-right col-5">
-      <div className="search-container col-7">
-        <CiSearch className="ic_search" />
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchQuery}
-          onChange={handleSearchChange} // Update search query on input change
-          className="search-input"
-        />
-      </div>
+        <form onSubmit={handleSubmit} className="search-container col-7">
+          <CiSearch className="ic_search" />
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)} // Update state on input change
+            className="search-input"
+          />
+        </form>
+
+
 
         <nav>
           <>
