@@ -4,12 +4,15 @@ import ReactMarkdown from "react-markdown";
 import BlogService from "../../api/BlogService";
 import { Link, useParams } from "react-router-dom";
 import { IoArrowBackOutline } from "react-icons/io5";
+import { IoBookmarkOutline } from "react-icons/io5";
 
 const BlogDetail = () => {
-  const [comment, setComment] = useState([]);
   const { id } = useParams();
   const [blogDetail, setBlogDetail] = useState({});
   const [savedItems, setSavedItems] = useState([]);
+  const [newComment, setNewComment] = useState("");
+  const [comment, setComment] = useState([]);
+  const [isBookmarked, setIsBookmarked] = useState(false);
 
   const getBlogDetail = async (id) => {
     try {
@@ -17,20 +20,67 @@ const BlogDetail = () => {
       setBlogDetail(responseBlog);
 
       const responseComment = await BlogService.getAllComment(id);
-      setComment(responseComment);
+      const sortedComments = responseComment.sort((a, b) => {
+        return new Date(b.timestamp) - new Date(a.timestamp);
+      });
+      setComment(sortedComments);
       console.log(responseComment);
     } catch (error) {
       console.error("Fail load data:", error);
     }
   };
+
   useEffect(() => {
     if (id) {
       getBlogDetail(id);
       // window.scrollTo(0, 0);
+      const savedBookmarks =
+        JSON.parse(localStorage.getItem("bookmarks")) || {};
+      setIsBookmarked(savedBookmarks[id] || false);
     } else {
       console.error("ID is undefined");
     }
   }, [id]);
+
+  useEffect(() => {
+    const savedBookmarks = JSON.parse(localStorage.getItem("bookmarks")) || {};
+    setIsBookmarked(savedBookmarks[id] || false);
+  }, [id]);
+
+  const newCommentChange = (e) => {
+    const { value } = e.target;
+    setNewComment(value);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      addComment(e);
+    }
+  };
+
+  const addComment = async (e) => {
+    e.preventDefault();
+
+    if (newComment.trim() === "") {
+      alert("Please comment before submit");
+      return;
+    } else {
+      console.log("postId:", id);
+      console.log("Comment:", newComment);
+      try {
+        const response = await BlogService.addComment(id, newComment);
+        const saveDataCommentAdded = [...comment, response];
+        const sortedComments = [...saveDataCommentAdded].sort((a, b) => {
+          return new Date(b.timestamp) - new Date(a.timestamp);
+        });
+        setComment(sortedComments);
+        setNewComment("");
+      } catch (error) {
+        console.error("Can not add comment", error.response.data.detail);
+      }
+    }
+  };
 
   return (
     <div className="outer-wrapper">
@@ -38,9 +88,6 @@ const BlogDetail = () => {
       <header className="header-blog-detail mt-2">
         <div className="logo">CULINARY CONNECT</div>
         <input type="text" placeholder="Search..." className="search-bar" />
-        <div className="saved-items">
-          <span>Saved Dishes: {savedItems.length}</span>
-        </div>
       </header>
       {/* Header end */}
 
@@ -57,31 +104,43 @@ const BlogDetail = () => {
               <p className="p-font-size mb-4">{blogDetail.blog.description}</p>
               <img
                 src={blogDetail.blog.imageUrl}
-                alt=""
+                alt={blogDetail.blog.title}
                 className="blog-image"
               />
+
+              {/* <div className="bookmark-container" onClick={toggleBookmark}>
+                {isBookmarked ? (
+                  <div className="bookmark-icon active">
+                    <IoBookmarkOutline className="fa-bookmark" />
+                  </div>
+                ) : (
+                  <div className="bookmark-icon">
+                    <IoBookmarkOutline className="fa-bookmark" />
+                  </div>
+                )}
+              </div> */}
+
+              <p className="mt-3">{blogDetail.blog.title}</p>
             </div>
 
-            <section className="blog-content mt-5">
+            <section className="blog-content mt-3">
               <ReactMarkdown>{blogDetail.blog.markdownText}</ReactMarkdown>
             </section>
-            <aside className="blog-info">
-              <h3 className="mt-3">
-                <strong>Information</strong>
-              </h3>
+            <aside className="blog-content">
+              <h1 className="mt-3">Information</h1>
               <ul>
                 <li>
-                  <strong>Serves:</strong> {blogDetail.blog.infos.SERVING}{" "}
-                  people
+                  <p>
+                    <strong>Serves:</strong> {blogDetail.blog.infos.SERVING}{" "}
+                    people
+                  </p>
                 </li>
                 <li>
                   <strong>Cook time:</strong> {blogDetail.blog.infos.COOK_TIME}
                 </li>
               </ul>
               <div className="tags">
-                <h3>
-                  <strong>Tags:</strong>
-                </h3>
+                <h1>Tags:</h1>
                 {blogDetail.blog.tags.map((tag) => (
                   <span key={tag} className="tag">
                     <strong>#{tag}</strong>
@@ -89,9 +148,7 @@ const BlogDetail = () => {
                 ))}
               </div>
               <div className="related-products mt-3">
-                <h3>
-                  <strong>Related Products:</strong>
-                </h3>
+                <h1>Related Products:</h1>
                 <ul>{blogDetail.blog.relatedProduct}</ul>
               </div>
             </aside>
@@ -100,17 +157,21 @@ const BlogDetail = () => {
       </div>
 
       <div className="container-bg col-12 mt-3">
-        <div className="comment-section mt-1" >
-          <h3 className="comment-title">Opinion:</h3>
+        <div className="comment-section mt-1">
+          <h3 className="comment-title">Opinion: ( {comment.length} )</h3>
 
           {/* Khung nhập ý kiến */}
           <div className="comment-input">
             <textarea
               placeholder="Share your opinion"
-              // value={comment}
-              // onChange={handleInputChange}
+              id="comment"
+              value={newComment}
+              onChange={newCommentChange}
+              onKeyDown={handleKeyDown}
             />
-            <button className="send-opinion">Send</button>
+            <button className="send-opinion" onClick={addComment}>
+              Send
+            </button>
           </div>
 
           {/* Tabs lọc bình luận */}

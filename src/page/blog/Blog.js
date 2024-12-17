@@ -9,15 +9,23 @@ const Blog = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [savedItems, setSavedItems] = useState([]);
   const [blog, setBlog] = useState([]);
+  const [savedDishStatus, setSavedDishStatus] = useState({});
+  const [showSavedDishes, setShowSavedDishes] = useState(false);
+
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  // const handleSave = (post) => {
-  //   if (!savedItems.find((item) => item.id === post.id)) {
-  //     setSavedItems([...savedItems, post]);
-  //   }
-  // };
+  useEffect(() => {
+    const savedStatus =
+      JSON.parse(localStorage.getItem("savedDishStatus")) || {};
+    setSavedDishStatus(savedStatus);
+
+    const savedDishes = Object.keys(savedStatus).filter(
+      (key) => savedStatus[key]
+    );
+    setSavedItems(savedDishes);
+  }, []);
 
   useEffect(() => {
     const getAllBlog = async () => {
@@ -25,7 +33,7 @@ const Blog = () => {
         try {
           const response = await BlogService.getAllBlog(jwtToken);
           setBlog(response);
-          window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+          window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
         } catch (error) {}
       } else {
         navigate("/sign_in");
@@ -33,6 +41,41 @@ const Blog = () => {
     };
     getAllBlog();
   }, [jwtToken]);
+
+  const handleSaveDish = async (blogId) => {
+    if (jwtToken) {
+      try {
+        const currentStatus = savedDishStatus[blogId] || false;
+        const newStatus = !currentStatus;
+        await BlogService.addBookMark(blogId, newStatus);
+        setSavedDishStatus((prevStatus) => {
+          const updatedStatus = { ...prevStatus, [blogId]: newStatus };
+          localStorage.setItem(
+            "savedDishStatus",
+            JSON.stringify(updatedStatus)
+          );
+          return updatedStatus;
+        });
+
+        if (newStatus) {
+          setSavedItems((prevSaved) => [...prevSaved, blogId]);
+        } else {
+          setSavedItems((prevSaved) => prevSaved.filter((id) => id !== blogId));
+        }
+      } catch (error) {
+        console.error("Failed to save or unsave dish:", error);
+      }
+    } else {
+      navigate("/sign_in");
+    }
+  };
+
+  const toggleSavedView = () => {
+    setShowSavedDishes((prevState) => !prevState);
+  };
+  const filteredBlogs = showSavedDishes
+    ? blog.filter((post) => savedDishStatus[post.id])
+    : blog;
 
   return (
     <div className="App">
@@ -47,7 +90,9 @@ const Blog = () => {
           onChange={handleSearch}
         />
         <div className="saved-items">
-          <span>Saved Dishes: {savedItems.length}</span>
+          <button onClick={toggleSavedView}>
+            {showSavedDishes ? "Show All Dishes" : "Show Saved Dishes"}: {savedItems.length}
+          </button>
         </div>
       </header>
 
@@ -56,41 +101,30 @@ const Blog = () => {
         <main className="main-content col-12">
           {/* Danh Sách Blog */}
           <div className="blog-list col-12">
-            
-              {blog.map((post) => (
+            {filteredBlogs.map((post) => (
+              <div key={post.id} className="blog-post">
                 <Link to={`/blog_detail/${post.id}`}>
-                <div key={post.id} className="blog-post">
                   <img src={post.imageUrl} alt="" className="post-image" />
-                  <div className="post-content">
-                    <h2>{post.title}</h2>
-                    <p>{post.description}</p>
-                    <button
-                      className="button-save-dish"
-                      // onClick={() => handleSave(post)}
-                    >
-                      Save Dish
-                    </button>
-                  </div>
-                </div>
                 </Link>
-              ))}
-            
+                <div className="post-content">
+                  <h2>{post.title}</h2>
+                  <p>{post.description}</p>
+                  <button
+                    className={`button-save-dish ${
+                      savedDishStatus[post.id] ? "saved" : ""
+                    }`}
+                    onClick={() => handleSaveDish(post.id)}
+                  >
+                    {savedDishStatus[post.id] ? "Saved" : "Save Dish"}
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
-
-          {/* Phần Bài Viết Liên Quan */}
-          {/* <div className="related-posts">
-            <h3>Bài viết liên quan</h3>
-            <ul>
-              {relatedPosts.map((post) => (
-                <li key={post.id}>
-                  <a href={`#post-${post.id}`}>{post.title}</a>
-                </li>
-              ))}
-            </ul>
-          </div> */}
         </main>
       </div>
     </div>
   );
 };
+
 export default Blog;

@@ -9,7 +9,6 @@ const Invoice = () => {
   const [orders, setOrders] = useState([]);
   const [currentTab, setCurrentTab] = useState("ALL");
   useEffect(() => {
-    // Kiểm tra nếu trang chưa được load lại
     if (!sessionStorage.getItem("cartPageReloaded")) {
       sessionStorage.setItem("cartPageReloaded", "true");
       window.location.reload();
@@ -45,7 +44,16 @@ const Invoice = () => {
       } else {
         response = await OrderService.getOrdersByStatus(status, jwtToken);
       }
-      setOrders(response);
+      const sortedOrders = [...response].sort((a, b) => {
+        const dateA = new Date(a.timestamp);
+        const dateB = new Date(b.timestamp);
+  
+        // Kiểm tra thời gian có hợp lệ không
+        console.log("Date A:", dateA, "Date B:", dateB);
+  
+        return dateB - dateA;
+      });
+      setOrders(sortedOrders);
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
