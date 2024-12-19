@@ -45,11 +45,9 @@ const Invoice = () => {
         response = await OrderService.getOrdersByStatus(status, jwtToken);
       }
       const sortedOrders = [...response].sort((a, b) => {
-        const dateA = new Date(a.timestamp);
-        const dateB = new Date(b.timestamp);
-  
-        // Kiểm tra thời gian có hợp lệ không
-        console.log("Date A:", dateA, "Date B:", dateB);
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+          console.log("Date A:", dateA, "Date B:", dateB);
   
         return dateB - dateA;
       });
@@ -59,7 +57,6 @@ const Invoice = () => {
     }
   };
 
-  // Gọi API mỗi khi `currentTab` thay đổi
   useEffect(() => {
     fetchOrders(currentTab);
   }, [currentTab]);

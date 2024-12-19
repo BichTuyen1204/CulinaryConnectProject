@@ -95,9 +95,6 @@ const OrderDetail = () => {
   const cancelDelete = () => {
     setPopupDelete(false);
     setProductIdToDelete(null);
-    setTimeout(() => {
-      navigate("/invoice");
-    }, 1000);
   };
 
   const statusMap = {
