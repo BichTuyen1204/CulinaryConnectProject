@@ -90,6 +90,7 @@ class BlogService {
   async addBookMark(blogId, bookmark) {
     const jwtToken = sessionStorage.getItem("jwtToken");
     if (!jwtToken) {
+      console.log("JWT token not found. Cannot add bookmark.");
       return null;
     } else {
       try {
@@ -102,7 +103,11 @@ class BlogService {
             },
           }
         );
-        console.log("Add bookmard successful: ", response.data)
+        if (response.data) {
+          console.log(`Bookmark ${bookmark}`);
+        } else {
+          console.log("Failed to update bookmark status.");
+        }
         return response.data;
       } catch (error) {
         console.error(
@@ -120,14 +125,12 @@ class BlogService {
       return null;
     } else {
       try {
-        const response = await axios.get(
-          `${API_BASE_URL_3}/bookmarked-blog`,
-          {
-            headers: {
-              Authorization: `Bearer ${jwtToken}`,
-            },
-          }
-        );
+        const response = await axios.get(`${API_BASE_URL_3}/bookmarked-blog`, {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        });
+        console.log(response);
         return response.data;
       } catch (error) {
         console.error(
