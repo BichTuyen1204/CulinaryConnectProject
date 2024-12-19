@@ -7,9 +7,9 @@ import { useParams, useLocation } from "react-router-dom";
 
 export const Food_card = () => {
   const categories = ["All", "Meal kit", "Vegetables", "Meat", "Season"];
-  const [products, setProducts] = useState([]); // All fetched products
-  const [filteredProducts, setFilteredProducts] = useState([]); // Products to display
-  const [category, setCategory] = useState("All"); // Selected category
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [category, setCategory] = useState("All");
   const { id } = useParams();
   const location = useLocation();
 
@@ -24,11 +24,11 @@ export const Food_card = () => {
   // Function to rename category to API-friendly format
   const renameCategory = (cat) => {
     const categoryMapping = {
-      "All": "ALL",
+      All: "ALL",
       "Meal kit": "MEALKIT",
-      "Vegetables": "VEGETABLE",
-      "Meat": "MEAT",
-      "Season": "SEASON",
+      Vegetables: "VEGETABLE",
+      Meat: "MEAT",
+      Season: "SEASON",
     };
     return categoryMapping[cat] || cat.toUpperCase();
   };
@@ -43,18 +43,16 @@ export const Food_card = () => {
       } else {
         response = await ProductService.getProductsByCategory(renamedCategory);
       }
-      setProducts(response); // Set all products state
-      applyFilters(response); // Filter based on search query
+      setProducts(response);
+      applyFilters(response);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
   };
 
-  // Filter products based on search query and category
   const applyFilters = (data) => {
     let filtered = data;
 
-    // If search query is empty, reset the filtered list to all products
     if (searchQuery.trim()) {
       filtered = filtered.filter((product) =>
         product.productName.toLowerCase().includes(searchQuery.toLowerCase())
@@ -64,12 +62,10 @@ export const Food_card = () => {
     setFilteredProducts(filtered);
   };
 
-  // Update search query when URL changes
   useEffect(() => {
     setSearchQuery(getSearchQuery());
   }, [location.search]);
 
-  // Fetch products and apply filters on category or search query change
   useEffect(() => {
     fetchProducts();
     window.scrollTo(0, 0);
@@ -87,12 +83,12 @@ export const Food_card = () => {
       {/* Food Page */}
       <div className="food-page-container col-12 mt-5">
         {/* Category List */}
-        <div className="category-section col-2">
+        <div className="category-section px-5 col-2">
           <ul className="category-list">
             {categories.map((cat) => (
               <li
                 key={cat}
-                onClick={() => setCategory(cat)} // Update category state on click
+                onClick={() => setCategory(cat)}
                 style={{
                   cursor: "pointer",
                   fontWeight: category === cat ? "bold" : "normal",
@@ -105,24 +101,70 @@ export const Food_card = () => {
         </div>
 
         {/* Food Grid */}
-        <div className="food-grid col-10">
+        <div className="food-grid col-11">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
               <div key={product.id} className="food-card col-2">
-                <img src={product.imageUrl || image} alt={product.productName} />
-                <div className="food-info">
+                <div>
+                  <div className="food-item-img-container">
+                    <img
+                      className="food-item-image"
+                      src={product.imageUrl || image}
+                      alt={product.productName}
+                    />
+                  </div>
+                </div>
+
+                <div className="food-info mx-3">
                   <h5 className="food-name">{product.productName}</h5>
                   <div className="food-price-and-quantity">
-                    <div className="food-price">
-                      <strong>Price: </strong>
-                      {product.price} VND
-                    </div>
+                    <p className="food-item-price">
+                      <strong>Price:</strong>{" "}
+                      {product.salePercent > 0 ? (
+                        <>
+                          <span className="original-price">
+                            ${product.price.toFixed(2)}
+                          </span>{" "}
+                          <span className="discounted-price">
+                            $
+                            {(
+                              product.price -
+                              (product.price * product.salePercent) / 100
+                            ).toFixed(2)}
+                          </span>
+                        </>
+                      ) : (
+                        <span>${product.price.toFixed(2)}</span>
+                      )}
+                    </p>
                     <div className="food-quantity">
-                      <strong>Quantity: </strong>
-                      {product.availableQuantity || "1"}
+                      {product.availableQuantity > 0 ? (
+                        <p className="food-item-quantity">
+                          <strong className="link">Quantity: In stock</strong>
+                        </p>
+                      ) : product.availableQuantity === 0 ? (
+                        <p className="food-item-quantity mt-2">
+                          <strong className="link">
+                            Quantity: Out of stock
+                          </strong>
+                        </p>
+                      ) : null}
                     </div>
+
+                    {product.salePercent > 0 ? (
+                      <p className="food-item-quantity">
+                        <strong className="link">Sale:</strong>{" "}
+                        {product.salePercent} %
+                      </p>
+                    ) : product.salePercent === 0 ? (
+                      <p className="food-item-quantity">
+                        <strong className="link" style={{ color: "white" }}>
+                          Sale:
+                        </strong>
+                      </p>
+                    ) : null}
                   </div>
-                  <div className="button-food-card">
+                  <div className="button-food-card mb-2">
                     <button className="bt-add-to-cart">Add to cart</button>
                     <button className="bt-buy-now">Buy now</button>
                   </div>

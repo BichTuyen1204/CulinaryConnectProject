@@ -29,23 +29,6 @@ export const FoodItem = ({ product }) => {
     getAccount();
   }, [jwtToken]);
 
-  // const addToCart = async () => {
-  //   try {
-  //     const response = await CartService.addToCart(
-  //       product.id,
-  //       (product.quantity = 1)
-  //     );
-  //     setPopupAdd(true);
-  //     setTimeout(() => {
-  //       setPopupAdd(false);
-  //     }, 1000);
-  //     console.log("product in cart", response);
-  //     return response;
-  //   } catch (error) {
-  //     console.error("Error adding product to cart:", error);
-  //   }
-  // };
-
   const handleAddToCart = async () => {
     if (username) {
       await addToCart(product);
