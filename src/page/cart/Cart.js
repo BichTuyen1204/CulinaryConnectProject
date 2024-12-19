@@ -1,3 +1,5 @@
+// src/components/cart/Cart.js
+
 import React, { useContext, useEffect, useState } from "react";
 import "../cart/Cart.css";
 import { IoClose } from "react-icons/io5";
@@ -14,6 +16,7 @@ const Cart = () => {
   const [productIdToDelete, setProductIdToDelete] = useState(null);
   const { cartItems, removeFromCart, updateCart } = useContext(CartContext);
 
+  // Tính toán tổng giá và tổng số lượng
   useEffect(() => {
     let total = 0;
     let quantity = 0;
@@ -29,120 +32,80 @@ const Cart = () => {
     setTotalQuantity(quantity);
   }, [cartItems]);
 
-  // Increase
-  // const increaseQuantity = (id) => {
-  //   setItems((prevItems) =>
-  //     prevItems.map((item) => {
-  //       if (item.product.id === id) {
-  //         if (item.amount >= item.product.availableQuantity) {
-  //           return item;
-  //         }
-  //         const newAmount = item.amount + 1;
-  //         updateProduct(id, newAmount);
-  //         return { ...item, amount: newAmount };
-  //       }
-  //       return item;
-  //     })
-  //   );
-  // };
-
+  // Tăng số lượng
   const increaseQuantity = (id) => {
     const item = cartItems.find(item => item.product.id === id);
     if (item.amount < item.product.availableQuantity) {
       updateCart(id, item.amount + 1);
+      setItems((prevItems) =>
+        prevItems.map((item) =>
+          item.product.id === id ? { ...item, amount: item.amount + 1 } : item
+        )
+      );
     }
   };
 
-  // Decrease
-  // const decreaseQuantity = (id) => {
-  //   setItems((prevItems) =>
-  //     prevItems.map((item) => {
-  //       if (item.product.id === id && item.amount > 1) {
-  //         const newAmount = item.amount - 1;
-  //         updateProduct(id, newAmount);
-  //         return { ...item, amount: newAmount };
-  //       }
-  //       return item;
-  //     })
-  //   );
-  // };
-
+  // Giảm số lượng
   const decreaseQuantity = (id) => {
     const item = cartItems.find(item => item.product.id === id);
     if (item.amount > 1) {
       updateCart(id, item.amount - 1);
+      setItems((prevItems) =>
+        prevItems.map((item) =>
+          item.product.id === id ? { ...item, amount: item.amount - 1 } : item
+        )
+      );
     }
   };
 
-  // Open popup delete
+  // Mở popup xóa
   const openModal = (id) => {
     setPopupDelete(true);
     setProductIdToDelete(id);
   };
 
-  // Close popup delete
+  // Đóng popup xóa
   const cancelDelete = () => {
     setPopupDelete(false);
     setProductIdToDelete(null);
   };
 
-  // Change input
-  // const handleQuantityChange = (id, e) => {
-  //   let value = e.target.value;
-  //   value = value.replace(/[^0-9]/g, "");
-  //   if (value.length < 1 && value[0] === "0") {
-  //     value = value.slice(1);
-  //   }
-  //   if (value === "") {
-  //     setItems((prevItems) =>
-  //       prevItems.map((item) =>
-  //         item.product.id === id ? { ...item, amount: "" } : item
-  //       )
-  //     );
-  //   } else {
-  //     const newAmount = parseInt(value, 10);
-  //     setItems((prevItems) =>
-  //       prevItems.map((item) =>
-  //         item.product.id === id ? { ...item, amount: newAmount } : item
-  //       )
-  //     );
-  //     updateProduct(id, newAmount);
-  //   }
-  // };
-
+  // Xử lý thay đổi số lượng
   const handleQuantityChange = (id, e) => {
     let value = e.target.value.replace(/[^0-9]/g, "");
-    if (value === "") {
-      updateCart(id, 1);
-    } else {
-      const newAmount = Math.min(parseInt(value, 10), cartItems.find(item => item.product.id === id).product.availableQuantity);
-      updateCart(id, newAmount);
-    }
+    setItems((prevItems) =>
+      prevItems.map((item) =>
+        item.product.id === id ? { ...item, amount: value === "" ? "" : parseInt(value, 10) } : item
+      )
+    );
   };
 
-  // Check input quantity
+  // Xử lý mất tiêu input
   const handleBlur = (id, e) => {
-    const value = e.target.value;
-    const maxQuantity = items.find((item) => item.product.id === id).product
-      .availableQuantity;
-    if (value === "") {
+    let value = e.target.value;
+    const item = items.find((item) => item.product.id === id);
+    const maxQuantity = item.product.availableQuantity;
+
+    // Kiểm tra nếu giá trị là rỗng hoặc số âm
+    if (value === "" || parseInt(value, 10) <= 0) {
       setItems((prevItems) =>
         prevItems.map((item) =>
           item.product.id === id ? { ...item, amount: 1 } : item
         )
       );
-      updateProduct(id, 1);
-    } else if (parseInt(value, 10) > maxQuantity) {
+      updateCart(id, 1);
+    } else {
+      const newAmount = Math.min(parseInt(value, 10), maxQuantity);
       setItems((prevItems) =>
         prevItems.map((item) =>
-          item.product.id === id ? { ...item, amount: maxQuantity } : item
+          item.product.id === id ? { ...item, amount: newAmount } : item
         )
       );
-      updateProduct(id, maxQuantity);
+      updateCart(id, newAmount);
     }
   };
 
-  // Call all product in cart
+  // Lấy tất cả sản phẩm trong giỏ hàng
   const getAllProduct = async () => {
     try {
       const response = await CartService.getAllInCart();
@@ -157,56 +120,45 @@ const Cart = () => {
     }
   };
 
+  // Gọi hàm khi component mount
   useEffect(() => {
     getAllProduct();
     window.scrollTo(0, 0);
   }, []);
 
-  // Delete product
+  // Xóa sản phẩm
   const deleteProduct = async () => {
     if (productIdToDelete) {
       removeFromCart(productIdToDelete);
+      setItems((prevItems) => prevItems.filter(item => item.product.id !== productIdToDelete));
       setProductIdToDelete(null);
       setPopupDelete(false);
     }
   };
 
-  const updateProduct = async (id, quantity) => {
-    try {
-      const response = await CartService.updateCart(id, quantity);
-      console.log("Delete successful", response);
-      return response;
-    } catch (error) {
-      console.error("Failed to update product:", error);
-    }
-  };
+  // Khởi tạo items từ cartItems
+  useEffect(() => {
+    const initializedItems = cartItems.map((item) => ({
+      ...item,
+      amount: item.amount || 1,
+    }));
+    setItems(initializedItems);
+  }, [cartItems]);
 
-  const updateTotals = (items) => {
+  // Tính toán tổng
+  useEffect(() => {
     let total = 0;
     let quantity = 0;
     items.forEach((item) => {
       const price =
         item.product.salePercent > 0
-          ? item.product.price -
-            (item.product.price * item.product.salePercent) / 100
+          ? item.product.price - (item.product.price * item.product.salePercent) / 100
           : item.product.price;
-      total += price * item.amount;
-      quantity += item.amount;
+      total += price * (item.amount || 1);
+      quantity += item.amount || 1;
     });
     setTotalPrice(total.toFixed(2));
     setTotalQuantity(quantity);
-  };
-
-  useEffect(() => {
-    const initializedItems = products.map((product) => ({
-      ...product,
-      amount: product.amount || 1,
-    }));
-    setItems(initializedItems);
-  }, [products]);
-
-  useEffect(() => {
-    updateTotals(items);
   }, [items]);
 
   return (
@@ -262,7 +214,7 @@ const Cart = () => {
                     -
                   </button>
                   <input
-                    value={item.amount}
+                    value={items.find(it => it.product.id === item.product.id)?.amount || ""}
                     onChange={(e) => handleQuantityChange(item.product.id, e)}
                     onBlur={(e) => handleBlur(item.product.id, e)}
                     min="1"
@@ -283,9 +235,9 @@ const Cart = () => {
                         (item.product.price -
                           (item.product.price * item.product.salePercent) /
                             100) *
-                        item.amount
+                        (items.find(it => it.product.id === item.product.id)?.amount || 1)
                       ).toFixed(2)
-                    : (item.product.price * item.amount).toFixed(2)}
+                    : (item.product.price * (items.find(it => it.product.id === item.product.id)?.amount || 1)).toFixed(2)}
                 </p>
                 <p className="ic_close">
                   <IoClose
@@ -294,7 +246,7 @@ const Cart = () => {
                   />
                 </p>
 
-                {popupDelete && (
+                {popupDelete && productIdToDelete === item.product.id && (
                   <div className="popup">
                     <div className="popup-content">
                       <h5 className="info-delete">
@@ -303,7 +255,7 @@ const Cart = () => {
                       <div className="popup-buttons">
                         <button
                           className="button-delete"
-                          onClick={() => deleteProduct(item.product.id)}
+                          onClick={deleteProduct}
                         >
                           Delete
                         </button>

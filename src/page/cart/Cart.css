@@ -92,6 +92,7 @@
 .input-quantity input {
   margin: 0px 5px;
   border-radius: 5px;
+  background-color: #f9f9f9;
 }
 
 .input-quantity input:focus {
