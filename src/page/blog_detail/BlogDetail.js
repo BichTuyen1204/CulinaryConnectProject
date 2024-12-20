@@ -182,14 +182,20 @@ const BlogDetail = () => {
           {/* Danh sách bình luận */}
           <div className="comment-list pb-5">
             {comment.map((comments, index) => (
-              <div className="comment-item" key={index}>
-                <div className="comment-header">
-                  <span className="comment-user">{comments.accountName}</span>
-                  <span className="comment-time">
+              <div className="comment-item col-12" key={index}>
+                <div className="comment-header col-12">
+                    <img
+                      src={comments.profilePicture}
+                      className="comment-avatar col-1"
+                    />
+                  <span className="comment-user col-8 mt-1">
+                    {comments.accountName}
+                  </span>
+                  <span className="comment-time col-3 mt-1 d-flex justify-content-end">
                     {new Date(comments.timestamp).toLocaleString()}
                   </span>
                 </div>
-                <p className="comment-content">{comments.comment}</p>
+                <p className="comment-content mx-5">{comments.comment}</p>
               </div>
             ))}
           </div>

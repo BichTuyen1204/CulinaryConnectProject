@@ -250,6 +250,9 @@ body {
   display: flex;
   justify-content: space-between;
   font-weight: bold;
+}
+
+.comment-header img{
   margin-bottom: 5px;
 }
 
@@ -262,6 +265,13 @@ body {
   gap: 20px;
   color: #888;
   cursor: pointer;
+}
+
+.comment-avatar {
+  width: 30px; /* Kích thước ảnh */
+  height: 30px;
+  border-radius: 50%; /* Làm tròn ảnh */
+  object-fit: cover; /* Đảm bảo ảnh không bị méo */
 }
 
 @media (max-width: 768px) {

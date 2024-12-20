@@ -47,9 +47,9 @@ export const Navbar = ({ setShowLogin }) => {
   }, []);
 
   const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value); 
+    setSearchQuery(e.target.value);
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent page reload
     if (searchQuery.trim() === "") {
@@ -157,9 +157,7 @@ export const Navbar = ({ setShowLogin }) => {
         {jwtToken ? (
           <li
             onClick={() => handleMenuItemClick("blog")}
-            className={`item ${
-              location.pathname === "/blog" ? "active" : ""
-            }`}
+            className={`item ${location.pathname === "/blog" ? "active" : ""}`}
           >
             <Link to="/blog">Blog</Link>
           </li>
@@ -177,8 +175,6 @@ export const Navbar = ({ setShowLogin }) => {
             className="search-input"
           />
         </form>
-
-
 
         <nav>
           <>
@@ -225,15 +221,15 @@ export const Navbar = ({ setShowLogin }) => {
                       }`}
                       onClick={handleAvatarClick}
                     >
-                      <img
-                        src={
-                          imgUser
-                            ? imgUser
-                            : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtuphMb4mq-EcVWhMVT8FCkv5dqZGgvn_QiA&s"
-                        }
-                        className="avatar-img"
-                        alt=""
-                      />
+                      {imgUser ? (
+                        <img src={imgUser} className="avatar-img" alt="" />
+                      ) : (
+                        <img
+                          src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+                          className="avatar-img"
+                          alt=""
+                        />
+                      )}
                     </div>
                   </Dropdown.Toggle>
 
