@@ -85,10 +85,10 @@ const BlogDetail = () => {
   return (
     <div className="outer-wrapper">
       {/* Header start */}
-      <header className="header-blog-detail mt-2">
+      {/* <header className="header-blog-detail mt-2">
         <div className="logo">CULINARY CONNECT</div>
         <input type="text" placeholder="Search..." className="search-bar" />
-      </header>
+      </header> */}
       {/* Header end */}
 
       <div className="container-bg col-12 mt-3">

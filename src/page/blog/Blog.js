@@ -7,16 +7,39 @@ const Blog = () => {
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+  const [tags, setTags] = useState([]); 
   const [bookmarkedBlogs, setBookmarkedBlogs] = useState([]);
   const [blogs, setBlogs] = useState([]);
   const [showSavedDishes, setShowSavedDishes] = useState(false);
+  const [tagInput, setTagInput] = useState(""); 
 
-  // Search
+
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  // Get all bookmark
+
+  const handleTagInputChange = (e) => {
+    setTagInput(e.target.value);
+  };
+
+
+  const handleTagKeyPress = (e) => {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault(); 
+      if (tagInput.trim() !== "" && !tags.includes(tagInput.trim())) {
+        setTags([...tags, tagInput.trim()]);
+      }
+      setTagInput(""); 
+    }
+  };
+
+  
+  const handleTagRemove = (tagToRemove) => {
+    setTags(tags.filter(tag => tag !== tagToRemove));
+  };
+
+
   const fetchBookmarkedBlogs = async () => {
     if (jwtToken) {
       try {
@@ -28,11 +51,11 @@ const Blog = () => {
     }
   };
 
-  // Get all blogs
+
   const getAllBlog = async () => {
     if (jwtToken) {
       try {
-        const response = await BlogService.getAllBlog(jwtToken);
+        const response = await BlogService.getSearchBlog(searchTerm, tags);
         setBlogs(response);
         window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
       } catch (error) {
@@ -43,18 +66,18 @@ const Blog = () => {
     }
   };
 
-  // Call data
+
   useEffect(() => {
     getAllBlog();
     fetchBookmarkedBlogs();
-  }, [jwtToken]);
+  }, [jwtToken, tags]); 
 
-  // Check bookmark on blog
+
   const isBookmarked = (blogId) => {
     return bookmarkedBlogs.some((blog) => blog.id === blogId);
   };
 
-  // Add or delete bookmark
+
   const handleSaveDish = async (blogId) => {
     if (jwtToken) {
       try {
@@ -89,12 +112,12 @@ const Blog = () => {
     }
   };
 
-  // Show all saved blog
+
   const toggleSavedView = () => {
     setShowSavedDishes((prevState) => !prevState);
   };
 
-  // UI for search and show blog
+
   const filteredBlogs = blogs
     .filter(
       (post) =>
@@ -119,6 +142,30 @@ const Blog = () => {
           value={searchTerm}
           onChange={handleSearch}
         />
+
+        <div className="tag-input">
+          <input
+            type="text"
+            placeholder="Add tags..."
+            value={tagInput}
+            onChange={handleTagInputChange}
+            onKeyDown={handleTagKeyPress}
+          />
+          <div className="tags-list">
+            {tags.map((tag, index) => (
+              <span key={index} className="tag">
+                {tag}{" "}
+                <button
+                  onClick={() => handleTagRemove(tag)}
+                  className="remove-tag"
+                >
+                  X
+                </button>
+              </span>
+            ))}
+          </div>
+        </div>
+
         <div className="saved-items">
           <button onClick={toggleSavedView}>
             {showSavedDishes ? "Show All Dishes" : "Show Saved Dishes"}:{" "}
