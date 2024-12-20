@@ -18,6 +18,26 @@ class BlogService {
     }
   }
 
+
+  async getSearchBlog(keyword, tags) {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/search/blog`, {
+        params: {
+          keyword,
+          tags: tags.join(','), // Join tags as comma-separated string if necessary
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Error during API calls: ",
+        error.response ? error.response.data : error.message
+      );
+      throw error;
+    }
+  }
+
+
   async getBlogDetail(id) {
     try {
       const jwtToken = sessionStorage.getItem("jwtToken");
