@@ -11,9 +11,12 @@ import { IoClose } from "react-icons/io5";
 export const Order = () => {
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
   const [username, setUserName] = useState("");
+  const [usernameError, setUserNameError] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const [address, setAddress] = useState("");
+  const [addressError, setAdressError] = useState("");
   const [products, setProducts] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [couponId, setCouponId] = useState("");
@@ -36,10 +39,40 @@ export const Order = () => {
     paymentMethod: "",
     product: {},
   });
+  const NameBlur = () => {
+    if (username.trim() === "") {
+      setUserNameError("Please enter your full name");
+    } else if (username.length < 4) {
+      setUserNameError("The full name must be at least 4 characters");
+    } else if (username.length > 100) {
+      setUserNameError("The full name must be less than 100 characters");
+    } else if (!/^[\p{L}\s]+$/u.test(username)) {
+      setUserNameError("Please enter only alphabetic characters");
+    } else {
+      setUserNameError("");
+    }
+  };
 
-  // Open popup delete
-  const openModal = () => {
-    setPopupBuy(true);
+  const PhoneBlur = () => {
+    if (phone.trim() === "") {
+      setPhoneError("Please enter your phone number");
+    } else if (phone.length < 10 || phone.length > 10) {
+      setPhoneError("Your phone number must be 10 digits");
+    } else if (!/^\d+$/.test(phone)) {
+      setPhoneError("Your phone number just only number");
+    } else if (!/^0/.test(phone)) {
+      setPhoneError("Phone number must start with 0");
+    } else {
+      setPhoneError("");
+    }
+  };
+
+  const AddressBlur = () => {
+    if (address.trim() === "") {
+      setAdressError("Please enter your address");
+    } else {
+      setPhoneError("");
+    }
   };
 
   // Close popup delete
@@ -62,13 +95,15 @@ export const Order = () => {
   };
 
   // Phone
-  const Phone = (value) => {
+  const PhoneChange = (e) => {
+    const { value } = e.target;
     setPhone(value);
     setOrderData((preState) => ({ ...preState, phoneNumber: value }));
   };
 
   // Receiver
-  const Receiver = (value) => {
+  const ReceiverChange = (e) => {
+    const { value } = e.target;
     setUserName(value);
     setOrderData((preState) => ({ ...preState, receiver: value }));
   };
@@ -128,6 +163,13 @@ export const Order = () => {
           setEmail(response.email);
           setPhone(response.phone);
           setAddress(response.address);
+          setOrderData((prev) => ({
+            ...prev,
+            receiver: response.username,
+            phoneNumber: response.phone,
+            deliveryAddress: response.address,
+          }));
+          console.log("address", address);
           setPopupBuy(false);
         } catch (error) {
           console.error("Error fetching account information:", error);
@@ -185,34 +227,42 @@ export const Order = () => {
   // Order
   const handleSubmitOrder = async (e) => {
     e.preventDefault();
-
-    if (!address.trim()) {
-      alert("Error: Shipping address cannot be empty!");
-      return;
-    }
-
-    setOrderData((prev) => ({
-      ...prev,
-      couponId: couponId,
-      deliveryAddress: address,
-      phoneNumber: phone,
-      receiver: username,
-      note: note,
-      paymentMethod: pay,
-    }));
-    try {
-      const response = await OrderService.createOrder(orderData, jwtToken);
-      console.log("Order created successfully:", response);
-      setPopupBuy(false);
-      setPopupOrderSuccessful(true);
-      setTimeout(() => {
-        navigate("/invoice", { state: { jwtToken } });
-        window.location.reload();
-      }, 2000);
-    } catch (error) {
-      console.error("Error creating order:", error);
-      console.log("Order created successfully:", error.response);
-      alert("Failed to create order.");
+    NameBlur();
+    PhoneBlur();
+    AddressBlur();
+    if (
+      !usernameError &&
+      !phoneError &&
+      !addressError &&
+      username &&
+      address &&
+      phone
+    ) {
+      setOrderData((prev) => ({
+        ...prev,
+        couponId: couponId,
+        deliveryAddress: address,
+        phoneNumber: phone,
+        receiver: username,
+        note: note,
+        paymentMethod: pay,
+      }));
+      try {
+        const response = await OrderService.createOrder(orderData, jwtToken);
+        console.log("Order created successfully:", response);
+        setPopupBuy(false);
+        setPopupOrderSuccessful(true);
+        setTimeout(() => {
+          navigate("/invoice", { state: { jwtToken } });
+          window.location.reload();
+        }, 2000);
+      } catch (error) {
+        console.error("Error creating order:", error);
+        console.log("Order created successfully:", error.response);
+        alert("Failed to create order.");
+      }
+    } else {
+      console.error("Error about info user");
     }
   };
 
@@ -250,16 +300,14 @@ export const Order = () => {
                       id="receiver"
                       placeholder="Enter your name"
                       value={username}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        setUserName(value);
-                        setOrderData((prevState) => ({
-                          ...prevState,
-                          receiver: value,
-                        }));
-                      }}
+                      onChange={ReceiverChange}
+                      onBlur={NameBlur}
                     />
                   </div>
+                  {usernameError && (
+                    <p style={{ color: "red" }}>{usernameError}</p>
+                  )}
+
                   {/* Name end */}
 
                   {/* Email start */}
@@ -289,25 +337,33 @@ export const Order = () => {
                       id="phoneNumber"
                       placeholder="Enter your phone number"
                       value={phone}
-                      readOnly
+                      onChange={PhoneChange}
+                      onBlur={PhoneBlur}
                     />
                   </div>
+                  {phoneError && (
+                    <p style={{ color: "red" }}>{phoneError}</p>
+                  )}
                   {/* Phone number end */}
 
                   {/* Shipping Address start */}
                   <div className="form-group mt-4">
-                    <label htmlFor="shippingAddress">
-                      <strong>Shipping Address :</strong>
+                    <label htmlFor="deliveryAddress">
+                      <strong>Address :</strong>
                     </label>
                     <input
                       type="text"
-                      className="form-control input-checkout-infor"
-                      id="shippingAddress"
-                      placeholder="Enter your shipping address"
+                      className={`form-control input-checkout-infor`}
+                      id="deliveryAddress"
+                      placeholder="Enter your address"
                       value={address}
-                      onChange={AddressChange} // Update the address state
+                      onChange={AddressChange}
+                      onBlur={AddressBlur}
                     />
                   </div>
+                  {addressError && (
+                    <p style={{ color: "red" }}>{addressError}</p>
+                  )}
                   {/* Shipping Address end */}
 
                   {/* Note start */}

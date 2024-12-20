@@ -114,19 +114,19 @@ const OrderDetail = () => {
             <h2>Delivery Information :</h2>
             <div className="mt-2 font-size-for-text">
               <p>
-                <strong>Full name :</strong>
-                {username}
+                <strong className="mx-2">Full name :</strong>
+                {orderData.summary.receiver}
               </p>
               <p>
-                <strong>Phone number :</strong>
-                {phone}
+                <strong className="mx-2">Phone number :</strong>
+                {orderData.summary.phoneNumber}
               </p>
               <p>
-                <strong>Address :</strong>
+                <strong className="mx-2">Address :</strong>
                 {orderData.summary.deliveryAddress}
               </p>
               <p>
-                <strong>Note from receiver :</strong>
+                <strong className="mx-2">Note from receiver :</strong>
                 {orderData.summary.note}
               </p>
             </div>
