@@ -1,17 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Food_card.css";
 import image from "../../assets/image_food_menu.jpg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ProductService from "../../api/ProductService";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate, Link } from "react-router-dom";
+import { CartContext } from "../../components/context/Context";
+import AccountService from "../../api/AccountService";
 
 export const Food_card = () => {
   const categories = ["All", "Meal kit", "Vegetables", "Meat", "Season"];
-  const [products, setProducts] = useState([]);
+  const [product, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [category, setCategory] = useState("All");
   const { id } = useParams();
   const location = useLocation();
+  const { addToCart } = useContext(CartContext);
+  const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
+  const [username, setUserName] = useState("");
+  const [popupAdd, setPopupAdd] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const getAccount = async () => {
+      if (jwtToken !== "") {
+        try {
+          const response = await AccountService.account(jwtToken);
+          setUserName(response.username);
+        } catch (error) {}
+      } else {
+        setUserName("");
+      }
+    };
+    getAccount();
+  }, [jwtToken]);
 
   // Function to get search query from URL
   const getSearchQuery = () => {
@@ -52,13 +73,11 @@ export const Food_card = () => {
 
   const applyFilters = (data) => {
     let filtered = data;
-
     if (searchQuery.trim()) {
       filtered = filtered.filter((product) =>
         product.productName.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
-
     setFilteredProducts(filtered);
   };
 
@@ -71,6 +90,17 @@ export const Food_card = () => {
     window.scrollTo(0, 0);
   }, [category, searchQuery]);
 
+  const handleAddToCart = async (product) => {
+    if (username) {
+      await addToCart(product);
+      setPopupAdd(true);
+      setTimeout(() => {
+        setPopupAdd(false);
+      }, 1000);
+    } else {
+      navigate("/sign_in");
+    }
+  };
   return (
     <div>
       {/* Header Image */}
@@ -164,15 +194,38 @@ export const Food_card = () => {
                       </p>
                     ) : null}
                   </div>
-                  <div className="button-food-card mb-2">
-                    <button className="bt-add-to-cart">Add to cart</button>
-                    <button className="bt-buy-now">Buy now</button>
-                  </div>
+
+                  {username ? (
+                    <div className="button-food-card mb-2">
+                      <button
+                        className="bt-add-to-cart"
+                        onClick={() => handleAddToCart(product)}
+                        disabled={product.availableQuantity === 0}
+                      >
+                        Add to cart
+                      </button>
+                      <button className="bt-buy-now">Buy now</button>
+                    </div>
+                  ) : (
+                    <div className="button-food-card mb-2">
+                      <button className="bt-add-to-cart">
+                        <Link to="/sign_in">Add to cart</Link>
+                      </button>
+                      <Link to="/sign_in">Buy now</Link>
+                    </div>
+                  )}
                 </div>
               </div>
             ))
           ) : (
-            <p>No products available in this category.</p>
+            <p className="text-center">No products available in this category.</p>
+          )}
+          {popupAdd && (
+            <div className="popup">
+              <div className="popup-content">
+                <h5>Added to cart !</h5>
+              </div>
+            </div>
           )}
         </div>
       </div>

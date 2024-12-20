@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Food_detail.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ProductService from "../../api/ProductService";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import AccountService from "../../api/AccountService";
 import CartService from "../../api/CartService";
 import { FaLeaf, FaBox, FaInfoCircle } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { CartContext } from "../../components/context/Context";
 
 export const Food_detail = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -18,6 +19,9 @@ export const Food_detail = () => {
   const images = product.imagesUrl || [];
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
   const [popupAddDetail, setPopupAddDetail] = useState(false);
+  const navigate = useNavigate();
+  const { addToCart } = useContext(CartContext);
+  const [popupAdd, setPopupAdd] = useState(false);
 
   // Xử lý khi nhấn nút Prev
   const handlePrevClick = () => {
@@ -75,23 +79,18 @@ export const Food_detail = () => {
     getAccount();
   }, [jwtToken]);
 
-  const addToCart = async () => {
-    if (!jwtToken) {
-      return;
-    }
-    try {
-      const response = await CartService.addToCart(
-        product.id,
-        (product.quantity = 1)
-      );
-      setPopupAddDetail(true);
+  const handleAddToCart = async () => {
+    if (username) {
+      await addToCart(product);
+      setPopupAdd(true);
       setTimeout(() => {
-        setPopupAddDetail(false);
+        setPopupAdd(false);
       }, 1000);
-      console.log("Add product successful:", response);
-      return response;
-    } catch (error) {}
+    } else {
+      navigate("/sign_in");
+    }
   };
+
   return (
     <div>
       <div>
@@ -198,7 +197,7 @@ export const Food_detail = () => {
                       </div>
 
                       <div className="border-bottom">
-                        <p className="price text-dark link">
+                        <p className="price text-dark link mb-2">
                           Price:
                           {product.salePercent > 0 ? (
                             <>
@@ -216,7 +215,9 @@ export const Food_detail = () => {
                               </span>
                             </>
                           ) : (
-                            <span className="mx-1">${Number(product.price).toFixed(2)}</span>
+                            <span className="mx-1">
+                              ${Number(product.price).toFixed(2)}
+                            </span>
                           )}
                         </p>
                       </div>
@@ -258,37 +259,47 @@ export const Food_detail = () => {
                           </div>
                         ) : null}
 
-                        <div className="d-flex align-items-center gap-15 flex-row mt-2 mb-3">
-                          <h3 className="product-heading">Quantity: </h3>
-                          <p className="product-data">
-                            {product.availableQuantity}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="d-flex gap-30 button-food-detail-outline">
-                        <button
-                          className="button button-food-detail"
-                          type="submit"
-                          onClick={addToCart}
-                        >
-                          Add to cart
-                        </button>
-
-                        <button
-                          className="button button-food-detail button-buy-now"
-                          type="submit"
-                        >
-                          Buy now
-                        </button>
-                        {popupAddDetail && (
-                          <div className="popup-add-detail">
-                            <div className="popup-content-detail">
-                              <h5>Added to cart !</h5>
-                            </div>
+                        {product.availableQuantity > 0 ? (
+                          <div className="d-flex align-items-center gap-15 flex-row mt-2 mb-3">
+                            <h3 className="product-heading">Quantity: </h3>
+                            <p className="product-data">In stock</p>
                           </div>
-                        )}
+                        ) : product.availableQuantity > 0 ? (
+                          <div className="d-flex align-items-center gap-15 flex-row mt-2 mb-3">
+                            <h3 className="product-heading">Quantity: </h3>
+                            <p className="product-data">Out of stock</p>
+                          </div>
+                        ) : null}
                       </div>
+
+                      {username ? (
+                        <div className="button-in-item mt-3">
+                          <button
+                            className="button-addtocart"
+                            onClick={handleAddToCart}
+                            disabled={product.availableQuantity === 0}
+                          >
+                            Add to cart
+                          </button>
+                          <button className="button-buynow">Buy now</button>
+                        </div>
+                      ) : (
+                        <div className="button-in-item mt-3">
+                          <button className="button-addtocart">
+                            <Link to="/sign_in">Add to cart</Link>
+                          </button>
+                          <button className="button-buynow">
+                            <Link to="/sign_in">Buy now</Link>
+                          </button>
+                        </div>
+                      )}
+                      {popupAdd && (
+                        <div className="popup">
+                          <div className="popup-content">
+                            <h5>Added to cart !</h5>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

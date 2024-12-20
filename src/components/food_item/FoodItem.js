@@ -19,11 +19,9 @@ export const FoodItem = ({ product }) => {
         try {
           const response = await AccountService.account(jwtToken);
           setUserName(response.username);
-          setAccountRole(response.role);
         } catch (error) {}
       } else {
         setUserName("");
-        setAccountRole("");
       }
     };
     getAccount();

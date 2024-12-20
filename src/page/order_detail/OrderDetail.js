@@ -46,10 +46,6 @@ const OrderDetail = () => {
       const getAccount = async () => {
         try {
           const response = await AccountService.account(jwtToken);
-          setUserName(response.username);
-          setEmail(response.email);
-          setPhone(response.phone);
-          setAddress(response.address);
         } catch (error) {
           console.error("Error fetching account information:", error);
           sessionStorage.removeItem("jwtToken");
@@ -112,24 +108,41 @@ const OrderDetail = () => {
       </Link>
 
       {/* Shipping Info */}
-      <div className="shipping-info d-flex col-12 px-5 mt-4">
-        <div className="col-7">
-          <h2>Delivery Information :</h2>
-          <div className="mt-2 font-size-for-text">
-            <p>
-              <strong>Full name :</strong>{username}
-            </p>
-            <p><strong>Phone number :</strong>{phone}</p>
-            <p><strong>Address :</strong>{address}</p>
+      {orderData.summary && (
+        <div className="shipping-info d-flex col-12 px-5 mt-4">
+          <div className="col-7">
+            <h2>Delivery Information :</h2>
+            <div className="mt-2 font-size-for-text">
+              <p>
+                <strong>Full name :</strong>
+                {username}
+              </p>
+              <p>
+                <strong>Phone number :</strong>
+                {phone}
+              </p>
+              <p>
+                <strong>Address :</strong>
+                {orderData.summary.deliveryAddress}
+              </p>
+              <p>
+                <strong>Note from receiver :</strong>
+                {orderData.summary.note}
+              </p>
+            </div>
           </div>
-        </div>
-        {orderData.summary && (
           <div className="col-5 d-flex">
             <h2>Shipping Status</h2>
-            <p >: <strong style={{color: "red"}}> {statusMap[orderData.summary.status]}</strong></p>
+            <p>
+              :{" "}
+              <strong style={{ color: "red" }}>
+                {" "}
+                {statusMap[orderData.summary.status]}
+              </strong>
+            </p>
           </div>
-        )}
-      </div>
+        </div>
+      )}
       {/* Product List */}
       {orderData.items && (
         <div className="product-list">

@@ -55,7 +55,8 @@ export const Order = () => {
   };
 
   //Delivery Address
-  const Address = (value) => {
+  const AddressChange = (e) => {
+    const { value } = e.target;
     setAddress(value);
     setOrderData((preState) => ({ ...preState, deliveryAddress: value }));
   };
@@ -86,30 +87,28 @@ export const Order = () => {
     setOrderData((preState) => ({ ...preState, paymentMethod: value }));
   };
 
-  //Call coupon
   // Call coupon
-const getCoupon = async () => {
-  try {
-    if (!couponId) {
-      setError("Please enter a coupon ID.");
-      return;
+  const getCoupon = async () => {
+    try {
+      if (!couponId) {
+        setError("Please enter a coupon ID.");
+        return;
+      }
+      setError("");
+      const response = await OrderService.getCoupon(couponId);
+      if (response) {
+        const discountAmount = (totalPrice * response.salePercent) / 100;
+        setCoupon(discountAmount);
+        setSalePercent(response.salePercent);
+      } else {
+        setError("Coupon ID does not exist or is invalid.");
+        return;
+      }
+    } catch (error) {
+      console.error("Failed to fetch coupon:", error);
+      setError("An error occurred while applying the coupon.");
     }
-    setError("");
-    const response = await OrderService.getCoupon(couponId);
-    if (response) {
-      const discountAmount = (totalPrice * response.salePercent) / 100;
-      setCoupon(discountAmount);
-      setSalePercent(response.salePercent);
-    } else {
-      setError("Coupon ID does not exist or is invalid.");
-      return;
-    }
-  } catch (error) {
-    console.error("Failed to fetch coupon:", error);
-    setError("An error occurred while applying the coupon.");
-  }
-};
-
+  };
 
   const handleProceedToPayment = () => {
     if (!pay) {
@@ -129,12 +128,6 @@ const getCoupon = async () => {
           setEmail(response.email);
           setPhone(response.phone);
           setAddress(response.address);
-          setOrderData((prev) => ({
-            ...prev,
-            phoneNumber: response.phone,
-            deliveryAddress: response.address,
-            receiver: response.username,
-          }));
           setPopupBuy(false);
         } catch (error) {
           console.error("Error fetching account information:", error);
@@ -195,12 +188,15 @@ const getCoupon = async () => {
 
     if (!address.trim()) {
       alert("Error: Shipping address cannot be empty!");
-      return; 
+      return;
     }
 
     setOrderData((prev) => ({
       ...prev,
       couponId: couponId,
+      deliveryAddress: address,
+      phoneNumber: phone,
+      receiver: username,
       note: note,
       paymentMethod: pay,
     }));
@@ -251,10 +247,17 @@ const getCoupon = async () => {
                     <input
                       type="text"
                       className={`form-control input-checkout-infor`}
-                      id="name"
+                      id="receiver"
                       placeholder="Enter your name"
                       value={username}
-                      readOnly
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setUserName(value);
+                        setOrderData((prevState) => ({
+                          ...prevState,
+                          receiver: value,
+                        }));
+                      }}
                     />
                   </div>
                   {/* Name end */}
@@ -302,11 +305,10 @@ const getCoupon = async () => {
                       id="shippingAddress"
                       placeholder="Enter your shipping address"
                       value={address}
-                      onChange={(e) => setAddress(e.target.value)} // Update the address state
+                      onChange={AddressChange} // Update the address state
                     />
                   </div>
                   {/* Shipping Address end */}
-
 
                   {/* Note start */}
                   <div className="form-group-note mt-4">
@@ -346,7 +348,10 @@ const getCoupon = async () => {
                       </div>
                     )}
                     {error && (
-                      <div className="error-message mt-3" style={{color: "red"}}>
+                      <div
+                        className="error-message mt-3"
+                        style={{ color: "red" }}
+                      >
                         <strong>{error}</strong>
                       </div>
                     )}
@@ -419,7 +424,9 @@ const getCoupon = async () => {
                     <div className="d-flex gap-10 col-9">
                       <div className="position-relative col-2">
                         <span className="checkout-badge text-center badge text-white p-2 position-absolute">
-                          <p className="text-quantity text-center">{item.amount}</p>
+                          <p className="text-quantity text-center">
+                            {item.amount}
+                          </p>
                         </span>
                         <div className="col-12">
                           <img
@@ -526,14 +533,14 @@ const getCoupon = async () => {
               </div>
 
               {popupBuy && (
-                <div className="popup">
-                  <div className="popup-content">
+                <div className="popup-order">
+                  <div className="popup-content-order">
                     <h5 className="info-delete">
                       Are you sure you want to purchase this product?
                     </h5>
                     <div className="popup-buttons">
                       <button
-                        className="button-delete"
+                        className="button-buy"
                         onClick={handleSubmitOrder}
                       >
                         Buy
