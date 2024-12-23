@@ -41,7 +41,7 @@ function Breadcrumb() {
     cart: "Cart",
     contact: "Contact",
     order: "Order",
-    invoice: "Invoice",
+    invoice: "Order",
     blog: "Blog"
   };
 
@@ -54,8 +54,7 @@ function Breadcrumb() {
         {pathnames.map((name, index) => {
           const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
           const isLast = index === pathnames.length - 1;
-          let displayName = routeNameMap[name] || name; // Nếu không có tên hiển thị trong map, sử dụng tên mặc định
-
+          let displayName = routeNameMap[name] || name;
           return isLast ? (
             <li
               key={index}

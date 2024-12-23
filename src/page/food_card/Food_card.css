@@ -131,12 +131,12 @@
 }
 
 .bt-add-to-cart {
-    background-color: tomato;
+    background-color: #4CAF50;
     color: #fff;
 }
 
 .bt-buy-now {
-    background-color: #4CAF50;
+    background-color: tomato ;
     color: #fff;
 }
 

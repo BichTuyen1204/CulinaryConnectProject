@@ -143,7 +143,7 @@ const Blog = () => {
           onChange={handleSearch}
         />
 
-        <div className="tag-input">
+        {/* <div className="tag-input">
           <input
             type="text"
             placeholder="Add tags..."
@@ -164,7 +164,7 @@ const Blog = () => {
               </span>
             ))}
           </div>
-        </div>
+        </div> */}
 
         <div className="saved-items">
           <button onClick={toggleSavedView}>

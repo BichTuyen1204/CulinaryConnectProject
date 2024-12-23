@@ -211,14 +211,16 @@ export const Food_card = () => {
                       <button className="bt-add-to-cart">
                         <Link to="/sign_in">Add to cart</Link>
                       </button>
-                      <Link to="/sign_in">Buy now</Link>
+                      <button className="bt-buy-now">Buy now</button>
                     </div>
                   )}
                 </div>
               </div>
             ))
           ) : (
-            <p className="text-center">No products available in this category.</p>
+            <p className="text-center">
+              No products available in this category.
+            </p>
           )}
           {popupAdd && (
             <div className="popup">

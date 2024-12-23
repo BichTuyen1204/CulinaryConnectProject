@@ -111,13 +111,14 @@ export const Navbar = ({ setShowLogin }) => {
   }, [showMenu]);
   return (
     <div className="navbar col-12">
+      <div className="col-1"></div>
       <div className="logo-navbar col-2">
         <Link to="/">
           <img src={Logo} alt="Logo" />
         </Link>
       </div>
 
-      <ul className="navbar-menu col-5">
+      <ul className="navbar-menu col-4">
         <li
           onClick={() => handleMenuItemClick("home")}
           className={`item ${location.pathname === "/" ? "active" : ""}`}
@@ -130,12 +131,6 @@ export const Navbar = ({ setShowLogin }) => {
           }`}
         >
           <Link to="/food_card">Menu</Link>
-        </li>
-        <li
-          onClick={() => handleMenuItemClick("recipe")}
-          className={`item ${location.pathname === "/recipe" ? "active" : ""}`}
-        >
-          <Link to="/recipe">Recipe</Link>
         </li>
         <li
           onClick={() => handleMenuItemClick("contact")}
@@ -164,22 +159,22 @@ export const Navbar = ({ setShowLogin }) => {
         ) : null}
       </ul>
 
-      <div className="navbar-right col-5">
-        <form onSubmit={handleSubmit} className="search-container col-7">
+      <div className="navbar-right col-4">
+        <form onSubmit={handleSubmit} className="search-container col-8">
           <CiSearch className="ic_search" />
           <input
             type="text"
             placeholder="Search..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)} // Update state on input change
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
           />
         </form>
 
-        <nav>
+        <nav className="col-1">
           <>
             {username ? (
-              <div className="navbar-basket-icon col-1">
+              <div className="navbar-basket-icon ">
                 <Link to="/cart" className="link">
                   <MdShoppingBasket className="ic_basket" />
                 </Link>
@@ -192,18 +187,7 @@ export const Navbar = ({ setShowLogin }) => {
             )}
           </>
         </nav>
-        <nav>
-          <>
-            {username ? (
-              <div className="navbar-location-icon col-1">
-                <FaLocationDot className="ic_location" />
-              </div>
-            ) : (
-              <div></div>
-            )}
-          </>
-        </nav>
-        <nav>
+        <nav className="col-1">
           <>
             {username ? (
               <div className="user-menu" ref={dropdownRef}>
@@ -271,6 +255,8 @@ export const Navbar = ({ setShowLogin }) => {
           </>
         </nav>
       </div>
+
+      <div className="col-1"></div>
     </div>
   );
 };

@@ -8,28 +8,7 @@ import MenuPage from "../../components/parent/FoodDisplayAndCategory";
 
 
 export const Home = () => {
-    const [category, setCategory] = useState("All");
-
-    // useEffect(() => {
-    //     const queryParams = new URLSearchParams(window.location.search);
-    //     const token = queryParams.get("token");
-
-    //     if (token) {
-    //         sessionStorage.setItem("jwtToken", token);
-    //         console.log("Token saved: ", token);
-    //         window.history.replaceState(null, null, window.location.pathname);
-    //         navigate("/", { replace: true });
-    //     } else {
-    //         const savedToken = sessionStorage.getItem("jwtToken");
-    //         if (!savedToken) {
-    //             console.error("Token not exist");
-    //             // navigate("/sign_in");
-    //         }
-    //     }
-
-    //     window.scrollTo(0, 0);
-    // }, [navigate]);
-
+    const [category, setCategory] = useState("All")
     return (
         <div>
             <Header />
