@@ -7,39 +7,39 @@ const Blog = () => {
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-  const [tags, setTags] = useState([]); 
+  const [tags, setTags] = useState([]);
   const [bookmarkedBlogs, setBookmarkedBlogs] = useState([]);
   const [blogs, setBlogs] = useState([]);
   const [showSavedDishes, setShowSavedDishes] = useState(false);
-  const [tagInput, setTagInput] = useState(""); 
+  const [tagInput, setTagInput] = useState("");
 
-
+  // Search term change handler
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
 
-
+  // Tag input change handler
   const handleTagInputChange = (e) => {
     setTagInput(e.target.value);
   };
 
-
+  // Handling tag addition
   const handleTagKeyPress = (e) => {
     if (e.key === "Enter" || e.key === ",") {
-      e.preventDefault(); 
+      e.preventDefault();
       if (tagInput.trim() !== "" && !tags.includes(tagInput.trim())) {
         setTags([...tags, tagInput.trim()]);
       }
-      setTagInput(""); 
+      setTagInput("");
     }
   };
 
-  
+  // Handle tag removal
   const handleTagRemove = (tagToRemove) => {
     setTags(tags.filter(tag => tag !== tagToRemove));
   };
 
-
+  // Fetch bookmarked blogs
   const fetchBookmarkedBlogs = async () => {
     if (jwtToken) {
       try {
@@ -51,7 +51,7 @@ const Blog = () => {
     }
   };
 
-
+  // Fetch all blogs based on search term and tags
   const getAllBlog = async () => {
     if (jwtToken) {
       try {
@@ -66,18 +66,12 @@ const Blog = () => {
     }
   };
 
-
-  useEffect(() => {
-    getAllBlog();
-    fetchBookmarkedBlogs();
-  }, [jwtToken, tags]); 
-
-
+  // Check if a blog is bookmarked
   const isBookmarked = (blogId) => {
     return bookmarkedBlogs.some((blog) => blog.id === blogId);
   };
 
-
+  // Handle save/unsave blog
   const handleSaveDish = async (blogId) => {
     if (jwtToken) {
       try {
@@ -112,12 +106,12 @@ const Blog = () => {
     }
   };
 
-
+  // Toggle saved dishes view
   const toggleSavedView = () => {
     setShowSavedDishes((prevState) => !prevState);
   };
 
-
+  // Filtered blogs based on search term and saved dishes toggle
   const filteredBlogs = blogs
     .filter(
       (post) =>
@@ -131,40 +125,51 @@ const Blog = () => {
       return true;
     });
 
+  // Fetch blogs and bookmarked blogs on component mount or dependency change
+  useEffect(() => {
+    getAllBlog();
+    fetchBookmarkedBlogs();
+  }, [jwtToken, tags]);
+
   return (
     <div className="App">
       <header className="header-blog">
         <div className="logo">CULINARY CONNECT</div>
-        <input
-          type="text"
-          placeholder="Search..."
-          className="search-bar"
-          value={searchTerm}
-          onChange={handleSearch}
-        />
 
-        {/* <div className="tag-input">
+        <div className="search-container">
+          {/* Search Bar */}
           <input
             type="text"
-            placeholder="Add tags..."
-            value={tagInput}
-            onChange={handleTagInputChange}
-            onKeyDown={handleTagKeyPress}
+            placeholder="Search..."
+            className="search-bar"
+            value={searchTerm}
+            onChange={handleSearch}
           />
-          <div className="tags-list">
-            {tags.map((tag, index) => (
-              <span key={index} className="tag">
-                {tag}{" "}
-                <button
-                  onClick={() => handleTagRemove(tag)}
-                  className="remove-tag"
-                >
-                  X
-                </button>
-              </span>
-            ))}
+
+          {/* Tag Input Section */}
+          <div className="tag-input">
+            <input
+              type="text"
+              placeholder="Add tags..."
+              value={tagInput}
+              onChange={handleTagInputChange}
+              onKeyDown={handleTagKeyPress}
+            />
+            <div className="tags-list">
+              {tags.map((tag, index) => (
+                <span key={index} className="tag">
+                  {tag}{" "}
+                  <button
+                    onClick={() => handleTagRemove(tag)}
+                    className="remove-tag"
+                  >
+                    X
+                  </button>
+                </span>
+              ))}
+            </div>
           </div>
-        </div> */}
+        </div>
 
         <div className="saved-items">
           <button onClick={toggleSavedView}>

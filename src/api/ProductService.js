@@ -18,18 +18,6 @@ class ProductService {
     }
   }
 
-  async getAllProductCategory() {
-    try {
-      const response = await axios.get(`${API_BASE_URL_2}/product/category`);
-      return response.data;
-    } catch (error) {
-      console.error(
-        "Error during API calls: ",
-        error.response ? error.response.data : error.message
-      );
-      throw error;
-    }
-  }
 
   async getProductDetail(id) {
     try {

@@ -26,10 +26,13 @@ import OrderDetail from "./page/order_detail/OrderDetail";
 import { CartProvider } from "./components/context/Context";
 import Blog from "./page/blog/Blog";
 import BlogDetail from "./page/blog_detail/BlogDetail";
+import ForgotPassword from "./components/forget/ForgetPass";  
+
 
 const AppContent = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [showSignUp, setShowSignUp] = useState(false);
+  const [showForgotPass, setShowForgotPass] = useState(false);
   const navigate = useNavigate();
 
   const handleLoginSuccess = () => {
@@ -45,6 +48,11 @@ const AppContent = () => {
   const openLogin = () => {
     setShowLogin(true);
     setShowSignUp(false);
+  };
+
+  const openForgotPass = () => {
+    setShowLogin(false);
+    setShowForgotPass(true);
   };
 
   const blogData = {
@@ -98,11 +106,17 @@ const AppContent = () => {
               setShowLogin={setShowLogin}
               openSignUp={openSignUp}
               onLoginSuccess={handleLoginSuccess}
+              openForgotPass={openForgotPass}
             />
           )}
           {showSignUp && (
             <Sign_up setShowSignUp={setShowSignUp} openLogin={openLogin} />
           )}
+
+          {showForgotPass && (
+            <ForgotPassword setShowForgotPass={setShowForgotPass} />
+          )}
+
         </CartProvider>
       </div>
       <Footer />
