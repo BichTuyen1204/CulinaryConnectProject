@@ -174,7 +174,7 @@ export const Navbar = ({ setShowLogin }) => {
         <nav className="col-1">
           <>
             {username ? (
-              <div className="navbar-basket-icon ">
+              <div className="navbar-basket-icon mx-1">
                 <Link to="/cart" className="link">
                   <MdShoppingBasket className="ic_basket" />
                 </Link>
@@ -205,15 +205,20 @@ export const Navbar = ({ setShowLogin }) => {
                       }`}
                       onClick={handleAvatarClick}
                     >
-                      {imgUser ? (
-                        <img src={imgUser} className="avatar-img" alt="" />
-                      ) : (
-                        <img
-                          src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
-                          className="avatar-img"
-                          alt=""
-                        />
-                      )}
+                      <img
+                        className="avatar-img"
+                        src={
+                          imgUser && imgUser.trim() !== ""
+                            ? imgUser
+                            : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
+                        }
+                        alt="Avatar"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src =
+                            "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg";
+                        }}
+                      />
                     </div>
                   </Dropdown.Toggle>
 

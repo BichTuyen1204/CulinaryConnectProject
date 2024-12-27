@@ -7,6 +7,7 @@ import CartService from "../../api/CartService.js";
 import { BiSolidEditAlt } from "react-icons/bi";
 import OrderService from "../../api/OrderService.js";
 import { IoClose } from "react-icons/io5";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 export const Order = () => {
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
@@ -29,6 +30,8 @@ export const Order = () => {
   const [popupBuy, setPopupBuy] = useState(false);
   const [salePercent, setSalePercent] = useState(null);
   const [popupOrderSuccessful, setPopupOrderSuccessful] = useState(false);
+  const [orderID, setOrderID] = useState(null);
+  const [paymentSuccessful, setPaymentSuccessful] = useState(false);
 
   const [orderData, setOrderData] = useState({
     couponId: "",
@@ -224,6 +227,83 @@ export const Order = () => {
     updateTotals(products);
   }, [products]);
 
+  const createOrder = async () => {
+    try {
+      const response = await OrderService.createOrder(orderData, jwtToken);
+      if (response) {
+        console.log("Order created successfully. ID:", response.id);
+        return response;
+      } else {
+        throw new Error("Failed to create order. No ID returned.");
+      }
+    } catch (error) {
+      console.error(
+        "Error creating order:",
+        error.response?.data || error.message
+      );
+      throw error;
+    }
+  };
+
+  const getURLPaypal = async (orderId) => {
+    try {
+      const response = await OrderService.getURLPaypal(orderId);
+      console.log("Payment URL retrieved:", response.data);
+      return response;
+    } catch (error) {
+      console.error(
+        "Error fetching payment URL:",
+        error.response?.data || error.message
+      );
+      throw error;
+    }
+  };
+
+  const handleCreateOrderAndPayment = async () => {
+    try {
+      const createdOrder = await createOrder(orderData, jwtToken);
+      const orderId = createdOrder.id;
+      if (!orderId) {
+        throw new Error("Order ID is missing in the response from createOrder");
+      }
+  
+      console.log("Order ID:", orderId);
+        const paymentUrl = await getURLPaypal(orderId, jwtToken);
+      console.log("Payment URL:", paymentUrl);
+        if (paymentUrl) {
+        console.log("Returning orderId before redirect:", orderId);
+        setTimeout(() => {
+          window.location.href = paymentUrl;
+        }, 0);
+        return orderId;
+      } else {
+        throw new Error("Payment URL is undefined");
+      }
+    } catch (error) {
+      console.error(
+        "Error during order creation or fetching payment URL:",
+        error
+      );
+      throw error;
+    }
+  };
+
+  const handleOnApprove = async (data) => {
+    try {
+      const captureResult = await OrderService.capturePayment(data.orderID);
+      console.log("Payment captured successfully:", captureResult);
+      if (captureResult.status === "COMPLETED") {
+        alert("Payment completed successfully!");
+        navigate("/invoice", { state: { jwtToken } });
+      } else {
+        alert("Payment failed or not completed.");
+      }
+    } catch (error) {
+      console.error("Error capturing payment:", error);
+      alert("An error occurred while capturing payment.");
+    }
+  };
+
   // Order
   const handleSubmitOrder = async (e) => {
     e.preventDefault();
@@ -341,9 +421,7 @@ export const Order = () => {
                       onBlur={PhoneBlur}
                     />
                   </div>
-                  {phoneError && (
-                    <p style={{ color: "red" }}>{phoneError}</p>
-                  )}
+                  {phoneError && <p style={{ color: "red" }}>{phoneError}</p>}
                   {/* Phone number end */}
 
                   {/* Shipping Address start */}
@@ -552,7 +630,6 @@ export const Order = () => {
                   </div>
                 </div>
               ))}
-
               <div className="d-flex justify-content-between align-items-center mt-3">
                 <h4 className="total">
                   <strong>Total: </strong>
@@ -561,7 +638,6 @@ export const Order = () => {
                   <strong>$ {totalPrice}</strong>
                 </h5>
               </div>
-
               <div className="d-flex justify-content-between align-items-center mt-2">
                 <h4 className="total">
                   <strong>Coupon: </strong>
@@ -570,9 +646,7 @@ export const Order = () => {
                   <strong>$ {coupon > 0 ? coupon : 0}</strong>
                 </h5>
               </div>
-
               <hr className="mt-2" />
-
               <div className="d-flex justify-content-between align-items-center py-2">
                 <h4 className="total">
                   <strong>Total Amount: </strong>
@@ -583,11 +657,26 @@ export const Order = () => {
               </div>
 
               <div className="col-5 mt-3 button-order">
-                <button type="submit" onClick={handleProceedToPayment}>
-                  Proceed to Payment
-                </button>
+                {pay === "BANKING" ? (
+                  <PayPalScriptProvider
+                    options={{
+                      "client-id":
+                        "AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R",
+                      currency: "USD",
+                    }}
+                  >
+                    <PayPalButtons
+                      style={{ layout: "vertical", color: "gold" }}
+                      createOrder={handleCreateOrderAndPayment} // Gọi hàm để tạo order và lấy URL
+                      onApprove={handleOnApprove} // Xử lý sau khi thanh toán thành công
+                    />
+                  </PayPalScriptProvider>
+                ) : (
+                  <button type="submit" onClick={handleProceedToPayment}>
+                    Proceed to Payment
+                  </button>
+                )}
               </div>
-
               {popupBuy && (
                 <div className="popup-order">
                   <div className="popup-content-order">
@@ -609,7 +698,6 @@ export const Order = () => {
                   </div>
                 </div>
               )}
-
               {popupOrderSuccessful && (
                 <div className="popup">
                   <div className="popup-content">

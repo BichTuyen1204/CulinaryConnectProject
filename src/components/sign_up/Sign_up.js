@@ -20,10 +20,7 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
   const [checkPass, setCheckPass] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
   const [address, setAddress] = useState("");
-  const [addressError, setAddressError] = useState("");
   const [formSubmitted, setFormSubmitted] = useState(false);
-  const [description, setDescription] = useState("");
-  const [descriptionError, setDescriptionError] = useState("");
   const [registerError, setRegisterError] = useState("");
   const [agreedToTerms, setAgreedToTerms] = useState(false);
 
@@ -178,13 +175,6 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
     setShowRePassword(!showRePassword);
   };
 
-  // Receive description
-  const DescriptionChange = (e) => {
-    const { value } = e.target;
-    setDescription(value);
-    setAccount((preState) => ({ ...preState, description: value }));
-  };
-
   // Submit
   const validateForm = async () => {
     NameBlur();
@@ -194,7 +184,7 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
     RePasswordBlur();
 
     if (!agreedToTerms) {
-      alert("Please agree to the terms of use and privacy policy");
+      alert("To continue registration, you need to agree to our Terms of Use and Privacy Policy.");
       return;
     }
 
@@ -216,15 +206,7 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
         console.log("Account created", response.data);
         setFormSubmitted(true);
         setRegisterError("");
-        console.log(
-          "Account:",
-          username,
-          email,
-          phone,
-          password,
-          address,
-          description
-        );
+        console.log("Account:", username, email, phone, password, address);
         setTimeout(() => {
           openLogin();
           setFormSubmitted(false);
@@ -388,32 +370,13 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
 
           {/* Input address */}
           <div className="address">
-            <label htmlFor="username">
-              Address
-            </label>
+            <label htmlFor="username">Address</label>
             <input
               type="text"
               name="address"
               value={address}
               onChange={AddressChange}
             />
-            {addressError && <p style={{ color: "red" }}>{addressError}</p>}
-          </div>
-
-          {/* Input description */}
-          <div className="description">
-            <label htmlFor="username">
-              Description
-            </label>
-            <input
-              type="text"
-              name="description"
-              value={description}
-              onChange={DescriptionChange}
-            />
-            {descriptionError && (
-              <p style={{ color: "red" }}>{descriptionError}</p>
-            )}
           </div>
         </div>
 
@@ -429,7 +392,9 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
 
         <div className="info-register">
           {formSubmitted && !registerError && (
-            <p style={{ color: "green" }}>Register successful</p>
+            <p style={{ color: "green" }} className="my-2">
+              Register successful
+            </p>
           )}
           <button type="button" onClick={validateForm}>
             Register

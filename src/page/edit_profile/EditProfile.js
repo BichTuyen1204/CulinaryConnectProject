@@ -419,10 +419,19 @@ export const EditProfile = () => {
   return (
     <div className="edit-profile-container col-12">
       <div className="edit-profile-header col-3 align-items-center">
-        <img
+      <img
           className="edit-profile-avatar"
-          src={imgUser || "default-avatar.png"}
-          alt="Profile"
+          src={
+            imgUser
+              ? imgUser
+              : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
+          }
+          alt="Avatar"
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src =
+              "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg";
+          }}
         />
 
         <div className="bg-img" value={imgUser}>

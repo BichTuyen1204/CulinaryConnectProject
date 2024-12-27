@@ -106,7 +106,7 @@ export const Food_card = () => {
       {/* Header Image */}
       <div className="image-menu">
         <div className="image-menu-contents">
-          <img src={image} alt="Menu Header" />
+          <img className="" src={"https://i.pinimg.com/736x/35/35/f1/3535f15f468db8a5837d7b61d27bade1.jpg"} alt="Menu Header" />
         </div>
       </div>
 

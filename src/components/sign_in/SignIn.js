@@ -98,7 +98,7 @@ const SignIn = () => {
     PasswordBlur();
 
     if (!agreedToTerms) {
-      alert("Please agree to the terms of use and privacy policy");
+      alert("To continue logging in, you need to agree to our Terms of Use and Privacy Policy.");
       return;
     }
 

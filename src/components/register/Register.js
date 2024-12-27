@@ -21,10 +21,7 @@ const Register = () => {
   const [checkPass, setCheckPass] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
   const [address, setAddress] = useState("");
-  const [addressError, setAddressError] = useState("");
   const [formSubmitted, setFormSubmitted] = useState(false);
-  const [description, setDescription] = useState("");
-  const [descriptionError, setDescriptionError] = useState("");
   const [registerError, setRegisterError] = useState("");
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [isOpenRegister, setIsOpenRegister] = useState(true);
@@ -188,13 +185,6 @@ const Register = () => {
     setShowRePassword(!showRePassword);
   };
 
-  // Receive description
-  const DescriptionChange = (e) => {
-    const { value } = e.target;
-    setDescription(value);
-    setAccount((preState) => ({ ...preState, description: value }));
-  };
-
   // Submit
   const validateForm = async () => {
     NameBlur();
@@ -204,7 +194,7 @@ const Register = () => {
     RePasswordBlur();
 
     if (!agreedToTerms) {
-      alert("Please agree to the terms of use and privacy policy");
+      alert("To continue registration, you need to agree to our Terms of Use and Privacy Policy.");
       return;
     }
     if (
@@ -231,8 +221,7 @@ const Register = () => {
           email,
           phone,
           password,
-          address,
-          description
+          address
         );
         setTimeout(() => {
           closeRegister();
@@ -404,21 +393,6 @@ const Register = () => {
               value={address}
               onChange={AddressChange}
             />
-            {addressError && <p style={{ color: "red" }}>{addressError}</p>}
-          </div>
-
-          {/* Input description */}
-          <div className="description">
-            <label htmlFor="username">Description</label>
-            <input
-              type="text"
-              name="description"
-              value={description}
-              onChange={DescriptionChange}
-            />
-            {descriptionError && (
-              <p style={{ color: "red" }}>{descriptionError}</p>
-            )}
           </div>
         </div>
 

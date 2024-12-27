@@ -2,6 +2,7 @@ import axios from "axios";
 
 const API_BASE_URL = "http://localhost:8080/api/customer/order";
 const API_BASE_URL_2 = "http://localhost:8080/api/public/fetch";
+const API_BASE_URL_3 = "http://localhost:8080/api/payment";
 
 class OrderService {
   async createOrder(orderData, jwtToken) {
@@ -12,6 +13,53 @@ class OrderService {
         },
       });
       console.log("Order successful :", response.data);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Error during API calls: ",
+        error.response ? error.response.data : error.message
+      );
+      throw error;
+    }
+  }
+
+  async getURLPaypal(orderId) {
+    const jwtToken = sessionStorage.getItem("jwtToken");
+
+    if (!orderId) {
+      throw new Error("Order ID is required to fetch payment URL");
+    }
+
+    try {
+      const response = await axios.get(`${API_BASE_URL_3}/get`, {
+        params: { orderId },
+        headers: { Authorization: `Bearer ${jwtToken}` },
+      });
+
+      console.log("API response:", response.data);
+      const paymentUrl = response.data;
+      if (!paymentUrl.startsWith("https://www.sandbox.paypal.com/")) {
+        throw new Error("Invalid Payment URL returned by API");
+      }
+      return paymentUrl;
+    } catch (error) {
+      console.error(
+        "Error fetching payment URL:",
+        error.response?.data || error.message
+      );
+      throw error;
+    }
+  }
+
+  async handleApprove(id) {
+    const jwtToken = sessionStorage.getItem("jwtToken");
+    try {
+      const response = await axios.post(`${API_BASE_URL_3}/capture`, id, {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      });
+      console.log("Payment successful :", response.data);
       return response.data;
     } catch (error) {
       console.error(
