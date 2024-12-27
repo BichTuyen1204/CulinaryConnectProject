@@ -64,3 +64,34 @@
     color: tomato;
     font-weight: bold;
 }
+
+@media (max-width:376px) {
+    .explore-menu {
+        margin-top: -15px;
+    }
+    .explore-menu h1 {
+        font-size: 0.9em;
+    }
+    .explore-menu p {
+        font-size: 0.7em;
+        margin-top: -20px;
+    }
+    .explore-menu-list {
+        margin-top: -5px;
+    }
+    .explore-menu-list-item {
+        width: 50px;
+    }
+    .explore-menu-list-item img {
+        width: 40px;
+        height: 40px;
+    }
+    .explore-menu-list-item p {
+        margin-top: 5px;
+    }
+    .explore-menu hr {
+        margin-top: -30px;
+        height: 1px;
+        background-color: #636363;
+    }
+}

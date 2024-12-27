@@ -25,7 +25,7 @@
 }
 
 .navbar-hidden {
-  z-index: -1; 
+  z-index: -1;
 }
 
 .navbar-menu li.active a {
@@ -283,6 +283,66 @@ button {
 
 @media (max-width: 750px) {
   .navbar-menu {
+  }
+}
+
+@media (max-width: 376px) {
+  .navbar {
+    height: 80px;
+    width: 100% !important;
+    align-items: center !important;
+    justify-content: left !important;
+    flex-wrap: wrap;
+  }
+
+  .navbar .logo-navbar {
     display: none;
+  }
+
+  .search-input {
+    margin-left: -15px;
+    margin-top: -20px;
+    width: 250px;
+    height: 30px;
+    font-size: 0.9em;
+  }
+
+  .ic_search {
+    left: 200px;
+    margin-top: -20px;
+  }
+
+  .navbar button {
+    margin-left: 120px;
+    padding: 3px 15px;
+    font-size: 0.9em;
+    align-content: center;
+    margin-bottom: 20px;
+  }
+
+  .navbar-menu {
+    gap: 10px;
+    order: 1;
+    margin-right: 100px;
+    margin-top: -23px;
+    font-size: 0.9em;
+  }
+
+  .ic_basket {
+    margin-left: 142px;
+    width: 27px;
+    margin-top: -18px;
+  }
+
+  .avatar-container {
+    width: 35px;
+    height: 35px;
+    margin-left: 42px;
+    margin-top: 2px;
+  }
+
+  .avatar-img {
+    width: 28px;
+    height: 28px;
   }
 }

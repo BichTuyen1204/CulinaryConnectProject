@@ -255,7 +255,7 @@ export const Navbar = ({ setShowLogin }) => {
                 </Dropdown>
               </div>
             ) : (
-              <button onClick={() => setShowLogin(true)}>Login</button>
+              <button className="button-login" onClick={() => setShowLogin(true)}>Login</button>
             )}
           </>
         </nav>
