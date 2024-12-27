@@ -39,6 +39,9 @@ export const EditProfile = () => {
   const [initialDescription, setInitialDescription] = useState("");
   const navigate = useNavigate();
 
+  const [otp, setOtp] = useState('');
+  const [otpVisible, setOtpVisible] = useState(false); // State to control OTP panel visibility
+
   const [account, setAccount] = useState({
     username: "",
     email: "",
@@ -141,6 +144,70 @@ export const EditProfile = () => {
     } else {
       setEmailError("");
     }
+  };
+
+  const updateEmailOnly = async () => {
+    EmailBlur();
+    if (!emailError && email) {
+      try {
+        const response = await AccountService.updateInfo({ email });
+        console.log("Email updated", response);
+        alert("Email updated successfully!");
+      } catch (error) {
+        if (error.response) {
+          const errorMessage = error.response.data?.message;
+          if (errorMessage?.includes("email")) {
+            setEmailError("Email already exists.");
+          } else {
+            setEmailError("Failed to update email.");
+          }
+        }
+      }
+    }
+  };
+
+  const [accountId, setAccountId] = useState(null); 
+  const handleVisibleOTP = async () => {
+    try {
+      const response = await AccountService.updateEmailOTP(email);
+
+      if (response) {
+        setAccountId(response.accountId);
+        setOtpVisible(true);
+      }
+    } catch (error) {
+  
+      alert("Error: " + (error.response ? error.response.data.messages : error.message));
+    }
+  };
+  
+
+  const handleOtpChange = (e) => {
+    setOtp(e.target.value);
+  };
+
+
+  const handleSubmitOtp = async () => {
+    if (!accountId) {
+      alert("Account ID is missing. Please request an OTP first.");
+      return;
+    }
+    try {
+      const response = await AccountService.updateEmail(accountId, email, otp);
+
+      console.log('OTP submitted:', otp);
+      setOtpVisible(false);
+  
+      if (response) {
+        alert("Email successfully updated!");
+      }
+    } catch (error) {
+      alert("Error: " + (error.response ? error.response.data.messages : error.message));
+    }
+  };
+
+  const handleCloseOtpPanel = () => {
+    setOtpVisible(false);
   };
 
   // Receive phone number
@@ -456,6 +523,16 @@ export const EditProfile = () => {
         >
           Edit Profile
         </button>
+
+        <button
+          className={`tab-button-infor text-center ${
+            activeTab === "email" ? "active" : ""
+          }`}
+          onClick={() => setActiveTab("email")}
+        >
+          Edit Email
+        </button>
+
         <button
           className={`tab-button-pass text-center ${
             activeTab === "password" ? "active" : ""
@@ -488,22 +565,7 @@ export const EditProfile = () => {
                 )}
               </div>
 
-              {/* Input email */}
-              <div className="input-container">
-                <p className="mt-3">
-                  <strong>Email:</strong>
-                </p>
-                <div className="input-wrapper">
-                  <input
-                    type="email"
-                    name="email"
-                    value={email}
-                    onChange={EmailChange}
-                    onBlur={EmailBlur}
-                  />
-                </div>
-                {emailError && <p style={{ color: "red" }}>{emailError}</p>}
-              </div>
+
 
               {/* Input phone */}
               <div className="input-container">
@@ -584,6 +646,69 @@ export const EditProfile = () => {
                 <button className="bt-cancel-profile">Back</button>
               </Link>
             </div>
+          </div>
+        )}
+
+        {activeTab === "email" && (
+          <div className="email-section">
+
+              {/* Input email */}
+              <div className="input-container">
+                <p className="mt-3">
+                  <strong>Email:</strong>
+                </p>
+                <div className="input-wrapper">
+                  <input
+                    type="email"
+                    name="email"
+                    value={email}
+                    onChange={EmailChange}
+                    onBlur={EmailBlur}
+                  />
+                </div>
+                {emailError && <p style={{ color: "red" }}>{emailError}</p>}
+              </div>
+
+            
+
+
+            
+                <button
+                  className="bt-edit-profile mt-3"
+                  onClick={handleVisibleOTP}
+                >
+                  Update Email
+                </button>
+            
+              <p className="text-or text-center align-items-center justify-content-center">
+                OR
+              </p>
+              <Link to="/profile">
+                <button className="bt-cancel-profile">Back</button>
+              </Link>
+
+              {/* OTP Pop-Up at the top of the page */}
+              {otpVisible && (
+                <div className="otp-popup-overlay">
+                  <div className="otp-popup">
+                    <h2>Enter OTP</h2>
+                    <div className="form-group">
+                      <label>OTP:</label>
+                      <input
+                        type="text"
+                        value={otp}
+                        onChange={handleOtpChange}
+                        placeholder="Enter OTP"
+                      />
+                    </div>
+                    <button  className="verify-otp" onClick={handleSubmitOtp} disabled={!otp}>
+                      Verify OTP
+                    </button>
+                    <button  className="close-otp" onClick={handleCloseOtpPanel}>Close</button>
+                  </div>
+                </div>
+              )}
+
           </div>
         )}
 

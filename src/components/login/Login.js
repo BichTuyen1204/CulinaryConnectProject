@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import AccountService from "../../api/AccountService";
 
-const Login = ({ setShowLogin, openSignUp, onLoginSuccess }) => {
+const Login = ({ setShowLogin, openSignUp, onLoginSuccess, openForgotPass }) => {
   const [username, setUserName] = useState("");
   const [userNameError, setUserNameError] = useState("");
   const [password, setPassword] = useState("");
@@ -193,8 +193,15 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess }) => {
 
           {/* Forgot password */}
           <div className="forgot-pass">
-            <p className="">Forgot password?</p>
+            <p
+              onClick={openForgotPass}
+              style={{ cursor: "pointer", color: "blue", textDecoration: "underline" }}
+            >
+              Forgot password??
+            </p>
           </div>
+
+
 
           {/* Register */}
           <div className="part-end-login">
