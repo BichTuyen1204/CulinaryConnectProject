@@ -1,5 +1,3 @@
-// src/components/cart/Cart.js
-
 import React, { useContext, useEffect, useState } from "react";
 import "../cart/Cart.css";
 import { IoClose } from "react-icons/io5";
@@ -166,7 +164,7 @@ const Cart = () => {
       <div className="cart-items">
         <div className="cart-items-titile">
           <p>Image</p>
-          <p>Title</p>
+          <p className="title">Title</p>
           <p className="mx-4">Price</p>
           <p className="quantity">Quantity</p>
           <p>Total</p>
@@ -186,7 +184,7 @@ const Cart = () => {
                   </Link>
                 </div>
 
-                <p className="mb-4">{item.product.productName}</p>
+                <p className="mb-4 title-info">{item.product.productName}</p>
                 <div className="mb-4">
                   {item.product.salePercent > 0 ? (
                     <>

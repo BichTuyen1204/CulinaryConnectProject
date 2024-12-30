@@ -279,3 +279,16 @@ body {
     padding: 10px;
   }
 }
+
+@media (max-width: 431px) {
+  .comment-user {
+    margin-left: 5px;
+  }
+  .comment-time {
+    font-size: 0.9em;
+  }
+  .ic_back{
+    width: 18px;
+    margin-left: -30px;
+  }
+}

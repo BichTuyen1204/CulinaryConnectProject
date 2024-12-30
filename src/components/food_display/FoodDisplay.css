@@ -15,6 +15,78 @@
     row-gap: 30px;
 }
 
+@media (max-width:1281px) {
+    .food-display h2 {
+        font-size: 1.4em;
+        margin-top: -15px;
+    } 
+    .food-display-list {
+        margin-top: 25px;
+        grid-template-columns: repeat(auto-fill,minmax(140px,1fr));
+        gap: 10px;
+    }
+}
+
+@media (max-width:1025px) {
+    .food-display h2 {
+        font-size: 1.2em;
+        margin-top: -15px;
+    } 
+    .food-display-list {
+        margin-top: 25px;
+        grid-template-columns: repeat(auto-fill,minmax(130px,1fr));
+        gap: 10px;
+    }
+}
+
+@media (max-width:821px) {
+    .food-display h2 {
+        font-size: 1.2em;
+        margin-top: -15px;
+    } 
+    .food-display-list {
+        margin-top: 25px;
+        grid-template-columns: repeat(auto-fill,minmax(130px,1fr));
+        gap: 10px;
+    }
+}
+
+@media (max-width:769px) {
+    .food-display h2 {
+        font-size: 1.2em;
+        margin-top: -15px;
+    } 
+    .food-display-list {
+        margin-top: 25px;
+        grid-template-columns: repeat(auto-fill,minmax(120px,1fr));
+        gap: 10px;
+    }
+}
+
+@media (max-width:541px) {
+    .food-display h2 {
+        font-size: 0.9em;
+        margin-top: -28px;
+    } 
+    .food-display-list {
+        margin-top: 15px;
+        grid-template-columns: repeat(auto-fill,minmax(110px,1fr));
+        gap: 5px;
+    }
+}
+
+@media (max-width:431px) {
+    .food-display h2 {
+        font-size: 0.7em;
+        margin-top: -28px;
+    } 
+    .food-display-list {
+        margin-top: 15px;
+        grid-template-columns: repeat(auto-fill,minmax(150px,1fr));
+        gap: 10px;
+    }
+}
+
 @media (max-width:376px) {
     .food-display h2 {
         font-size: 0.7em;
@@ -22,7 +94,7 @@
     } 
     .food-display-list {
         margin-top: 15px;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 5px;
+        grid-template-columns: repeat(auto-fill,minmax(100px,1fr));
+        gap: 3px;
     }
 }

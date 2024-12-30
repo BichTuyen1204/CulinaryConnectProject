@@ -160,7 +160,7 @@ export const Navbar = ({ setShowLogin }) => {
       </ul>
 
       <div className="navbar-right col-4">
-        <form onSubmit={handleSubmit} className="search-container col-8">
+        <form onSubmit={handleSubmit} className="search-container col-8 mx-1">
           <CiSearch className="ic_search" />
           <input
             type="text"
@@ -171,7 +171,7 @@ export const Navbar = ({ setShowLogin }) => {
           />
         </form>
 
-        <nav className="col-1">
+        <nav className="col-1 mx-1">
           <>
             {username ? (
               <div className="navbar-basket-icon mx-1">
@@ -187,7 +187,7 @@ export const Navbar = ({ setShowLogin }) => {
             )}
           </>
         </nav>
-        <nav className="col-1">
+        <nav className="col-1 mx-1">
           <>
             {username ? (
               <div className="user-menu" ref={dropdownRef}>

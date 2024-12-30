@@ -1,63 +1,157 @@
 .header {
-    height: 34vw;
-    width: 100%;
-    margin: 30px auto;
-    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('big-food.png') no-repeat;
-    background-size: cover;
-    background-position: center;
-    position: relative;
-    border-radius: 15px;
-    background-blend-mode: multiply;
+  height: 34vw;
+  width: 100%;
+  margin: 30px auto;
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.5),
+      rgba(255, 255, 255, 0.5)
+    ),
+    url("big-food.png") no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border-radius: 15px;
+  background-blend-mode: multiply;
 }
 
 .header-contents {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    gap: 1.5vw;
-    max-width: 50%;
-    bottom: 10%;
-    left: 6vw;
-    animation: fadeIn 3s;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 1.5vw;
+  max-width: 50%;
+  bottom: 10%;
+  left: 6vw;
+  animation: fadeIn 3s;
 }
 
 .header-contents h2 {
-    font-weight: 500;
-    color: white;
-    font-size: max(4.5vw,22px);
+  font-weight: 500;
+  color: white;
+  font-size: max(4.5vw, 22px);
 }
 
 .header-contents p {
-    color: white;
-    font-size: 1vw;
+  color: white;
+  font-size: 1vw;
 }
 
 .header-contents button {
-    border: none;
-    color: #747474;
-    font-weight: 500;
-    padding: 1vw 2.3vw;
-    background-color: white;
-    font-size: max(1vw,13px);
-    border-radius: 50px;
+  border: none;
+  color: #747474;
+  font-weight: 500;
+  padding: 1vw 2.3vw;
+  background-color: white;
+  font-size: max(1vw, 13px);
+  border-radius: 50px;
 }
 
-@media (max-width:376px) {
-    .header {
-        height: 40vw;
-    }
-
+@media (max-width: 1281px) {
     .header h2 {
-        font-size: 0.9em;
+      font-size: 2.2em;
     }
-
+  
     .header p {
-        font-size: 0.5em;
+      font-size: 1.4em;
     }
-
+  
     .header button {
-        padding: 2px 10px;
-        font-size: 0.5em;
+      padding: 5px 20px;
+      font-size: 1.2em;
     }
+  }
+
+@media (max-width: 1025px) {
+    .header h2 {
+      font-size: 2em;
+    }
+  
+    .header p {
+      font-size: 1.2em;
+    }
+  
+    .header button {
+      padding: 5px 20px;
+      font-size: 1.2em;
+    }
+  }
+
+@media (max-width: 821px) {
+    .header h2 {
+      font-size: 1.8em;
+    }
+  
+    .header p {
+      font-size: 1em;
+    }
+  
+    .header button {
+      padding: 4px 17px;
+      font-size: 1em;
+    }
+  }
+
+@media (max-width: 769px) {
+  .header h2 {
+    font-size: 1.5em;
+  }
+
+  .header p {
+    font-size: 1em;
+  }
+
+  .header button {
+    padding: 4px 17px;
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 541px) {
+    .header h2 {
+      font-size: 1.2em;
+    }
+  
+    .header p {
+      font-size: 0.7em;
+    }
+  
+    .header button {
+      padding: 5px 15px;
+      font-size: 0.7em;
+    }
+  }
+
+@media (max-width: 416px) {
+  .header h2 {
+    font-size: 0.9em;
+  }
+
+  .header p {
+    font-size: 0.5em;
+  }
+
+  .header button {
+    padding: 2px 10px;
+    font-size: 0.5em;
+  }
+}
+
+@media (max-width: 376px) {
+  .header {
+    height: 40vw;
+  }
+
+  .header h2 {
+    font-size: 0.9em;
+  }
+
+  .header p {
+    font-size: 0.5em;
+  }
+
+  .header button {
+    padding: 2px 10px;
+    font-size: 0.5em;
+  }
 }

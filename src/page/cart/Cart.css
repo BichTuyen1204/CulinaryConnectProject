@@ -191,3 +191,33 @@
   font-size: 24px;
   cursor: pointer;
 }
+
+@media (max-width:431px) {
+  .quantity {
+    margin-left: 0px;
+    margin-right: 25px;
+  }
+  .title {
+    margin-left: 50%;
+  }
+  .title-info {
+    padding-left: 5px;
+  }
+  .text-center {
+    width: 15px !important;
+  }
+  .input-quantity{
+margin-right: 15px;  }
+.total-quantity{
+  font-size: 0.9em;
+  margin-top: -25px;
+}
+.total-price-first {
+  font-size: 0.9em;
+  margin-top: -25px;
+}
+.button-in-cart{
+  padding-top: 5px;
+  font-size: 0.9em;
+}
+}

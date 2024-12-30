@@ -1,97 +1,275 @@
 .explore-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .explore-menu h1 {
-    color: #262626;
-    font-weight: 500;
+  color: #262626;
+  font-weight: 500;
 }
 
 .explore-menu-text {
-    max-width: 60%;
-    columns: #808080;
+  max-width: 60%;
+  columns: #808080;
 }
 
 .explore-menu-list {
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    gap: 25px;
-    text-align: center;
-    margin: 20px 0px;
-    overflow-x: scroll;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 25px;
+  text-align: center;
+  margin: 20px 0px;
+  overflow-x: scroll;
 }
 
-.explore-menu-list::-webkit-scrollbar{
-    display: none;
+.explore-menu-list::-webkit-scrollbar {
+  display: none;
 }
 
 .explore-menu-list-item {
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100px;
 }
 
 .explore-menu-list-item img {
-    width: 100px;
-    height: 100px;
-    object-fit: contain;
-    overflow: hidden;
-    cursor: pointer;
-    transition: 0.2s;
-    border-radius: 100%;
-    transition: transform 0.3s, box-shadow 0.3s;
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  overflow: hidden;
+  cursor: pointer;
+  transition: 0.2s;
+  border-radius: 100%;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .explore-menu-list-item img:hover {
-    transform: scale(1.0); /* Phóng to ảnh lên 10% */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    border: 2px solid #ddd;
+  transform: scale(1); /* Phóng to ảnh lên 10% */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  border: 2px solid #ddd;
 }
 
 .explore-menu hr {
-    margin: 10px 0px;
-    height: 2px;
-    background-color: #e2e2e2;
-    border: none;
+  margin: 10px 0px;
+  height: 2px;
+  background-color: #e2e2e2;
+  border: none;
 }
 
 .explore-menu-list-item .active {
-    color: tomato;
-    font-weight: bold;
+  color: tomato;
+  font-weight: bold;
 }
 
-@media (max-width:376px) {
-    .explore-menu {
-        margin-top: -15px;
-    }
-    .explore-menu h1 {
-        font-size: 0.9em;
-    }
-    .explore-menu p {
-        font-size: 0.7em;
-        margin-top: -20px;
-    }
-    .explore-menu-list {
-        margin-top: -5px;
-    }
-    .explore-menu-list-item {
-        width: 50px;
-    }
-    .explore-menu-list-item img {
-        width: 40px;
-        height: 40px;
-    }
-    .explore-menu-list-item p {
-        margin-top: 5px;
-    }
-    .explore-menu hr {
-        margin-top: -30px;
-        height: 1px;
-        background-color: #636363;
-    }
+@media (max-width: 1281px) {
+  .explore-menu {
+    margin-top: -5px;
+  }
+  .explore-menu h1 {
+    font-size: 1.9em;
+  }
+  .explore-menu p {
+    font-size: 1.4em;
+    margin-top: -20px;
+  }
+  .explore-menu-list-item {
+    width: 100px;
+  }
+  .explore-menu-list-item img {
+    width: 80px;
+    height: 80px;
+  }
+  .explore-menu-list-item p {
+    margin-top: 5px;
+  }
+  .explore-menu hr {
+    height: 1px;
+    background-color: #636363;
+  }
+}
+
+@media (max-width: 1025px) {
+  .explore-menu {
+    margin-top: -5px;
+  }
+  .explore-menu h1 {
+    font-size: 1.7em;
+  }
+  .explore-menu p {
+    font-size: 1.2em;
+    margin-top: -20px;
+  }
+  .explore-menu-list-item {
+    width: 85px;
+  }
+  .explore-menu-list-item img {
+    width: 70px;
+    height: 70px;
+  }
+  .explore-menu-list-item p {
+    margin-top: 5px;
+  }
+  .explore-menu hr {
+    height: 1px;
+    background-color: #636363;
+  }
+}
+
+@media (max-width: 821px) {
+  .explore-menu {
+    margin-top: -5px;
+  }
+  .explore-menu h1 {
+    font-size: 1.5em;
+  }
+  .explore-menu p {
+    font-size: 1em;
+    margin-top: -20px;
+  }
+  .explore-menu-list {
+    margin-top: -5px;
+  }
+  .explore-menu-list-item {
+    width: 70px;
+  }
+  .explore-menu-list-item img {
+    width: 60px;
+    height: 60px;
+  }
+  .explore-menu-list-item p {
+    margin-top: 5px;
+  }
+  .explore-menu hr {
+    margin-top: -30px;
+    height: 1px;
+    background-color: #636363;
+  }
+}
+
+@media (max-width: 769px) {
+  .explore-menu {
+    margin-top: -15px;
+  }
+  .explore-menu h1 {
+    font-size: 1.5em;
+  }
+  .explore-menu p {
+    font-size: 1em;
+    margin-top: -20px;
+  }
+  .explore-menu-list {
+    margin-top: -5px;
+  }
+  .explore-menu-list-item {
+    width: 70px;
+  }
+  .explore-menu-list-item img {
+    width: 50px;
+    height: 50px;
+  }
+  .explore-menu-list-item p {
+    margin-top: 5px;
+  }
+  .explore-menu hr {
+    margin-top: -30px;
+    height: 1px;
+    background-color: #636363;
+  }
+}
+
+@media (max-width: 541px) {
+  .explore-menu {
+    margin-top: -15px;
+  }
+  .explore-menu h1 {
+    font-size: 1.1em;
+  }
+  .explore-menu p {
+    font-size: 0.9em;
+    margin-top: -20px;
+  }
+  .explore-menu-list {
+    margin-top: -5px;
+  }
+  .explore-menu-list-item {
+    width: 60px;
+  }
+  .explore-menu-list-item img {
+    width: 45px;
+    height: 45px;
+  }
+  .explore-menu-list-item p {
+    margin-top: 5px;
+  }
+  .explore-menu hr {
+    margin-top: -30px;
+    height: 1px;
+    background-color: #636363;
+  }
+}
+
+@media (max-width: 416px) {
+  .explore-menu {
+    margin-top: -15px;
+  }
+  .explore-menu h1 {
+    font-size: 0.9em;
+  }
+  .explore-menu p {
+    font-size: 0.7em;
+    margin-top: -20px;
+  }
+  .explore-menu-list {
+    margin-top: -5px;
+  }
+  .explore-menu-list-item {
+    width: 50px;
+  }
+  .explore-menu-list-item img {
+    width: 40px;
+    height: 40px;
+  }
+  .explore-menu-list-item p {
+    margin-top: 5px;
+  }
+  .explore-menu hr {
+    margin-top: -30px;
+    height: 1px;
+    background-color: #636363;
+  }
+}
+
+@media (max-width: 376px) {
+  .explore-menu {
+    margin-top: -15px;
+  }
+  .explore-menu h1 {
+    font-size: 0.9em;
+  }
+  .explore-menu p {
+    font-size: 0.7em;
+    margin-top: -20px;
+  }
+  .explore-menu-list {
+    margin-top: -5px;
+  }
+  .explore-menu-list-item {
+    width: 50px;
+  }
+  .explore-menu-list-item img {
+    width: 40px;
+    height: 40px;
+  }
+  .explore-menu-list-item p {
+    margin-top: 5px;
+  }
+  .explore-menu hr {
+    margin-top: -30px;
+    height: 1px;
+    background-color: #636363;
+  }
 }

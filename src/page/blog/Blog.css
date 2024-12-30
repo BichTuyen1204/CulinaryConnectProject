@@ -195,3 +195,24 @@ color: #0984e3;
 .related-posts a:hover {
 text-decoration: underline;
 }
+
+@media (max-width: 431px) {
+  .header-blog {
+    padding: 5px 5px;
+  }
+  .logo {
+    font-size: 0.5em;
+  }
+  .search-bar {
+    width: 45vw;
+    height: 3vh;
+    font-size: 0.9em;
+    margin: 0px 5px;
+  }
+  .tag-input {
+    display: none;
+  }
+  .saved-items button {
+    font-size: 0.5em !important;
+  }
+}

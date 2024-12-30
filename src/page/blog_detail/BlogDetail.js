@@ -156,7 +156,7 @@ const BlogDetail = () => {
         )}
       </div>
 
-      <div className="container-bg col-12 mt-3">
+      <div className="container-bg px-3 col-12 mt-3">
         <div className="comment-section mt-1">
           <h3 className="comment-title">Opinion: ( {comment.length} )</h3>
 
@@ -187,6 +187,7 @@ const BlogDetail = () => {
                     <img
                       src={comments.profilePicture}
                       className="comment-avatar col-1"
+                      alt=""
                     />
                   <span className="comment-user col-8 mt-1">
                     {comments.accountName}

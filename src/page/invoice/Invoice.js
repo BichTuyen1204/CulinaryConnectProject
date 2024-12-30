@@ -82,8 +82,8 @@ const Invoice = () => {
           <Link to={`/order_detail/${order.id}`} key={index}>
             <div className="order-card">
               {/* Hiển thị thông tin đơn hàng */}
-              <div className="col-12 d-flex px-4">
-                <div className="order-summary col-10">
+              <div className="col-12 d-flex total">
+                <div className="order-summary col-7">
                   <p className="d-flex">
                     <strong>Date :</strong>
                     <p className="mx-1">
@@ -91,7 +91,7 @@ const Invoice = () => {
                     </p>
                   </p>
                 </div>
-                <div className="col-3">
+                <div className="col-5 status">
                   <p className="d-flex">
                     <strong>Status : </strong>
                     <p className="mx-1">
