@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../invoice/Invoice.css"; // File CSS tùy chỉnh
+import "../invoice/Invoice.css";
 import { Link, useNavigate } from "react-router-dom";
 import OrderService from "../../api/OrderService";
 
@@ -8,6 +8,7 @@ const Invoice = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [currentTab, setCurrentTab] = useState("ALL");
+
   useEffect(() => {
     if (!sessionStorage.getItem("cartPageReloaded")) {
       sessionStorage.setItem("cartPageReloaded", "true");
@@ -32,6 +33,10 @@ const Invoice = () => {
     CANCELLED: "CANCELLED",
   };
 
+  const getStatusColor = (status) => {
+    return status === "CANCELLED" ? "red" : "green";
+  };
+
   const fetchOrders = async (status) => {
     if (!jwtToken) {
       navigate("/sign_in");
@@ -47,8 +52,6 @@ const Invoice = () => {
       const sortedOrders = [...response].sort((a, b) => {
         const dateA = new Date(a.date);
         const dateB = new Date(b.date);
-          console.log("Date A:", dateA, "Date B:", dateB);
-  
         return dateB - dateA;
       });
       setOrders(sortedOrders);
@@ -63,7 +66,6 @@ const Invoice = () => {
 
   return (
     <div className="order-page">
-      {/* Tabs */}
       <div className="order-tabs">
         {tabs.map((tab) => (
           <button
@@ -75,13 +77,10 @@ const Invoice = () => {
           </button>
         ))}
       </div>
-
-      {/* Nội dung của tab */}
       <div className="order-content">
         {orders.map((order, index) => (
           <Link to={`/order_detail/${order.id}`} key={index}>
             <div className="order-card">
-              {/* Hiển thị thông tin đơn hàng */}
               <div className="col-12 d-flex total">
                 <div className="order-summary col-7">
                   <p className="d-flex">
@@ -95,29 +94,35 @@ const Invoice = () => {
                   <p className="d-flex">
                     <strong>Status : </strong>
                     <p className="mx-1">
-                      <strong style={{ color: "red" }}>
+                      <strong style={{ color: getStatusColor(order.status) }}>
                         {statusMap[order.status] || "Unknown Status"}
                       </strong>
                     </p>
                   </p>
                 </div>
               </div>
-
-              {/* Hiển thị các sản phẩm trong đơn hàng */}
               {order.items.map((item, i) => (
                 <div className="order-item" key={i}>
                   <div className="order-info">
-                    <img
-                      src={item.imageUrl}
-                      alt={item.name}
-                      className="order-image"
-                    />
-                    <div className="order-details">
-                      <p className="order-title">{item.name}</p>
-                      <p className="order-quantity">x{item.quantity}</p>
+                    <div className="col-3">
+                      <img
+                        src={item.imageUrl}
+                        alt={item.name}
+                        className="order-image"
+                      />
+                    </div>
+                    <div className="col-9">
+                      <div className="order-details">
+                        <p className="order-title">{item.name}</p>
+                      </div>
+                      <div className="d-flex">
+                        <p className="order-quantity">x{item.quantity}</p>
+                        <p className="order-price">
+                          $ {item.price.toLocaleString()}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                  <p className="order-price">$ {item.price.toLocaleString()}</p>
                 </div>
               ))}
               <p className="total-amount-size text-end px-3">

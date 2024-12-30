@@ -1,12 +1,21 @@
 .breadcrumb {
-    margin-top: 15px;
+  margin-top: 15px;
 }
 
-.link a{
-    text-decoration: none;
-    color: black;
+.link a {
+  text-decoration: none;
+  color: black;
 }
 
-.link a:hover{
-    color: tomato;
+.link a:hover {
+  color: tomato;
+}
+
+@media (max-width: 320px) {
+  .breadcrumb {
+    font-size: 0.7em;
+  }
+}
+
+.breadcrumb-item.active {
 }

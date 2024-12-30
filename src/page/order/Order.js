@@ -350,7 +350,7 @@ export const Order = () => {
     <>
       <div className="checkout-wrapper py-2 ">
         <div className="container-xxl">
-          <div className="row col-12">
+          <div className="row col-12 general-order">
             {/* Part left start */}
             <div className="checkout-form-wrapper col-5 p-3 box">
               <div className="checkout-left-data">
@@ -368,11 +368,11 @@ export const Order = () => {
                   </div>
                 </div>
 
-                <div>
+                <div className="info-customer">
                   {/* Name start */}
                   <div className="form-group">
                     <label htmlFor="name">
-                      <strong>Customer name :</strong>
+                      <strong className="input-name">Customer name :</strong>
                     </label>
                     <input
                       type="text"
@@ -494,7 +494,7 @@ export const Order = () => {
                 </div>
 
                 {/* Payment method start */}
-                <div className="mt-5">
+                <div className="mt-5 payment-method">
                   <div className="w-100">
                     <h5>Payment Method :</h5>
                     <div class="form-check">
@@ -572,7 +572,7 @@ export const Order = () => {
                       </div>
 
                       {/* Title start */}
-                      <div className="pt-3 col-8 mx-2">
+                      <div className="pt-3 col-8 mx-2 name-product">
                         <p className="align-item-center name-product-order">
                           <strong className="mb-2 text-ellipsis">
                             {item.product.productName}
@@ -582,7 +582,7 @@ export const Order = () => {
                       {/* Title end */}
 
                       {/* Price start */}
-                      <div className="pt-3 col-3 mx-2">
+                      <div className="pt-3 col-3 mx-2 price-of-product">
                         <p className="align-item-center name-product-order">
                           <strong className="text-ellipsis">
                             {item.product.salePercent > 0 ? (
@@ -610,7 +610,7 @@ export const Order = () => {
                     </div>
 
                     {/* Total price start */}
-                    <div className="flex-grow-1 col-1 px-3 mb-2">
+                    <div className="total-price-one flex-grow-1 col-1 px-3 mb-2">
                       <h7 className="price-checkout">
                         <strong>
                           $
@@ -630,7 +630,7 @@ export const Order = () => {
                   </div>
                 </div>
               ))}
-              <div className="d-flex justify-content-between align-items-center mt-3">
+              <div className="total-price-end d-flex justify-content-between align-items-center mt-3">
                 <h4 className="total">
                   <strong>Total: </strong>
                 </h4>
@@ -638,7 +638,7 @@ export const Order = () => {
                   <strong>$ {totalPrice}</strong>
                 </h5>
               </div>
-              <div className="d-flex justify-content-between align-items-center mt-2">
+              <div className="total-coupon d-flex justify-content-between align-items-center mt-2">
                 <h4 className="total">
                   <strong>Coupon: </strong>
                 </h4>
@@ -647,7 +647,7 @@ export const Order = () => {
                 </h5>
               </div>
               <hr className="mt-2" />
-              <div className="d-flex justify-content-between align-items-center py-2">
+              <div className="total-amount d-flex justify-content-between align-items-center py-2">
                 <h4 className="total">
                   <strong>Total Amount: </strong>
                 </h4>
