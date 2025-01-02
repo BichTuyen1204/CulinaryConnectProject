@@ -53,22 +53,28 @@ class OrderService {
 
   async handleApprove(id) {
     const jwtToken = sessionStorage.getItem("jwtToken");
+
+    const transactionID = id;
+    console.log(transactionID);
     try {
-      const response = await axios.post(`${API_BASE_URL_3}/capture`, id, {
-        headers: {
-          Authorization: `Bearer ${jwtToken}`,
-        },
-      });
-      console.log("Payment successful :", response.data);
+      const response = await axios.post(
+        `${API_BASE_URL_3}/capture?transactionID=${transactionID}`,  
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+
+      console.log("Payment successful:", response.data);
       return response.data;
     } catch (error) {
-      console.error(
-        "Error during API calls: ",
-        error.response ? error.response.data : error.message
-      );
+      console.error("Error during API call:", error.response ? error.response.data : error.message);
       throw error;
     }
-  }
+}
+
 
   async getAllOrder(jwtToken) {
     try {

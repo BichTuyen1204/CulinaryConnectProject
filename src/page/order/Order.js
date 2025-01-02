@@ -259,6 +259,10 @@ export const Order = () => {
     }
   };
 
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [paypaltoken, setPaypaltoken] = useState(null);
+
   const handleCreateOrderAndPayment = async () => {
     try {
       const createdOrder = await createOrder(orderData, jwtToken);
@@ -272,9 +276,14 @@ export const Order = () => {
       console.log("Payment URL:", paymentUrl);
         if (paymentUrl) {
         console.log("Returning orderId before redirect:", orderId);
-        setTimeout(() => {
-          window.location.href = paymentUrl;
-        }, 0);
+        window.open(paymentUrl, '_blank');
+      // Extract PayPal token and save it
+      const urlParams = new URLSearchParams(paymentUrl.split('?')[1]);
+      setPaypaltoken(urlParams.get('token')); // Save the token
+
+      // Show the modal pop-up
+      setIsModalOpen(true);  // Open modal when PayPal is initiated
+
         return orderId;
       } else {
         throw new Error("Payment URL is undefined");
@@ -287,20 +296,26 @@ export const Order = () => {
       throw error;
     }
   };
+  const handleCloseModal = () => {
+    window.location.href = "http://localhost:3000/invoice";
+    setIsModalOpen(false);
+  };
 
-  const handleOnApprove = async (data) => {
+  const handleOnApprove = async () => {
     try {
-      const captureResult = await OrderService.capturePayment(data.orderID);
+      console.log("PayPal token:", paypaltoken);
+      const captureResult = await OrderService.handleApprove(paypaltoken);
       console.log("Payment captured successfully:", captureResult);
-      if (captureResult.status === "COMPLETED") {
+      if (captureResult.status === "RECEIVED") {
         alert("Payment completed successfully!");
-        navigate("/invoice", { state: { jwtToken } });
+        window.location.href = "http://localhost:3000/invoice";
+        // navigate("/invoice", { state: { jwtToken, orderId: data.orderID } }); 
       } else {
         alert("Payment failed or not completed.");
       }
     } catch (error) {
-      console.error("Error capturing payment:", error);
-      alert("An error occurred while capturing payment.");
+      // console.error("Error capturing payment:", error);
+      alert("Payment failed or not completed.");
     }
   };
 
@@ -658,25 +673,57 @@ export const Order = () => {
 
               <div className="col-5 mt-3 button-order">
                 {pay === "BANKING" ? (
-                  <PayPalScriptProvider
-                    options={{
-                      "client-id":
-                        "AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R",
-                      currency: "USD",
-                    }}
-                  >
-                    <PayPalButtons
-                      style={{ layout: "vertical", color: "gold" }}
-                      createOrder={handleCreateOrderAndPayment} // Gọi hàm để tạo order và lấy URL
-                      onApprove={handleOnApprove} // Xử lý sau khi thanh toán thành công
-                    />
-                  </PayPalScriptProvider>
+                  // <PayPalScriptProvider
+                  //   options={{
+                  //     "client-id":
+                  //       "AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R",
+                  //     currency: "USD",
+                  //   }}
+                  // >
+                  //   <PayPalButtons
+                  //     style={{ layout: "vertical", color: "gold" }}
+                  //     createOrder={handleCreateOrderAndPayment} // Gọi hàm để tạo order và lấy URL
+                  //     onApprove={handleOnApprove} // Xử lý sau khi thanh toán thành công
+                  //   />
+                  // </PayPalScriptProvider>
+
+                  <button onClick={handleCreateOrderAndPayment}   style={{
+                    backgroundColor: '#0070ba', // PayPal's blue color
+                    color: '#fff',
+                    padding: '10px 20px',
+                    border: 'none',
+                    borderRadius: '5px',
+                    fontSize: '16px',
+                    cursor: 'pointer',
+                    transition: 'background-color 0.3s ease',
+                  }}>
+                    Pay with PayPal
+                  </button>
+
                 ) : (
                   <button type="submit" onClick={handleProceedToPayment}>
                     Proceed to Payment
                   </button>
                 )}
               </div>
+                
+              {isModalOpen && (
+                <div className="modal-overlay">
+                  <div className="modal-content">
+                    <h4>Payment Confirmation</h4>
+                    <p>Click submit when you are done with the payment.</p>
+                    <button onClick={handleOnApprove} style={{ backgroundColor: '#28a745', color: '#fff' }}>
+                      Submit
+                    </button>
+                    <button onClick={handleCloseModal} style={{ backgroundColor: '#dc3545', color: '#fff' }}>
+                      Close
+                    </button>
+                  </div>
+                </div>
+              )}
+
+
+
               {popupBuy && (
                 <div className="popup-order">
                   <div className="popup-content-order">
