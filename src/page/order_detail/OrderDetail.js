@@ -101,6 +101,10 @@ const OrderDetail = () => {
     CANCELLED: "CANCELLED",
   };
 
+  const getStatusColor = (status) => {
+    return status === "CANCELLED" ? "red" : "green";
+  };
+
   return (
     <div className="order-detail mt-5">
       <Link to="/invoice">
@@ -127,15 +131,15 @@ const OrderDetail = () => {
               </p>
               <p>
                 <strong className="mx-2">Note from receiver :</strong>
-                {orderData.summary.note}
+                {orderData.summary.note ? orderData.summary.note : "Nothing" }
               </p>
             </div>
           </div>
-          <div className="col-5 d-flex">
+          <div className="col-5 d-flex status-ship">
             <h2>Shipping Status</h2>
             <p>
               :{" "}
-              <strong style={{ color: "red" }}>
+              <strong style={{ color: getStatusColor(orderData.summary.status) }}>
                 {" "}
                 {statusMap[orderData.summary.status]}
               </strong>

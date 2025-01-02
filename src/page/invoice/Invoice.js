@@ -111,7 +111,7 @@ const Invoice = () => {
                         className="order-image"
                       />
                     </div>
-                    <div className="col-9">
+                    <div className="col-9 info-product">
                       <div className="order-details">
                         <p className="order-title">{item.name}</p>
                       </div>

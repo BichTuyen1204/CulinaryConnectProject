@@ -116,8 +116,8 @@
 }
 
 .popup-content .info-delete {
-    font-weight: 500;
-    color: #333;
+  font-weight: 500;
+  color: #333;
 }
 
 .popup-buttons {
@@ -149,7 +149,7 @@
 }
 
 .popup-buttons .button-cancel:hover {
-    background-color: #696969;
+  background-color: #696969;
 }
 
 .popup-close {
@@ -158,4 +158,80 @@
   right: 10px;
   font-size: 24px;
   cursor: pointer;
+}
+
+@media (max-width: 800px) {
+  .product-image {
+    width: 70px;
+    height: 70px;
+  }
+  .font-size-for-text {
+    font-size: 0.8em;
+  }
+  .product-info {
+    text-align: start;
+  }
+  .product-info h3 {
+    font-size: 1.1em;
+  }
+  .shipping-info h2 {
+    font-size: 0.9em;
+  }
+  .status-ship {
+    align-items: center;
+    margin-top: -85px;
+    margin-left: -25px;
+  }
+  .status-ship p {
+    font-size: 0.9em;
+  }
+  .cancel-button {
+    padding: 5px 15px;
+    font-size: 0.8em;
+  }
+}
+
+@media (max-width: 600px) {
+  .shipping-info {
+    padding-left: 0px !important;
+  }
+  .font-size-for-text {
+    font-size: 0.7em;
+  }
+  .product-info h3 {
+    font-size: 1em;
+  }
+  .shipping-info h2 {
+    font-size: 0.8em;
+  }
+  .status-ship {
+    margin-top: -78px;
+    margin-left: -15px;
+  }
+  .status-ship p {
+    font-size: 0.8em;
+  }
+  .cancel-button {
+    font-size: 0.7em;
+  }
+}
+
+@media (max-width: 480px) {
+  .shipping-info {
+    flex-direction: column;
+    align-items: stretch;
+    margin: auto;
+    padding-right: 0px !important;
+  }
+  .col-7, .col-5 {
+    width: 100%;
+  }
+  .status-ship {
+    margin-top: 10px;
+    padding-left: 15px;
+  }
+  .product-image {
+    width: 50px;
+    height: 50px;
+  }
 }

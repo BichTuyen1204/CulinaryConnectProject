@@ -7,7 +7,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
 }
-  
+
 .profile-header {
   display: flex;
   align-items: center;
@@ -51,9 +51,56 @@
   background-color: #333;
   color: white;
   font-weight: 400;
-  
 }
 
 .bt-edit-profile:hover {
   background-color: #686868;
+}
+
+@media (max-width: 800px) {
+  .profile-avatar {
+    display: none;
+  }
+  .profile-info {
+    margin: 0px !important;
+  }
+  .profile-info h2 {
+    font-size: 1.1em;
+  }
+  .profile-info p {
+    font-size: 0.8em;
+  }
+  .bt-edit-profile {
+    font-size: 0.7em !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-container {
+    padding: 10px !important;
+  }
+  .profile-info h2 {
+    font-size: 0.9em;
+  }
+  .profile-info p {
+    font-size: 0.6em;
+  }
+  .bt-edit-profile {
+    font-size: 0.6em !important;
+  }
+}
+
+@media (max-width: 320px) {
+  .profile-container {
+    padding: 5px !important;
+  }
+  .profile-info h2 {
+    font-size: 0.9em;
+  }
+  .profile-info p {
+    font-size: 0.6em;
+  }
+  .bt-edit-profile {
+    font-size: 0.6em !important;
+  }
 }
