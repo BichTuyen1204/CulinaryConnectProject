@@ -11,9 +11,15 @@
   color: tomato;
 }
 
-@media (max-width: 320px) {
+@media (max-width: 600px) {
   .breadcrumb {
     font-size: 0.7em;
+  }
+}
+
+@media (max-width: 800px) {
+  .breadcrumb {
+    font-size: 0.8em;
   }
 }
 

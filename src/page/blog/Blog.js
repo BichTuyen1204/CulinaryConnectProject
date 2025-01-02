@@ -136,7 +136,7 @@ const Blog = () => {
       <header className="header-blog">
         <div className="logo">CULINARY CONNECT</div>
 
-        <div className="search-container">
+        <div className="search-container-blog">
           {/* Search Bar */}
           <input
             type="text"
