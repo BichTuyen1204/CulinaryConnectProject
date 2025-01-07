@@ -84,13 +84,6 @@ const BlogDetail = () => {
 
   return (
     <div className="outer-wrapper">
-      {/* Header start */}
-      {/* <header className="header-blog-detail mt-2">
-        <div className="logo">CULINARY CONNECT</div>
-        <input type="text" placeholder="Search..." className="search-bar" />
-      </header> */}
-      {/* Header end */}
-
       <div className="container-bg col-12 mt-3">
         <Link to="/blog" className="p-5">
           <IoArrowBackOutline className="ic_back mt-3" />
@@ -107,20 +100,7 @@ const BlogDetail = () => {
                 alt={blogDetail.blog.title}
                 className="blog-image"
               />
-
-              {/* <div className="bookmark-container" onClick={toggleBookmark}>
-                {isBookmarked ? (
-                  <div className="bookmark-icon active">
-                    <IoBookmarkOutline className="fa-bookmark" />
-                  </div>
-                ) : (
-                  <div className="bookmark-icon">
-                    <IoBookmarkOutline className="fa-bookmark" />
-                  </div>
-                )}
-              </div> */}
-
-              <p className="mt-3">{blogDetail.blog.title}</p>
+              <p className="mt-3 info-of-image">{blogDetail.blog.title}</p>
             </div>
 
             <section className="blog-content mt-3">
@@ -130,10 +110,8 @@ const BlogDetail = () => {
               <h1 className="mt-3">Information</h1>
               <ul>
                 <li>
-                  <p>
-                    <strong>Serves:</strong> {blogDetail.blog.infos.SERVING}{" "}
-                    people
-                  </p>
+                  <strong>Serves:</strong> {blogDetail.blog.infos.SERVING}{" "}
+                  people
                 </li>
                 <li>
                   <strong>Cook time:</strong> {blogDetail.blog.infos.COOK_TIME}
@@ -184,11 +162,11 @@ const BlogDetail = () => {
             {comment.map((comments, index) => (
               <div className="comment-item col-12" key={index}>
                 <div className="comment-header col-12">
-                    <img
-                      src={comments.profilePicture}
-                      className="comment-avatar col-1"
-                      alt=""
-                    />
+                  <img
+                    src={comments.profilePicture}
+                    className="comment-avatar col-1"
+                    alt=""
+                  />
                   <span className="comment-user col-8 mt-1">
                     {comments.accountName}
                   </span>

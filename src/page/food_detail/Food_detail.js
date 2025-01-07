@@ -193,7 +193,7 @@ export const Food_detail = () => {
                   <div className="">
                     <div className="main-product-details">
                       <div className="border-bottom">
-                        <h3 className="title">{product.name}</h3>
+                        <h3 className="title-of-product-detail">{product.name}</h3>
                       </div>
 
                       <div className="border-bottom">
@@ -222,7 +222,7 @@ export const Food_detail = () => {
                         </p>
                       </div>
 
-                      <div className="border-bottom py-1">
+                      <div className="border-bottom py-1 info-of-product-detail">
                         <div className="d-flex gap-10 align-items-center my-2">
                           <h3 className="product-heading">Category: </h3>
                           <p className="product-data">{product.productTypes}</p>

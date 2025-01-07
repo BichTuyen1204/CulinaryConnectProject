@@ -12,6 +12,7 @@ body {
     min-height: 100vh;
     width: 100%;
     overflow-x: hidden;
+    flex: 1;
 }
 
 @media (max-width: 1280px) {
@@ -71,9 +72,17 @@ a {
     margin: auto;
 }
 
-@media (max-width: 1440px) {
+@media (max-width: 1025px) {
     .app {
         margin-top: 25px;
+        min-height: 52vh !important;
+
+    }
+}
+
+@media(max-width:480px) {
+    .app {
+        margin-top: 50px;
     }
 }
 

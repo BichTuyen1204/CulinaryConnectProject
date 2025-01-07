@@ -266,7 +266,6 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
 
         {/* Input full name */}
         <div className="sign-up-input">
-          <div className="sign-up-input">
             <div className="sign-up-username">
               <label htmlFor="username">
                 Full name <span style={{ color: "red" }}>*</span>
@@ -282,7 +281,6 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
               />
               {usernameError && <p style={{ color: "red" }}>{usernameError}</p>}
             </div>
-          </div>
 
           {/* Input email */}
           <div className="sign-up-email">

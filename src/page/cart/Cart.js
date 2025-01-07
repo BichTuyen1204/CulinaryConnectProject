@@ -216,7 +216,7 @@ const Cart = () => {
                     onChange={(e) => handleQuantityChange(item.product.id, e)}
                     onBlur={(e) => handleBlur(item.product.id, e)}
                     min="1"
-                    className="text-center"
+                    className="text-center input-change-quantity-cart"
                   />
                   <button
                     className="increase-quantity"

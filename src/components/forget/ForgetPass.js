@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import "../forget/ForgetPass.css";
-import AccountService from "../../api/AccountService"; // Make sure to import your AccountService
+import AccountService from "../../api/AccountService";
 
-const ForgotPassword = ({ setShowForgotPass }) => {
+const ForgotPassword = ({ setShowForgotPass, openLogin }) => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
-  const [accountId, setAccountId] = useState(null); // State to store accountId
-  const [otp, setOtp] = useState(""); // State to store OTP
-  const [password, setPassword] = useState(""); // State to store new password
+  const [accountId, setAccountId] = useState(null);
+  const [otp, setOtp] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -16,27 +16,26 @@ const ForgotPassword = ({ setShowForgotPass }) => {
 
   const handleEmailBlur = () => {
     if (!email.trim()) {
-      setEmailError("Please enter your email address.");
+      setEmailError("Please enter your email");
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      setEmailError("Please enter a valid email address.");
+      setEmailError("Please enter a valid email");
     } else {
       setEmailError("");
     }
   };
 
   const handleReset = async () => {
-    if (!emailError && email) {
+    if (handleEmailBlur()) {
+      return;
+    } else {
       try {
-        // Make the request to get OTP
         const response = await AccountService.forgotGetOTP(email);
         if (response && response.accountId) {
-          setAccountId(response.accountId); // Store accountId in the state
-          console.log("Account ID received: ", response.accountId); // Log accountId
+          setAccountId(response.accountId);
+          console.log("Account ID received: ", response.accountId);
           alert("OTP sent successfully!");
         }
-      } catch (error) {
-        // alert("Error sending OTP. Please try again.");
-      }
+      } catch (error) {}
     }
   };
 
@@ -59,7 +58,7 @@ const ForgotPassword = ({ setShowForgotPass }) => {
       await AccountService.forgotReset(accountId, otp, password);
       setShowForgotPass(false); // Close the forgot password modal
     } catch (error) {
-    //   alert("Error resetting password. Please try again.");
+      //   alert("Error resetting password. Please try again.");
     }
   };
 
@@ -84,15 +83,30 @@ const ForgotPassword = ({ setShowForgotPass }) => {
               onBlur={handleEmailBlur}
               placeholder="Enter your email"
             />
-            {emailError && <p style={{ color: "red" }}>{emailError}</p>}
+            {emailError && (
+              <p style={{ color: "red", fontSize: "0.9em", marginTop: "5px" }}>
+                {emailError}
+              </p>
+            )}
           </div>
-          <button
-            type="button"
-            className="forgot-password-button"
-            onClick={handleReset}
-          >
-            Send OTP
-          </button>
+
+          {!accountId && (
+            <div className="part-end-forgot">
+              <p>
+                Remember password? <span onClick={openLogin}>Login here</span>{" "}
+              </p>
+            </div>
+          )}
+
+          {!accountId && (
+            <button
+              type="button"
+              className="forgot-password-button"
+              onClick={handleReset}
+            >
+              Send OTP
+            </button>
+          )}
 
           {/* OTP input */}
           {accountId && (

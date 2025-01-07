@@ -137,7 +137,7 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.25);
 }
 
-.main-product-details .title {
+.main-product-details .title-of-product-detail {
   font-size: 20px;
   font-weight: bold;
   color: var(--color-1c1c1b);
@@ -445,35 +445,94 @@ ol {
 }
 
 /* Responsive */
-@media (max-width: 600px) {
-  .markdown-content {
-    font-size: 14px;
+@media (max-width: 800px) {
+  .productDetail-content {
+    padding: 0px !important;
   }
-
-  .markdown-content h1 {
-    font-size: 1.75em;
+  .productDetail-img {
+    width: 100%;
   }
-
-  .markdown-content h2 {
-    font-size: 1.5em;
+  .productdisplay-img-large {
+    width: 40vw;
+    height: 40vw;
+    margin-top: -15px;
   }
-
-  .markdown-content h3 {
-    font-size: 1.25em;
+  .productdisplay-img-thumbnails {
+    margin-top: 0px;
+    margin-bottom: 15px;
+  }
+  .productdisplay-img-thumbnails img {
+    width: 60px !important;
+    height: 60px !important;
+  }
+  .border-bottom .title-of-product-detail {
+    font-size: 1.2em !important;
+  }
+  .main-product-details .price {
+    font-size: 0.9em;
+  }
+  .info-of-product-detail h3, .info-of-product-detail p {
+    font-size: 0.8em;
+  }
+  .product-detail-container {
+    display: block;
+    background-color: white;
+    padding: 15px;
+    margin-top: 25px !important;
+    justify-content: start !important;
+  }
+  .product-info {
+    font-size: 0.9em;
+  }
+  .product-description {
+    font-size: 0.9em;
+    margin-bottom: 15px !important;
+  }
+  .detail-item span {
+    font-size: 0.8em;
+  }
+  .product-details {
+    gap: 10px;
   }
 }
 
-@media (max-width: 768px) {
-  .product-detail-container {
-    flex-direction: column;
-    align-items: center;
+@media (max-width: 480px) {
+  .productdisplay-img-large {
+    width: 60vw;
+    height: 60vw;
+    margin-top: -15px;
   }
-
+  .border-bottom .title-of-product-detail {
+    font-size: 0.9em !important;
+  }
+  .main-product-details .price {
+    font-size: 0.8em;
+  }
+  .info-of-product-detail h3, .info-of-product-detail p {
+    font-size: 0.7em;
+  }
+  .button-in-item button {
+    font-size: 0.5em;
+  }
   .product-info {
-    text-align: center;
+    font-size: 0.8em;
   }
-
+  .product-description {
+    font-size: 0.8em;
+    margin-bottom: 15px !important;
+  }
+  .detail-item span {
+    font-size: 0.8em;
+  }
+  .product-details {
+    gap: 5px;
+    margin-bottom: 0px !important;
+  }
   .detail-label {
-    width: 120px;
+    width: fit-content;
+    margin-right: 5px;
+  }
+  .detail-icon {
+    font-size: 1rem;
   }
 }

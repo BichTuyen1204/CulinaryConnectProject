@@ -71,3 +71,54 @@ h2 {
 .no-button:hover {
   background-color: #e53935;
 }
+
+@media (max-width: 800px) {
+  .confirmation-box {
+    padding: 20px;
+  }
+  .confirmation-box h3 {
+    font-size: 0.9em;
+  }
+  .info-google {
+    margin-top: -15px;
+  }
+  .checkbox {
+    width: 15px;
+  }
+  .info-google h2 {
+    font-size: 0.9em;
+  }
+  .yes-button,
+  .no-button {
+    padding: 3px;
+    font-size: 0.8em;
+    width: 15vw;
+  }
+  .error-message {
+    font-size: 0.9em;
+    margin-top: -20px;
+    margin-bottom: 20px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .confirmation-box {
+    width: 90vw;
+    padding: 10px;
+    font-size: 0.7em;
+  }
+  .checkbox {
+    width: 12px;
+    margin-right: 5px;
+  }
+  .confirmation-buttons {
+    margin-top: -15px;
+  }
+  .yes-button,
+  .no-button {
+    width: 30vw;
+  }
+  .info-google {
+    margin-top: -20px;
+  }
+}

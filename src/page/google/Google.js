@@ -21,7 +21,6 @@ const Google = () => {
     setToken(tokenValue);
     if (tokenValue) {
       sessionStorage.setItem("jwtToken", tokenValue);
-      console.log("Token đã được lưu vào sessionStorage:", tokenValue);
     }
   }, []);
 
@@ -64,7 +63,7 @@ const Google = () => {
   return (
     <div>
       {token ? (
-        <div class="confirmation-container">
+        <div className="confirmation-container">
           <div className="confirmation-box">
             <h3 className="mb-4">Are you sure you want to select this email?</h3>
             <div className="info-google d-flex text-center">

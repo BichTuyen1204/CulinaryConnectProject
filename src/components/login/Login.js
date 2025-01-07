@@ -197,7 +197,7 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess, openForgotPass }) => 
               onClick={openForgotPass}
               style={{ cursor: "pointer", color: "blue", textDecoration: "underline" }}
             >
-              Forgot password??
+              Forgot password?
             </p>
           </div>
 
@@ -224,7 +224,7 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess, openForgotPass }) => 
             >
               Login
             </button>
-            <div className="text-center p-2">OR</div>
+            <div className="text-center p-2 text-or-login">OR</div>
             <button className="button-google" onClick={handleRedirect}>Login with Google</button>
           </div>
         </form>

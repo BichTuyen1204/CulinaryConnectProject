@@ -147,7 +147,12 @@
 }
 
 .button-google {
-  background: linear-gradient(55deg, #4285F4, #34A853, tomato); /* Các màu của Google */
+  background: linear-gradient(
+    55deg,
+    #4285f4,
+    #34a853,
+    tomato
+  ); /* Các màu của Google */
   color: white;
   border: none;
   padding: 10px 20px;
@@ -157,6 +162,75 @@
 }
 
 .button-google:hover {
-  background: linear-gradient(55deg, tomato, #0A9F49, #4285F4); /* Thay đổi màu khi hover */
-  color: #fff; /* Màu chữ vẫn trắng khi hover */
+  background: linear-gradient(
+    55deg,
+    tomato,
+    #0a9f49,
+    #4285f4
+  ); /* Thay đổi màu khi hover */
+  color: #fff;
+}
+
+@media (max-width:1024px) {
+  .part-end-login p {
+    margin-top: 20px;
+    margin-bottom: -10px !important;
+  }
+}
+
+@media (max-width: 800px) {
+  .login-container {
+    width: max(23vw, 280px) !important;
+    font-size: 0.7em !important;
+  }
+  .login-input input {
+    margin-top: -10px;
+  }
+  .button-login button {
+    font-size: 0.9em !important;
+  }
+  .text-or-login {
+    text-align: center !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .login_ic_eye {
+    margin-top: -5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    width: max(20vw, 250px) !important;
+    font-size: 0.6em !important;
+  }
+}
+
+@media (max-width: 320px) {
+  .login-container {
+    width: max(20vw, 230px) !important;
+    padding: 15px !important;
+  }
+  .login-email,
+  .login-password {
+    margin-top: -5px;
+  }
+  .login-email input,
+  .login-password input {
+    padding: 5px !important;
+  }
+  .login_ic_eye {
+    margin-top: -3px;
+  }
+  .login-button {
+    margin-top: -20px !important;
+  }
+  .login-container .login-button,
+  .login-container .button-google {
+    padding: 8px !important;
+  }
+  .login-title h2 {
+    font-size: 16px;
+  }
 }

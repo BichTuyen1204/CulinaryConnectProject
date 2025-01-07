@@ -377,15 +377,19 @@
     font-size: 0.5em;
     text-align: center;
   }
+  .search-container-blog input {
+    padding: 5px;
+  }
   .search-bar {
     width: 45vw;
     height: 3vh;
     font-size: 0.9em;
     margin: 0px 5px;
-    padding: 10px 5px;
+    padding: 15px;
   }
   .search-bar::placeholder {
     font-size: 0.7em;
+    padding-bottom: 5px !important;
   }
   .tag-input {
     display: none;
