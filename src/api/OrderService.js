@@ -76,6 +76,33 @@ class OrderService {
 }
 
 
+  async getURLVNPay(orderId) {
+    const jwtToken = sessionStorage.getItem("jwtToken");
+
+    if (!orderId) {
+      throw new Error("Order ID is required to fetch payment URL");
+    }
+
+    try {
+      const response = await axios.get(`${API_BASE_URL_3}/vnpay/get`, {
+        params: { orderId },
+        headers: { Authorization: `Bearer ${jwtToken}` },
+      });
+
+      console.log("API response:", response.data);
+      const paymentUrl = response.data;
+    
+      return paymentUrl;
+    } catch (error) {
+      console.error(
+        "Error fetching payment URL:",
+        error.response?.data || error.message
+      );
+      throw error;
+    }
+  }
+
+
   async getAllOrder(jwtToken) {
     try {
       const response = await axios.get(`${API_BASE_URL}/fetch/all`, {

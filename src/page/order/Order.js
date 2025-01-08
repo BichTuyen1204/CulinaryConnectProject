@@ -25,6 +25,7 @@ export const Order = () => {
   const [error, setError] = useState("");
   const [note, setNote] = useState("");
   const [pay, setPay] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("");
   const [items, setItems] = useState([]);
   const navigate = useNavigate();
   const [popupBuy, setPopupBuy] = useState(false);
@@ -122,6 +123,7 @@ export const Order = () => {
   const PayChange = (e) => {
     const { value } = e.target;
     setPay(value);
+    setPaymentMethod(value);
     setOrderData((preState) => ({ ...preState, paymentMethod: value }));
   };
 
@@ -258,13 +260,30 @@ export const Order = () => {
       throw error;
     }
   };
-
+  const getURLVNPay = async (orderId) => {
+    try {
+      const response = await OrderService.getURLVNPay(orderId);
+      console.log("Payment URL retrieved:", response.data);
+      return response;
+    } catch (error) {
+      console.error(
+        "Error fetching payment URL:",
+        error.response?.data || error.message
+      );
+      throw error;
+    }
+  };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [paypaltoken, setPaypaltoken] = useState(null);
 
   const handleCreateOrderAndPayment = async () => {
     try {
+      setPaymentMethod("PAYPAL");
+      orderData.paymentMethod = "PAYPAL"
+      // setOrderData((orderData) => ({ ...orderData, paymentMethod: "PAYPAL" }));
+      // const updatedOrderData = { ...orderData, paymentMethod: "PAYPAL" };
+      console.log(orderData);
       const createdOrder = await createOrder(orderData, jwtToken);
       const orderId = createdOrder.id;
       if (!orderId) {
@@ -319,6 +338,43 @@ export const Order = () => {
     }
   };
 
+  const handleVNPayPayment = async () => {
+    try {
+      setPaymentMethod("VNPAY");
+      // setOrderData((orderData) => ({ ...orderData, paymentMethod: "VNPAY" }));
+      orderData.paymentMethod = "VNPAY"
+      console.log(orderData);
+      const createdOrder = await createOrder(orderData, jwtToken);
+      const orderId = createdOrder.id;
+      if (!orderId) {
+        throw new Error("Order ID is missing in the response from createOrder");
+      }
+  
+      console.log("Order ID:", orderId);
+        const paymentUrl = await getURLVNPay(orderId, jwtToken);
+      console.log("Payment URL:", paymentUrl);
+        if (paymentUrl) {
+        console.log("Returning orderId before redirect:", orderId);
+        window.open(paymentUrl, '_blank');
+  
+
+      // Show the modal pop-up
+      // setIsModalOpen(true);  // Open modal when PayPal is initiated
+
+        return orderId;
+      } else {
+        throw new Error("Payment URL is undefined");
+      }
+    } catch (error) {
+      console.error(
+        "Error during order creation or fetching payment URL:",
+        error
+      );
+      throw error;
+    }
+  };
+
+
   // Order
   const handleSubmitOrder = async (e) => {
     e.preventDefault();
@@ -340,7 +396,7 @@ export const Order = () => {
         phoneNumber: phone,
         receiver: username,
         note: note,
-        paymentMethod: pay,
+        paymentMethod: paymentMethod,
       }));
       try {
         const response = await OrderService.createOrder(orderData, jwtToken);
@@ -686,20 +742,40 @@ export const Order = () => {
                   //     onApprove={handleOnApprove} // Xử lý sau khi thanh toán thành công
                   //   />
                   // </PayPalScriptProvider>
-
-                  <button onClick={handleCreateOrderAndPayment}   style={{
-                    backgroundColor: '#0070ba', // PayPal's blue color
-                    color: '#fff',
-                    padding: '10px 20px',
-                    border: 'none',
-                    borderRadius: '5px',
-                    fontSize: '16px',
-                    cursor: 'pointer',
-                    transition: 'background-color 0.3s ease',
-                  }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <button
+                    onClick={handleCreateOrderAndPayment}
+                    style={{
+                      backgroundColor: '#0070ba',
+                      padding: '10px 20px',
+                      border: 'none',
+                      borderRadius: '5px',
+                      fontSize: '16px',
+                      cursor: 'pointer',
+                      transition: 'background-color 0.3s ease',
+                      color: '#fff',
+                    }}
+                  >
                     Pay with PayPal
                   </button>
-
+                
+                  <button
+                    onClick={handleVNPayPayment}
+                    style={{
+                      backgroundColor: '#ff0000', // Red color for VNPay button
+                      color: '#fff',
+                      padding: '10px 20px',
+                      border: 'none',
+                      borderRadius: '5px',
+                      fontSize: '16px',
+                      cursor: 'pointer',
+                      transition: 'background-color 0.3s ease',
+                    }}
+                  >
+                    Pay with VNPay
+                  </button>
+                </div>
+                
                 ) : (
                   <button type="submit" onClick={handleProceedToPayment}>
                     Proceed to Payment
