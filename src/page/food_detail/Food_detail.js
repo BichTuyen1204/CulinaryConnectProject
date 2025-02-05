@@ -318,7 +318,7 @@ export const Food_detail = () => {
                       <div className="detail-item">
                         <FaBox className="detail-icon" />
                         <span className="detail-label">Weight:</span>
-                        <span className="detail-value">{product.weight}</span>
+                        <span className="detail-value">{product.infos.weight}</span>
                       </div>
                       <div className="detail-item">
                         <FaInfoCircle className="detail-icon" />
@@ -335,10 +335,17 @@ export const Food_detail = () => {
                         </span>
                       </div>
                       <div className="detail-item">
-                        <FaInfoCircle className="detail-icon" />
-                        <span className="detail-label">Production site:</span>
+                        <FaBox className="detail-icon" />
+                        <span className="detail-label">Storage instructions:</span>
                         <span className="detail-value">
-                          {product.production}
+                          {product.infos.storage_instructions}
+                        </span>
+                      </div>
+                      <div className="detail-item">
+                        <FaInfoCircle className="detail-icon" />
+                        <span className="detail-label">Made in:</span>
+                        <span className="detail-value">
+                          {product.infos.made_in}
                         </span>
                       </div>
                     </div>

@@ -96,7 +96,7 @@ const BlogDetail = () => {
               </h1>
               <p className="p-font-size mb-4">{blogDetail.blog.description}</p>
               <img
-                src={blogDetail.blog.imageUrl}
+                src={blogDetail.blog.thumbnail}
                 alt={blogDetail.blog.title}
                 className="blog-image"
               />
@@ -110,24 +110,16 @@ const BlogDetail = () => {
               <h1 className="mt-3">Information</h1>
               <ul>
                 <li>
-                  <strong>Serves:</strong> {blogDetail.blog.infos.SERVING}{" "}
+                  <strong>Serves:</strong> {blogDetail.blog.infos.serves}
                   people
                 </li>
                 <li>
-                  <strong>Cook time:</strong> {blogDetail.blog.infos.COOK_TIME}
+                  <strong>Cook time:</strong> {blogDetail.blog.infos.cook_time}
                 </li>
               </ul>
               <div className="tags">
                 <h1>Tags:</h1>
-                {blogDetail.blog.tags.map((tag) => (
-                  <span key={tag} className="tag">
-                    <strong>#{tag}</strong>
-                  </span>
-                ))}
-              </div>
-              <div className="related-products mt-3">
-                <h1>Related Products:</h1>
-                <ul>{blogDetail.blog.relatedProduct}</ul>
+                <strong>{blogDetail.blog.infos.tags}</strong>
               </div>
             </aside>
           </div>

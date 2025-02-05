@@ -104,11 +104,11 @@ export const Food_card = () => {
   return (
     <div>
       {/* Header Image */}
-      <div className="image-menu">
+      {/* <div className="image-menu">
         <div className="image-menu-contents">
           <img className="" src={"https://i.pinimg.com/736x/35/35/f1/3535f15f468db8a5837d7b61d27bade1.jpg"} alt="Menu Header" />
         </div>
-      </div>
+      </div> */}
 
       {/* Food Page */}
       <div className="food-page-container col-12 mt-5">

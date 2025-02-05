@@ -40,7 +40,7 @@ export const EditProfile = () => {
   const navigate = useNavigate();
 
   const [otp, setOtp] = useState('');
-  const [otpVisible, setOtpVisible] = useState(false); // State to control OTP panel visibility
+  const [otpVisible, setOtpVisible] = useState(false);
 
   const [account, setAccount] = useState({
     username: "",
