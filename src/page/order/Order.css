@@ -3,6 +3,10 @@
   font-weight: 700;
 }
 
+.font-size-default {
+  font-size: 0.9em;
+}
+
 .ic_edit_order {
   width: 28px;
   height: 28px;
@@ -54,13 +58,13 @@
 }
 
 .total {
-  font-size: 18px;
+  font-size: 0.9em;
   color: #1c1c1b;
 }
 
 .total-price {
-  font-size: 20px;
-  color: #777777;
+  font-size: 0.9em;
+  color: #a1a1a1;
 }
 
 .checkout-form-wrapper {
@@ -231,7 +235,12 @@
   border: 1px solid #538641;
 }
 
+.payment {
+  font-size: 0.9em;
+}
+
 .total-amount-price {
+  font-size: 0.9em;
   color: rgb(255, 23, 23);
 }
 
@@ -370,7 +379,7 @@
   .checkout-badge {
     width: 18px;
     height: 18px;
-    left: 50px
+    left: 50px;
   }
   .text-quantity {
     font-size: 0.8em;
@@ -409,7 +418,7 @@
     padding: 0px 3px !important;
   }
   .button-order {
-    margin: 8px 0px!important;
+    margin: 8px 0px !important;
   }
   .button-order button {
     font-size: 0.7em;
@@ -528,7 +537,7 @@
   .checkout-badge {
     width: 18px;
     height: 18px;
-    left: 50px
+    left: 50px;
   }
   .text-quantity {
     font-size: 0.8em;
@@ -567,7 +576,7 @@
     padding: 0px 3px !important;
   }
   .button-order {
-    margin: 8px 0px!important;
+    margin: 8px 0px !important;
   }
   .button-order button {
     font-size: 0.7em;
@@ -685,7 +694,6 @@
   .checkout-badge {
     width: 15px;
     height: 15px;
-
   }
   .text-quantity {
     font-size: 0.7em;
@@ -724,7 +732,7 @@
     padding: 0px 3px !important;
   }
   .button-order {
-    margin: 8px 0px!important;
+    margin: 8px 0px !important;
   }
   .button-order button {
     font-size: 0.7em;
@@ -882,7 +890,7 @@
     padding: 0px 3px !important;
   }
   .button-order {
-    margin: 8px 0px!important;
+    margin: 8px 0px !important;
   }
   .button-order button {
     font-size: 0.7em;
@@ -1040,7 +1048,7 @@
     padding: 0px 3px !important;
   }
   .button-order {
-    margin: 8px 0px!important;
+    margin: 8px 0px !important;
   }
   .button-order button {
     font-size: 0.7em;

@@ -9,6 +9,8 @@ import { IoMail } from "react-icons/io5";
 import "../footer/Footer.css";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { IoHome } from "react-icons/io5";
+import { FaUserTie } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -20,25 +22,38 @@ const Footer = () => {
           </Link>
         </div>
         <div className="footer-content-left">
-          <h2><strong>Access to us</strong></h2>
+          <h2>
+            <strong>Access to us</strong>
+          </h2>
           <div className="ul-icon-social">
-              <li>
-                <FaFacebookSquare className="facebook" />
-              </li>
-              <li>
-                <AiFillTikTok className="tiktok" />
-              </li>
-              <li>
-                <IoLogoYoutube className="youtube" />
-              </li>
+            <li>
+              <FaFacebookSquare className="facebook" />
+            </li>
+            <li>
+              <AiFillTikTok className="tiktok" />
+            </li>
+            <li>
+              <IoLogoYoutube className="youtube" />
+            </li>
           </div>
         </div>
 
         <div className="footer-content-center">
-          <h2><strong>Culinary Connect</strong></h2>
+          <h2>
+            <strong>Culinary Connect</strong>
+          </h2>
           <ul>
-            <li className="li-home">Home</li>
-            <li className="li-aboutus">About us</li>
+            <Link to="/">
+              <li className="li-home d-flex">
+                <IoHome style={{ marginRight: "15px" }} />
+                <p style={{ fontSize: "0.8em" }}>Home</p>
+              </li>
+            </Link>
+
+            <li className="li-aboutus d-flex">
+              <FaUserTie style={{ marginRight: "15px" }} />
+              <p style={{ fontSize: "0.8em" }}>About us</p>
+            </li>
           </ul>
         </div>
 
@@ -47,17 +62,19 @@ const Footer = () => {
             <strong>Contact</strong>
           </h2>
           <div className="address-links">
-            <li className="address1">
+            <li className="address1 d-flex">
               <FaBuilding className="address" />
-              14 Nguyen Van Cu, An Khanh, Ninh Kieu, Can Tho
+              <p style={{ fontSize: "0.8em" }}>
+                14 Nguyen Van Cu, An Khanh, Ninh Kieu, Can Tho
+              </p>
             </li>
-            <li className="address1">
+            <li className="address1 d-flex">
               <SlEarphonesAlt className="address" />
-              0999 999 999
+              <p style={{ fontSize: "0.8em" }}>0999 999 999</p>
             </li>
-            <li className="address1">
+            <li className="address1 d-flex">
               <IoMail className="address" />
-              CulinaryConnect@gmail.com
+              <p style={{ fontSize: "0.8em" }}>CulinaryConnect@gmail.com</p>
             </li>
           </div>
         </div>

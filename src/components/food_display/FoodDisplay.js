@@ -7,15 +7,17 @@ export const FoodDisplay = ({ products }) => {
   return (
     <div className="food-display" id="food-display">
       <h2>Top food near you</h2>
-      <div className="food-display-list ">
+      <div>
         {products.length > 0 ? (
           products.map((product, index) => (
-            <div className="" key={index}>
-              <FoodItem product={product} />
+            <div className="food-display-list" key={index}>
+              <div>
+                <FoodItem product={product} />
+              </div>
             </div>
           ))
         ) : (
-          <div className="">
+          <div style={{ marginTop: "35px" }}>
             <p className="text-center">
               No products available for this category.
             </p>

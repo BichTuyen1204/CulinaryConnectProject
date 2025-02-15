@@ -7,6 +7,7 @@ import CartService from "../../api/CartService.js";
 import { BiSolidEditAlt } from "react-icons/bi";
 import OrderService from "../../api/OrderService.js";
 import { IoClose } from "react-icons/io5";
+import { RiCoupon2Line } from "react-icons/ri";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 export const Order = () => {
@@ -22,6 +23,7 @@ export const Order = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [couponId, setCouponId] = useState("");
   const [coupon, setCoupon] = useState("");
+  const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
   const [note, setNote] = useState("");
   const [pay, setPay] = useState("");
@@ -43,6 +45,7 @@ export const Order = () => {
     paymentMethod: "",
     product: {},
   });
+
   const NameBlur = () => {
     if (username.trim() === "") {
       setUserNameError("Please enter your full name");
@@ -280,7 +283,7 @@ export const Order = () => {
   const handleCreateOrderAndPayment = async () => {
     try {
       setPaymentMethod("PAYPAL");
-      orderData.paymentMethod = "PAYPAL"
+      orderData.paymentMethod = "PAYPAL";
       // setOrderData((orderData) => ({ ...orderData, paymentMethod: "PAYPAL" }));
       // const updatedOrderData = { ...orderData, paymentMethod: "PAYPAL" };
       console.log(orderData);
@@ -289,19 +292,19 @@ export const Order = () => {
       if (!orderId) {
         throw new Error("Order ID is missing in the response from createOrder");
       }
-  
-      console.log("Order ID:", orderId);
-        const paymentUrl = await getURLPaypal(orderId, jwtToken);
-      console.log("Payment URL:", paymentUrl);
-        if (paymentUrl) {
-        console.log("Returning orderId before redirect:", orderId);
-        window.open(paymentUrl, '_blank');
-      // Extract PayPal token and save it
-      const urlParams = new URLSearchParams(paymentUrl.split('?')[1]);
-      setPaypaltoken(urlParams.get('token')); // Save the token
 
-      // Show the modal pop-up
-      setIsModalOpen(true);  // Open modal when PayPal is initiated
+      console.log("Order ID:", orderId);
+      const paymentUrl = await getURLPaypal(orderId, jwtToken);
+      console.log("Payment URL:", paymentUrl);
+      if (paymentUrl) {
+        console.log("Returning orderId before redirect:", orderId);
+        window.open(paymentUrl, "_blank");
+        // Extract PayPal token and save it
+        const urlParams = new URLSearchParams(paymentUrl.split("?")[1]);
+        setPaypaltoken(urlParams.get("token")); // Save the token
+
+        // Show the modal pop-up
+        setIsModalOpen(true); // Open modal when PayPal is initiated
 
         return orderId;
       } else {
@@ -328,7 +331,7 @@ export const Order = () => {
       if (captureResult.status === "RECEIVED") {
         alert("Payment completed successfully!");
         window.location.href = "http://localhost:3000/invoice";
-        // navigate("/invoice", { state: { jwtToken, orderId: data.orderID } }); 
+        // navigate("/invoice", { state: { jwtToken, orderId: data.orderID } });
       } else {
         alert("Payment failed or not completed.");
       }
@@ -342,24 +345,23 @@ export const Order = () => {
     try {
       setPaymentMethod("VNPAY");
       // setOrderData((orderData) => ({ ...orderData, paymentMethod: "VNPAY" }));
-      orderData.paymentMethod = "VNPAY"
+      orderData.paymentMethod = "VNPAY";
       console.log(orderData);
       const createdOrder = await createOrder(orderData, jwtToken);
       const orderId = createdOrder.id;
       if (!orderId) {
         throw new Error("Order ID is missing in the response from createOrder");
       }
-  
-      console.log("Order ID:", orderId);
-        const paymentUrl = await getURLVNPay(orderId, jwtToken);
-      console.log("Payment URL:", paymentUrl);
-        if (paymentUrl) {
-        console.log("Returning orderId before redirect:", orderId);
-        window.open(paymentUrl, '_blank');
-  
 
-      // Show the modal pop-up
-      // setIsModalOpen(true);  // Open modal when PayPal is initiated
+      console.log("Order ID:", orderId);
+      const paymentUrl = await getURLVNPay(orderId, jwtToken);
+      console.log("Payment URL:", paymentUrl);
+      if (paymentUrl) {
+        console.log("Returning orderId before redirect:", orderId);
+        window.open(paymentUrl, "_blank");
+
+        // Show the modal pop-up
+        // setIsModalOpen(true);  // Open modal when PayPal is initiated
 
         return orderId;
       } else {
@@ -373,7 +375,6 @@ export const Order = () => {
       throw error;
     }
   };
-
 
   // Order
   const handleSubmitOrder = async (e) => {
@@ -423,7 +424,7 @@ export const Order = () => {
         <div className="container-xxl">
           <div className="row col-12 general-order">
             {/* Part left start */}
-            <div className="checkout-form-wrapper col-5 p-3 box">
+            <div className="checkout-form-wrapper col-4 p-3 box">
               <div className="checkout-left-data">
                 <h3 className="website-name text-center mb-4">
                   CULINARY CONNECT
@@ -530,38 +531,6 @@ export const Order = () => {
                   </div>
 
                   {/* Note end */}
-
-                  {/* Voucher start */}
-                  <div className="form-group-voucher mt-5">
-                    <strong className="font-size-top">Coupon:</strong>
-                    <input
-                      type="text"
-                      className={`form-control-coupon input-coupon mt-1`}
-                      id="phoneNumber"
-                      value={couponId}
-                      placeholder="Enter coupon ID"
-                      onChange={IdCouponChange}
-                    />
-                    <button className="button-coupon mt-2" onClick={getCoupon}>
-                      Choose coupon
-                    </button>
-
-                    {/* Hiển thị thông tin coupon hoặc lỗi */}
-                    {salePercent && (
-                      <div className="coupon-info mt-3">
-                        <strong>Sale: {salePercent}%</strong>
-                      </div>
-                    )}
-                    {error && (
-                      <div
-                        className="error-message mt-3"
-                        style={{ color: "red" }}
-                      >
-                        <strong>{error}</strong>
-                      </div>
-                    )}
-                  </div>
-                  {/* Voucher end */}
                 </div>
 
                 {/* Payment method start */}
@@ -622,7 +591,7 @@ export const Order = () => {
             {/* Part left end */}
 
             {/* Part right start */}
-            <div className="col-6 offset-1 bg-white box">
+            <div className="col-7 offset-1 bg-white box">
               {products.map((item, index) => (
                 <div className="border-bottom mt-4 mb-3 col-12" key={index}>
                   <div className="d-flex gap-10 align-items-center mb-2">
@@ -701,30 +670,142 @@ export const Order = () => {
                   </div>
                 </div>
               ))}
-              <div className="total-price-end d-flex justify-content-between align-items-center mt-3">
-                <h4 className="total">
-                  <strong>Total: </strong>
-                </h4>
-                <h5 className="total-price">
-                  <strong>$ {totalPrice}</strong>
-                </h5>
+              <div className="total-price-end d-flex justify-content-between align-items-center mt-3 col-12 mb-5">
+                <div className="col-6"></div>
+                <div className="d-flex col-6">
+                  <div className="col-4"></div>
+                  <h4 className="col-5 total">
+                    <p style={{ color: "#a1a1a1" }}>Total price ( 1 item ): </p>
+                  </h4>
+                  <div className="d-flex justify-content-end col-3">
+                    <h5 className="total-price">
+                      <strong>$ {totalPrice}</strong>
+                    </h5>
+                  </div>
+                </div>
               </div>
-              <div className="total-coupon d-flex justify-content-between align-items-center mt-2">
-                <h4 className="total">
-                  <strong>Coupon: </strong>
-                </h4>
-                <h5 className="total-price">
-                  <strong>$ {coupon > 0 ? coupon : 0}</strong>
-                </h5>
-              </div>
+
               <hr className="mt-2" />
-              <div className="total-amount d-flex justify-content-between align-items-center py-2">
-                <h4 className="total">
-                  <strong>Total Amount: </strong>
-                </h4>
-                <h5 className="total-amount-price">
-                  <strong>$ {totalPrice - coupon}</strong>
-                </h5>
+
+              {/* Coupon start */}
+              <div className="py-4 total-coupon d-flex justify-content-between align-items-center mt-2">
+                <div>
+                  <h4 className="total">
+                    <RiCoupon2Line
+                      style={{
+                        color: "tomato",
+                        fontSize: "20px",
+                        marginBottom: "5px",
+                        marginRight: "5px",
+                      }}
+                    />
+                    <strong style={{ color: "black" }}>
+                      Culinary Connect Coupon:{" "}
+                    </strong>
+                  </h4>
+                </div>
+
+                <div>
+                  <button
+                    style={{
+                      fontSize: "0.9em",
+                      background: "#159cfc",
+                      color: "white",
+                      border: "none",
+                      padding: "5px 15px",
+                      marginBottom: "5px",
+                    }}
+                  >
+                    Choose coupon
+                  </button>
+                  {/* <h5 className="total-price">
+                    <strong>$ {coupon > 0 ? coupon : 0}</strong>
+                  </h5> */}
+                </div>
+              </div>
+              {/* Coupon end */}
+
+              <hr className="mt-2" />
+
+              {/* Payment start */}
+              <div className="total-amount d-flex justify-content-between align-items-center py-4 col-12">
+                <div className="d-flex col-12">
+                  <h4 className="total col-3">
+                    <strong>Payment Method : </strong>
+                  </h4>
+                  <h5 className="payment col-5">
+                    <p>COD (Cash on Delivery)</p>
+                  </h5>
+                  <div
+                    className="col-4 d-flex justify-content-end"
+                    style={{ marginTop: "-15px" }}
+                  >
+                    <button
+                      style={{
+                        fontSize: "0.9em",
+                        background: "#159cfc",
+                        color: "white",
+                        border: "none",
+                        padding: "2px 15px",
+                      }}
+                    >
+                      Change
+                    </button>
+                  </div>
+                </div>
+              </div>
+              {/* Payment end */}
+
+              <hr className="mt-2" />
+
+              <div>
+                <div
+                  className="d-flex justify-content-between align-items-center col-12 font-size-default"
+                  style={{ paddingTop: "15px", paddingBottom: "8px" }}
+                >
+                  <div className="col-6"></div>
+                  <div className="col-6 d-flex px-2">
+                    <div className="col-6">
+                      <p>Subtotal: </p>
+                    </div>
+                    <div className="col-6 d-flex justify-content-end">
+                      <p>
+                        <strong>${totalPrice}</strong>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  className="d-flex justify-content-between align-items-center col-12 font-size-default"
+                  style={{ paddingBottom: "8px" }}
+                >
+                  <div className="col-6"></div>
+                  <div className="col-6 d-flex px-2">
+                    <div className="col-6">
+                      <p>Total coupon discount: </p>
+                    </div>
+                    <div className="col-6 d-flex justify-content-end">
+                      <p>
+                        <strong>- ${coupon}</strong>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="d-flex justify-content-between align-items-center col-12 font-size-default">
+                  <div className="col-6"></div>
+                  <div className="col-6 d-flex px-2">
+                    <div className="col-6">
+                      <p>Total payment: </p>
+                    </div>
+                    <div className="col-6 d-flex justify-content-end">
+                      <p>
+                        <p style={{ color:"tomato", fontSize: "1.8em", fontWeight: "500"}}>${totalPrice - coupon}</p>
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div className="col-5 mt-3 button-order">
@@ -742,63 +823,72 @@ export const Order = () => {
                   //     onApprove={handleOnApprove} // Xử lý sau khi thanh toán thành công
                   //   />
                   // </PayPalScriptProvider>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  <button
-                    onClick={handleCreateOrderAndPayment}
+                  <div
                     style={{
-                      backgroundColor: '#0070ba',
-                      padding: '10px 20px',
-                      border: 'none',
-                      borderRadius: '5px',
-                      fontSize: '16px',
-                      cursor: 'pointer',
-                      transition: 'background-color 0.3s ease',
-                      color: '#fff',
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "10px",
                     }}
                   >
-                    Pay with PayPal
-                  </button>
-                
-                  <button
-                    onClick={handleVNPayPayment}
-                    style={{
-                      backgroundColor: '#ff0000', // Red color for VNPay button
-                      color: '#fff',
-                      padding: '10px 20px',
-                      border: 'none',
-                      borderRadius: '5px',
-                      fontSize: '16px',
-                      cursor: 'pointer',
-                      transition: 'background-color 0.3s ease',
-                    }}
-                  >
-                    Pay with VNPay
-                  </button>
-                </div>
-                
+                    <button
+                      onClick={handleCreateOrderAndPayment}
+                      style={{
+                        backgroundColor: "#0070ba",
+                        padding: "10px 20px",
+                        border: "none",
+                        borderRadius: "5px",
+                        fontSize: "16px",
+                        cursor: "pointer",
+                        transition: "background-color 0.3s ease",
+                        color: "#fff",
+                      }}
+                    >
+                      Pay with PayPal
+                    </button>
+
+                    <button
+                      onClick={handleVNPayPayment}
+                      style={{
+                        backgroundColor: "#ff0000", // Red color for VNPay button
+                        color: "#fff",
+                        padding: "10px 20px",
+                        border: "none",
+                        borderRadius: "5px",
+                        fontSize: "16px",
+                        cursor: "pointer",
+                        transition: "background-color 0.3s ease",
+                      }}
+                    >
+                      Pay with VNPay
+                    </button>
+                  </div>
                 ) : (
                   <button type="submit" onClick={handleProceedToPayment}>
                     Proceed to Payment
                   </button>
                 )}
               </div>
-                
+
               {isModalOpen && (
                 <div className="modal-overlay">
                   <div className="modal-content">
                     <h4>Payment Confirmation</h4>
                     <p>Click submit when you are done with the payment.</p>
-                    <button onClick={handleOnApprove} style={{ backgroundColor: '#28a745', color: '#fff' }}>
+                    <button
+                      onClick={handleOnApprove}
+                      style={{ backgroundColor: "#28a745", color: "#fff" }}
+                    >
                       Submit
                     </button>
-                    <button onClick={handleCloseModal} style={{ backgroundColor: '#dc3545', color: '#fff' }}>
+                    <button
+                      onClick={handleCloseModal}
+                      style={{ backgroundColor: "#dc3545", color: "#fff" }}
+                    >
                       Close
                     </button>
                   </div>
                 </div>
               )}
-
-
 
               {popupBuy && (
                 <div className="popup-order">

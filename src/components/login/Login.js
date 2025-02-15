@@ -214,7 +214,7 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess, openForgotPass }) => 
           {/* Button login */}
           <div className="button-login">
             {formSubmitted && !loginError && (
-              <p style={{ color: "green" }}>Login successful</p>
+              <p style={{ color: "green", fontWeight: "500", marginBottom: "5px" }}>Login successful</p>
             )}
             {loginError && <p style={{ color: "red" }}>{loginError}</p>}
             <button
