@@ -13,6 +13,8 @@ import { TbLogout } from "react-icons/tb";
 import { CgProfile } from "react-icons/cg";
 import CartService from "../../api/CartService";
 import { CartContext } from "../context/Context";
+import { IoCamera } from "react-icons/io5";
+import ProductService from "../../api/ProductService";
 
 export const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("home");
@@ -29,6 +31,9 @@ export const Navbar = ({ setShowLogin }) => {
   const [imgUser, setImgUser] = useState(null);
   const navigate = useNavigate();
   const { cartCount } = useContext(CartContext);
+  const [product, setProduct] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
 
   // Call all product in cart
   const getAllProduct = async () => {
@@ -42,6 +47,7 @@ export const Navbar = ({ setShowLogin }) => {
       }
     } catch (error) {}
   };
+
   useEffect(() => {
     getAllProduct();
   }, []);
@@ -50,10 +56,10 @@ export const Navbar = ({ setShowLogin }) => {
     setSearchQuery(e.target.value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent page reload
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (searchQuery.trim() === "") {
-      navigate(`/food_card`);
+      navigate("/food_card");
     } else {
       navigate(`/food_card?search=${encodeURIComponent(searchQuery)}`);
     }
@@ -90,15 +96,48 @@ export const Navbar = ({ setShowLogin }) => {
     setAvatarActive(false);
     console.log(`Clicked ${item}`);
   };
+
   const handleAvatarClick = () => {
     setAvatarActive(true);
   };
+
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setShowMenu(false);
       setAvatarActive(false);
     }
   };
+
+  const searchImage = async (formData) => {
+    if (!jwtToken) return;
+    try {
+      const response = await ProductService.searchImage(formData);
+      if (response && response.length > 0) {
+        sessionStorage.setItem("imageSearchResults", JSON.stringify(response));
+        navigate("/list_product_search_img?imageSearch=true");
+      } else {
+        alert("Không tìm thấy sản phẩm nào phù hợp.");
+      }
+    } catch (error) {
+      console.error("Can't search by image", error);
+    }
+  };
+
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      sessionStorage.removeItem("uploadedImage");
+      const imageURL = URL.createObjectURL(file);
+      sessionStorage.setItem("uploadedImage", imageURL);
+      window.dispatchEvent(new Event("imageUpdated"));
+      setSelectedImage(file);
+      setPreviewImage(imageURL);
+      const formData = new FormData();
+      formData.append("image", file);
+      await searchImage(formData);
+    }
+  };
+
   useEffect(() => {
     if (showMenu) {
       document.addEventListener("mousedown", handleClickOutside);
@@ -109,16 +148,16 @@ export const Navbar = ({ setShowLogin }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showMenu]);
+
   return (
     <div className="navbar col-12">
-      <div className="col-1"></div>
       <div className="logo-navbar col-2">
         <Link to="/">
           <img src={Logo} alt="Logo" />
         </Link>
       </div>
 
-      <ul className="navbar-menu col-4">
+      <ul className="navbar-menu col-3">
         <li
           onClick={() => handleMenuItemClick("home")}
           className={`item ${location.pathname === "/" ? "active" : ""}`}
@@ -160,15 +199,43 @@ export const Navbar = ({ setShowLogin }) => {
       </ul>
 
       <div className="navbar-right col-4">
-        <form onSubmit={handleSubmit} className="search-container col-8 mx-1">
-          <CiSearch className="ic_search" />
+        <form
+          onSubmit={handleSubmit}
+          className="search-container position-relative col-12 mx-1"
+        >
           <input
             type="text"
             placeholder="Search..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="search-input"
+            className="form-control search-input"
           />
+
+          {/* Icon Camera */}
+          <>
+            {username ? (
+              <>
+                <label
+                  htmlFor="fileInput"
+                  className="position-absolute end-0 me-5 top-50 translate-middle-y"
+                >
+                  <IoCamera className="ic_camera" />
+                </label>
+                <input
+                  id="fileInput"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  style={{ display: "none" }}
+                />
+              </>
+            ) : (
+              <div></div>
+            )}
+          </>
+
+          {/* Icon Search */}
+          <CiSearch className="ic_search position-absolute end-0 me-3 top-50 translate-middle-y" />
         </form>
 
         <nav className="col-1 mx-1">
@@ -255,12 +322,16 @@ export const Navbar = ({ setShowLogin }) => {
                 </Dropdown>
               </div>
             ) : (
-              <button className="button-login" onClick={() => setShowLogin(true)}>Login</button>
+              <button
+                className="button-login"
+                onClick={() => setShowLogin(true)}
+              >
+                Login
+              </button>
             )}
           </>
         </nav>
       </div>
-
       <div className="col-1"></div>
     </div>
   );

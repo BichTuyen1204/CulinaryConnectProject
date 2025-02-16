@@ -38,7 +38,6 @@ export const EditProfile = () => {
   const [initialAddress, setInitialAddress] = useState("");
   const [initialDescription, setInitialDescription] = useState("");
   const navigate = useNavigate();
-
   const [otp, setOtp] = useState('');
   const [otpVisible, setOtpVisible] = useState(false);
 
@@ -181,11 +180,9 @@ export const EditProfile = () => {
     }
   };
   
-
   const handleOtpChange = (e) => {
     setOtp(e.target.value);
   };
-
 
   const handleSubmitOtp = async () => {
     if (!accountId) {

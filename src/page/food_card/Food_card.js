@@ -54,31 +54,60 @@ export const Food_card = () => {
     return categoryMapping[cat] || cat.toUpperCase();
   };
 
-  // Fetch products based on category
   const fetchProducts = async () => {
     try {
       let response;
       const renamedCategory = renameCategory(category);
+
       if (renamedCategory === "ALL") {
         response = await ProductService.getAllProduct();
       } else {
         response = await ProductService.getProductsByCategory(renamedCategory);
       }
-      setProducts(response);
-      applyFilters(response);
+      // setProducts(response);
+      await applyFilters(response);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
   };
 
-  const applyFilters = (data) => {
+  const applyFilters = async (data) => {
     let filtered = data;
     if (searchQuery.trim()) {
       filtered = filtered.filter((product) =>
         product.productName.toLowerCase().includes(searchQuery.toLowerCase())
       );
+
+      if (filtered.length === 0) {
+        try {
+          const descriptionResults = await ProductService.searchDescription(
+            searchQuery
+          );
+          const normalizedDescriptionResults =
+            normalizeProductData(descriptionResults);
+          setFilteredProducts(normalizedDescriptionResults);
+          return;
+        } catch (error) {
+          console.error("Error searching by description:", error);
+        }
+      }
     }
-    setFilteredProducts(filtered);
+    const normalizedProducts = normalizeProductData(filtered);
+    setFilteredProducts(normalizedProducts);
+  };
+
+  const normalizeProductData = (products) => {
+    return products.map((product) => ({
+      id: product.id,
+      productName: product.product_name || product.productName,
+      availableQuantity:
+        product.available_quantity || product.availableQuantity,
+      productTypes: product.product_types || product.productTypes,
+      productStatus: product.product_status || product.productStatus,
+      imageUrl: product.image_url || product.imageUrl,
+      price: product.price,
+      salePercent: product.sale_percent || product.salePercent,
+    }));
   };
 
   useEffect(() => {
@@ -103,13 +132,6 @@ export const Food_card = () => {
   };
   return (
     <div>
-      {/* Header Image */}
-      {/* <div className="image-menu">
-        <div className="image-menu-contents">
-          <img className="" src={"https://i.pinimg.com/736x/35/35/f1/3535f15f468db8a5837d7b61d27bade1.jpg"} alt="Menu Header" />
-        </div>
-      </div> */}
-
       {/* Food Page */}
       <div className="food-page-container col-12 mt-5">
         {/* Category List */}

@@ -8,21 +8,21 @@ export const FoodDisplay = ({ products }) => {
     <div className="food-display" id="food-display">
       <h2>Top food near you</h2>
       <div>
-        {products.length > 0 ? (
-          products.map((product, index) => (
-            <div className="food-display-list" key={index}>
-              <div>
+        <div className="food-display-list">
+          {products.length > 0 ? (
+            products.map((product, index) => (
+              <div key={index}>
                 <FoodItem product={product} />
               </div>
+            ))
+          ) : (
+            <div style={{ marginTop: "35px" }}>
+              <p className="text-center">
+                No products available for this category.
+              </p>
             </div>
-          ))
-        ) : (
-          <div style={{ marginTop: "35px" }}>
-            <p className="text-center">
-              No products available for this category.
-            </p>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

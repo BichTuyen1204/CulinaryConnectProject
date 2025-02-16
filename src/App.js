@@ -27,7 +27,7 @@ import { CartProvider } from "./components/context/Context";
 import Blog from "./page/blog/Blog";
 import BlogDetail from "./page/blog_detail/BlogDetail";
 import ForgotPassword from "./components/forget/ForgetPass";  
-
+import { ListProductSearchImg } from "./page/list_product_search_img/ListProductSearchImg";  
 
 const AppContent = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -68,6 +68,7 @@ const AppContent = () => {
             <Route path="cart" element={<Cart />} />
             <Route path="contact" element={<Contact />} />
             <Route path="food_card" element={<Food_card />} />
+            <Route path="list_product_search_img" element={<ListProductSearchImg />} />
             <Route path="food_detail/:id" element={<Food_detail />} />
             <Route path="food_detail" element={<Food_detail />} />
             <Route path="food_display" element={<FoodDisplay />} />

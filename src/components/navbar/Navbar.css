@@ -67,8 +67,12 @@
 }
 
 .navbar .ic_search,
+.navbar .ic_camera {
+  font-size: 25px;
+}
+
 .navbar .ic_basket {
-  font-size: 37px;
+  font-size: 35px;
 }
 
 .navbar ul {
@@ -96,16 +100,15 @@
   border-color: tomato;
 }
 
-.ic_search {
-  position: absolute;
-  right: 10px;
-  color: #888;
+.ic_search,
+.ic_camera {
+  color: #333;
   cursor: pointer;
-  width: 25px;
   transition: color 0.3s;
 }
 
-.search-input:focus + .ic_search {
+.search-input:focus + .ic_search,
+.search-input:focus + .ic_camera {
   color: tomato;
 }
 
@@ -137,13 +140,15 @@
 }
 
 .navbar-right .ic_basket:hover,
-.navbar-right .ic_search:hover {
+.navbar-right .ic_search:hover,
+.navbar-right .ic_camera:hover {
   color: tomato;
   cursor: pointer;
 }
 
 .navbar-right .ic_basket:active,
-.navbar-right .ic_search:active {
+.navbar-right .ic_search:active,
+.navbar-right .ic_camera:active {
   color: black;
 }
 

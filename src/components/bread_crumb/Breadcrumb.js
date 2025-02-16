@@ -21,10 +21,14 @@ function Breadcrumb() {
     "/food_detail",
     "/food_detail/:id",
     "/order_detail/:id",
-    "/blog_detail/:id"
+    "/blog_detail/:id",
+    "/list_product_search_img"
   ];
 
   if (hiddenPaths.includes(pathname) || pathname.includes("food_detail")) {
+    return null;
+  }
+  if (hiddenPaths.includes(pathname) || pathname.includes("list_product_search_img")) {
     return null;
   }
   if (hiddenPaths.includes(pathname) || pathname.includes("order_detail")) {
