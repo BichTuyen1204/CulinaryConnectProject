@@ -279,6 +279,179 @@
   text-align: center;
 }
 
+.coupon-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Làm mờ nền */
+  z-index: 9998;
+}
+
+.search-coupon {
+  background-color: #e2e2e2;
+}
+
+.text-coupon-code {
+  font-size: 0.9em;
+}
+
+.input-coupon {
+  font-size: 0.9em;
+  padding: 5px 10px;
+  border-radius: 3px;
+  border: 1px #bcbcbc solid;
+}
+
+.input-coupon:focus {
+  border: 1px tomato solid !important;
+  outline: none !important;
+}
+
+.button-coupon {
+  font-size: 0.9em;
+  padding: 5px 10px;
+  border: 1px #e2e2e2 solid;
+  border-radius: 3px;
+  background-color: tomato;
+  color: white;
+}
+
+.button-coupon:hover {
+  background-color: rgb(255, 135, 114);
+}
+
+.button-coupon:active {
+  background-color: tomato;
+}
+
+.coupon-popup-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  z-index: 9999;
+  width: 35em;
+  max-width: 90%;
+}
+
+.coupon-popup-title {
+  font-size: 0.9em;
+  margin-bottom: 10px;
+}
+
+.text-of-header-coupon {
+  color: tomato;
+}
+
+.coupon-list {
+  margin: 10px 0;
+}
+
+.coupon-header {
+  font-size: 0.9em;
+}
+
+.coupon-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background: white;
+}
+
+.coupon-left {
+  background-color: rgb(0, 126, 2);
+  padding: 14px;
+  border-radius: 2px;
+  color: white;
+}
+
+.coupon-details p {
+  margin: 5px 20px;
+}
+
+.coupon-usage {
+  font-size: 0.8em;
+  color: gray;
+}
+
+.usage-left {
+  color: tomato;
+}
+
+.coupon-warning {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.coupon-popup-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.coupon-btn {
+  border: none;
+  padding: 5px 15px;
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.coupon-btn-back {
+  background: gray;
+  color: white;
+}
+
+.coupon-btn-ok {
+  background: tomato;
+  color: white;
+}
+
+.coupon-btn-ok:hover {
+  background-color: rgb(255, 135, 114);
+}
+
+.coupon-btn-ok:active {
+  background-color: tomato;
+}
+
+.input-radio {
+  width: 18px;
+  height: 18px;
+}
+
+.coupon-select-btn {
+  position: relative;
+}
+
+.usage-left-coupon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: rgb(255, 214, 210);
+  color: rgb(255, 46, 46);
+  padding: 0px 15px;
+  border: 1px solid rgb(255, 214, 210);
+  border-radius: 25px;
+}
+
+.disabled-coupon {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 @media (max-width: 1024px) {
   .checkout-form-wrapper {
     padding: 3px 5px !important;

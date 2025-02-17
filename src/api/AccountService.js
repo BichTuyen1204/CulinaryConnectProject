@@ -73,8 +73,6 @@ class AccountService {
     }
   }
   
-  
-
   async account(jwtToken) {
     if (!jwtToken || jwtToken.trim() === "") {
       return null;

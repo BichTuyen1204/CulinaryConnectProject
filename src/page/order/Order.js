@@ -9,6 +9,7 @@ import OrderService from "../../api/OrderService.js";
 import { IoClose } from "react-icons/io5";
 import { RiCoupon2Line } from "react-icons/ri";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import CouponService from "../../api/CouponService.js";
 
 export const Order = () => {
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
@@ -21,8 +22,11 @@ export const Order = () => {
   const [addressError, setAdressError] = useState("");
   const [products, setProducts] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [couponId, setCouponId] = useState("");
-  const [coupon, setCoupon] = useState("");
+  const [couponId, setCouponId] = useState([]);
+  const [selectedCouponId, setSelectedCouponId] = useState(null);
+  const [tempSelect, setTempSelect] = useState(null);
+  const [coupon, setCoupon] = useState(null);
+  const [coupons, setCoupons] = useState([]);
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
   const [note, setNote] = useState("");
@@ -33,6 +37,7 @@ export const Order = () => {
   const [popupBuy, setPopupBuy] = useState(false);
   const [salePercent, setSalePercent] = useState(null);
   const [popupOrderSuccessful, setPopupOrderSuccessful] = useState(false);
+  const [popupCoupon, setPopupCoupon] = useState(false);
   const [orderID, setOrderID] = useState(null);
   const [paymentSuccessful, setPaymentSuccessful] = useState(false);
 
@@ -45,6 +50,8 @@ export const Order = () => {
     paymentMethod: "",
     product: {},
   });
+
+  const totalQuantity = products.reduce((sum, item) => sum + item.amount, 0);
 
   const NameBlur = () => {
     if (username.trim() === "") {
@@ -85,6 +92,11 @@ export const Order = () => {
   // Close popup delete
   const cancelBuy = () => {
     setPopupBuy(false);
+  };
+
+  // Close popup delete
+  const closeCoupon = () => {
+    setPopupCoupon(false);
   };
 
   // Receive idCoupon
@@ -150,6 +162,51 @@ export const Order = () => {
     } catch (error) {
       console.error("Failed to fetch coupon:", error);
       setError("An error occurred while applying the coupon.");
+    }
+  };
+
+  const handleTempCouponSelect = (couponId) => {
+    console.log("Selected coupon ID:", couponId);
+    setTempSelect(couponId);
+    setPopupCoupon(true);
+  };
+
+  const handleConfirmCoupon = () => {
+    setSelectedCouponId(tempSelect);
+    setOrderData((preState) => ({
+      ...preState,
+      couponId: tempSelect,
+    }));
+    getCouponID(tempSelect);
+    setPopupCoupon(false);
+  };
+
+  const openPopupCoupon = async () => {
+    if (!jwtToken) {
+      alert("You need to signin");
+    } else {
+      try {
+        const response = await CouponService.getAllCoupon();
+        setCoupons(response);
+        setPopupCoupon(true);
+      } catch (error) {
+        console.error("Can't load data of coupon:", error);
+      }
+    }
+  };
+
+  const getCouponID = async (selectedCouponId) => {
+    if (!jwtToken) {
+      alert("You need to signin");
+    } else {
+      try {
+        const response = await CouponService.getCouponDetail(selectedCouponId);
+        console.log("Coupon data:", response);
+        setCoupon(response);
+        setPopupCoupon(false);
+      } catch (error) {
+        console.error("Can't load data of coupon:", error);
+      }
     }
   };
 
@@ -263,6 +320,7 @@ export const Order = () => {
       throw error;
     }
   };
+
   const getURLVNPay = async (orderId) => {
     try {
       const response = await OrderService.getURLVNPay(orderId);
@@ -318,6 +376,7 @@ export const Order = () => {
       throw error;
     }
   };
+
   const handleCloseModal = () => {
     window.location.href = "http://localhost:3000/invoice";
     setIsModalOpen(false);
@@ -399,9 +458,11 @@ export const Order = () => {
         note: note,
         paymentMethod: paymentMethod,
       }));
+      
       try {
+        console.log("Data order:", orderData);
         const response = await OrderService.createOrder(orderData, jwtToken);
-        console.log("Order created successfully:", response);
+        console.log("Order created successfully:", response.data);
         setPopupBuy(false);
         setPopupOrderSuccessful(true);
         setTimeout(() => {
@@ -410,7 +471,6 @@ export const Order = () => {
         }, 2000);
       } catch (error) {
         console.error("Error creating order:", error);
-        console.log("Order created successfully:", error.response);
         alert("Failed to create order.");
       }
     } else {
@@ -457,7 +517,7 @@ export const Order = () => {
                     />
                   </div>
                   {usernameError && (
-                    <p style={{ color: "red" }}>{usernameError}</p>
+                    <p style={{ color: "red", fontSize: "0.9em" }}>{usernameError}</p>
                   )}
 
                   {/* Name end */}
@@ -493,7 +553,7 @@ export const Order = () => {
                       onBlur={PhoneBlur}
                     />
                   </div>
-                  {phoneError && <p style={{ color: "red" }}>{phoneError}</p>}
+                  {phoneError && <p style={{ color: "red", fontSize: "0.9em" }}>{phoneError}</p>}
                   {/* Phone number end */}
 
                   {/* Shipping Address start */}
@@ -512,7 +572,7 @@ export const Order = () => {
                     />
                   </div>
                   {addressError && (
-                    <p style={{ color: "red" }}>{addressError}</p>
+                    <p style={{ color: "red", fontSize: "0.9em" }}>{addressError}</p>
                   )}
                   {/* Shipping Address end */}
 
@@ -675,8 +735,12 @@ export const Order = () => {
                 <div className="d-flex col-6">
                   <div className="col-4"></div>
                   <h4 className="col-5 total">
-                    <p style={{ color: "#a1a1a1" }}>Total price ( 1 item ): </p>
+                    <p style={{ color: "#a1a1a1" }}>
+                      Total price ({totalQuantity}{" "}
+                      {totalQuantity > 1 ? "items" : "item"}):
+                    </p>
                   </h4>
+
                   <div className="d-flex justify-content-end col-3">
                     <h5 className="total-price">
                       <strong>$ {totalPrice}</strong>
@@ -707,6 +771,7 @@ export const Order = () => {
 
                 <div>
                   <button
+                    onClick={openPopupCoupon}
                     style={{
                       fontSize: "0.9em",
                       background: "#159cfc",
@@ -785,9 +850,23 @@ export const Order = () => {
                     <div className="col-6">
                       <p>Total coupon discount: </p>
                     </div>
+
                     <div className="col-6 d-flex justify-content-end">
                       <p>
-                        <strong>- ${coupon}</strong>
+                        <strong>
+                          {coupon && coupon.salePercent > 0 ? (
+                            <>
+                              <span style={{ color: "red" }}>
+                                - {coupon.salePercent}%
+                              </span>
+                              {` (-$${
+                                (totalPrice * coupon.salePercent) / 100
+                              })`}
+                            </>
+                          ) : (
+                            "$0"
+                          )}
+                        </strong>
                       </p>
                     </div>
                   </div>
@@ -800,8 +879,17 @@ export const Order = () => {
                       <p>Total payment: </p>
                     </div>
                     <div className="col-6 d-flex justify-content-end">
-                      <p>
-                        <p style={{ color:"tomato", fontSize: "1.8em", fontWeight: "500"}}>${totalPrice - coupon}</p>
+                      <p
+                        style={{
+                          color: "tomato",
+                          fontSize: "1.8em",
+                          fontWeight: "500",
+                        }}
+                      >
+                        $
+                        {coupon && coupon.salePercent > 0
+                          ? totalPrice - (totalPrice * coupon.salePercent) / 100
+                          : totalPrice}
                       </p>
                     </div>
                   </div>
@@ -849,7 +937,7 @@ export const Order = () => {
                     <button
                       onClick={handleVNPayPayment}
                       style={{
-                        backgroundColor: "#ff0000", // Red color for VNPay button
+                        backgroundColor: "#ff0000",
                         color: "#fff",
                         padding: "10px 20px",
                         border: "none",
@@ -911,6 +999,7 @@ export const Order = () => {
                   </div>
                 </div>
               )}
+
               {popupOrderSuccessful && (
                 <div className="popup">
                   <div className="popup-content">
@@ -919,6 +1008,108 @@ export const Order = () => {
                     </h5>
                   </div>
                 </div>
+              )}
+
+              {popupCoupon && (
+                <>
+                  {/* Lớp nền mờ */}
+                  <div
+                    className="coupon-popup-overlay"
+                    onClick={() => setPopupCoupon(false)}
+                  ></div>
+
+                  {/* Nội dung popup */}
+                  <div className="coupon-popup-container">
+                    <h2 className="coupon-popup-title d-flex justify-content-center align-items-center text-center">
+                      Choose{""}
+                      <p className="text-of-header-coupon mx-1">
+                        CULINARY CONNECT
+                      </p>
+                      {""}
+                      Coupon
+                    </h2>
+                    <div className="search-coupon d-flex col-12 py-3">
+                      <div className="col-3">
+                        <p className="text-coupon-code mt-2">Coupon code</p>
+                      </div>
+
+                      <div className="col-6">
+                        <input
+                          className="input-coupon"
+                          placeholder="Coupon voucher"
+                        />
+                      </div>
+
+                      <div className="col-3">
+                        <button className="button-coupon">Choose</button>
+                      </div>
+                    </div>
+                    <div className="coupon-list col-12">
+                      {coupons.length > 0 ? (
+                        coupons.map((item, index) => (
+                          <div
+                            className={`coupon-card col-12 ${
+                              totalPrice < item.minimumPrice
+                                ? "disabled-coupon"
+                                : ""
+                            }`}
+                            key={index}
+                          >
+                            <div className="col-3">
+                              <div className="coupon-left ">Free shipping</div>
+                            </div>
+
+                            <div className="coupon-details col-7 text-start">
+                              <p>
+                                <strong>{item.salePercent}% </strong>off
+                              </p>
+                              <p>Minimum order ${item.minimumPrice}</p>
+                              <p className="coupon-usage">
+                                Remaining coupons:{" "}
+                                <strong className="usage-left">
+                                  x{item.usageLeft}
+                                </strong>
+                              </p>
+                            </div>
+
+                            <div className="coupon-select-btn col-2 position-relative">
+                              <label>
+                                <input
+                                  type="radio"
+                                  name="payment"
+                                  value={item.id}
+                                  checked={tempSelect === item.id}
+                                  onChange={() =>
+                                    handleTempCouponSelect(item.id)
+                                  }
+                                  className="input-radio"
+                                  disabled={totalPrice < item.minimumPrice}
+                                />
+                              </label>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <p>No discount codes available.</p>
+                      )}
+                    </div>
+
+                    <div className="coupon-popup-footer">
+                      <button
+                        className="coupon-btn coupon-btn-back"
+                        onClick={() => setPopupCoupon(false)}
+                      >
+                        Back
+                      </button>
+                      <button
+                        className="coupon-btn coupon-btn-ok"
+                        onClick={handleConfirmCoupon}
+                      >
+                        OK
+                      </button>
+                    </div>
+                  </div>
+                </>
               )}
             </div>
             {/* Part right end */}
