@@ -39,7 +39,7 @@ export const FoodItem = ({ product }) => {
     }
   };
   return (
-    <div className="food-item">
+    <div className="food-item" style={{ display: "flex", flexDirection: "column", height: "100%" }}>
       {username ? (
         <Link to={`/food_detail/${product.id}`}>
           <div>
@@ -138,7 +138,7 @@ export const FoodItem = ({ product }) => {
       )}
 
       {username ? (
-        <div className="button-in-item">
+        <div className="button-in-item" style={{ marginTop: "auto", paddingBottom: "5px" }}>
           <button
             className="button-addtocart"
             onClick={handleAddToCart}
@@ -149,7 +149,7 @@ export const FoodItem = ({ product }) => {
           <button className="button-buynow">Buy now</button>
         </div>
       ) : (
-        <div className="button-in-item">
+        <div className="button-in-item" style={{ marginTop: "auto", paddingBottom: "5px" }}>
           <button className="button-addtocart">
             <Link to="/sign_in">Add to cart</Link>
           </button>

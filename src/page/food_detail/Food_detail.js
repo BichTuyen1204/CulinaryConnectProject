@@ -4,10 +4,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import ProductService from "../../api/ProductService";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import AccountService from "../../api/AccountService";
-import CartService from "../../api/CartService";
 import { FaLeaf, FaBox, FaInfoCircle } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import { MdArrowBackIosNew } from "react-icons/md";
 import { CartContext } from "../../components/context/Context";
 
 export const Food_detail = () => {
@@ -55,7 +54,7 @@ export const Food_detail = () => {
   useEffect(() => {
     if (id) {
       getDataDetail(id);
-      window.scrollTo(0, 0);
+      // window.scrollTo(0, 0);
     } else {
       console.error("ID is undefined");
     }
@@ -94,7 +93,17 @@ export const Food_detail = () => {
   return (
     <div>
       <div>
-        <div>
+        <div className="bg-white">
+          <div className="d-flex p-3">
+            <Link to="/food_card">
+              <MdArrowBackIosNew className="icon-back-pro-detail" />
+            </Link>
+            <p className="mx-5">
+              <strong>{product.productTypes}</strong>
+            </p>
+          </div>
+        </div>
+        <div className="bg-white p-3 mt-2 bg-big-pro-detail">
           <div className="main-product-wrapper mt-5">
             <div className="container-xxl">
               <div className="productDetail col-12 row">
@@ -193,7 +202,9 @@ export const Food_detail = () => {
                   <div className="">
                     <div className="main-product-details">
                       <div className="border-bottom">
-                        <h3 className="title-of-product-detail">{product.name}</h3>
+                        <h3 className="title-of-product-detail">
+                          {product.name}
+                        </h3>
                       </div>
 
                       <div className="border-bottom">
@@ -230,7 +241,9 @@ export const Food_detail = () => {
 
                         <div className="d-flex gap-10 align-items-center my-2">
                           <h3 className="product-heading">Weight: </h3>
-                          <p className="product-data">{}</p>
+                          <p className="product-data">
+                            {product.infos?.weight}
+                          </p>
                         </div>
 
                         <div className="d-flex gap-10 align-items-center my-2">
@@ -305,55 +318,103 @@ export const Food_detail = () => {
                 </div>
 
                 {/* Information about product */}
-                <div className="product-detail-container mt-5">
-                  <div className="product-info">
-                    <p className="product-name">Information product</p>
-                    <p className="product-description">{product.description}</p>
-                    <div className="product-details">
-                      <div className="detail-item">
-                        <FaLeaf className="detail-icon" />
-                        <span className="detail-label">Name of product:</span>
-                        <span className="detail-value">{product.name}</span>
-                      </div>
-                      <div className="detail-item">
-                        <FaBox className="detail-icon" />
-                        <span className="detail-label">Weight:</span>
-                        <span className="detail-value">{product.infos.weight}</span>
-                      </div>
-                      <div className="detail-item">
-                        <FaInfoCircle className="detail-icon" />
-                        <span className="detail-label">Category:</span>
-                        <span className="detail-value">
-                          {product.productTypes}
-                        </span>
-                      </div>
-                      <div className="detail-item">
-                        <FaBox className="detail-icon" />
-                        <span className="detail-label">Expiry date:</span>
-                        <span className="detail-value">
-                          {product.daysBeforeExpiry}
-                        </span>
-                      </div>
-                      <div className="detail-item">
-                        <FaBox className="detail-icon" />
-                        <span className="detail-label">Storage instructions:</span>
-                        <span className="detail-value">
-                          {product.infos.storage_instructions}
-                        </span>
-                      </div>
-                      <div className="detail-item">
-                        <FaInfoCircle className="detail-icon" />
-                        <span className="detail-label">Made in:</span>
-                        <span className="detail-value">
-                          {product.infos.made_in}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="markdown-content">
-                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                        {product.articleMD}
-                      </ReactMarkdown>
-                    </div>
+                <div className="mt-5">
+                  <p style={{ fontWeight: "500", fontSize: "1.2em" }}>
+                    INFORMATION OF PRODUCT
+                  </p>
+                  <p className="px-2">{product.description}</p>
+                </div>
+
+                <div className="product-table-container">
+                  <div
+                    style={{
+                      marginTop: "20px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <table
+                      style={{
+                        width: "100%",
+                        borderCollapse: "collapse",
+                        border: "1px solid #ddd",
+                      }}
+                    >
+                      <tbody>
+                        <tr style={{ border: "1px solid #ddd" }}>
+                          <td
+                            className="bg-for-des-pro"
+                            style={{
+                              width: "20%",
+                              padding: "5px 15px",
+                              border: "1px solid #ddd",
+                            }}
+                          >
+                            <strong style={{ fontSize: "0.9em" }}>
+                              Name of product
+                            </strong>
+                          </td>
+
+                          <td
+                            className="text-description"
+                            style={{
+                              padding: "12px 15px",
+                              border: "1px solid #ddd",
+                              width: "80%",
+                            }}
+                          >
+                            {product.name}
+                          </td>
+                        </tr>
+
+                        <tr style={{ border: "1px solid #ddd" }}>
+                          <td
+                            className="bg-for-des-pro"
+                            style={{
+                              padding: "12px 15px",
+                              border: "1px solid #ddd",
+                            }}
+                          >
+                            <strong className="text-description">
+                              Category
+                            </strong>
+                          </td>
+                          <td
+                            className="text-description"
+                            style={{
+                              padding: "12px 15px",
+                              border: "1px solid #ddd",
+                            }}
+                          >
+                            {product.productTypes}
+                          </td>
+                        </tr>
+
+                        <tr style={{ border: "1px solid #ddd" }}>
+                          <td
+                            className="bg-for-des-pro"
+                            style={{
+                              padding: "12px 15px",
+                              border: "1px solid #ddd",
+                            }}
+                          >
+                            <strong className="text-description">
+                              Expiry date
+                            </strong>
+                          </td>
+                          <td
+                            className="text-description"
+                            style={{
+                              padding: "12px 15px",
+                              border: "1px solid #ddd",
+                            }}
+                          >
+                            {product.daysBeforeExpiry}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>

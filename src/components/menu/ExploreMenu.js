@@ -4,7 +4,7 @@ import "../menu/ExploreMenu.css";
 
 const ExploreMenu = ({category, setCategory}) => {
   return (
-    <div className="explore-menu" id="explore-menu">
+    <div className="explore-menu bg-white px-5 py-3" id="explore-menu">
       <h1>Explore our menu</h1>
       <p className="explore-menu-text">Let's explore fresh products with us</p>
 
@@ -18,7 +18,6 @@ const ExploreMenu = ({category, setCategory}) => {
             );
           })}
       </div>
-      <hr />
     </div>
   );
 };

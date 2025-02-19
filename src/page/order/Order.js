@@ -458,7 +458,7 @@ export const Order = () => {
         note: note,
         paymentMethod: paymentMethod,
       }));
-      
+
       try {
         console.log("Data order:", orderData);
         const response = await OrderService.createOrder(orderData, jwtToken);
@@ -517,7 +517,9 @@ export const Order = () => {
                     />
                   </div>
                   {usernameError && (
-                    <p style={{ color: "red", fontSize: "0.9em" }}>{usernameError}</p>
+                    <p style={{ color: "red", fontSize: "0.9em" }}>
+                      {usernameError}
+                    </p>
                   )}
 
                   {/* Name end */}
@@ -553,7 +555,11 @@ export const Order = () => {
                       onBlur={PhoneBlur}
                     />
                   </div>
-                  {phoneError && <p style={{ color: "red", fontSize: "0.9em" }}>{phoneError}</p>}
+                  {phoneError && (
+                    <p style={{ color: "red", fontSize: "0.9em" }}>
+                      {phoneError}
+                    </p>
+                  )}
                   {/* Phone number end */}
 
                   {/* Shipping Address start */}
@@ -572,7 +578,9 @@ export const Order = () => {
                     />
                   </div>
                   {addressError && (
-                    <p style={{ color: "red", fontSize: "0.9em" }}>{addressError}</p>
+                    <p style={{ color: "red", fontSize: "0.9em" }}>
+                      {addressError}
+                    </p>
                   )}
                   {/* Shipping Address end */}
 
@@ -951,9 +959,13 @@ export const Order = () => {
                     </button>
                   </div>
                 ) : (
-                  <button type="submit" onClick={handleProceedToPayment}>
-                    Proceed to Payment
-                  </button>
+                    <button
+                      className="d-flex justify-content-end"
+                      type="submit"
+                      onClick={handleProceedToPayment}
+                    >
+                      Proceed to Payment
+                    </button>
                 )}
               </div>
 

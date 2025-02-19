@@ -160,7 +160,7 @@ const Cart = () => {
   }, [items]);
 
   return (
-    <div className="cart">
+    <div className="cart bg-white px-4 py-4">
       <div className="cart-items">
         <div className="cart-items-titile">
           <p>Image</p>
@@ -216,7 +216,7 @@ const Cart = () => {
                     onChange={(e) => handleQuantityChange(item.product.id, e)}
                     onBlur={(e) => handleBlur(item.product.id, e)}
                     min="1"
-                    className="text-center input-change-quantity-cart"
+                    className="text-center input-change-quantity-cart bg-white"
                   />
                   <button
                     className="increase-quantity"

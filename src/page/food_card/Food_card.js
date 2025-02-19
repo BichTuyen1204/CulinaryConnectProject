@@ -133,7 +133,7 @@ export const Food_card = () => {
   return (
     <div>
       {/* Food Page */}
-      <div className="food-page-container col-12 mt-5">
+      <div className="food-page-container col-12 mt-3 bg-white px-2 py-5">
         {/* Category List */}
         <div className="category-section px-5 col-2">
           <ul className="category-list">
@@ -156,87 +156,97 @@ export const Food_card = () => {
         <div className="food-grid col-11">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
-              <div key={product.id} className="food-card col-2">
+              <div
+                key={product.id}
+                className="food-card col-2"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
                 <div>
-                  <div className="food-item-img-container">
-                    <img
-                      className="food-item-image"
-                      src={product.imageUrl || image}
-                      alt={product.productName}
-                    />
-                  </div>
+                  <Link to={`/food_detail/${product.id}`}>
+                    <div className="food-item-img-container">
+                      <img
+                        className="food-item-image"
+                        src={product.imageUrl || image}
+                        alt={product.productName}
+                      />
+                    </div>
+
+                    <div className="food-info mx-3" style={{ flexGrow: 1 }}>
+                      <h5 className="food-name">{product.productName}</h5>
+                      <div className="food-price-and-quantity">
+                        <p className="food-item-price">
+                          <strong>Price:</strong>{" "}
+                          {product.salePercent > 0 ? (
+                            <>
+                              <span className="original-price">
+                                ${product.price.toFixed(2)}
+                              </span>{" "}
+                              <span className="discounted-price">
+                                $
+                                {(
+                                  product.price -
+                                  (product.price * product.salePercent) / 100
+                                ).toFixed(2)}
+                              </span>
+                            </>
+                          ) : (
+                            <span>${product.price.toFixed(2)}</span>
+                          )}
+                        </p>
+                        <div className="food-quantity">
+                          {product.availableQuantity > 0 ? (
+                            <p className="food-item-quantity">
+                              <strong className="link">
+                                Quantity: In stock
+                              </strong>
+                            </p>
+                          ) : product.availableQuantity === 0 ? (
+                            <p className="food-item-quantity mt-2">
+                              <strong className="link">
+                                Quantity: Out of stock
+                              </strong>
+                            </p>
+                          ) : null}
+                        </div>
+                        {product.salePercent > 0 ? (
+                          <p className="food-item-quantity">
+                            <strong className="link">Sale:</strong>{" "}
+                            {product.salePercent} %
+                          </p>
+                        ) : null}
+                      </div>
+                    </div>
+                  </Link>
                 </div>
 
-                <div className="food-info mx-3">
-                  <h5 className="food-name">{product.productName}</h5>
-                  <div className="food-price-and-quantity">
-                    <p className="food-item-price">
-                      <strong>Price:</strong>{" "}
-                      {product.salePercent > 0 ? (
-                        <>
-                          <span className="original-price">
-                            ${product.price.toFixed(2)}
-                          </span>{" "}
-                          <span className="discounted-price">
-                            $
-                            {(
-                              product.price -
-                              (product.price * product.salePercent) / 100
-                            ).toFixed(2)}
-                          </span>
-                        </>
-                      ) : (
-                        <span>${product.price.toFixed(2)}</span>
-                      )}
-                    </p>
-                    <div className="food-quantity">
-                      {product.availableQuantity > 0 ? (
-                        <p className="food-item-quantity">
-                          <strong className="link">Quantity: In stock</strong>
-                        </p>
-                      ) : product.availableQuantity === 0 ? (
-                        <p className="food-item-quantity mt-2">
-                          <strong className="link">
-                            Quantity: Out of stock
-                          </strong>
-                        </p>
-                      ) : null}
-                    </div>
-
-                    {product.salePercent > 0 ? (
-                      <p className="food-item-quantity">
-                        <strong className="link">Sale:</strong>{" "}
-                        {product.salePercent} %
-                      </p>
-                    ) : product.salePercent === 0 ? (
-                      <p className="food-item-quantity">
-                        <strong className="link" style={{ color: "white" }}>
-                          Sale:
-                        </strong>
-                      </p>
-                    ) : null}
+                {username ? (
+                  <div
+                    className="button-food-card mb-2"
+                    style={{ marginTop: "auto", paddingBottom: "5px" }}
+                  >
+                    <button
+                      className="bt-add-to-cart"
+                      onClick={() => handleAddToCart(product)}
+                      disabled={product.availableQuantity === 0}
+                    >
+                      Add to cart
+                    </button>
+                    <button className="bt-buy-now">Buy now</button>
                   </div>
-
-                  {username ? (
-                    <div className="button-food-card mb-2">
-                      <button
-                        className="bt-add-to-cart"
-                        onClick={() => handleAddToCart(product)}
-                        disabled={product.availableQuantity === 0}
-                      >
-                        Add to cart
-                      </button>
-                      <button className="bt-buy-now">Buy now</button>
-                    </div>
-                  ) : (
-                    <div className="button-food-card mb-2">
-                      <button className="bt-add-to-cart">
-                        <Link to="/sign_in">Add to cart</Link>
-                      </button>
-                      <button className="bt-buy-now">Buy now</button>
-                    </div>
-                  )}
-                </div>
+                ) : (
+                  <div
+                    className="button-food-card mb-2"
+                    style={{ marginTop: "auto", paddingBottom: "5px" }}
+                  >
+                    <button className="bt-add-to-cart">
+                      <Link to="/sign_in">Add to cart</Link>
+                    </button>
+                    <button className="bt-buy-now">Buy now</button>
+                  </div>
+                )}
               </div>
             ))
           ) : (
