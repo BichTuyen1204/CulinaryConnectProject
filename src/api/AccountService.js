@@ -115,7 +115,7 @@ class AccountService {
     }
   }
 
-  async updateInfo(account) {
+  async updateInfo(data) {
     try {
       const jwtToken = sessionStorage.getItem("jwtToken");
       if (!jwtToken) {
@@ -123,7 +123,7 @@ class AccountService {
       }
       const response = await axios.post(
         `${API_BASE_URL_2}/edit/profile`,
-        account,
+        data,
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,

@@ -11,10 +11,9 @@
   display: flex;
   flex-direction: column;
   margin-left: 130px;
-
   margin-left: auto;  
   margin-right: auto; 
-  margin-top: 10%; 
+  margin-top: 5%; 
   margin-bottom: 10%; 
 }
 
@@ -46,7 +45,8 @@
 
 .bg-img:hover {
   cursor: pointer;
-  transform: scale(1.15);
+  border: 1px solid tomato;
+
 }
 
 .bg-img input{
@@ -57,9 +57,15 @@
 
 .ic_pen {
   color: rgb(0, 0, 0);
-  margin-top: 5px;
-  margin-left: 9px;
+  margin-top: 4px;
+  margin-left: 7px;
+  width: 20px;
+  height: 20px;
 } 
+
+.ic_pen:hover {
+  color: tomato;
+}
 
 .edit-profile-info {
   margin-bottom: 30px;
@@ -120,16 +126,22 @@
 }
 
 .tabs button {
-  padding: 5px 35px;
+  padding: 5px 25px;
   font-size: 0.9rem;
   background-color: white;
-  border: 1px solid #333;
-  color: hsl(0, 0%, 33%);
+  border: 1px solid rgb(186, 186, 186);
+  border-radius: 5px;
+  color: #333;
   margin: 0 5px;
 }
 
+.tabs button:hover {
+  background-color: rgb(255, 141, 119);
+  color: white;
+}
+
 .tabs button.active{
-  background-color: hsl(0, 0%, 47%);
+  background-color: tomato;
   color: white;
 }
 

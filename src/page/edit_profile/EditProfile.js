@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import AccountService from "../../api/AccountService";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FaPen } from "react-icons/fa6";
+import { IoCamera } from "react-icons/io5";
 
 export const EditProfile = () => {
   const [username, setUserName] = useState("");
@@ -32,26 +32,32 @@ export const EditProfile = () => {
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
   const [activeTab, setActiveTab] = useState("profile");
   const [noChangeError, setNoChangeError] = useState("");
-  const [initialUsername, setInitialUsername] = useState("");
-  const [initialEmail, setInitialEmail] = useState("");
-  const [initialPhone, setInitialPhone] = useState("");
-  const [initialAddress, setInitialAddress] = useState("");
-  const [initialDescription, setInitialDescription] = useState("");
   const navigate = useNavigate();
-  const [otp, setOtp] = useState('');
+  const [otp, setOtp] = useState("");
   const [otpVisible, setOtpVisible] = useState(false);
 
   const [account, setAccount] = useState({
-    username: "",
     email: "",
-    phone: "",
-    address: "",
-    description: "",
     oldPassword: "",
     password: "",
     profilePictureUri: "",
     url: "",
   });
+
+  const [updateInfo, setUpdateInfo] = useState({
+    username: "",
+    phone: "",
+    address: "",
+    description: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUpdateInfo((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
   const ImgChange = async (e) => {
     const file = e.target.files[0];
@@ -89,22 +95,15 @@ export const EditProfile = () => {
     }
   };
 
-  // Receive full name
-  const NameChange = (e) => {
-    const { value } = e.target;
-    setUserName(value);
-    setAccount((preState) => ({ ...preState, username: value }));
-  };
-
   // Check full name
   const NameBlur = () => {
-    if (username.trim() === "") {
+    if (updateInfo.username.trim() === "") {
       setUserNameError("Please enter your full name");
-    } else if (username.length < 4) {
+    } else if (updateInfo.username.length < 4) {
       setUserNameError("The full name must be at least 4 characters");
-    } else if (username.length > 100) {
+    } else if (updateInfo.username.length > 100) {
       setUserNameError("The full name must be less than 100 characters");
-    } else if (!/^[\p{L}\s]+$/u.test(username)) {
+    } else if (!/^[\p{L}\s]+$/u.test(updateInfo.username)) {
       setUserNameError("Please enter only alphabetic characters");
     } else {
       setUserNameError("");
@@ -165,7 +164,7 @@ export const EditProfile = () => {
     }
   };
 
-  const [accountId, setAccountId] = useState(null); 
+  const [accountId, setAccountId] = useState(null);
   const handleVisibleOTP = async () => {
     try {
       const response = await AccountService.updateEmailOTP(email);
@@ -175,11 +174,13 @@ export const EditProfile = () => {
         setOtpVisible(true);
       }
     } catch (error) {
-  
-      alert("Error: " + (error.response ? error.response.data.messages : error.message));
+      alert(
+        "Error: " +
+          (error.response ? error.response.data.messages : error.message)
+      );
     }
   };
-  
+
   const handleOtpChange = (e) => {
     setOtp(e.target.value);
   };
@@ -192,14 +193,17 @@ export const EditProfile = () => {
     try {
       const response = await AccountService.updateEmail(accountId, email, otp);
 
-      console.log('OTP submitted:', otp);
+      console.log("OTP submitted:", otp);
       setOtpVisible(false);
-  
+
       if (response) {
         alert("Email successfully updated!");
       }
     } catch (error) {
-      alert("Error: " + (error.response ? error.response.data.messages : error.message));
+      alert(
+        "Error: " +
+          (error.response ? error.response.data.messages : error.message)
+      );
     }
   };
 
@@ -207,40 +211,19 @@ export const EditProfile = () => {
     setOtpVisible(false);
   };
 
-  // Receive phone number
-  const PhoneChange = (e) => {
-    const { value } = e.target;
-    setPhone(value);
-    setAccount((preState) => ({ ...preState, phone: value }));
-  };
-
   // Check phone number
   const PhoneBlur = () => {
-    if (phone.trim() === "") {
+    if (updateInfo.phone.trim() === "") {
       setPhoneError("Please enter your phone number");
-    } else if (phone.length < 10 || phone.length > 10) {
+    } else if (updateInfo.phone.length < 10 || updateInfo.phone.length > 10) {
       setPhoneError("Your phone number must be 10 digits");
-    } else if (!/^\d+$/.test(phone)) {
+    } else if (!/^\d+$/.test(updateInfo.phone)) {
       setPhoneError("Your phone number just only number");
-    } else if (!/^0/.test(phone)) {
+    } else if (!/^0/.test(updateInfo.phone)) {
       setPhoneError("Phone number must start with 0");
     } else {
       setPhoneError("");
     }
-  };
-
-  // Receive address
-  const AddressChange = (e) => {
-    const { value } = e.target;
-    setAddress(value);
-    setAccount((preState) => ({ ...preState, address: value }));
-  };
-
-  // Receive description
-  const DescriptionChange = (e) => {
-    const { value } = e.target;
-    setDescription(value);
-    setAccount((preState) => ({ ...preState, description: value }));
   };
 
   // Receive old password
@@ -332,18 +315,15 @@ export const EditProfile = () => {
       const getAccount = async () => {
         try {
           const response = await AccountService.account(jwtToken);
-          setAccount(response);
-          setUserName(response.username);
+          setUpdateInfo((prevState) => ({
+            username: prevState.username || response.username,
+            phone: prevState.phone || response.phone,
+            address: prevState.address || response.address,
+            description: prevState.description || response.profileDescription,
+          }));
+
           setEmail(response.email);
-          setPhone(response.phone);
-          setAddress(response.address);
-          setDescription(response.profileDescription);
           setImgUser(response.profilePictureUri);
-          setInitialUsername(response.username);
-          setInitialEmail(response.email);
-          setInitialPhone(response.phone);
-          setInitialAddress(response.address);
-          setInitialDescription(response.profileDescription);
         } catch (error) {
           console.error("Error fetching account information:", error);
         }
@@ -352,77 +332,53 @@ export const EditProfile = () => {
     }
   }, [jwtToken, navigate]);
 
-  //Check user input something or not
-  const handleUserChange = () => {
-    if (
-      username === initialUsername &&
-      email === initialEmail &&
-      phone === initialPhone &&
-      address === initialAddress &&
-      description === initialDescription
-    ) {
-      setNoChangeError("Please change at least one field to save.");
-      return false;
-    }
-    setNoChangeError("");
-    console.log("Saving changes...");
-    return true;
-  };
-
   //Update account
   const updateAccount = async (e) => {
     e.preventDefault();
-    const hasChange = handleUserChange();
-    if (!hasChange) {
-      return;
-    }
+    console.log("Data sent to API:", updateInfo);
     NameBlur();
-    EmailBlur();
     PhoneBlur();
     if (
-      !usernameError &&
-      !emailError &&
-      !phoneError &&
-      username &&
-      email &&
-      phone
+      !updateInfo.username ||
+      !updateInfo.phone ||
+      !updateInfo.address ||
+      !updateInfo.description
     ) {
-      try {
-        const response = await AccountService.updateInfo(account);
-        console.log("Account updated", response);
-        setFormSubmitted(true);
-        setNoChangeError(false);
-        setUpdateError(false);
-      } catch (error) {
-        if (error.response) {
-          const errorMessage = error.response.data?.message;
-          if (errorMessage) {
-            if (
-              errorMessage.includes(
-                "duplicate key value violates unique constraint"
-              )
-            ) {
-              if (errorMessage.includes("phone")) {
-                setPhoneError("Phone number already exists.");
-              } else if (errorMessage.includes("email")) {
-                setEmailError("Email already exists.");
-              } else if (errorMessage.includes("username")) {
-                setUserNameError("Username already exists.");
-              }
+      alert("Please fill in all fields correctly before submitting.");
+      return;
+    }
+
+    try {
+      const response = await AccountService.updateInfo(updateInfo);
+      console.log("Account updated", response);
+      setFormSubmitted(true);
+      setNoChangeError(false);
+      setUpdateError(false);
+    } catch (error) {
+      if (error.response) {
+        const errorMessage = error.response.data?.message;
+        if (errorMessage) {
+          if (
+            errorMessage.includes(
+              "duplicate key value violates unique constraint"
+            )
+          ) {
+            if (errorMessage.includes("phone")) {
+              setPhoneError("Phone number already exists.");
+            } else if (errorMessage.includes("username")) {
+              setUserNameError("Username already exists.");
             }
-          } else {
-            setUpdateError("An error occurred during update.");
-            setFormSubmitted(false);
-            setNoChangeError(false);
           }
         } else {
-          console.error("Network or unknown error occurred:", error);
-          setUpdateError("Network error occurred, please try again.");
+          setUpdateError("An error occurred during update.");
+          setFormSubmitted(false);
+          setNoChangeError(false);
         }
-        setFormSubmitted(false);
+      } else {
+        console.error("Network or unknown error occurred:", error);
+        setUpdateError("Network error occurred, please try again.");
       }
-    } else {
-      alert("Please fill in all fields correctly before submitting.");
+      setFormSubmitted(false);
     }
   };
 
@@ -483,7 +439,7 @@ export const EditProfile = () => {
   return (
     <div className="edit-profile-container col-12">
       <div className="edit-profile-header col-3 align-items-center">
-      <img
+        <img
           className="edit-profile-avatar"
           src={
             imgUser
@@ -507,7 +463,7 @@ export const EditProfile = () => {
             onChange={ImgChange}
           />
           <label htmlFor="upload-file" style={{ cursor: "pointer" }}>
-            <FaPen className="ic_pen" />
+            <IoCamera className="ic_pen" />
           </label>
         </div>
       </div>
@@ -552,8 +508,8 @@ export const EditProfile = () => {
                   <input
                     type="text"
                     name="username"
-                    value={username}
-                    onChange={NameChange}
+                    value={updateInfo.username}
+                    onChange={handleChange}
                     onBlur={NameBlur}
                   />
                 </div>
@@ -561,8 +517,6 @@ export const EditProfile = () => {
                   <p style={{ color: "red" }}>{usernameError}</p>
                 )}
               </div>
-
-
 
               {/* Input phone */}
               <div className="input-container">
@@ -573,8 +527,8 @@ export const EditProfile = () => {
                   <input
                     type="tel"
                     name="phone"
-                    value={phone}
-                    onChange={PhoneChange}
+                    value={updateInfo.phone}
+                    onChange={handleChange}
                     onBlur={PhoneBlur}
                   />
                 </div>
@@ -590,8 +544,8 @@ export const EditProfile = () => {
                   <input
                     type="text"
                     name="address"
-                    value={address}
-                    onChange={AddressChange}
+                    value={updateInfo.address}
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -605,8 +559,8 @@ export const EditProfile = () => {
                   <input
                     type="text"
                     name="description"
-                    value={description}
-                    onChange={DescriptionChange}
+                    value={updateInfo.description}
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -628,14 +582,9 @@ export const EditProfile = () => {
                 </p>
               )}
 
-              <Link to="/profile">
-                <button
-                  className="bt-edit-profile mt-3"
-                  onClick={updateAccount}
-                >
-                  Save
-                </button>
-              </Link>
+              <button className="bt-edit-profile mt-3" onClick={updateAccount}>
+                Save
+              </button>
               <p className="text-or text-center align-items-center justify-content-center">
                 OR
               </p>
@@ -648,64 +597,61 @@ export const EditProfile = () => {
 
         {activeTab === "email" && (
           <div className="email-section">
-
-              {/* Input email */}
-              <div className="input-container">
-                <p className="mt-3">
-                  <strong>Email:</strong>
-                </p>
-                <div className="input-wrapper">
-                  <input
-                    type="email"
-                    name="email"
-                    value={email}
-                    onChange={EmailChange}
-                    onBlur={EmailBlur}
-                  />
-                </div>
-                {emailError && <p style={{ color: "red" }}>{emailError}</p>}
-              </div>
-
-            
-
-
-            
-                <button
-                  className="bt-edit-profile mt-3"
-                  onClick={handleVisibleOTP}
-                >
-                  Update Email
-                </button>
-            
-              <p className="text-or text-center align-items-center justify-content-center">
-                OR
+            {/* Input email */}
+            <div className="input-container">
+              <p className="mt-3">
+                <strong>Email:</strong>
               </p>
-              <Link to="/profile">
-                <button className="bt-cancel-profile">Back</button>
-              </Link>
+              <div className="input-wrapper">
+                <input
+                  type="email"
+                  name="email"
+                  value={email}
+                  onChange={EmailChange}
+                  onBlur={EmailBlur}
+                />
+              </div>
+              {emailError && <p style={{ color: "red" }}>{emailError}</p>}
+            </div>
 
-              {/* OTP Pop-Up at the top of the page */}
-              {otpVisible && (
-                <div className="otp-popup-overlay">
-                  <div className="otp-popup">
-                    <h2>Enter OTP</h2>
-                    <div className="form-group">
-                      <label>OTP:</label>
-                      <input
-                        type="text"
-                        value={otp}
-                        onChange={handleOtpChange}
-                        placeholder="Enter OTP"
-                      />
-                    </div>
-                    <button  className="verify-otp" onClick={handleSubmitOtp} disabled={!otp}>
-                      Verify OTP
-                    </button>
-                    <button  className="close-otp" onClick={handleCloseOtpPanel}>Close</button>
+            <button className="bt-edit-profile mt-3" onClick={handleVisibleOTP}>
+              Update Email
+            </button>
+
+            <p className="text-or text-center align-items-center justify-content-center">
+              OR
+            </p>
+            <Link to="/profile">
+              <button className="bt-cancel-profile">Back</button>
+            </Link>
+
+            {/* OTP Pop-Up at the top of the page */}
+            {otpVisible && (
+              <div className="otp-popup-overlay">
+                <div className="otp-popup">
+                  <h2>Enter OTP</h2>
+                  <div className="form-group">
+                    <label>OTP:</label>
+                    <input
+                      type="text"
+                      value={otp}
+                      onChange={handleOtpChange}
+                      placeholder="Enter OTP"
+                    />
                   </div>
+                  <button
+                    className="verify-otp"
+                    onClick={handleSubmitOtp}
+                    disabled={!otp}
+                  >
+                    Verify OTP
+                  </button>
+                  <button className="close-otp" onClick={handleCloseOtpPanel}>
+                    Close
+                  </button>
                 </div>
-              )}
-
+              </div>
+            )}
           </div>
         )}
 
