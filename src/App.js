@@ -28,6 +28,7 @@ import Blog from "./page/blog/Blog";
 import BlogDetail from "./page/blog_detail/BlogDetail";
 import ForgotPassword from "./components/forget/ForgetPass";  
 import { ListProductSearchImg } from "./page/list_product_search_img/ListProductSearchImg";  
+import ChatBot from "./components/chat_bot/ChatBot"; // Import the ChatBox component
 
 const AppContent = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -103,6 +104,7 @@ const AppContent = () => {
           )}
 
         </CartProvider>
+        <ChatBot />
       </div>
       <Footer />
     </>
