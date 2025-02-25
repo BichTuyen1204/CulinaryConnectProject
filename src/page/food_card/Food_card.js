@@ -162,16 +162,47 @@ export const Food_card = () => {
                 style={{
                   display: "flex",
                   flexDirection: "column",
+                  opacity: product.availableQuantity === 0 ? 0.5 : 1,
+                  pointerEvents:
+                    product.availableQuantity === 0 ? "none" : "auto",
                 }}
               >
                 <div>
                   <Link to={`/food_detail/${product.id}`}>
-                    <div className="food-item-img-container">
+                    <div
+                      className="food-item-img-container"
+                      style={{
+                        position: "relative",
+                      }}
+                    >
                       <img
                         className="food-item-image"
                         src={product.imageUrl || image}
                         alt={product.productName}
                       />
+
+                      {product.availableQuantity === 0 && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            width: "100%",
+                            top: "50%",
+                            left: "50%",
+                            transform: "translate(-50%, -50%)",
+                            backgroundColor: "black",
+                            color: "white",
+                            padding: "10px 15px",
+                            fontSize: "0.8em",
+                            fontWeight: "bold",
+                            textTransform: "uppercase",
+                            letterSpacing: "1px",
+                            textAlign: "center",
+                            borderRadius: "0px",
+                          }}
+                        >
+                          Out of Stock
+                        </div>
+                      )}
                     </div>
 
                     <div className="food-info mx-3" style={{ flexGrow: 1 }}>
@@ -237,15 +268,7 @@ export const Food_card = () => {
                     <button className="bt-buy-now">Buy now</button>
                   </div>
                 ) : (
-                  <div
-                    className="button-food-card mb-2"
-                    style={{ marginTop: "auto", paddingBottom: "5px" }}
-                  >
-                    <button className="bt-add-to-cart">
-                      <Link to="/sign_in">Add to cart</Link>
-                    </button>
-                    <button className="bt-buy-now">Buy now</button>
-                  </div>
+                  <div></div>
                 )}
               </div>
             ))

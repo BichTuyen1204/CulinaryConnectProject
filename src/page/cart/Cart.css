@@ -107,10 +107,12 @@
   border-radius: 50%;
   border: 1px solid red;
   background-color: white;
+  color: red;
 }
 
 .decrease-quantity:hover {
-  color: red;
+  background-color: red !important;
+  color: white !important;
 }
 
 .increase-quantity {
@@ -123,7 +125,8 @@
 }
 
 .increase-quantity:hover {
-  color: green;
+  background-color: green !important;
+  color: white !important;
 }
 
 .popup {

@@ -54,7 +54,7 @@ export const Food_detail = () => {
   useEffect(() => {
     if (id) {
       getDataDetail(id);
-      // window.scrollTo(0, 0);
+      window.scrollTo(1, 0);
     } else {
       console.error("ID is undefined");
     }

@@ -65,19 +65,19 @@ const Invoice = () => {
   }, [currentTab]);
 
   return (
-    <div className="order-page">
-      <div className="order-tabs">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            className={`tab ${currentTab === tab.id ? "active" : ""}`}
-            onClick={() => setCurrentTab(tab.id)}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-      <div className="order-content">
+    <div className="bg-white py-4">
+      <div className="order-page">
+        <div className="order-tabs">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              className={`tab-invoice ${currentTab === tab.id ? "active" : ""}`}
+              onClick={() => setCurrentTab(tab.id)}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
         {orders.map((order, index) => (
           <Link to={`/order_detail/${order.id}`} key={index}>
             <div className="order-card">

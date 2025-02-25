@@ -11,18 +11,27 @@
   border-bottom: 2px solid #f0f0f0;
 }
 
-.tab {
-  padding: 10px 20px;
+.tab-invoice {
+  padding: 5px 25px;
   cursor: pointer;
   border: none;
   background-color: transparent;
   font-size: 14px;
+  color: #333;
+  border-radius: 0px;
 }
 
-.tab.active {
-  border-bottom: 2px solid red;
-  color: red;
-  font-weight: bold;
+.tab-invoice.active {
+  border-bottom: 2px solid tomato;
+  color: white;
+  background-color: tomato;
+  border-radius: 0px;
+}
+
+.tab-invoice:hover {
+  border-radius: 0px;
+  color: white;
+  background-color: tomato;
 }
 
 .order-content {
@@ -116,19 +125,6 @@
   margin-bottom: 20px;
 }
 
-.tab {
-  padding: 10px 20px;
-  cursor: pointer;
-  border: none;
-  background-color: transparent;
-  font-size: 14px;
-}
-
-.tab.active {
-  border-bottom: 2px solid red;
-  color: red;
-  font-weight: bold;
-}
 .status {
   display: flex;
   justify-content: flex-end;

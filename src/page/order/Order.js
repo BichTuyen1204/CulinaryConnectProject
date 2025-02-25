@@ -94,17 +94,6 @@ export const Order = () => {
     setPopupBuy(false);
   };
 
-  // Close popup delete
-  const closeCoupon = () => {
-    setPopupCoupon(false);
-  };
-
-  // Receive idCoupon
-  const IdCouponChange = (e) => {
-    const { value } = e.target;
-    setCouponId(value);
-    setOrderData((preState) => ({ ...preState, couponId: value }));
-  };
 
   //Delivery Address
   const AddressChange = (e) => {
@@ -142,28 +131,6 @@ export const Order = () => {
     setOrderData((preState) => ({ ...preState, paymentMethod: value }));
   };
 
-  // Call coupon
-  const getCoupon = async () => {
-    try {
-      if (!couponId) {
-        setError("Please enter a coupon ID.");
-        return;
-      }
-      setError("");
-      const response = await OrderService.getCoupon(couponId);
-      if (response) {
-        const discountAmount = (totalPrice * response.salePercent) / 100;
-        setCoupon(discountAmount);
-        setSalePercent(response.salePercent);
-      } else {
-        setError("Coupon ID does not exist or is invalid.");
-        return;
-      }
-    } catch (error) {
-      console.error("Failed to fetch coupon:", error);
-      setError("An error occurred while applying the coupon.");
-    }
-  };
 
   const handleTempCouponSelect = (couponId) => {
     console.log("Selected coupon ID:", couponId);
@@ -527,7 +494,7 @@ export const Order = () => {
                   {/* Email start */}
                   <div className="form-group mt-4">
                     <label htmlFor="email">
-                      <strong>Email address :</strong>
+                      <strong className="input-name">Email address :</strong>
                     </label>
                     <input
                       type="email"
@@ -543,7 +510,7 @@ export const Order = () => {
                   {/* Phone number start */}
                   <div className="form-group mt-4">
                     <label htmlFor="phoneNumber">
-                      <strong>Phone number :</strong>
+                      <strong className="input-name">Phone number :</strong>
                     </label>
                     <input
                       type="text"
@@ -565,7 +532,7 @@ export const Order = () => {
                   {/* Shipping Address start */}
                   <div className="form-group mt-4">
                     <label htmlFor="deliveryAddress">
-                      <strong>Address :</strong>
+                      <strong className="input-name">Address :</strong>
                     </label>
                     <input
                       type="text"
@@ -587,7 +554,7 @@ export const Order = () => {
                   {/* Note start */}
                   <div className="form-group-note mt-4">
                     <label htmlFor="">
-                      <strong>Note :</strong>
+                      <strong className="input-name">Note :</strong>
                     </label>
                     <textarea
                       id="note"
@@ -602,40 +569,7 @@ export const Order = () => {
                 </div>
 
                 {/* Payment method start */}
-                <div className="mt-5 payment-method">
-                  <div className="w-100">
-                    <h5>Payment Method :</h5>
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="radio"
-                        name="paymentMethod"
-                        id="COD"
-                        value="COD"
-                        checked={pay === "COD"}
-                        onChange={PayChange}
-                      />
-                      <label class="form-check-label" for="cod">
-                        <p className="info-cod">COD ( Cash on Delivery )</p>
-                      </label>
-                    </div>
 
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="radio"
-                        name="paymentMethod"
-                        id="BANKING"
-                        value="BANKING"
-                        checked={pay === "BANKING"}
-                        onChange={PayChange}
-                      />
-                      <label class="form-check-label" for="banking">
-                        <p className="info-cod">BANKING</p>
-                      </label>
-                    </div>
-                  </div>
-                </div>
                 {/* Payment method end */}
 
                 {/* Button start */}
@@ -680,9 +614,12 @@ export const Order = () => {
                       </div>
 
                       {/* Title start */}
-                      <div className="pt-3 col-8 mx-2 name-product">
+                      <div className="pt-3 col-5 mx-2 name-product">
                         <p className="align-item-center name-product-order">
-                          <strong className="mb-2 text-ellipsis">
+                          <strong
+                            className="mb-2 text-ellipsis"
+                            style={{ fontSize: "0.8em" }}
+                          >
                             {item.product.productName}
                           </strong>
                         </p>
@@ -690,9 +627,12 @@ export const Order = () => {
                       {/* Title end */}
 
                       {/* Price start */}
-                      <div className="pt-3 col-3 mx-2 price-of-product">
+                      <div className="pt-3 col-4 mx-2 price-of-product">
                         <p className="align-item-center name-product-order">
-                          <strong className="text-ellipsis">
+                          <strong
+                            className="text-ellipsis"
+                            style={{ fontSize: "0.8em" }}
+                          >
                             {item.product.salePercent > 0 ? (
                               <>
                                 <span className="original-price">
@@ -719,7 +659,10 @@ export const Order = () => {
 
                     {/* Total price start */}
                     <div className="total-price-one flex-grow-1 col-1 px-3 mb-2">
-                      <h7 className="price-checkout">
+                      <h7
+                        className="price-checkout"
+                        style={{ fontSize: "0.8em" }}
+                      >
                         <strong>
                           $
                           {item.product.salePercent > 0
@@ -739,8 +682,8 @@ export const Order = () => {
                 </div>
               ))}
               <div className="total-price-end d-flex justify-content-between align-items-center mt-3 col-12 mb-5">
-                <div className="col-6"></div>
-                <div className="d-flex col-6">
+                <div className="col-5"></div>
+                <div className="d-flex col-7">
                   <div className="col-4"></div>
                   <h4 className="col-5 total">
                     <p style={{ color: "#a1a1a1" }}>
@@ -791,9 +734,6 @@ export const Order = () => {
                   >
                     Choose coupon
                   </button>
-                  {/* <h5 className="total-price">
-                    <strong>$ {coupon > 0 ? coupon : 0}</strong>
-                  </h5> */}
                 </div>
               </div>
               {/* Coupon end */}
@@ -806,25 +746,44 @@ export const Order = () => {
                   <h4 className="total col-3">
                     <strong>Payment Method : </strong>
                   </h4>
-                  <h5 className="payment col-5">
-                    <p>COD (Cash on Delivery)</p>
-                  </h5>
-                  <div
-                    className="col-4 d-flex justify-content-end"
-                    style={{ marginTop: "-15px" }}
-                  >
-                    <button
-                      style={{
-                        fontSize: "0.9em",
-                        background: "#159cfc",
-                        color: "white",
-                        border: "none",
-                        padding: "2px 15px",
-                      }}
-                    >
-                      Change
-                    </button>
+
+                  {/* COD start */}
+                  <div class="form-check col-4">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="paymentMethod"
+                      id="COD"
+                      value="COD"
+                      checked={pay === "COD"}
+                      onChange={PayChange}
+                    />
+                    <label class="form-check-label" for="cod">
+                      <h5 className="payment col-12">
+                        <p style={{ fontSize: "0.9em", fontWeight: "500" }}>
+                          COD (Cash on Delivery)
+                        </p>
+                      </h5>
+                    </label>
                   </div>
+                  {/* COD end */}
+
+                  {/* Banking start */}
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="paymentMethod"
+                      id="BANKING"
+                      value="BANKING"
+                      checked={pay === "BANKING"}
+                      onChange={PayChange}
+                    />
+                    <label class="form-check-label" for="banking">
+                      <p style={{ fontSize: "0.85em", fontWeight: "500" }}>BANKING</p>
+                    </label>
+                  </div>
+                  {/* Banking end */}
                 </div>
               </div>
               {/* Payment end */}
@@ -952,6 +911,7 @@ export const Order = () => {
                         borderRadius: "5px",
                         fontSize: "16px",
                         cursor: "pointer",
+                        marginBottom: "15px",
                         transition: "background-color 0.3s ease",
                       }}
                     >
@@ -959,13 +919,13 @@ export const Order = () => {
                     </button>
                   </div>
                 ) : (
-                    <button
-                      className="d-flex justify-content-end"
-                      type="submit"
-                      onClick={handleProceedToPayment}
-                    >
-                      Proceed to Payment
-                    </button>
+                  <button
+                    className="d-flex justify-content-end mb-3"
+                    type="submit"
+                    onClick={handleProceedToPayment}
+                  >
+                    Proceed to Payment
+                  </button>
                 )}
               </div>
 
@@ -993,7 +953,7 @@ export const Order = () => {
               {popupBuy && (
                 <div className="popup-order">
                   <div className="popup-content-order">
-                    <h5 className="info-delete">
+                    <h5 className="info-buy">
                       Are you sure you want to purchase this product?
                     </h5>
                     <div className="popup-buttons">
@@ -1003,7 +963,7 @@ export const Order = () => {
                       >
                         Buy
                       </button>
-                      <button className="button-cancel" onClick={cancelBuy}>
+                      <button className="button-cancel-order" onClick={cancelBuy}>
                         Cancel
                       </button>
                     </div>

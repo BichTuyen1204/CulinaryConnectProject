@@ -55,7 +55,15 @@ export const ListProductSearchImg = () => {
         renamedCategory === "ALL"
           ? await ProductService.getAllProduct()
           : await ProductService.getProductsByCategory(renamedCategory);
-      setProducts(response);
+
+      // Cập nhật trạng thái dựa vào available_quantity
+      const updatedProducts = response.map((product) => ({
+        ...product,
+        product_status:
+          product.available_quantity === 0 ? "OUT_OF_STOCK" : "IN_STOCK",
+      }));
+
+      setProducts(updatedProducts);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -131,15 +139,24 @@ export const ListProductSearchImg = () => {
               <div key={product.id} className="menu-card col-12">
                 {/* Hình ảnh sản phẩm */}
                 <div className="menu-image-wrapper col-5">
-                  <Link to={`/food_detail/${product.id}`}>
-                  <img
-                    src={product.image_url || placeholderImage}
-                    alt={product.product_name}
-                    className="menu-image"
-                  />
-                  </Link>
-                  
+                  {product.available_quantity > 0 ? (
+                    <Link to={`/food_detail/${product.id}`}>
+                      <img
+                        src={product.image_url || placeholderImage}
+                        alt={product.product_name}
+                        className="menu-image"
+                      />
+                    </Link>
+                  ) : (
+                    <img
+                      src={product.image_url || placeholderImage}
+                      alt={product.product_name}
+                      className="menu-image"
+                      style={{ cursor: "not-allowed", opacity: 0.5 }}
+                    />
+                  )}
                 </div>
+
                 {/* Thông tin sản phẩm */}
                 <div className="menu-info col-7">
                   <h5 className="menu-name">{product.product_name}</h5>
@@ -148,16 +165,13 @@ export const ListProductSearchImg = () => {
                     <strong>Status:</strong>{" "}
                     <span
                       style={{
-                        color:
-                          product.product_status === "IN_STOCK"
-                            ? "green"
-                            : "red",
+                        color: product.available_quantity > 0 ? "green" : "red",
                       }}
                     >
                       <strong className="text">
-                        {product.product_status === "IN_STOCK"
+                        {product.available_quantity > 0
                           ? "IN STOCK"
-                          : "Out of stock"}
+                          : "OUT OF STOCK"}
                       </strong>
                     </span>
                   </p>
@@ -171,7 +185,7 @@ export const ListProductSearchImg = () => {
                         ? "Meat"
                         : product.product_types === "VEG"
                         ? "Vegetables"
-                        : product.product_types === "MEALKIT"
+                        : product.product_types === "MK"
                         ? "Meal kit"
                         : "Unknown"}
                     </div>
@@ -203,15 +217,17 @@ export const ListProductSearchImg = () => {
                       <span>${product.price.toFixed(2)}</span>
                     )}
                   </p>
-                  <div className="menu-button-group">
-                    <button
-                      onClick={() => handleAddToCart(product)}
-                      className="btn-add-menu"
-                      disabled={product.product_status !== "IN_STOCK"}
-                    >
-                      Add to Cart
-                    </button>
-                  </div>
+
+                  {product.available_quantity > 0 && (
+                    <div className="menu-button-group">
+                      <button
+                        onClick={() => handleAddToCart(product)}
+                        className="btn-add-menu"
+                      >
+                        Add to Cart
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             ))

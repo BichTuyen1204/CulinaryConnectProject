@@ -221,6 +221,7 @@ const Cart = () => {
                   <button
                     className="increase-quantity"
                     onClick={() => increaseQuantity(item.product.id)}
+                    style={{ color: "green" }}
                   >
                     +
                   </button>

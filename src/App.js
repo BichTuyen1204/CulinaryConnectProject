@@ -26,9 +26,10 @@ import OrderDetail from "./page/order_detail/OrderDetail";
 import { CartProvider } from "./components/context/Context";
 import Blog from "./page/blog/Blog";
 import BlogDetail from "./page/blog_detail/BlogDetail";
-import ForgotPassword from "./components/forget/ForgetPass";  
-import { ListProductSearchImg } from "./page/list_product_search_img/ListProductSearchImg";  
-import ChatBot from "./components/chat_bot/ChatBot"; // Import the ChatBox component
+import ForgotPassword from "./components/forget/ForgetPass";
+import { ListProductSearchImg } from "./page/list_product_search_img/ListProductSearchImg";
+import ChatBot from "./components/chat_bot/ChatBot";
+
 
 const AppContent = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -69,7 +70,10 @@ const AppContent = () => {
             <Route path="cart" element={<Cart />} />
             <Route path="contact" element={<Contact />} />
             <Route path="food_card" element={<Food_card />} />
-            <Route path="list_product_search_img" element={<ListProductSearchImg />} />
+            <Route
+              path="list_product_search_img"
+              element={<ListProductSearchImg />}
+            />
             <Route path="food_detail/:id" element={<Food_detail />} />
             <Route path="food_detail" element={<Food_detail />} />
             <Route path="food_display" element={<FoodDisplay />} />
@@ -100,11 +104,13 @@ const AppContent = () => {
           )}
 
           {showForgotPass && (
-            <ForgotPassword setShowForgotPass={setShowForgotPass} openLogin={openLogin} />
+            <ForgotPassword
+              setShowForgotPass={setShowForgotPass}
+              openLogin={openLogin}
+            />
           )}
-
         </CartProvider>
-        <ChatBot />
+        {/* <ChatBot /> */}
       </div>
       <Footer />
     </>

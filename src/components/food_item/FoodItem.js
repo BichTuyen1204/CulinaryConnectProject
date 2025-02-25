@@ -27,19 +27,18 @@ export const FoodItem = ({ product }) => {
     getAccount();
   }, [jwtToken]);
 
-  const handleAddToCart = async () => {
-    if (username) {
-      await addToCart(product);
-      setPopupAdd(true);
-      setTimeout(() => {
-        setPopupAdd(false);
-      }, 1000);
-    } else {
-      navigate("/sign_in");
-    }
-  };
   return (
-    <div className="food-item" style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+    <div
+      className="food-item"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "95%",
+        opacity: product.availableQuantity === 0 ? 0.5 : 1,
+        position: "relative",
+        pointerEvents: product.availableQuantity === 0 ? "none" : "auto",
+      }}
+    >
       {username ? (
         <Link to={`/food_detail/${product.id}`}>
           <div>
@@ -49,6 +48,28 @@ export const FoodItem = ({ product }) => {
                 src={product.imageUrl}
                 alt={product.name}
               />
+              {product.availableQuantity === 0 && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "30%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    backgroundColor: "#333",
+                    color: "white",
+                    padding: "10px 15px",
+                    width: "100%",
+                    fontSize: "0.7em",
+                    fontWeight: "bold",
+                    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.5)",
+                    textTransform: "uppercase",
+                    letterSpacing: "1px",
+                    textAlign: "center",
+                  }}
+                >
+                  Out of Stock
+                </div>
+              )}
             </div>
           </div>
 
@@ -116,6 +137,28 @@ export const FoodItem = ({ product }) => {
                 alt={product.name}
               />
             </div>
+            {product.availableQuantity === 0 && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "30%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  backgroundColor: "#333",
+                  color: "white",
+                  padding: "10px 15px",
+                  width: "100%",
+                  fontSize: "0.7em",
+                  fontWeight: "bold",
+                  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.5)",
+                  textTransform: "uppercase",
+                  letterSpacing: "1px",
+                  textAlign: "center",
+                }}
+              >
+                Out of Stock
+              </div>
+            )}
           </div>
 
           <div className="food-item-info">
@@ -126,44 +169,38 @@ export const FoodItem = ({ product }) => {
             </div>
             <div className="price-and-quantity">
               <p className="food-item-price">
-                <strong>Price:</strong> {product.price}
+                <p className="food-item-price">
+                  <strong>Price:</strong>{" "}
+                  {product.salePercent > 0 ? (
+                    <>
+                      <span className="original-price">
+                        ${product.price.toFixed(2)}
+                      </span>{" "}
+                      <span className="discounted-price">
+                        $
+                        {(
+                          product.price -
+                          (product.price * product.salePercent) / 100
+                        ).toFixed(2)}
+                      </span>
+                    </>
+                  ) : (
+                    <span>${product.price.toFixed(2)}</span>
+                  )}
+                </p>
               </p>
-              <p className="food-item-quantity">
-                <strong className="link">Quantity:</strong>{" "}
-                {product.availableQuantity}
-              </p>
+              {product.availableQuantity > 0 ? (
+                <p className="food-item-quantity mt-2">
+                  <strong className="link">Quantity: In stock</strong>
+                </p>
+              ) : product.availableQuantity === 0 ? (
+                <p className="food-item-quantity mt-2">
+                  <strong className="link">Quantity: Out of stock</strong>
+                </p>
+              ) : null}
             </div>
           </div>
         </Link>
-      )}
-
-      {username ? (
-        <div className="button-in-item" style={{ marginTop: "auto", paddingBottom: "5px" }}>
-          <button
-            className="button-addtocart"
-            onClick={handleAddToCart}
-            disabled={product.availableQuantity === 0}
-          >
-            Add to cart
-          </button>
-          <button className="button-buynow">Buy now</button>
-        </div>
-      ) : (
-        <div className="button-in-item" style={{ marginTop: "auto", paddingBottom: "5px" }}>
-          <button className="button-addtocart">
-            <Link to="/sign_in">Add to cart</Link>
-          </button>
-          <button className="button-buynow">
-            <Link to="/sign_in">Buy now</Link>
-          </button>
-        </div>
-      )}
-      {popupAdd && (
-        <div className="popup">
-          <div className="popup-content">
-            <h5>Added to cart !</h5>
-          </div>
-        </div>
       )}
     </div>
   );
