@@ -110,7 +110,7 @@ const AppContent = () => {
             />
           )}
         </CartProvider>
-        {/* <ChatBot /> */}
+        <ChatBot />
       </div>
       <Footer />
     </>

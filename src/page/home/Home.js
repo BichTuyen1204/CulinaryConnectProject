@@ -5,7 +5,6 @@ import Header from "../../components/header/Header";
 import ExploreMenu from "../../components/menu/ExploreMenu";
 import { FoodDisplay } from "../../components/food_display/FoodDisplay";
 import MenuPage from "../../components/parent/FoodDisplayAndCategory";
-import CustomerChat from "../../components/CustomerChat";
 
 export const Home = () => {
   const [category, setCategory] = useState("All");
