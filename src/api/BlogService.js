@@ -18,13 +18,12 @@ class BlogService {
     }
   }
 
-
   async getSearchBlog(keyword, tags) {
     try {
       const response = await axios.get(`${API_BASE_URL}/search/blog`, {
         params: {
           keyword,
-          tags: tags.join(','), // Join tags as comma-separated string if necessary
+          tags: tags.join(","), // Join tags as comma-separated string if necessary
         },
       });
       return response.data;
@@ -36,7 +35,6 @@ class BlogService {
       throw error;
     }
   }
-
 
   async getBlogDetail(id) {
     try {
@@ -63,7 +61,31 @@ class BlogService {
     }
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/fetch/blog/comment/${id}`,
+        `http://localhost:8080/api/public/fetch/blog/comment?id=${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Error during API calls: ",
+        error.response ? error.response.data : error.message
+      );
+      throw error;
+    }
+  }
+
+  async deleteComment(id) {
+    const jwtToken = sessionStorage.getItem("jwtToken");
+    if (!jwtToken) {
+      return;
+    }
+    try {
+      const response = await axios.delete(
+        `http://localhost:8080/api/customer/comment/deleted?commentId=${id}`,
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,

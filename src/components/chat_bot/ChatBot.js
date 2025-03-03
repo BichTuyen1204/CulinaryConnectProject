@@ -10,11 +10,11 @@ const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const chatEndRef = useRef(null);
   const textareaRef = useRef(null);
-  const jwtToken = sessionStorage.getItem("jwtToken");
+  const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
 
   useEffect(() => {
     if (!jwtToken) return;
-
+    console.log(jwtToken);
     const WS_URL = `ws://localhost:8000/ws/chat/customer?token=${jwtToken}`;
     const ws = new WebSocket(WS_URL);
 

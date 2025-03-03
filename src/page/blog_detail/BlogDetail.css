@@ -6,6 +6,29 @@ body {
   background-color: white;
 }
 
+.ic-delete {
+  color: rgb(223, 0, 0);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.ic-delete:hover{
+  color: rgb(255, 137, 137);
+}
+
+.ic-delete:active{
+  color: rgb(223, 0, 0);
+}
+
+.ic-close {
+  font-size: 18px;
+}
+
+.comment-time {
+  font-weight: 400;
+  font-size: 0.9em;
+}
+
 .header-blog-detail {
   display: flex;
   align-items: center;
@@ -14,6 +37,7 @@ body {
   padding: 10px 20px;
   color: #fff;
 }
+
 .saved-items {
   font-size: 16px;
 }
