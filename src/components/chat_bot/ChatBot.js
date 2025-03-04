@@ -14,7 +14,6 @@ const ChatBot = () => {
 
   useEffect(() => {
     if (!jwtToken) return;
-    console.log(jwtToken);
     const WS_URL = `ws://localhost:8000/ws/chat/customer?token=${jwtToken}`;
     const ws = new WebSocket(WS_URL);
 
@@ -22,13 +21,9 @@ const ChatBot = () => {
 
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log("📩 Tin nhắn nhận được:", data);
-
       if (data.sender === "staff" && data.msg) {
         try {
           const messageContent = JSON.parse(data.msg);
-
-          // ✅ Chỉ hiển thị tin nhắn từ staff nếu thật sự nhận từ WebSocket
           setMessages((prev) => [
             ...prev,
             { text: messageContent.message, sender: "staff" },
@@ -54,12 +49,9 @@ const ChatBot = () => {
     if (socket && input.trim()) {
       const messageData = { type: "chat", message: input };
 
-      socket.send(JSON.stringify(messageData)); // Gửi tin nhắn đến WebSocket
-
-      // Chỉ cập nhật tin nhắn user vào UI, không thêm staff phản hồi giả mạo
+      socket.send(JSON.stringify(messageData));
       setMessages((prev) => [...prev, { text: input, sender: "user" }]);
-
-      setInput(""); // Xóa input sau khi gửi
+      setInput("");
     }
   };
 

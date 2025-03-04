@@ -85,7 +85,7 @@ class ProductService {
         throw new Error("No JWT token found. Please log in again.");
       }
       const response = await axios.post(
-        `http://localhost:8000/public/search/yolo`,
+        `http://localhost:8000/public/search/image`,
         formData,
         {
           headers: {

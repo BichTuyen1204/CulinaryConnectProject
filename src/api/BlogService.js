@@ -54,6 +54,27 @@ class BlogService {
     }
   }
 
+  async getBlogReply(blogId, commentId) {
+    try {
+      const jwtToken = sessionStorage.getItem("jwtToken");
+      const response = await axios.get(
+        `http://localhost:8080/api/public/fetch/blog/reply?blogId=${blogId}&commentId=${commentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Error during API calls: ",
+        error.response ? error.response.data : error.message
+      );
+      throw error;
+    }
+  }
+
   async getAllComment(id) {
     const jwtToken = sessionStorage.getItem("jwtToken");
     if (!jwtToken) {
@@ -99,6 +120,38 @@ class BlogService {
         error.response ? error.response.data : error.message
       );
       throw error;
+    }
+  }
+
+  async replyComment(postId, commentId, comment) {
+    const jwtToken = sessionStorage.getItem("jwtToken");
+    if (!jwtToken) {
+      return null;
+    } else {
+      try {
+        const response = await axios.post(
+          `http://localhost:8080/api/customer/blog/reply?postId=${postId}&commentId=${commentId}&comment=${comment}`,
+
+          {
+            postId: postId,
+            commentId: commentId,
+            comment: comment,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        return response.data;
+      } catch (error) {
+        console.error(
+          "Error during API calls: ",
+          error.response ? error.response.data : error.message
+        );
+        throw error;
+      }
     }
   }
 

@@ -94,7 +94,6 @@ export const Navbar = ({ setShowLogin }) => {
   const handleMenuItemClick = (item) => {
     setMenu(item);
     setAvatarActive(false);
-    console.log(`Clicked ${item}`);
   };
 
   const handleAvatarClick = () => {
