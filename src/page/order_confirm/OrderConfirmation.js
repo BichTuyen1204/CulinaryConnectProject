@@ -5,7 +5,6 @@ import "../order_confirm/OrderConfirmation.css"
 const OrderConfirmation = ({ order }) => {
   const navigate = useNavigate();
 
-  // Ví dụ dữ liệu giả lập (thay bằng props hoặc API thực tế)
   const sampleOrder = {
     customerName: "John Doe",
     shopName: "Culinary Connect",

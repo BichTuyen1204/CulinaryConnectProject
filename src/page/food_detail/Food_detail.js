@@ -44,8 +44,6 @@ export const Food_detail = () => {
   const getDataDetail = async (id) => {
     try {
       const response = await ProductService.getProductDetail(id);
-      console.log("Response data:", response);
-      console.log("Product ID from URL:", id);
       setProduct(response);
     } catch (error) {
       console.error("Fail load data:", error);

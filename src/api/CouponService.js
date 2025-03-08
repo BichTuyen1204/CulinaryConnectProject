@@ -8,7 +8,7 @@ class CouponService {
     }
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/public/fetch/coupon/all`,
+        `https://culcon-customer-backend-87043777927.asia-east1.run.app/api/public/fetch/coupon/all`,
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
@@ -29,7 +29,7 @@ class CouponService {
     try {
       const jwtToken = sessionStorage.getItem("jwtToken");
       const response = await axios.get(
-        `http://localhost:8080/api/public/fetch/coupon?couponId=${couponId}`,
+        `https://culcon-customer-backend-87043777927.asia-east1.run.app/api/public/fetch/coupon?couponId=${couponId}`,
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,

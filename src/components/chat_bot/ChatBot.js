@@ -14,7 +14,7 @@ const ChatBot = () => {
 
   useEffect(() => {
     if (!jwtToken) return;
-    const WS_URL = `ws://localhost:8000/ws/chat/customer?token=${jwtToken}`;
+    const WS_URL = `wss://culcon-admin-gg-87043777927.asia-northeast1.run.app/ws/chat/customer?token=${jwtToken}`;
     const ws = new WebSocket(WS_URL);
 
     ws.onopen = () => console.log("✅ WebSocket Connected");
@@ -50,7 +50,10 @@ const ChatBot = () => {
       const messageData = { type: "chat", message: input };
 
       socket.send(JSON.stringify(messageData));
-      setMessages((prev) => [...prev, { text: input, sender: "user" }]);
+      setMessages((prev) => [
+        ...prev,
+        { text: input, sender: "user"},
+      ]);
       setInput("");
     }
   };

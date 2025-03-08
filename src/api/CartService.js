@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8080/api/customer";
+const API_BASE_URL = "https://culcon-customer-backend-87043777927.asia-east1.run.app/api/customer";
 
 class CartService {
   async addToCart(id, quantity) {

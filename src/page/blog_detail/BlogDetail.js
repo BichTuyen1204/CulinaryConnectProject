@@ -13,8 +13,6 @@ const BlogDetail = () => {
   const [blogDetail, setBlogDetail] = useState({});
   const [imgUser, setImgUser] = useState("");
   const [commentImages, setCommentImages] = useState("");
-  const [replyDetail, setReplyDetail] = useState({});
-  const [savedItems, setSavedItems] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [newCommentReply, setNewCommentReply] = useState("");
   const [selectedId, setSelectedId] = useState(null);
@@ -93,7 +91,7 @@ const BlogDetail = () => {
       try {
         await BlogService.deleteComment(id);
         setReplyList((prevComment) => {
-          console.log(prevComment); // Kiểm tra giá trị của prevComment
+          console.log(prevComment);
           return Array.isArray(prevComment)
             ? prevComment.filter((comment) => comment.id !== id)
             : [];
@@ -145,17 +143,28 @@ const BlogDetail = () => {
       const sortedCommentsReply = response.sort(
         (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
       );
+
       setReplyList((prevReplies) => ({
         ...prevReplies,
         [commentId]: sortedCommentsReply,
       }));
-      if (sortedCommentsReply.length > 0) {
-        setImgUser(sortedCommentsReply[0].profilePicture);
-      }
+
+      const commentImagesReply = {};
+      sortedCommentsReply.forEach((reply) => {
+        commentImagesReply[reply.id] = reply.profilePicture || "";
+      });
+      setImgUser((prevImages) => ({
+        ...prevImages,
+        ...commentImagesReply,
+      }));
     } catch (error) {
       console.error("Fail load data:", error);
     }
   };
+
+  useEffect(() => {
+    if (id) getReply(id);
+  }, [id]);
 
   useEffect(() => {
     if (id) getReply(id);
@@ -218,6 +227,10 @@ const BlogDetail = () => {
           return new Date(b.timestamp) - new Date(a.timestamp);
         });
         setComment(sortedComments);
+        setCommentImages((prevImages) => ({
+          ...prevImages,
+          [response.id]: response.profilePicture || "",
+        }));
         setNewComment("");
       } catch (error) {
         console.error("Can not add comment", error.response.data.detail);
@@ -231,6 +244,7 @@ const BlogDetail = () => {
       alert("Please comment before submit");
       return;
     }
+
     try {
       const response = await BlogService.replyComment(
         id,
@@ -242,10 +256,19 @@ const BlogDetail = () => {
         ...prevReplies,
         [selectedIdReply]: [response, ...(prevReplies[selectedIdReply] || [])],
       }));
+
+      setImgUser((prevImages) => ({
+        ...prevImages,
+        [response.id]: response.profilePicture || "",
+      }));
+
       setNewCommentReply("");
       setOpenInputReply(false);
     } catch (error) {
-      console.error("Can not reply comment", error.response?.data?.detail);
+      console.error(
+        "Can not reply comment",
+        error?.response?.data?.detail || error
+      );
     }
   };
 
@@ -430,58 +453,47 @@ const BlogDetail = () => {
                       )}
                     </div>
 
-                    {(openReplyList[comments.id] &&
-                      replyList[comments.id]?.length > 0 &&
-                      replyList[comments.id].some(
-                        (reply) => reply.accountName === username
-                      ) && (
-                        <div className="reply-list">
-                          {replyList[comments.id].map((reply, replyIndex) =>
-                            username === reply.accountName ? (
-                              <div key={replyIndex} className="reply-item my-3">
-                                <div className="reply-header">
-                                  <img
-                                    className="reply-avatar"
-                                    src={
-                                      imgUser?.trim()
-                                        ? imgUser
-                                        : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
-                                    }
-                                    alt="Avatar"
-                                    onError={(e) => {
-                                      e.target.onerror = null;
-                                      e.target.src =
-                                        "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg";
-                                    }}
-                                  />
-                                  <span className="reply-user">
-                                    {reply.accountName}
-                                  </span>
-                                  <span className="reply-time">
-                                    {new Date(reply.timestamp).toLocaleString()}
-                                  </span>
-                                </div>
-                                <div className="d-flex">
-                                  <p className="reply-content">
-                                    {reply.comment}
-                                  </p>
-                                  <RiDeleteBin6Line
-                                    className="ic-delete ms-auto"
-                                    onClick={() => openModalReply(reply.id)}
-                                  />
-                                </div>
+                    {openReplyList[comments.id] && (
+                      <div className="reply-list">
+                        {replyList[comments.id]?.length > 0 ? (
+                          replyList[comments.id].map((reply) => (
+                            <div key={reply.id} className="reply-item my-3">
+                              <div className="reply-header">
+                                <img
+                                  className="reply-avatar"
+                                  src={
+                                    imgUser[reply.id]?.trim()
+                                      ? imgUser[reply.id]
+                                      : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
+                                  }
+                                  alt="Avatar"
+                                  onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.src =
+                                      "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg";
+                                  }}
+                                />
+                                <span className="reply-user">
+                                  {reply.accountName}
+                                </span>
+                                <span className="reply-time">
+                                  {new Date(reply.timestamp).toLocaleString()}
+                                </span>
                               </div>
-                            ) : (
-                              <div key={replyIndex}></div>
-                            )
-                          )}
-                        </div>
-                      )) ||
-                      (openReplyList[comments.id] && (
-                        <div className="reply-list">
+                              <div className="d-flex">
+                                <p className="reply-content">{reply.comment}</p>
+                                <RiDeleteBin6Line
+                                  className="ic-delete ms-auto"
+                                  onClick={() => openModalReply(reply.id)}
+                                />
+                              </div>
+                            </div>
+                          ))
+                        ) : (
                           <p className="no-reply">No reply comment</p>
-                        </div>
-                      ))}
+                        )}
+                      </div>
+                    )}
 
                     {openInputReply && (
                       <>
