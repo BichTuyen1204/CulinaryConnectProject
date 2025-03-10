@@ -456,39 +456,51 @@ const BlogDetail = () => {
                     {openReplyList[comments.id] && (
                       <div className="reply-list">
                         {replyList[comments.id]?.length > 0 ? (
-                          replyList[comments.id].map((reply) => (
-                            <div key={reply.id} className="reply-item my-3">
-                              <div className="reply-header">
-                                <img
-                                  className="reply-avatar"
-                                  src={
-                                    imgUser[reply.id]?.trim()
-                                      ? imgUser[reply.id]
-                                      : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
-                                  }
-                                  alt="Avatar"
-                                  onError={(e) => {
-                                    e.target.onerror = null;
-                                    e.target.src =
-                                      "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg";
-                                  }}
-                                />
-                                <span className="reply-user">
-                                  {reply.accountName}
-                                </span>
-                                <span className="reply-time">
-                                  {new Date(reply.timestamp).toLocaleString()}
-                                </span>
-                              </div>
-                              <div className="d-flex">
-                                <p className="reply-content">{reply.comment}</p>
-                                <RiDeleteBin6Line
-                                  className="ic-delete ms-auto"
-                                  onClick={() => openModalReply(reply.id)}
-                                />
-                              </div>
-                            </div>
-                          ))
+                          replyList[comments.id].some(
+                            (reply) => reply.accountName !== null
+                          ) ? (
+                            replyList[comments.id].map((reply) =>
+                              reply.accountName !== null ? (
+                                <div key={reply.id} className="reply-item my-3">
+                                  <div className="reply-header">
+                                    <img
+                                      className="reply-avatar"
+                                      src={
+                                        imgUser[reply.id]?.trim()
+                                          ? imgUser[reply.id]
+                                          : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
+                                      }
+                                      alt="Avatar"
+                                      onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src =
+                                          "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg";
+                                      }}
+                                    />
+                                    <span className="reply-user">
+                                      {reply.accountName}
+                                    </span>
+                                    <span className="reply-time">
+                                      {new Date(
+                                        reply.timestamp
+                                      ).toLocaleString()}
+                                    </span>
+                                  </div>
+                                  <div className="d-flex">
+                                    <p className="reply-content">
+                                      {reply.comment}
+                                    </p>
+                                    <RiDeleteBin6Line
+                                      className="ic-delete ms-auto"
+                                      onClick={() => openModalReply(reply.id)}
+                                    />
+                                  </div>
+                                </div>
+                              ) : null
+                            )
+                          ) : (
+                            <p className="no-reply">No reply comment</p>
+                          )
                         ) : (
                           <p className="no-reply">No reply comment</p>
                         )}

@@ -115,7 +115,7 @@ export const Navbar = ({ setShowLogin }) => {
         sessionStorage.setItem("imageSearchResults", JSON.stringify(response));
         navigate("/list_product_search_img?imageSearch=true");
       } else {
-        alert("Không tìm thấy sản phẩm nào phù hợp.");
+        alert("No matching products found.");
       }
     } catch (error) {
       console.error("Can't search by image", error);
