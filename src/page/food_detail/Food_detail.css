@@ -1,3 +1,37 @@
+.productdisplay-img-thumbnails {
+  margin-top: 15px;
+}
+
+.thumbnail {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  padding: 5px;
+  background: white;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.thumbnail:hover,
+.swiper-slide-thumb-active .thumbnail {
+  border: 2px solid tomato;
+  transform: scale(1.1);
+}
+
+.button-in-item {
+  padding: 5px 15px;
+}
+
+.button-addtocart {
+  border-radius: 15px;
+}
+
+.button-buynow {
+  border-radius: 15px;
+}
+
 .description-wrapper h4,
 .reviews-wrapper h3 {
   font-size: 26px;
@@ -51,6 +85,8 @@
   width: 87%;
   height: 350px;
   border-radius: 15px;
+  background-color: white;
+  border: "1px solid #ddd";
   cursor: pointer;
   position: relative;
   display: flex;
@@ -132,7 +168,7 @@
 
 .main-product-details {
   padding: 20px;
-  background-color: white;
+  background-color: rgb(249, 249, 249);
   border-radius: 10px;
   width: 100%;
 }

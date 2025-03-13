@@ -23,7 +23,6 @@ const ChatBot = () => {
       const ws = new WebSocket(WS_URL);
 
       ws.onopen = () => {
-        console.log("✅ WebSocket Connected");
         setIsSocketConnected(true);
       };
 
@@ -35,25 +34,21 @@ const ChatBot = () => {
             const newMessage = {
               text: messageContent.message,
               sender: "staff",
-              timestamp: messageContent.timestamp || Date.now(), // 🔹 Thêm timestamp
+              timestamp: messageContent.timestamp || Date.now(),
             };
             updateMessages(newMessage);
           } catch (error) {
-            console.error("❌ Lỗi parse dữ liệu tin nhắn:", error);
+            ;
           }
         }
       };
 
-      ws.onerror = (error) => console.error("❌ WebSocket Error:", error);
+      ws.onerror = () => {};
 
       ws.onclose = () => {
-        console.warn(
-          "⚠️ WebSocket Disconnected. Đang thử kết nối lại sau 5 giây..."
-        );
         setIsSocketConnected(false);
         setTimeout(connectWebSocket, 5000);
       };
-
       setSocket(ws);
     };
 
@@ -88,9 +83,7 @@ const ChatBot = () => {
       updateMessages({ text: input, sender: "user", timestamp: Date.now() });
       setInput("");
     } else {
-      console.warn(
-        "⚠️ WebSocket chưa kết nối hoặc đang trong trạng thái không sẵn sàng."
-      );
+      console.warn();
     }
   };
 
@@ -105,7 +98,7 @@ const ChatBot = () => {
         });
   };
 
-  return (
+  return jwtToken ? (
     <div className="chat-container">
       {!isOpen && (
         <button className="chat-toggle" onClick={() => setIsOpen(true)}>
@@ -148,6 +141,8 @@ const ChatBot = () => {
         </div>
       )}
     </div>
+  ) : (
+    <div></div>
   );
 };
 

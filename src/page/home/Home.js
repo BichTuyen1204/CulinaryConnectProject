@@ -8,6 +8,7 @@ import MenuPage from "../../components/parent/FoodDisplayAndCategory";
 
 export const Home = () => {
   const [category, setCategory] = useState("All");
+  const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
   window.scrollTo(0, 0);
   return (
     <div>

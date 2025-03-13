@@ -12,15 +12,16 @@
 .explore-menu-text {
   max-width: 60%;
   columns: #808080;
+  margin-top: -18px;
 }
 
 .explore-menu-list {
   display: flex;
-  justify-content: start;
+  justify-content: center;
   align-items: center;
-  gap: 25px;
+  gap: 45px;
   text-align: center;
-  margin: 20px 0px;
+  margin-top: -5px;
   overflow-x: scroll;
 }
 
@@ -33,12 +34,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100px;
+  width: 80px;
 }
 
 .explore-menu-list-item img {
-  width: 100px;
-  height: 100px;
+  width: 60px;
+  height: 60px;
   object-fit: contain;
   overflow: hidden;
   cursor: pointer;
@@ -48,7 +49,7 @@
 }
 
 .explore-menu-list-item img:hover {
-  transform: scale(1); /* Phóng to ảnh lên 10% */
+  transform: scale(1);
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   border: 2px solid #ddd;
 }

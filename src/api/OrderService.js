@@ -111,7 +111,6 @@ class OrderService {
           "Content-Type": "application/json",
         },
       });
-      console.log("All order:", response.data);
       return response.data;
     } catch (error) {
       console.error(

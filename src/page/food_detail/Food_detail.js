@@ -8,6 +8,13 @@ import { FaLeaf, FaBox, FaInfoCircle } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
 import { MdArrowBackIosNew } from "react-icons/md";
 import { CartContext } from "../../components/context/Context";
+import { motion } from "framer-motion";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Thumbs } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/thumbs";
 
 export const Food_detail = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -21,6 +28,7 @@ export const Food_detail = () => {
   const navigate = useNavigate();
   const { addToCart } = useContext(CartContext);
   const [popupAdd, setPopupAdd] = useState(false);
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   // Xử lý khi nhấn nút Prev
   const handlePrevClick = () => {
@@ -107,92 +115,54 @@ export const Food_detail = () => {
               <div className="productDetail col-12 row">
                 <div className="productDetail-img col-7">
                   <div className="productdisplay-img-wrapper">
-                    {/* Hình lớn */}
-                    <div
+                    {/* Ảnh lớn */}
+                    <Swiper
+                      spaceBetween={10}
+                      navigation
+                      pagination={{ clickable: true }}
+                      thumbs={{ swiper: thumbsSwiper }}
+                      modules={[Navigation, Pagination, Thumbs]}
                       className="productdisplay-img-large"
-                      style={{
-                        position: "relative",
-                        alignItems: "center",
-                        justifyItems: "center",
-                      }}
                     >
-                      <img
-                        className="productdisplay-main-img"
-                        src={images[currentImageIndex]}
-                        alt="Product"
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "fill",
-                          border: "1px solid #ddd",
-                          borderRadius: "5px",
-                          alignItems: "center",
-                          justifyItems: "center",
-                        }}
-                      />
-                      {/* Nút Previous */}
-                      <button
-                        onClick={handlePrevClick}
-                        style={{
-                          position: "absolute",
-                          top: "50%",
-                          left: "0px",
-                          transform: "translateY(-50%)",
-                          background: "transparent",
-                          color: "black",
-                          border: "none",
-                          padding: "10px",
-                          cursor: "pointer",
-                        }}
-                      >
-                        &#9664;
-                      </button>
-                      {/* Nút Next */}
-                      <button
-                        onClick={handleNextClick}
-                        style={{
-                          position: "absolute",
-                          top: "50%",
-                          right: "0px",
-                          transform: "translateY(-50%)",
-                          background: "transparent",
-                          color: "black",
-                          border: "none",
-                          borderRadius: "50%",
-                          padding: "10px",
-                          cursor: "pointer",
-                        }}
-                      >
-                        &#9654;
-                      </button>
-                    </div>
-
-                    {/* Dải hình nhỏ */}
-                    <div className="productdisplay-img-thumbnails">
                       {images.map((url, index) => (
-                        <img
-                          key={index}
-                          src={url}
-                          alt={`Thumbnail ${index + 1}`}
-                          className={`thumbnail-img ${
-                            currentImageIndex === index ? "active" : ""
-                          }`}
-                          onClick={() => handleImageClick(index)}
-                          style={{
-                            width: "80px",
-                            height: "80px",
-                            margin: "5px",
-                            cursor: "pointer",
-                            border:
-                              currentImageIndex === index
-                                ? "2px solid tomato"
-                                : "1px solid #ccc",
-                            borderRadius: "5px",
-                            objectFit: "cover",
-                          }}
-                        />
+                        <SwiperSlide key={index}>
+                          <img
+                            className="img-big-detail"
+                            src={url}
+                            alt={`Product ${index + 1}`}
+                            style={{
+                              padding: "15px",
+                              width: "100%",
+                              borderRadius: "15px",
+                              height: "100%",
+                              objectFit: "contain",
+                              backgroundColor: "#f8f8f8",
+                              border: "2px solid green"
+                            }}
+                          />
+                        </SwiperSlide>
                       ))}
-                    </div>
+                    </Swiper>
+
+                    {/* Ảnh nhỏ (Thumbnail) */}
+                    <Swiper
+                      onSwiper={setThumbsSwiper}
+                      spaceBetween={85}
+                      slidesPerView={6}
+                      watchSlidesProgress
+                      modules={[Thumbs]}
+                      className="productdisplay-img-thumbnails"
+                    >
+                      {images.map((url, index) => (
+                        <SwiperSlide key={index}>
+                          <img
+                            src={url}
+                            alt={`Thumbnail ${index + 1}`}
+                            className="thumbnail"
+                          />
+                        </SwiperSlide>
+                      ))}
+                    </Swiper>
                   </div>
                 </div>
 

@@ -1,17 +1,18 @@
 .header {
-  height: 34vw;
+  height: 25vw;
   width: 100%;
   margin: 30px auto;
   background: linear-gradient(
       rgba(255, 255, 255, 0.5),
       rgba(255, 255, 255, 0.5)
     ),
-    url("big-food.png") no-repeat;
+    url("fresh.jpg") no-repeat;
   background-size: cover;
   background-position: center;
   position: relative;
   border-radius: 15px;
   background-blend-mode: multiply;
+  border: 1px solid gray;
 }
 
 .header-contents {
@@ -20,7 +21,7 @@
   flex-direction: column;
   align-items: start;
   gap: 1.5vw;
-  max-width: 50%;
+  max-width: 45%;
   bottom: 10%;
   left: 6vw;
   animation: fadeIn 3s;
@@ -28,17 +29,17 @@
 
 .header-contents h2 {
   font-weight: 500;
-  color: white;
+  color: #333;
   font-size: max(4.5vw, 22px);
 }
 
 .header-contents p {
-  color: white;
+  color: #333;
   font-size: 1vw;
 }
 
 .header-contents button {
-  border: none;
+  border: 1px solid tomato;
   color: #747474;
   font-weight: 500;
   padding: 1vw 2.3vw;

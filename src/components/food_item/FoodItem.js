@@ -103,7 +103,7 @@ export const FoodItem = ({ product }) => {
               </p>
 
               {product.availableQuantity > 0 ? (
-                <p className="food-item-quantity mt-2">
+                <p className="food-item-quantity">
                   <strong className="link">Quantity: In stock</strong>
                 </p>
               ) : product.availableQuantity === 0 ? (

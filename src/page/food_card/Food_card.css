@@ -61,7 +61,6 @@
 }
 
 .food-card {
-  /* flex: 1 1 calc(25% - 20px);  */
   margin: 0;
   border: 1px solid #ccc;
   border-radius: 8px;

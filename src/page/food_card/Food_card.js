@@ -256,7 +256,7 @@ export const Food_card = () => {
                 {username ? (
                   <div
                     className="button-food-card mb-2"
-                    style={{ marginTop: "auto", paddingBottom: "5px" }}
+                    style={{ marginTop: "-15px", paddingBottom: "5px" }}
                   >
                     <button
                       className="bt-add-to-cart"

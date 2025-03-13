@@ -5,7 +5,7 @@ import { MdShoppingBasket } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
 import { IoPersonSharp } from "react-icons/io5";
 import "./Navbar.css";
-import Logo from "../../assets/logo.png";
+import Logo from "../../assets/logo_new.jpg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AccountService from "../../api/AccountService";
 import { Dropdown } from "react-bootstrap";
