@@ -274,3 +274,29 @@
     background-color: #636363;
   }
 }
+
+/* ------------------- */
+.explore-menu-list {
+  display: flex;
+  flex-wrap: wrap;  /* Makes items go to a new row when needed */
+  justify-content: center; /* Centers the items */
+  gap: 16px; /* Adds spacing between items */
+}
+
+.explore-menu-list-item {
+  flex: 1 1 200px; /* Makes each item take up space and shrink */
+  max-width: 200px;
+  text-align: center;
+}
+
+/*  For tablets (768px and below) */
+@media (max-width: 768px) {
+  .explore-menu-list {
+    justify-content: center; /* Keeps items centered */
+  }
+  .explore-menu-list-item {
+    flex: 1 1 150px; /* Adjusts size */
+  }
+}
+
+

@@ -245,7 +245,7 @@ export const Order = () => {
       const price =
         item.product.salePercent > 0
           ? item.product.price -
-            (item.product.price * item.product.salePercent) / 100
+          (item.product.price * item.product.salePercent) / 100
           : item.product.price;
       total += price * item.amount;
     });
@@ -449,9 +449,9 @@ export const Order = () => {
     <>
       <div className="checkout-wrapper py-2 ">
         <div className="container-xxl">
-          <div className="row col-12 general-order">
+          <div className="row  general-order">
             {/* Part left start */}
-            <div className="checkout-form-wrapper col-4 p-3 box">
+            <div className="checkout-form-wrapper col-12 col-md-4 p-3 box">
               <div className="checkout-left-data">
                 <h3 className="website-name text-center mb-4">
                   CULINARY CONNECT
@@ -593,7 +593,7 @@ export const Order = () => {
             {/* Part left end */}
 
             {/* Part right start */}
-            <div className="col-7 offset-1 bg-white box">
+            <div className="col-12 col-md-7 offset-1 bg-white box">
               {products.map((item, index) => (
                 <div className="border-bottom mt-4 mb-3 col-12" key={index}>
                   <div className="d-flex gap-10 align-items-center mb-2">
@@ -627,24 +627,19 @@ export const Order = () => {
                       {/* Title end */}
 
                       {/* Price start */}
-                      <div className="pt-3 col-4 mx-2 price-of-product">
-                        <p className="align-item-center name-product-order">
-                          <strong
-                            className="text-ellipsis"
-                            style={{ fontSize: "0.8em" }}
-                          >
+                      <div className=" col-md-4 price-of-product d-flex flex-column align-items-start pt-3">
+                        <p className="name-product-order text-ellipsis">
+                          <strong style={{ fontSize: "0.8em", whiteSpace: "nowrap" }}>
                             {item.product.salePercent > 0 ? (
                               <>
-                                <span className="original-price">
+                                <span className="original-price text-decoration-line-through me-2">
                                   ${item.product.price.toFixed(2)}
                                 </span>
-                                <span className="discounted-price">
+                                <span className="discounted-price text-danger fw-bold">
                                   $
                                   {(
                                     item.product.price -
-                                    (item.product.price *
-                                      item.product.salePercent) /
-                                      100
+                                    (item.product.price * item.product.salePercent) / 100
                                   ).toFixed(2)}
                                 </span>
                               </>
@@ -655,6 +650,7 @@ export const Order = () => {
                         </p>
                       </div>
                       {/* Price end */}
+
                     </div>
 
                     {/* Total price start */}
@@ -667,12 +663,12 @@ export const Order = () => {
                           $
                           {item.product.salePercent > 0
                             ? (
-                                (item.product.price -
-                                  (item.product.price *
-                                    item.product.salePercent) /
-                                    100) *
-                                item.amount
-                              ).toFixed(2)
+                              (item.product.price -
+                                (item.product.price *
+                                  item.product.salePercent) /
+                                100) *
+                              item.amount
+                            ).toFixed(2)
                             : (item.product.price * item.amount).toFixed(2)}
                         </strong>
                       </h7>
@@ -681,24 +677,26 @@ export const Order = () => {
                   </div>
                 </div>
               ))}
-              <div className="total-price-end d-flex justify-content-between align-items-center mt-3 col-12 mb-5">
-                <div className="col-5"></div>
-                <div className="d-flex col-7">
-                  <div className="col-4"></div>
-                  <h4 className="col-5 total">
+
+
+              <div className="total-price-end row align-items-center mt-3 col-12 mb-5">
+                {/* Left spacing (optional) */}
+                <div className="col-md-5 d-none d-md-block"></div>
+
+                {/* Total price container */}
+                <div className="col-12 col-md-7 d-flex align-items-center justify-content-end gap-2">
+                  <h4 className="total mb-0 text-muted">
                     <p style={{ color: "#a1a1a1" }}>
-                      Total price ({totalQuantity}{" "}
-                      {totalQuantity > 1 ? "items" : "item"}):
+                      Total price ({totalQuantity} {totalQuantity > 1 ? "items" : "item"}):
                     </p>
                   </h4>
-
-                  <div className="d-flex justify-content-end col-3">
-                    <h5 className="total-price">
-                      <strong>$ {totalPrice}</strong>
-                    </h5>
-                  </div>
+                  <h5 className="total-price mb-0">
+                    <strong>$ {totalPrice}</strong>
+                  </h5>
                 </div>
               </div>
+
+
 
               <hr className="mt-2" />
 
@@ -791,44 +789,37 @@ export const Order = () => {
               <hr className="mt-2" />
 
               <div>
+                {/* Subtotal */}
                 <div
                   className="d-flex justify-content-between align-items-center col-12 font-size-default"
                   style={{ paddingTop: "15px", paddingBottom: "8px" }}
                 >
-                  <div className="col-6"></div>
-                  <div className="col-6 d-flex px-2">
-                    <div className="col-6">
+                  <div className="w-100 d-flex">
+                    <div className="w-50 text-start">
                       <p>Subtotal: </p>
                     </div>
-                    <div className="col-6 d-flex justify-content-end">
-                      <p>
-                        <strong>${totalPrice}</strong>
-                      </p>
+                    <div className="w-50 d-flex justify-content-end">
+                      <p><strong>${totalPrice}</strong></p>
                     </div>
                   </div>
                 </div>
 
+                {/* Coupon Discount */}
                 <div
                   className="d-flex justify-content-between align-items-center col-12 font-size-default"
                   style={{ paddingBottom: "8px" }}
                 >
-                  <div className="col-6"></div>
-                  <div className="col-6 d-flex px-2">
-                    <div className="col-6">
+                  <div className="w-100 d-flex">
+                    <div className="w-50 text-start">
                       <p>Total coupon discount: </p>
                     </div>
-
-                    <div className="col-6 d-flex justify-content-end">
+                    <div className="w-50 d-flex justify-content-end">
                       <p>
                         <strong>
                           {coupon && coupon.salePercent > 0 ? (
                             <>
-                              <span style={{ color: "red" }}>
-                                - {coupon.salePercent}%
-                              </span>
-                              {` (-$${
-                                (totalPrice * coupon.salePercent) / 100
-                              })`}
+                              <span style={{ color: "red" }}>- {coupon.salePercent}%</span>
+                              {` (-$${(totalPrice * coupon.salePercent) / 100})`}
                             </>
                           ) : (
                             "$0"
@@ -839,13 +830,13 @@ export const Order = () => {
                   </div>
                 </div>
 
+                {/* Total Payment */}
                 <div className="d-flex justify-content-between align-items-center col-12 font-size-default">
-                  <div className="col-6"></div>
-                  <div className="col-6 d-flex px-2">
-                    <div className="col-6">
+                  <div className="w-100 d-flex">
+                    <div className="w-50 text-start">
                       <p>Total payment: </p>
                     </div>
-                    <div className="col-6 d-flex justify-content-end">
+                    <div className="w-50 d-flex justify-content-end">
                       <p
                         style={{
                           color: "tomato",
@@ -853,8 +844,7 @@ export const Order = () => {
                           fontWeight: "500",
                         }}
                       >
-                        $
-                        {coupon && coupon.salePercent > 0
+                        ${coupon && coupon.salePercent > 0
                           ? totalPrice - (totalPrice * coupon.salePercent) / 100
                           : totalPrice}
                       </p>
@@ -862,6 +852,7 @@ export const Order = () => {
                   </div>
                 </div>
               </div>
+
 
               <div className="col-5 mt-3 button-order">
                 {pay === "BANKING" ? (
@@ -1020,11 +1011,10 @@ export const Order = () => {
                       {coupons.length > 0 ? (
                         coupons.map((item, index) => (
                           <div
-                            className={`coupon-card col-12 ${
-                              totalPrice < item.minimumPrice
-                                ? "disabled-coupon"
-                                : ""
-                            }`}
+                            className={`coupon-card col-12 ${totalPrice < item.minimumPrice
+                              ? "disabled-coupon"
+                              : ""
+                              }`}
                             key={index}
                           >
                             <div className="col-3">

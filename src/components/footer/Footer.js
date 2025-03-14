@@ -18,14 +18,14 @@ const Footer = () => {
       <div className="footer-content">
         <div className="img-logo-footer">
           <Link to="/">
-            <img src={Logo} alt="" />
+            <img src={Logo} alt="Culinary Connect Logo" />
           </Link>
         </div>
         <div className="footer-content-left">
           <h2>
             <strong>Access to us</strong>
           </h2>
-          <div className="ul-icon-social">
+          <ul className="ul-icon-social">
             <li>
               <FaFacebookSquare className="facebook" />
             </li>
@@ -35,7 +35,7 @@ const Footer = () => {
             <li>
               <IoLogoYoutube className="youtube" />
             </li>
-          </div>
+          </ul>
         </div>
 
         <div className="footer-content-center">
@@ -45,14 +45,14 @@ const Footer = () => {
           <ul>
             <Link to="/">
               <li className="li-home d-flex">
-                <IoHome style={{ marginRight: "15px" }} />
-                <p style={{ fontSize: "0.8em" }}>Home</p>
+                <IoHome style={{ marginRight: "10px" }} />
+                <p>Home</p>
               </li>
             </Link>
 
             <li className="li-aboutus d-flex">
-              <FaUserTie style={{ marginRight: "15px" }} />
-              <p style={{ fontSize: "0.8em" }}>About us</p>
+              <FaUserTie style={{ marginRight: "10px" }} />
+              <p>About us</p>
             </li>
           </ul>
         </div>
@@ -61,27 +61,26 @@ const Footer = () => {
           <h2>
             <strong>Contact</strong>
           </h2>
-          <div className="address-links">
+          <ul className="address-links">
             <li className="address1 d-flex">
               <FaBuilding className="address" />
-              <p style={{ fontSize: "0.8em" }}>
-                14 Nguyen Van Cu, An Khanh, Ninh Kieu, Can Tho
-              </p>
+              <p>14 Nguyen Van Cu, An Khanh, Ninh Kieu, Can Tho</p>
             </li>
             <li className="address1 d-flex">
               <SlEarphonesAlt className="address" />
-              <p style={{ fontSize: "0.8em" }}>0999 999 999</p>
+              <p>0999 999 999</p>
             </li>
             <li className="address1 d-flex">
               <IoMail className="address" />
-              <p style={{ fontSize: "0.8em" }}>CulinaryConnect@gmail.com</p>
+              <p>CulinaryConnect@gmail.com</p>
             </li>
-          </div>
+          </ul>
         </div>
       </div>
       <hr />
-      <p className="footer-coppyright">Copyright by Culinary Connect</p>
+      <p className="footer-copyright">Copyright by Culinary Connect</p>
     </div>
   );
 };
+
 export default Footer;

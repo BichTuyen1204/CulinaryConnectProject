@@ -78,32 +78,34 @@ const Invoice = () => {
             </button>
           ))}
         </div>
+  
         {orders.map((order, index) => (
           <Link to={`/order_detail/${order.id}`} key={index}>
             <div className="order-card">
-              <div className="col-12 d-flex total">
-                <div className="order-summary col-7">
-                  <p className="d-flex">
-                    <strong>Date :</strong>
-                    <p className="mx-1">
-                      {new Date(order.date).toLocaleString()}
-                    </p>
-                  </p>
+              {/* Order Summary & Status */}
+              <div className="row total align-items-center">
+                {/* Date */}
+                <div className="col-md-7 col-12 order-summary">
+                  <strong>Date:</strong>
+                  <span className="mx-1">{new Date(order.date).toLocaleString()}</span>
                 </div>
-                <div className="col-5 status">
-                  <p className="d-flex">
-                    <strong>Status : </strong>
-                    <p className="mx-1">
-                      <strong style={{ color: getStatusColor(order.status) }}>
-                        {statusMap[order.status] || "Unknown Status"}
-                      </strong>
-                    </p>
-                  </p>
+                {/* Status */}
+                <div className="col-md-5 col-12 status text-md-end text-start">
+                  <strong>Status:</strong>
+                  <span
+                    className="mx-1 text-truncate"
+                    style={{ color: getStatusColor(order.status) }}
+                  >
+                    {statusMap[order.status] || "Unknown Status"}
+                  </span>
                 </div>
               </div>
+  
+              {/* Order Items */}
               {order.items.map((item, i) => (
                 <div className="order-item" key={i}>
-                  <div className="order-info">
+                  <div className="order-info row">
+                    {/* Image */}
                     <div className="col-3">
                       <img
                         src={item.imageUrl}
@@ -111,20 +113,19 @@ const Invoice = () => {
                         className="order-image"
                       />
                     </div>
+                    {/* Product Details */}
                     <div className="col-9 info-product">
-                      <div className="order-details">
-                        <p className="order-title">{item.name}</p>
-                      </div>
+                      <p className="order-title">{item.name}</p>
                       <div className="d-flex">
                         <p className="order-quantity">x{item.quantity}</p>
-                        <p className="order-price">
-                          $ {item.price.toLocaleString()}
-                        </p>
+                        <p className="order-price">$ {item.price.toLocaleString()}</p>
                       </div>
                     </div>
                   </div>
                 </div>
               ))}
+  
+              {/* Total Amount */}
               <p className="total-amount-size text-end px-3">
                 <strong>Total Amount:</strong>{" "}
                 <span className="price-highlight">
@@ -134,13 +135,12 @@ const Invoice = () => {
             </div>
           </Link>
         ))}
-
-        {orders.length === 0 && (
-          <p className="text-center">No orders available</p>
-        )}
+  
+        {orders.length === 0 && <p className="text-center">No orders available</p>}
       </div>
     </div>
   );
+  
 };
 
 export default Invoice;
