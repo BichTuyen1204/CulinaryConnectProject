@@ -57,7 +57,6 @@
   box-shadow: 0 6px 15px rgba(255, 99, 71, 0.4);
 }
 
-
 .chat-bot {
   width: 340px;
   height: 500px;
@@ -94,12 +93,37 @@
 }
 
 .format-time {
-  font-size: 0.75em;
+  font-size: 0.65em;
   color: #666;
   text-align: right;
   opacity: 0.7;
   margin-top: -4px;
-  align-self: flex-end;
+}
+
+.format-time.staff {
+  text-align: left;
+}
+
+.format-time.user {
+  text-align: right;
+}
+
+.role-chat-box.staff {
+  color: #333;
+  align-items: flex-start;
+  font-size: 0.9em;
+  margin-left: 5px;
+  margin-bottom: 3px;
+  font-weight: 550;
+}
+
+.role-chat-box.user {
+  color: #333;
+  align-items: flex-end;
+  font-size: 0.9em;
+  margin-right: 5px;
+  margin-bottom: 3px;
+  font-weight: 550;
 }
 
 @keyframes slideIn {
@@ -182,7 +206,6 @@
 }
 
 .user {
-  background-color: tomato;
   align-self: flex-end;
   color: white;
 }
@@ -211,8 +234,9 @@
 
 .chat-textarea {
   flex: 1;
-  max-height: 35px;
-  min-height: 20px;
+  min-height: 35px;
+  max-height: 80px;
+  overflow-y: auto;
   resize: none;
   padding: 8px;
   border: 1px solid #ddd;

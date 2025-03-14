@@ -32,6 +32,7 @@ export const Profile = () => {
           setAddress(response.address);
           setDescription(response.profileDescription);
           setImgUser(response.profilePictureUri);
+          console.log(response)
         } catch (error) {
           console.error("Error fetching account information:", error);
           sessionStorage.removeItem("jwtToken");
