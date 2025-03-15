@@ -83,6 +83,8 @@ p {
   font-size: 0.7em;
   font-weight: 500;
   line-height: 1.2em;
+  display: block; 
+  margin-top: 2px; 
 }
 
 .button-in-item {
@@ -274,4 +276,25 @@ a {
   .food-item button {
     display: none;
   }
+}
+.food-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around; /* Adjust spacing as needed */
+  gap: 20px; /* Adjust gap as needed */
+}
+
+.food-item {
+  width: calc(50% - 20px); /* Adjust width to ensure two per row */
+  max-width: 300px; /* Optional: Limit max width */
+}
+.food-item {
+  width: 100%; /* Make each item take full width */
+}
+.food-item-info .food-item-quantity {
+  font-size: 0.7em;
+  font-weight: 500;
+  line-height: 1.2em;
+  display: block; 
+  margin-top: 2px; 
 }
