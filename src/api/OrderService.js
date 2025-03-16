@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const API_BASE_URL = "https://culcon-customer-backend-87043777927.asia-east1.run.app/api/customer/order";
-const API_BASE_URL_2 = "https://culcon-customer-backend-87043777927.asia-east1.run.app/api/public/fetch";
-const API_BASE_URL_3 = "https://culcon-customer-backend-87043777927.asia-east1.run.app/api/payment";
+const API_BASE_URL = "https://culcon-user-be-30883260979.asia-east2.run.app/api/customer/order";
+const API_BASE_URL_2 = "https://culcon-user-be-30883260979.asia-east2.run.app/api/public/fetch";
+const API_BASE_URL_3 = "https://culcon-user-be-30883260979.asia-east2.run.app/api/payment";
 
 class OrderService {
   async createOrder(orderData, jwtToken) {

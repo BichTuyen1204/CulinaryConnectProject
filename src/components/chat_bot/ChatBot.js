@@ -41,7 +41,7 @@ const ChatBot = () => {
   const setupWebSocket = useCallback(() => {
     if (!jwtToken || !idUser) return;
     const ws = new WebSocket(
-      `wss://culcon-admin-gg-87043777927.asia-northeast1.run.app/ws/chat/customer?token=${jwtToken}`
+      `wss://https://culcon-user-be-30883260979.asia-east2.run.app/ws/chat/customer?token=${jwtToken}`
     );
     socketRef.current = ws;
 
