@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const BACKEND_API_ENDPOINT = process.env.BACKEND_API_ENDPOINT;
-const API_BASE_URL = `${BACKEND_API_ENDPOINT}/api/customer`;
+const REACT_APP_BACKEND_API_ENDPOINT =
+  process.env.REACT_APP_BACKEND_API_ENDPOINT;
+const API_BASE_URL = `${REACT_APP_BACKEND_API_ENDPOINT}/api/customer`;
 
 class CartService {
   async addToCart(id, quantity) {

@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const BACKEND_API_ENDPOINT = process.env.BACKEND_API_ENDPOINT;
+const REACT_APP_BACKEND_API_ENDPOINT =
+  process.env.REACT_APP_BACKEND_API_ENDPOINT;
 class CouponService {
   async getAllCoupon() {
     const jwtToken = sessionStorage.getItem("jwtToken");
@@ -9,7 +10,7 @@ class CouponService {
     }
     try {
       const response = await axios.get(
-        `${BACKEND_API_ENDPOINT}/api/public/fetch/coupon/all`,
+        `${REACT_APP_BACKEND_API_ENDPOINT}/api/public/fetch/coupon/all`,
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
@@ -30,7 +31,7 @@ class CouponService {
     try {
       const jwtToken = sessionStorage.getItem("jwtToken");
       const response = await axios.get(
-        `${BACKEND_API_ENDPOINT}/api/public/fetch/coupon?couponId=${couponId}`,
+        `${REACT_APP_BACKEND_API_ENDPOINT}/api/public/fetch/coupon?couponId=${couponId}`,
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,

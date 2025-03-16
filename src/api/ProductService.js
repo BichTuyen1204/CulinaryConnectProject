@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const BACKEND_API_ENDPOINT = process.env.BACKEND_API_ENDPOINT;
-const API_BASE_URL_2 = `${BACKEND_API_ENDPOINT}/api/public/fetch`;
+const REACT_APP_BACKEND_API_ENDPOINT =
+  process.env.REACT_APP_BACKEND_API_ENDPOINT;
+const API_BASE_URL_2 = `${REACT_APP_BACKEND_API_ENDPOINT}/api/public/fetch`;
 
 class ProductService {
   async getAllProduct() {

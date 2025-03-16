@@ -13,6 +13,12 @@ RUN npm ci
 # Copy all files
 COPY . .
 
+ARG BACKEND_API_ENDPOINT="https://culcon-user-be-30883260979.asia-east2.run.app"
+ARG BACKEND_WS_ENDPOINT="wss://culcon-user-be-30883260979.asia-east2.run.app"
+
+ENV REACT_APP_BACKEND_API_ENDPOINT=${BACKEND_API_ENDPOINT}
+ENV REACT_APP_BACKEND_WS_ENDPOINT=${BACKEND_WS_ENDPOINT}
+
 # Build the app
 RUN npm run build
 
@@ -33,7 +39,6 @@ RUN echo 'server { \
     } \
 }' > /etc/nginx/conf.d/default.conf
 
-# Expose port 3000
 EXPOSE 3000
 
 # When the container starts, nginx will serve the app

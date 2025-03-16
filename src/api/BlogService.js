@@ -1,9 +1,10 @@
 import axios from "axios";
 
-const BACKEND_API_ENDPOINT = process.env.BACKEND_API_ENDPOINT;
-const API_BASE_URL = `${BACKEND_API_ENDPOINT}/api/public`;
-const API_BASE_URL_2 = `${BACKEND_API_ENDPOINT}/api/customer/blog`;
-const API_BASE_URL_3 = `${BACKEND_API_ENDPOINT}/api/customer/fetch`;
+const REACT_APP_BACKEND_API_ENDPOINT =
+  process.env.REACT_APP_BACKEND_API_ENDPOINT;
+const API_BASE_URL = `${REACT_APP_BACKEND_API_ENDPOINT}/api/public`;
+const API_BASE_URL_2 = `${REACT_APP_BACKEND_API_ENDPOINT}/api/customer/blog`;
+const API_BASE_URL_3 = `${REACT_APP_BACKEND_API_ENDPOINT}/api/customer/fetch`;
 
 class BlogService {
   async getAllBlog() {
@@ -59,7 +60,7 @@ class BlogService {
     try {
       const jwtToken = sessionStorage.getItem("jwtToken");
       const response = await axios.get(
-        `${BACKEND_API_ENDPOINT}/api/public/fetch/blog/reply?blogId=${blogId}&commentId=${commentId}`,
+        `${REACT_APP_BACKEND_API_ENDPOINT}/api/public/fetch/blog/reply?blogId=${blogId}&commentId=${commentId}`,
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
@@ -83,7 +84,7 @@ class BlogService {
     }
     try {
       const response = await axios.get(
-        `${BACKEND_API_ENDPOINT}/api/public/fetch/blog/comment?id=${id}`,
+        `${REACT_APP_BACKEND_API_ENDPOINT}/api/public/fetch/blog/comment?id=${id}`,
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
@@ -107,7 +108,7 @@ class BlogService {
     }
     try {
       const response = await axios.delete(
-        `${BACKEND_API_ENDPOINT}/api/customer/comment/deleted?commentId=${id}`,
+        `${REACT_APP_BACKEND_API_ENDPOINT}/api/customer/comment/deleted?commentId=${id}`,
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
@@ -131,7 +132,7 @@ class BlogService {
     } else {
       try {
         const response = await axios.post(
-          `${BACKEND_API_ENDPOINT}/api/customer/blog/reply?postId=${postId}&commentId=${commentId}&comment=${comment}`,
+          `${REACT_APP_BACKEND_API_ENDPOINT}/api/customer/blog/reply?postId=${postId}&commentId=${commentId}&comment=${comment}`,
 
           {
             postId: postId,

@@ -1,9 +1,10 @@
 import axios from "axios";
 
-const BACKEND_API_ENDPOINT = process.env.BACKEND_API_ENDPOINT;
+const REACT_APP_BACKEND_API_ENDPOINT =
+  process.env.REACT_APP_BACKEND_API_ENDPOINT;
 
-const API_BASE_URL = `${BACKEND_API_ENDPOINT}/api/auth`;
-const API_BASE_URL_2 = `${BACKEND_API_ENDPOINT}/api/customer`;
+const API_BASE_URL = `${REACT_APP_BACKEND_API_ENDPOINT}/api/auth`;
+const API_BASE_URL_2 = `${REACT_APP_BACKEND_API_ENDPOINT}/api/customer`;
 
 class AccountService {
   async register(account) {
