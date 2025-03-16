@@ -11,6 +11,8 @@ import { RiCoupon2Line } from "react-icons/ri";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import CouponService from "../../api/CouponService.js";
 
+const BACKEND_API_ENDPOINT = process.env.BACKEND_API_ENDPOINT;
+
 export const Order = () => {
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
   const [username, setUserName] = useState("");

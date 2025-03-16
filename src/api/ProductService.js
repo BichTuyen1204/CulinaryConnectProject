@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const API_BASE_URL_2 =
-  "https://culcon-user-be-30883260979.asia-east2.run.app/api/public/fetch";
+const BACKEND_API_ENDPOINT = process.env.BACKEND_API_ENDPOINT;
+const API_BASE_URL_2 = `${BACKEND_API_ENDPOINT}/api/public/fetch`;
 
 class ProductService {
   async getAllProduct() {

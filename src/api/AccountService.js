@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const API_BASE_URL =
-  "https://culcon-user-be-30883260979.asia-east2.run.app/api/auth";
-const API_BASE_URL_2 =
-  "https://culcon-user-be-30883260979.asia-east2.run.app/api/customer";
+const BACKEND_API_ENDPOINT = process.env.BACKEND_API_ENDPOINT;
+
+const API_BASE_URL = `${BACKEND_API_ENDPOINT}/api/auth`;
+const API_BASE_URL_2 = `${BACKEND_API_ENDPOINT}/api/customer`;
 
 class AccountService {
   async register(account) {

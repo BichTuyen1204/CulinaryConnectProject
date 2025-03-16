@@ -5,6 +5,8 @@ import { BsChatTextFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import AccountService from "../../api/AccountService";
 
+const BACKEND_WS_ENDPOINT = process.env.BACKEND_WS_ENDPOINT;
+
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);
   const messagesRef = useRef([]);
@@ -41,7 +43,7 @@ const ChatBot = () => {
   const setupWebSocket = useCallback(() => {
     if (!jwtToken || !idUser) return;
     const ws = new WebSocket(
-      `wss://culcon-ad-be-30883260979.asia-east1.run.app/ws/chat/customer?token=${jwtToken}`
+      `${BACKEND_WS_ENDPOINT}/ws/chat/customer?token=${jwtToken}`
     );
     socketRef.current = ws;
 
