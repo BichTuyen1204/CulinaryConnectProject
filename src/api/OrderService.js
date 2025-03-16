@@ -1,11 +1,10 @@
 import axios from "axios";
 
-const API_BASE_URL =
-  "https://culcon-user-be-30883260979.asia-east2.run.app/api/customer/order";
-const API_BASE_URL_2 =
-  "https://culcon-user-be-30883260979.asia-east2.run.app/api/public/fetch";
-const API_BASE_URL_3 =
-  "https://culcon-user-be-30883260979.asia-east2.run.app/api/payment";
+const REACT_APP_BACKEND_API_ENDPOINT =
+  process.env.REACT_APP_BACKEND_API_ENDPOINT;
+const API_BASE_URL = `${REACT_APP_BACKEND_API_ENDPOINT}/api/customer/order`;
+const API_BASE_URL_2 = `${REACT_APP_BACKEND_API_ENDPOINT}/api/public/fetch`;
+const API_BASE_URL_3 = `${REACT_APP_BACKEND_API_ENDPOINT}/api/payment`;
 
 class OrderService {
   async createOrder(orderData, jwtToken) {

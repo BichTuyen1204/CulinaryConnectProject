@@ -250,16 +250,20 @@ button {
 @media (max-width: 1281px) {
   .navbar {
     height: 120px;
-    width: 100% !important;
+    width: 130% !important;
     align-items: center !important;
     justify-content: left !important;
   }
 
+  .navbar .logo-navbar img {
+    padding-left: 0px;
+  }
+
   .navbar .logo-navbar {
-    width: 100px;
-    height: 100px;
+    width: 50px;
+    height: 50px;
     padding: 0px;
-    margin-left: 0px;
+    margin-left: 50px;
   }
 
   .navbar .logo-navbar img {
@@ -315,16 +319,16 @@ button {
 @media (max-width: 1025px) {
   .navbar {
     height: 120px;
-    width: 100% !important;
+    width: 120% !important;
     align-items: center !important;
     justify-content: left !important;
   }
 
   .navbar .logo-navbar {
-    width: 100px;
-    height: 100px;
+    width: 50px;
+    height: 50px;
     padding: 0px;
-    margin-left: -35px;
+    margin-left: 35px;
   }
 
   .navbar .logo-navbar img {
@@ -570,15 +574,16 @@ button {
 
   
   .navbar .logo-navbar {
-    width: 80px;
-    height: 80px;
-    padding: 0px;
+    width: 50px;
+    height: 50px;
+    margin-right: 50px;
     margin-left: 35px;
   }
 
   .navbar .logo-navbar img {
-    height: 100%;
+    height: 80%;
     cursor: pointer;
+    padding-left: 0px;
   }
   .navbar-menu {
     font-size: 0.9em;

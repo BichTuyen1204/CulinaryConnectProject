@@ -27,6 +27,8 @@
   gap: 15px;
   justify-content: center;
   align-items: center;
+  padding: 0;
+  margin: 0;
 }
 
 .facebook,
@@ -58,12 +60,34 @@
   gap: 15px;
 }
 
+
+.footer-content-right .address-links {
+  align-items: left; /* Fix centering */
+}
+
+.footer-content-right {
+  display: flex;
+  text-align: center;
+  align-items: center;
+}
+.footer-content-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Keep it aligned to the left */
+  text-align: left;
+  padding: 0;  /* Remove unnecessary padding */
+  margin: 0;   /* Remove unnecessary margin */
+  width: 100%;
+}
+
 .footer-content-left {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
 }
+
+
 
 .footer-content-left li,
 .footer-content-right li,
@@ -127,9 +151,7 @@
     width: 120px;
     height: 120px;
   }
-  .footer-content-left {
-    margin-left: -60px;
-  }
+
   .footer-content-left h2,
   .footer-content-center h2,
   .footer-content-right h2 {
@@ -519,32 +541,40 @@
   flex: 1;
   min-width: 250px;
   text-align: center;
+  align-items: center;
 }
 
 /* Fix for contact details */
 .footer-content-right {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center content on small screens */
+  align-items: center; /* Align to the left */
+  text-align: left; /* Ensure text aligns left */
+  width: 100%;
 }
 
 .footer-content-right h2 {
-  text-align: center;
+  text-align: left; /* Title also aligned left */
 }
 
 .address-links {
   padding: 0;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center on small screens */
+  align-items: flex-start; /* Align content to the left */
 }
 
 .address-links li {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: flex-start; /* Align icons and text left */
   gap: 10px;
 }
+.footer-content-left h2 {
+  text-align: center;
+  width: 100%;
+}
+
 
 /* Small screen adjustments */
 @media (max-width: 768px) {
@@ -565,7 +595,7 @@
   }
 
   .footer-content-right .address-links {
-    align-items: center; /* Fix centering */
+    align-items: left; /* Fix centering */
   }
 
   .footer-content-right {

@@ -97,7 +97,10 @@ export const FoodItem = ({ product }) => {
                       </span>
                     </>
                   ) : (
+                    <>
                     <span>${product.price.toFixed(2)}</span>
+                    <span className="discounted-price"></span>
+                    </>
                   )}
                 </p>
               </p>

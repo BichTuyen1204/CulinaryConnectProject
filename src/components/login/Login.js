@@ -5,6 +5,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import AccountService from "../../api/AccountService";
 
+const REACT_APP_BACKEND_API_ENDPOINT =
+  process.env.REACT_APP_BACKEND_API_ENDPOINT;
+
 const Login = ({
   setShowLogin,
   openSignUp,
@@ -138,8 +141,7 @@ const Login = ({
   };
 
   const handleRedirect = () => {
-    window.location.href =
-      "http://culcon-user-be-30883260979.asia-east2.run.app/oauth2/authorization/google";
+    window.location.href = `${REACT_APP_BACKEND_API_ENDPOINT}/oauth2/authorization/google`;
   };
 
   return (
