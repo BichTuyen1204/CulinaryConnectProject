@@ -98,7 +98,9 @@ const SignIn = () => {
     PasswordBlur();
 
     if (!agreedToTerms) {
-      alert("To continue logging in, you need to agree to our Terms of Use and Privacy Policy.");
+      alert(
+        "To continue logging in, you need to agree to our Terms of Use and Privacy Policy."
+      );
       return;
     }
 
@@ -143,7 +145,8 @@ const SignIn = () => {
   };
 
   const handleRedirect = () => {
-    window.location.href = "http://localhost:8080/oauth2/authorization/google";
+    window.location.href =
+      "http://culcon-ad-be-30883260979.asia-east1.run.app/oauth2/authorization/google";
   };
 
   return (
@@ -212,7 +215,9 @@ const SignIn = () => {
           <div className="part-end-login">
             <p>
               Create a new account ?{" "}
-              <span><Link to="/register">Register here</Link></span>
+              <span>
+                <Link to="/register">Register here</Link>
+              </span>
             </p>
           </div>
 
@@ -230,7 +235,9 @@ const SignIn = () => {
               Login
             </button>
             <div className="text-center p-2">OR</div>
-            <button className="button-google" onClick={handleRedirect}>Login with Google</button>
+            <button className="button-google" onClick={handleRedirect}>
+              Login with Google
+            </button>
           </div>
         </form>
       </div>

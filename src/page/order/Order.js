@@ -94,7 +94,6 @@ export const Order = () => {
     setPopupBuy(false);
   };
 
-
   //Delivery Address
   const AddressChange = (e) => {
     const { value } = e.target;
@@ -130,7 +129,6 @@ export const Order = () => {
     setPaymentMethod(value);
     setOrderData((preState) => ({ ...preState, paymentMethod: value }));
   };
-
 
   const handleTempCouponSelect = (couponId) => {
     console.log("Selected coupon ID:", couponId);
@@ -245,7 +243,7 @@ export const Order = () => {
       const price =
         item.product.salePercent > 0
           ? item.product.price -
-          (item.product.price * item.product.salePercent) / 100
+            (item.product.price * item.product.salePercent) / 100
           : item.product.price;
       total += price * item.amount;
     });
@@ -345,7 +343,8 @@ export const Order = () => {
   };
 
   const handleCloseModal = () => {
-    window.location.href = "http://localhost:3000/invoice";
+    window.location.href =
+      "https://culcon-user-fe-30883260979.asia-east2.run.app/invoice";
     setIsModalOpen(false);
   };
 
@@ -356,7 +355,8 @@ export const Order = () => {
       console.log("Payment captured successfully:", captureResult);
       if (captureResult.status === "RECEIVED") {
         alert("Payment completed successfully!");
-        window.location.href = "http://localhost:3000/invoice";
+        window.location.href =
+          "https://culcon-user-fe-30883260979.asia-east2.run.app/invoice";
         // navigate("/invoice", { state: { jwtToken, orderId: data.orderID } });
       } else {
         alert("Payment failed or not completed.");
@@ -629,7 +629,9 @@ export const Order = () => {
                       {/* Price start */}
                       <div className=" col-md-4 price-of-product d-flex flex-column align-items-start pt-3">
                         <p className="name-product-order text-ellipsis">
-                          <strong style={{ fontSize: "0.8em", whiteSpace: "nowrap" }}>
+                          <strong
+                            style={{ fontSize: "0.8em", whiteSpace: "nowrap" }}
+                          >
                             {item.product.salePercent > 0 ? (
                               <>
                                 <span className="original-price text-decoration-line-through me-2">
@@ -639,7 +641,9 @@ export const Order = () => {
                                   $
                                   {(
                                     item.product.price -
-                                    (item.product.price * item.product.salePercent) / 100
+                                    (item.product.price *
+                                      item.product.salePercent) /
+                                      100
                                   ).toFixed(2)}
                                 </span>
                               </>
@@ -650,7 +654,6 @@ export const Order = () => {
                         </p>
                       </div>
                       {/* Price end */}
-
                     </div>
 
                     {/* Total price start */}
@@ -663,12 +666,12 @@ export const Order = () => {
                           $
                           {item.product.salePercent > 0
                             ? (
-                              (item.product.price -
-                                (item.product.price *
-                                  item.product.salePercent) /
-                                100) *
-                              item.amount
-                            ).toFixed(2)
+                                (item.product.price -
+                                  (item.product.price *
+                                    item.product.salePercent) /
+                                    100) *
+                                item.amount
+                              ).toFixed(2)
                             : (item.product.price * item.amount).toFixed(2)}
                         </strong>
                       </h7>
@@ -678,7 +681,6 @@ export const Order = () => {
                 </div>
               ))}
 
-
               <div className="total-price-end row align-items-center mt-3 col-12 mb-5">
                 {/* Left spacing (optional) */}
                 <div className="col-md-5 d-none d-md-block"></div>
@@ -687,7 +689,8 @@ export const Order = () => {
                 <div className="col-12 col-md-7 d-flex align-items-center justify-content-end gap-2">
                   <h4 className="total mb-0 text-muted">
                     <p style={{ color: "#a1a1a1" }}>
-                      Total price ({totalQuantity} {totalQuantity > 1 ? "items" : "item"}):
+                      Total price ({totalQuantity}{" "}
+                      {totalQuantity > 1 ? "items" : "item"}):
                     </p>
                   </h4>
                   <h5 className="total-price mb-0">
@@ -695,8 +698,6 @@ export const Order = () => {
                   </h5>
                 </div>
               </div>
-
-
 
               <hr className="mt-2" />
 
@@ -778,7 +779,9 @@ export const Order = () => {
                       onChange={PayChange}
                     />
                     <label class="form-check-label" for="banking">
-                      <p style={{ fontSize: "0.85em", fontWeight: "500" }}>BANKING</p>
+                      <p style={{ fontSize: "0.85em", fontWeight: "500" }}>
+                        BANKING
+                      </p>
                     </label>
                   </div>
                   {/* Banking end */}
@@ -799,7 +802,9 @@ export const Order = () => {
                       <p>Subtotal: </p>
                     </div>
                     <div className="w-50 d-flex justify-content-end">
-                      <p><strong>${totalPrice}</strong></p>
+                      <p>
+                        <strong>${totalPrice}</strong>
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -818,8 +823,12 @@ export const Order = () => {
                         <strong>
                           {coupon && coupon.salePercent > 0 ? (
                             <>
-                              <span style={{ color: "red" }}>- {coupon.salePercent}%</span>
-                              {` (-$${(totalPrice * coupon.salePercent) / 100})`}
+                              <span style={{ color: "red" }}>
+                                - {coupon.salePercent}%
+                              </span>
+                              {` (-$${
+                                (totalPrice * coupon.salePercent) / 100
+                              })`}
                             </>
                           ) : (
                             "$0"
@@ -844,7 +853,8 @@ export const Order = () => {
                           fontWeight: "500",
                         }}
                       >
-                        ${coupon && coupon.salePercent > 0
+                        $
+                        {coupon && coupon.salePercent > 0
                           ? totalPrice - (totalPrice * coupon.salePercent) / 100
                           : totalPrice}
                       </p>
@@ -852,7 +862,6 @@ export const Order = () => {
                   </div>
                 </div>
               </div>
-
 
               <div className="col-5 mt-3 button-order">
                 {pay === "BANKING" ? (
@@ -954,7 +963,10 @@ export const Order = () => {
                       >
                         Buy
                       </button>
-                      <button className="button-cancel-order" onClick={cancelBuy}>
+                      <button
+                        className="button-cancel-order"
+                        onClick={cancelBuy}
+                      >
                         Cancel
                       </button>
                     </div>
@@ -1011,10 +1023,11 @@ export const Order = () => {
                       {coupons.length > 0 ? (
                         coupons.map((item, index) => (
                           <div
-                            className={`coupon-card col-12 ${totalPrice < item.minimumPrice
-                              ? "disabled-coupon"
-                              : ""
-                              }`}
+                            className={`coupon-card col-12 ${
+                              totalPrice < item.minimumPrice
+                                ? "disabled-coupon"
+                                : ""
+                            }`}
                             key={index}
                           >
                             <div className="col-3">
