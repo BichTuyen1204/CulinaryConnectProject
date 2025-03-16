@@ -408,7 +408,7 @@ export const Navbar = ({ setShowLogin }) => {
               <CiSearch className="ic_search position-absolute end-0 me-0 top-50 translate-middle-y" />
             </form>
 
-            <nav className="col-1 mx-1">
+            <nav className="col-1  d-flex justify-content-end">
               <>
                 {username ? (
                   <div className="navbar-basket-icon mx-1">
@@ -424,7 +424,7 @@ export const Navbar = ({ setShowLogin }) => {
                 )}
               </>
             </nav>
-            <nav className="col-1 mx-1">
+            <nav className="col-1  d-flex justify-content-end ">
               <>
                 {username ? (
                   <div className="user-menu" ref={dropdownRef}>

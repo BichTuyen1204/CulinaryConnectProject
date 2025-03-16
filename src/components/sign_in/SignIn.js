@@ -79,7 +79,7 @@ const SignIn = () => {
   };
 
   const handleClose = (e) => {
-    setIsOpen(false); // Đóng form login
+    setIsOpen(false);
     navigate("/");
   };
 

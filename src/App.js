@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar } from "./components/navbar/Navbar";
 import { Routes, Route, useNavigate, BrowserRouter } from "react-router-dom";
 import { Home } from "./page/home/Home";
@@ -18,7 +18,7 @@ import { Order } from "./page/order/Order";
 import { FoodItem } from "./components/food_item/FoodItem";
 import { FoodDisplay } from "./components/food_display/FoodDisplay";
 import Register from "./components/register/Register";
-import SignIn from "./components/sign_in/SignIn";
+// import SignIn from "./components/sign_in/SignIn";
 import Invoice from "./page/invoice/Invoice";
 import OrderConfirmation from "./page/order_confirm/OrderConfirmation";
 import Google from "./page/google/Google";
@@ -30,12 +30,15 @@ import ForgotPassword from "./components/forget/ForgetPass";
 import { ListProductSearchImg } from "./page/list_product_search_img/ListProductSearchImg";
 import ChatBot from "./components/chat_bot/ChatBot";
 
-
 const AppContent = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [showSignUp, setShowSignUp] = useState(false);
   const [showForgotPass, setShowForgotPass] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log("Current Path:", window.location.pathname);
+  }, []);
 
   const handleLoginSuccess = () => {
     setShowLogin(false);
@@ -66,6 +69,7 @@ const AppContent = () => {
           <Breadcrumb />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="sign_in" element={<Home />} />
             <Route path="exploreMenu" element={<ExploreMenu />} />
             <Route path="cart" element={<Cart />} />
             <Route path="contact" element={<Contact />} />
@@ -82,7 +86,7 @@ const AppContent = () => {
             <Route path="order" element={<Order />} />
             <Route path="food_item" element={<FoodItem />} />
             <Route path="edit_profile" element={<EditProfile />} />
-            <Route path="sign_in" element={<SignIn />} />
+            {/* <Route path="sign_in" element={<SignIn />} /> */}
             <Route path="register" element={<Register />} />
             <Route path="token" element={<Google />} />
             <Route path="invoice" element={<Invoice />} />
