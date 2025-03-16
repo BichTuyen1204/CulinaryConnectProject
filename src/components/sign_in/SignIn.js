@@ -146,7 +146,7 @@ const SignIn = () => {
 
   const handleRedirect = () => {
     window.location.href =
-      "http://culcon-ad-be-30883260979.asia-east1.run.app/oauth2/authorization/google";
+      "http://culcon-user-be-30883260979.asia-east2.run.app/oauth2/authorization/google";
   };
 
   return (
