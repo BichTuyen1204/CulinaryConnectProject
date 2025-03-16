@@ -345,9 +345,9 @@ export const Order = () => {
     }
   };
 
+  const REACT_APP_DEPLOY_ENDPOINT = process.env.REACT_APP_DEPLOY_ENDPOINT;
   const handleCloseModal = () => {
-    window.location.href =
-      "https://culcon-user-fe-30883260979.asia-east2.run.app/invoice";
+    window.location.href = `${REACT_APP_DEPLOY_ENDPOINT}/invoice`;
     setIsModalOpen(false);
   };
 
@@ -358,8 +358,7 @@ export const Order = () => {
       console.log("Payment captured successfully:", captureResult);
       if (captureResult.status === "RECEIVED") {
         alert("Payment completed successfully!");
-        window.location.href =
-          "https://culcon-user-fe-30883260979.asia-east2.run.app/invoice";
+        window.location.href = `${REACT_APP_DEPLOY_ENDPOINT}/invoice`;
         // navigate("/invoice", { state: { jwtToken, orderId: data.orderID } });
       } else {
         alert("Payment failed or not completed.");

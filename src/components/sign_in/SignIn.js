@@ -6,6 +6,9 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import AccountService from "../../api/AccountService";
 import { Link, useNavigate } from "react-router-dom";
 
+const REACT_APP_BACKEND_API_ENDPOINT =
+  process.env.REACT_APP_BACKEND_API_ENDPOINT;
+
 const SignIn = () => {
   const [username, setUserName] = useState("");
   const [userNameError, setUserNameError] = useState("");
@@ -145,8 +148,7 @@ const SignIn = () => {
   };
 
   const handleRedirect = () => {
-    window.location.href =
-      "http://culcon-user-be-30883260979.asia-east2.run.app/oauth2/authorization/google";
+    window.location.href = `${REACT_APP_BACKEND_API_ENDPOINT}/oauth2/authorization/google`;
   };
 
   return (
