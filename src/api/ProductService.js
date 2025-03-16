@@ -1,7 +1,10 @@
 import axios from "axios";
 
-const API_BASE_URL_2 =
-  "https://culcon-user-be-30883260979.asia-east2.run.app/api/public/fetch";
+const REACT_APP_BACKEND_API_ENDPOINT =
+  process.env.REACT_APP_BACKEND_API_ENDPOINT;
+const REACT_APP_BACKEND_API_ENDPOINT_SEARCH =
+  process.env.REACT_APP_BACKEND_API_ENDPOINT_SEARCH;
+const API_BASE_URL_2 = `${REACT_APP_BACKEND_API_ENDPOINT}/api/public/fetch`;
 
 class ProductService {
   async getAllProduct() {
@@ -48,7 +51,7 @@ class ProductService {
   async getProductsBySearch(keyword) {
     try {
       const response = await axios.get(
-        `https://culcon-user-be-30883260979.asia-east2.run.app/api/public/search/product?keyword=${keyword}`
+        `${REACT_APP_BACKEND_API_ENDPOINT}/api/public/search/product?keyword=${keyword}`
       );
       return response.data;
     } catch (error) {
@@ -67,7 +70,7 @@ class ProductService {
         throw new Error("No JWT token found. Please log in again.");
       }
       const response = await axios.post(
-        `https://culcon-admin-gg-87043777927.asia-northeast1.run.app/public/search/desc`,
+        `${REACT_APP_BACKEND_API_ENDPOINT_SEARCH}/public/search/desc`,
         {
           prompt: desc,
         }
@@ -86,7 +89,7 @@ class ProductService {
         throw new Error("No JWT token found. Please log in again.");
       }
       const response = await axios.post(
-        `https://culcon-admin-gg-87043777927.asia-northeast1.run.app/public/search/image`,
+        `${REACT_APP_BACKEND_API_ENDPOINT_SEARCH}/public/search/image`,
         formData,
         {
           headers: {

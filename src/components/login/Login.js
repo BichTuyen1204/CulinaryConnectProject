@@ -5,7 +5,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import AccountService from "../../api/AccountService";
 
-const Login = ({ setShowLogin, openSignUp, onLoginSuccess, openForgotPass }) => {
+const REACT_APP_BACKEND_API_ENDPOINT =
+  process.env.REACT_APP_BACKEND_API_ENDPOINT;
+
+const Login = ({
+  setShowLogin,
+  openSignUp,
+  onLoginSuccess,
+  openForgotPass,
+}) => {
   const [username, setUserName] = useState("");
   const [userNameError, setUserNameError] = useState("");
   const [password, setPassword] = useState("");
@@ -86,7 +94,9 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess, openForgotPass }) => 
     PasswordBlur();
 
     if (!agreedToTerms) {
-      alert("To continue logging in, you need to agree to our Terms of Use and Privacy Policy.");
+      alert(
+        "To continue logging in, you need to agree to our Terms of Use and Privacy Policy."
+      );
       return;
     }
 
@@ -131,7 +141,7 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess, openForgotPass }) => 
   };
 
   const handleRedirect = () => {
-    window.location.href = "http://localhost:8080/oauth2/authorization/google";
+    window.location.href = `${REACT_APP_BACKEND_API_ENDPOINT}/oauth2/authorization/google`;
   };
 
   return (
@@ -195,13 +205,15 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess, openForgotPass }) => 
           <div className="forgot-pass">
             <p
               onClick={openForgotPass}
-              style={{ cursor: "pointer", color: "blue", textDecoration: "underline" }}
+              style={{
+                cursor: "pointer",
+                color: "blue",
+                textDecoration: "underline",
+              }}
             >
               Forgot password?
             </p>
           </div>
-
-
 
           {/* Register */}
           <div className="part-end-login">
@@ -214,7 +226,15 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess, openForgotPass }) => 
           {/* Button login */}
           <div className="button-login">
             {formSubmitted && !loginError && (
-              <p style={{ color: "green", fontWeight: "500", marginBottom: "5px" }}>Login successful</p>
+              <p
+                style={{
+                  color: "green",
+                  fontWeight: "500",
+                  marginBottom: "5px",
+                }}
+              >
+                Login successful
+              </p>
             )}
             {loginError && <p style={{ color: "red" }}>{loginError}</p>}
             <button
@@ -225,7 +245,9 @@ const Login = ({ setShowLogin, openSignUp, onLoginSuccess, openForgotPass }) => 
               Login
             </button>
             <div className="text-center p-2 text-or-login">OR</div>
-            <button className="button-google" onClick={handleRedirect}>Login with Google</button>
+            <button className="button-google" onClick={handleRedirect}>
+              Login with Google
+            </button>
           </div>
         </form>
       </div>
