@@ -1,7 +1,9 @@
 import axios from "axios";
 
-const API_BASE_URL = "https://culcon-customer-backend-87043777927.asia-east1.run.app/api/auth";
-const API_BASE_URL_2 = "https://culcon-customer-backend-87043777927.asia-east1.run.app/api/customer";
+const API_BASE_URL =
+  "https://culcon-user-be-30883260979.asia-east2.run.app/api/auth";
+const API_BASE_URL_2 =
+  "https://culcon-user-be-30883260979.asia-east2.run.app/api/customer";
 
 class AccountService {
   async register(account) {
@@ -35,19 +37,21 @@ class AccountService {
   async forgotGetOTP(email) {
     try {
       // Send the email as a query parameter in the URL
-      const response = await axios.post(`${API_BASE_URL}/forgot/otp/get?email=${encodeURIComponent(email)}`);
+      const response = await axios.post(
+        `${API_BASE_URL}/forgot/otp/get?email=${encodeURIComponent(email)}`
+      );
       console.log("OTP Sent: ", response);
       return response.data;
     } catch (error) {
       console.error("Error during OTP request:", error);
-  
+
       // Check for specific error codes (500 in this case)
       if (error.response && error.response.status === 500) {
         alert("Invalid email. Please try again.");
       } else {
         alert("Error sending OTP. Please try again.");
       }
-  
+
       // Rethrow the error to propagate it further if necessary
       throw error;
     }
@@ -56,23 +60,29 @@ class AccountService {
   async forgotReset(id, otp, password) {
     try {
       const otpForm = { id, otp, password };
-      const response = await axios.post(`${API_BASE_URL}/forgot/reset`, otpForm);
-      console.log(response.data); 
-  
+      const response = await axios.post(
+        `${API_BASE_URL}/forgot/reset`,
+        otpForm
+      );
+      console.log(response.data);
     } catch (error) {
       if (error.response) {
-        const errorMessage = error.response.data.message || "Something went wrong. Please try again.";
+        const errorMessage =
+          error.response.data.message ||
+          "Something went wrong. Please try again.";
         alert(errorMessage);
       } else if (error.request) {
-        alert("No response from the server. Please check your network connection.");
+        alert(
+          "No response from the server. Please check your network connection."
+        );
       } else {
         alert("An error occurred: " + error.message);
       }
-  
+
       console.error("Error:", error);
     }
   }
-  
+
   async account(jwtToken) {
     if (!jwtToken || jwtToken.trim() === "") {
       return null;
@@ -140,7 +150,6 @@ class AccountService {
     }
   }
 
-
   async updateEmailOTP(email) {
     try {
       const jwtToken = sessionStorage.getItem("jwtToken");
@@ -150,19 +159,19 @@ class AccountService {
 
       const response = await axios.post(
         `${API_BASE_URL_2}/edit/email/get/otp?newEmail=${email}`,
-        {}, 
+        {},
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
           },
         }
       );
-  
+
       if (response.status === 200) {
         const { accountId, expireTime } = response.data;
-  
+
         this.accountId = accountId;
-  
+
         console.log("OTP request successful. Account ID: ", accountId);
         return response.data;
       }
@@ -171,7 +180,10 @@ class AccountService {
         if (error.response.status === 500) {
           console.error("Error: ", error.response.data.messages);
         } else {
-          console.error("Update failed: ", error.response ? error.response.data : error.message);
+          console.error(
+            "Update failed: ",
+            error.response ? error.response.data : error.message
+          );
         }
       } else {
         console.error("Error: ", error.message);
@@ -179,8 +191,6 @@ class AccountService {
       throw error;
     }
   }
-  
-
 
   async updateEmail(id, email, otp) {
     try {
@@ -188,9 +198,9 @@ class AccountService {
       if (!jwtToken) {
         throw new Error("No JWT token found. Please log in again.");
       }
-  
+
       const response = await axios.post(
-        `${API_BASE_URL_2}/edit/email?accountID=${id}&newEmail=${email}&otp=${otp}`, 
+        `${API_BASE_URL_2}/edit/email?accountID=${id}&newEmail=${email}&otp=${otp}`,
         {},
         {
           headers: {
@@ -198,26 +208,23 @@ class AccountService {
           },
         }
       );
-  
+
       if (response.status === 200) {
         console.log("Email updated successfully:", response.data);
-        return response.data; 
+        return response.data;
       }
-  
     } catch (error) {
       if (error.response) {
         console.error("Update failed: ", error.response.data || error.message);
         if (error.response.status === 400) {
-          console.error("Bad request: ", error.response.data); 
+          console.error("Bad request: ", error.response.data);
         }
       } else {
         console.error("Error: ", error.message);
       }
-      throw error; 
+      throw error;
     }
   }
-  
-  
 
   async updatePass(account) {
     try {

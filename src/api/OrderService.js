@@ -1,8 +1,11 @@
 import axios from "axios";
 
-const API_BASE_URL = "https://culcon-customer-backend-87043777927.asia-east1.run.app/api/customer/order";
-const API_BASE_URL_2 = "https://culcon-customer-backend-87043777927.asia-east1.run.app/api/public/fetch";
-const API_BASE_URL_3 = "https://culcon-customer-backend-87043777927.asia-east1.run.app/api/payment";
+const API_BASE_URL =
+  "https://culcon-user-be-30883260979.asia-east2.run.app/api/customer/order";
+const API_BASE_URL_2 =
+  "https://culcon-user-be-30883260979.asia-east2.run.app/api/public/fetch";
+const API_BASE_URL_3 =
+  "https://culcon-user-be-30883260979.asia-east2.run.app/api/payment";
 
 class OrderService {
   async createOrder(orderData, jwtToken) {
@@ -58,7 +61,7 @@ class OrderService {
     console.log(transactionID);
     try {
       const response = await axios.post(
-        `${API_BASE_URL_3}/capture?transactionID=${transactionID}`,  
+        `${API_BASE_URL_3}/capture?transactionID=${transactionID}`,
         {},
         {
           headers: {
@@ -70,11 +73,13 @@ class OrderService {
       console.log("Payment successful:", response.data);
       return response.data;
     } catch (error) {
-      console.error("Error during API call:", error.response ? error.response.data : error.message);
+      console.error(
+        "Error during API call:",
+        error.response ? error.response.data : error.message
+      );
       throw error;
     }
-}
-
+  }
 
   async getURLVNPay(orderId) {
     const jwtToken = sessionStorage.getItem("jwtToken");
@@ -91,7 +96,7 @@ class OrderService {
 
       console.log("API response:", response.data);
       const paymentUrl = response.data;
-    
+
       return paymentUrl;
     } catch (error) {
       console.error(
@@ -101,7 +106,6 @@ class OrderService {
       throw error;
     }
   }
-
 
   async getAllOrder(jwtToken) {
     try {
