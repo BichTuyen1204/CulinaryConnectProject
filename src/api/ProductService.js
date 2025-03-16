@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_BASE_URL_2 =
-  "https://culcon-ad-be-30883260979.asia-east1.run.app/api/public/fetch";
+  "https://culcon-user-be-30883260979.asia-east2.run.app/api/public/fetch";
 
 class ProductService {
   async getAllProduct() {
@@ -48,7 +48,7 @@ class ProductService {
   async getProductsBySearch(keyword) {
     try {
       const response = await axios.get(
-        `https://culcon-ad-be-30883260979.asia-east1.run.app/api/public/search/product?keyword=${keyword}`
+        `https://culcon-user-be-30883260979.asia-east2.run.app/api/public/search/product?keyword=${keyword}`
       );
       return response.data;
     } catch (error) {
