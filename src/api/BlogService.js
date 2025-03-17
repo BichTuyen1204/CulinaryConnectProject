@@ -1,8 +1,10 @@
 import axios from "axios";
 
-const API_BASE_URL = "https://culcon-user-be-30883260979.asia-east2.run.app/api/public";
-const API_BASE_URL_2 = "https://culcon-user-be-30883260979.asia-east2.run.app/api/customer/blog";
-const API_BASE_URL_3 = "https://culcon-user-be-30883260979.asia-east2.run.app/api/customer/fetch";
+const REACT_APP_BACKEND_API_ENDPOINT =
+  process.env.REACT_APP_BACKEND_API_ENDPOINT;
+const API_BASE_URL = `${REACT_APP_BACKEND_API_ENDPOINT}/api/public`;
+const API_BASE_URL_2 = `${REACT_APP_BACKEND_API_ENDPOINT}/api/customer/blog`;
+const API_BASE_URL_3 = `${REACT_APP_BACKEND_API_ENDPOINT}/api/customer/fetch`;
 
 class BlogService {
   async getAllBlog() {
@@ -58,7 +60,7 @@ class BlogService {
     try {
       const jwtToken = sessionStorage.getItem("jwtToken");
       const response = await axios.get(
-        `https://https://culcon-user-be-30883260979.asia-east2.run.app/-87043777927.asia-east1.run.app/api/public/fetch/blog/reply?blogId=${blogId}&commentId=${commentId}`,
+        `${REACT_APP_BACKEND_API_ENDPOINT}/api/public/fetch/blog/reply?blogId=${blogId}&commentId=${commentId}`,
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
@@ -82,7 +84,7 @@ class BlogService {
     }
     try {
       const response = await axios.get(
-        `https://culcon-user-be-30883260979.asia-east2.run.app/api/public/fetch/blog/comment?id=${id}`,
+        `${REACT_APP_BACKEND_API_ENDPOINT}/api/public/fetch/blog/comment?id=${id}`,
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
@@ -106,7 +108,7 @@ class BlogService {
     }
     try {
       const response = await axios.delete(
-        `https://culcon-user-be-30883260979.asia-east2.run.app/api/customer/comment/deleted?commentId=${id}`,
+        `${REACT_APP_BACKEND_API_ENDPOINT}/api/customer/comment/deleted?commentId=${id}`,
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
@@ -130,7 +132,7 @@ class BlogService {
     } else {
       try {
         const response = await axios.post(
-          `https://culcon-user-be-30883260979.asia-east2.run.app/api/customer/blog/reply?postId=${postId}&commentId=${commentId}&comment=${comment}`,
+          `${REACT_APP_BACKEND_API_ENDPOINT}/api/customer/blog/reply?postId=${postId}&commentId=${commentId}&comment=${comment}`,
 
           {
             postId: postId,
