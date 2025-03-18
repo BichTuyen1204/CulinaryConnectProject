@@ -5,7 +5,7 @@ import { BsChatTextFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import AccountService from "../../api/AccountService";
 
-const BACKEND_WS_ENDPOINT = process.env.BACKEND_WS_ENDPOINT;
+const BACKEND_WS_ENDPOINT = process.env.REACT_APP_BACKEND_WS_ENDPOINT;
 
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);
