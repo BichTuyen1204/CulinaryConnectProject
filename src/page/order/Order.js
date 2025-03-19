@@ -88,7 +88,7 @@ export const Order = () => {
     if (address.trim() === "") {
       setAdressError("Please enter your address");
     } else {
-      setPhoneError("");
+      setAdressError("");
     }
   };
 
@@ -179,6 +179,20 @@ export const Order = () => {
   };
 
   const handleProceedToPayment = () => {
+    NameBlur();
+    PhoneBlur();
+    AddressBlur();
+    if (
+      usernameError ||
+      phoneError ||
+      addressError ||
+      !username ||
+      !address ||
+      !phone
+    ) {
+      setPopupBuy(false);
+      return;
+    }
     if (!pay) {
       alert("Please select a payment method.");
       return;
@@ -1005,22 +1019,6 @@ export const Order = () => {
                       {""}
                       Coupon
                     </h2>
-                    <div className="search-coupon d-flex col-12 py-3">
-                      <div className="col-3">
-                        <p className="text-coupon-code mt-2">Coupon code</p>
-                      </div>
-
-                      <div className="col-6">
-                        <input
-                          className="input-coupon"
-                          placeholder="Coupon voucher"
-                        />
-                      </div>
-
-                      <div className="col-3">
-                        <button className="button-coupon">Choose</button>
-                      </div>
-                    </div>
                     <div className="coupon-list col-12">
                       {coupons.length > 0 ? (
                         coupons.map((item, index) => (

@@ -36,8 +36,12 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
   // Receive full name
   const NameChange = (e) => {
     const { value } = e.target;
-    setUserName(value);
-    setAccount((preState) => ({ ...preState, username: value }));
+    const regex = /^[a-zA-Z\s]*$/;
+  
+    if (regex.test(value) || value === "") {
+      setUserName(value);
+      setAccount((preState) => ({ ...preState, username: value }));
+    }
   };
 
   // Check full name
@@ -304,12 +308,15 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
               Phone number <span style={{ color: "red" }}>*</span>
             </label>
             <input
-              type="text"
+              type="number"
               name="phone"
               value={phone}
               onChange={PhoneChange}
               onBlur={PhoneBlur}
               required
+              onInput={(e) => {
+                e.target.value = e.target.value.replace(/[eE.+-]/g, '');
+              }}
             />
             {phoneError && <p style={{ color: "red" }}>{phoneError}</p>}
           </div>

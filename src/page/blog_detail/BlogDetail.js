@@ -328,8 +328,23 @@ const BlogDetail = () => {
                   {blogDetail.blog.description}
                 </p>
               </div>
-
               {/* Des of blog end */}
+
+              {/* Article of blog start */}
+              <div>
+                <h1 style={{ fontSize: "1.2em" }}>Article:</h1>
+                <p
+                  className="p-font-size mb-4"
+                  style={{
+                    fontSize: "0.9em",
+                    marginTop: "-5px",
+                    marginLeft: "25px",
+                  }}
+                >
+                  {blogDetail.blog.article}
+                </p>
+              </div>
+              {/* Article of blog end */}
 
               {/* Tags of blog start */}
               <div className="tags">

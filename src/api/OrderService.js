@@ -184,7 +184,6 @@ class OrderService {
     try {
       const jwtToken = sessionStorage.getItem("jwtToken");
       const response = await axios.delete(`${API_BASE_URL}/cancel?id=${id}`, {
-        params: { id },
         headers: {
           Authorization: `Bearer ${jwtToken}`,
           "Content-Type": "application/json",
