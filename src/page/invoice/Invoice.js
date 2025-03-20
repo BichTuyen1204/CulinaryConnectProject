@@ -22,6 +22,7 @@ const Invoice = () => {
     { id: "ON_PROCESSING", label: "ON PROCESSING" },
     { id: "ON_SHIPPING", label: "ON SHIPPING" },
     { id: "SHIPPED", label: "SHIPPED" },
+    { id: "DELIVERED", label: "DELIVERED" },
     { id: "CANCELLED", label: "CANCELLED" },
   ];
 
@@ -30,6 +31,7 @@ const Invoice = () => {
     ON_PROCESSING: "ON PROCESSING",
     ON_SHIPPING: "ON SHIPPING",
     SHIPPED: "SHIPPED",
+    DELIVERED: "DELIVERED",
     CANCELLED: "CANCELLED",
   };
 
@@ -132,14 +134,24 @@ const Invoice = () => {
                   </div>
                 </div>
               ))}
+              <div className="d-flex justify-content-between align-items-center">
+                {order.status === "SHIPPED" && (
+                  <button
+                    className="btn"
+                    style={{ backgroundColor: "tomato", color: "white" }}
+                  >
+                    Mark as Delivered
+                  </button>
+                )}
 
-              {/* Total Amount */}
-              <p className="total-amount-size text-end px-3">
-                <strong>Total Amount:</strong>{" "}
-                <span className="price-highlight">
-                  $ {order.totalPrice.toLocaleString()}
-                </span>
-              </p>
+                {/* Total Amount */}
+                <p className="total-amount-size text-end mb-0">
+                  <strong>Total Amount:</strong>{" "}
+                  <span className="price-highlight">
+                    $ {order.totalPrice.toLocaleString()}
+                  </span>
+                </p>
+              </div>
             </div>
           </Link>
         ))}

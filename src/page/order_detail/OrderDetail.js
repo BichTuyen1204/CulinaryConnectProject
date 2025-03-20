@@ -11,13 +11,52 @@ const OrderDetail = () => {
   const [orderData, setOrderData] = useState({});
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
   const navigate = useNavigate();
-  const [username, setUserName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
   const [popupDelete, setPopupDelete] = useState(false);
   const [popupDeleteSuccessful, setPopupDeleteSuccessful] = useState(false);
   const [productIdToDelete, setProductIdToDelete] = useState(null);
+  const [popupDelivered, setPopupDelivered] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [popupDeliveredSuccess, setPopupDeliveredSuccess] = useState(false);
+
+  // Hàm mở popup
+  const openDelivered = (id) => {
+    setSelectedItemId(id);
+    setPopupDelivered(true);
+  };
+
+  // Hàm hủy xóa
+  const closeDelivered = () => {
+    setPopupDelivered(false);
+  };
+
+  const accecptDelivered = async (id) => {
+    const jwtToken = sessionStorage.getItem("jwtToken");
+    if (!jwtToken) {
+      console.log("No JWT token found");
+      return;
+    }
+    try {
+      const response = await OrderService.shippedOrder(id);
+
+      if (response && response.status === "DELIVERED") {
+        setPopupDelivered(false);
+        setPopupDeliveredSuccess(true);
+        setTimeout(() => {
+          setPopupDeliveredSuccess(false);
+          navigate("/invoice");
+        }, 4000);
+      } else {
+        console.log("Failed to update order status:", response);
+      }
+    } catch (error) {
+      console.error("Failed to update order status:", error.message);
+    }
+  };
+
+  // Hàm hủy xóa
+  const closeDeliveredSucess = () => {
+    setPopupDeliveredSuccess(false);
+  };
 
   // Call order detail
   const getOrderDetail = async (id) => {
@@ -71,14 +110,6 @@ const OrderDetail = () => {
       console.error("Fail load data:", error);
     }
   };
-  useEffect(() => {
-    if (id) {
-      deleteOrderDetail(id);
-      window.scrollTo(0, 0);
-    } else {
-      console.error("ID is undefined");
-    }
-  }, [id]);
 
   // Open popup delete
   const openModal = (id) => {
@@ -98,6 +129,7 @@ const OrderDetail = () => {
     ON_PROCESSING: "ON PROCESSING",
     ON_SHIPPING: "ON SHIPPING",
     SHIPPED: "SHIPPED",
+    DELIVERED: "DELIVERED",
     CANCELLED: "CANCELLED",
   };
 
@@ -131,7 +163,7 @@ const OrderDetail = () => {
               </p>
               <p>
                 <strong className="mx-2">Note from receiver :</strong>
-                {orderData.summary.note ? orderData.summary.note : "Nothing" }
+                {orderData.summary.note ? orderData.summary.note : "Nothing"}
               </p>
             </div>
           </div>
@@ -139,7 +171,9 @@ const OrderDetail = () => {
             <h2>Shipping Status</h2>
             <p>
               :{" "}
-              <strong style={{ color: getStatusColor(orderData.summary.status) }}>
+              <strong
+                style={{ color: getStatusColor(orderData.summary.status) }}
+              >
                 {" "}
                 {statusMap[orderData.summary.status]}
               </strong>
@@ -169,20 +203,32 @@ const OrderDetail = () => {
         </div>
       )}
 
+      {/* Action Buttons */}
+      {orderData.summary && orderData.summary.status === "SHIPPED" && (
+        <div className="actions d-flex justify-content-start mt-3">
+          <button
+            className="btn"
+            style={{ backgroundColor: "tomato", color: "white" }}
+            onClick={() => openDelivered(orderData.summary.id)}
+          >
+            Mark as Delivered
+          </button>
+        </div>
+      )}
+
       {orderData.summary && (
         <div>
           {/* Action Buttons */}
-          {orderData.summary.status !== "SHIPPED" &&
-            orderData.summary.status !== "CANCELLED" && (
-              <div className="actions">
-                <button
-                  className="cancel-button"
-                  onClick={() => openModal(orderData.summary.id)}
-                >
-                  Confirm Cancellation
-                </button>
-              </div>
-            )}
+          {orderData.summary.status === "ON_CONFIRM" && (
+            <div className="actions">
+              <button
+                className="cancel-button"
+                onClick={() => openModal(orderData.summary.id)}
+              >
+                Confirm Cancellation
+              </button>
+            </div>
+          )}
 
           {popupDelete && (
             <div className="popup">
@@ -214,6 +260,180 @@ const OrderDetail = () => {
                 </h5>
               </div>
             </div>
+          )}
+
+          {popupDelivered && (
+            <>
+              <div
+                style={{
+                  position: "fixed",
+                  top: "0",
+                  left: "0",
+                  width: "100vw",
+                  height: "100vh",
+                  backgroundColor: "rgba(87, 87, 87, 0.5)",
+                  backdropFilter: "blur(0.05em)",
+                  zIndex: "999",
+                }}
+                onClick={closeDelivered}
+              ></div>
+
+              {/* Popup nội dung */}
+              <div
+                style={{
+                  position: "fixed",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  backgroundColor: "white",
+                  borderRadius: "8px",
+                  padding: "20px",
+                  width: "400px",
+                  height: "150px",
+                  boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+                  zIndex: "1000",
+                  textAlign: "center",
+                }}
+              >
+                <h3
+                  style={{
+                    marginBottom: "10px",
+                    color: "#333",
+                    fontWeight: "bold",
+                    fontSize: "0.9em",
+                  }}
+                >
+                  Confirm that the order has been received
+                </h3>
+                <p
+                  style={{
+                    marginBottom: "45px",
+                    color: "#555",
+                    fontSize: "0.8em",
+                  }}
+                >
+                  Have you received the order?
+                </p>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    gap: "10px",
+                    marginTop: "25px",
+                  }}
+                >
+                  <button
+                    onClick={() => accecptDelivered(selectedItemId)}
+                    style={{
+                      flex: "1",
+                      padding: "10px",
+                      backgroundColor: "#d32f2f",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "5px",
+                      cursor: "pointer",
+                      fontWeight: "bold",
+                      fontSize: "0.7em",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.target.style.backgroundColor = "#c62828")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.target.style.backgroundColor = "#d32f2f")
+                    }
+                  >
+                    Yes
+                  </button>
+                  <button
+                    onClick={closeDelivered}
+                    style={{
+                      flex: "1",
+                      padding: "10px",
+                      backgroundColor: "#1976d2",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "5px",
+                      cursor: "pointer",
+                      fontWeight: "bold",
+                      fontSize: "0.7em",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.target.style.backgroundColor = "#1565c0")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.target.style.backgroundColor = "#1976d2")
+                    }
+                  >
+                    No
+                  </button>
+                </div>
+                <IoClose
+                  onClick={closeDelivered}
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "10px",
+                    cursor: "pointer",
+                    color: "#555",
+                  }}
+                />
+              </div>
+            </>
+          )}
+
+          {popupDeliveredSuccess && (
+            <>
+              {/* Popup nội dung */}
+              <div
+                style={{
+                  position: "fixed",
+                  top: "0",
+                  left: "0",
+                  width: "100vw",
+                  height: "100vh",
+                  backgroundColor: "rgba(87, 87, 87, 0.5)",
+                  backdropFilter: "blur(0.05em)",
+                  zIndex: "999",
+                }}
+              ></div>
+              <div
+                style={{
+                  position: "fixed",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  backgroundColor: "white",
+                  borderRadius: "8px",
+                  padding: "20px",
+                  width: "400px",
+                  boxShadow: "0 4px 10px rgba(0, 0, 0, 0.9)",
+                  zIndex: "1000",
+                  textAlign: "center",
+                }}
+              >
+                <p
+                  style={{
+                    marginBottom: "20px",
+                    color: "green",
+                    fontSize: "0.9em",
+                    fontWeight: "500",
+                    marginTop: "20px",
+                  }}
+                >
+                  You have successfully received the order.
+                </p>
+                <IoClose
+                  onClick={closeDeliveredSucess}
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "10px",
+                    cursor: "pointer",
+                    color: "#555",
+                  }}
+                />
+              </div>
+            </>
           )}
         </div>
       )}

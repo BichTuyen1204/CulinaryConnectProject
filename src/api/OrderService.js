@@ -195,5 +195,28 @@ class OrderService {
       throw error;
     }
   }
+
+  async shippedOrder(id) {
+    try {
+      const token = sessionStorage.getItem("jwtToken");
+      if (!token) {
+        throw new Error("No JWT token found");
+      }
+      const response = await axios.post(
+        `${API_BASE_URL}/receive?id=${id}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error when API calls:", error.message);
+      throw error;
+    }
+  }
 }
 export default new OrderService();
