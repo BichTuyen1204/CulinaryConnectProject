@@ -83,27 +83,13 @@ const Login = ({
     e.stopPropagation();
   };
 
-  // Check box terms
-  const handleAgreementChange = (e) => {
-    setAgreedToTerms(e.target.checked);
-  };
-
   const validateForm = async () => {
     setLoginError("");
     userNameBlur();
     PasswordBlur();
-
-    if (!agreedToTerms) {
-      alert(
-        "To continue logging in, you need to agree to our Terms of Use and Privacy Policy."
-      );
-      return;
-    }
-
     if (!userNameError && !passwordError && username && password) {
       try {
         const response = await AccountService.signin(account);
-        console.log("Login successful", response);
         setFormSubmitted(true);
         setLoginError("");
         setTimeout(() => {
@@ -118,6 +104,9 @@ const Login = ({
         );
         if (error.response) {
           switch (error.response.status) {
+            case 423:
+              setUserNameError("Account is banned.");
+              break;
             case 404:
               setUserNameError("Account does not exist.");
               break;
@@ -195,14 +184,8 @@ const Login = ({
             </div>
           </div>
 
-          {/* Check box */}
-          <div className="login-condition">
-            <input type="checkbox" onChange={handleAgreementChange} />
-            <p>By continuing, I agree to the terms of use & privacy policy</p>
-          </div>
-
           {/* Forgot password */}
-          <div className="forgot-pass">
+          <div className="forgot-pass mt-1">
             <p
               onClick={openForgotPass}
               style={{

@@ -22,6 +22,7 @@ const Invoice = () => {
     { id: "ON_PROCESSING", label: "ON PROCESSING" },
     { id: "ON_SHIPPING", label: "ON SHIPPING" },
     { id: "SHIPPED", label: "SHIPPED" },
+    { id: "DELIVERED", label: "DELIVERED" },
     { id: "CANCELLED", label: "CANCELLED" },
   ];
 
@@ -30,6 +31,7 @@ const Invoice = () => {
     ON_PROCESSING: "ON PROCESSING",
     ON_SHIPPING: "ON SHIPPING",
     SHIPPED: "SHIPPED",
+    DELIVERED: "DELIVERED",
     CANCELLED: "CANCELLED",
   };
 
@@ -78,7 +80,7 @@ const Invoice = () => {
             </button>
           ))}
         </div>
-  
+
         {orders.map((order, index) => (
           <Link to={`/order_detail/${order.id}`} key={index}>
             <div className="order-card">
@@ -87,7 +89,13 @@ const Invoice = () => {
                 {/* Date */}
                 <div className="col-md-7 col-12 order-summary">
                   <strong>Date:</strong>
-                  <span className="mx-1">{new Date(order.date).toLocaleString()}</span>
+                  <span className="mx-1">
+                    {(() => {
+                      const utcDate = new Date(order.date);
+                      utcDate.setHours(utcDate.getHours() + 7);
+                      return utcDate.toLocaleString("vi-VN");
+                    })()}
+                  </span>
                 </div>
                 {/* Status */}
                 <div className="col-md-5 col-12 status text-md-end text-start">
@@ -100,7 +108,7 @@ const Invoice = () => {
                   </span>
                 </div>
               </div>
-  
+
               {/* Order Items */}
               {order.items.map((item, i) => (
                 <div className="order-item" key={i}>
@@ -118,29 +126,42 @@ const Invoice = () => {
                       <p className="order-title">{item.name}</p>
                       <div className="d-flex">
                         <p className="order-quantity">x{item.quantity}</p>
-                        <p className="order-price">$ {item.price.toLocaleString()}</p>
+                        <p className="order-price">
+                          $ {item.price.toLocaleString()}
+                        </p>
                       </div>
                     </div>
                   </div>
                 </div>
               ))}
-  
-              {/* Total Amount */}
-              <p className="total-amount-size text-end px-3">
-                <strong>Total Amount:</strong>{" "}
-                <span className="price-highlight">
-                  $ {order.totalPrice.toLocaleString()}
-                </span>
-              </p>
+              <div className="d-flex justify-content-between align-items-center">
+                {order.status === "SHIPPED" && (
+                  <button
+                    className="btn"
+                    style={{ backgroundColor: "tomato", color: "white" }}
+                  >
+                    Mark as Delivered
+                  </button>
+                )}
+
+                {/* Total Amount */}
+                <p className="total-amount-size text-end mb-0">
+                  <strong>Total Amount:</strong>{" "}
+                  <span className="price-highlight">
+                    $ {order.totalPrice.toLocaleString()}
+                  </span>
+                </p>
+              </div>
             </div>
           </Link>
         ))}
-  
-        {orders.length === 0 && <p className="text-center">No orders available</p>}
+
+        {orders.length === 0 && (
+          <p className="text-center">No orders available</p>
+        )}
       </div>
     </div>
   );
-  
 };
 
 export default Invoice;

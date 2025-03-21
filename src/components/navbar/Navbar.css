@@ -249,70 +249,34 @@ button {
 
 @media (max-width: 1281px) {
   .navbar {
-    height: 120px;
-    width: 130% !important;
+    height: 100px;
+    width: 100% !important;
     align-items: center !important;
-    justify-content: left !important;
   }
-
   .navbar .logo-navbar img {
-    padding-left: 0px;
+    width: 180px;
+    height: 60px;
   }
-
-  .navbar .logo-navbar {
-    width: 50px;
-    height: 50px;
-    padding: 0px;
-    margin-left: 50px;
+  .navbar ul {
+    font-size: 0.95em;
   }
-
-  .navbar .logo-navbar img {
-    height: 100%;
-    cursor: pointer;
+  .search-container {
+    width: 100% !important;
   }
-
-  .navbar-menu {
-    font-size: 0.8em;
-    margin-left: 25px;
-  }
-
   .search-input {
-    margin-top: -5px;
-    width: 250px;
-    height: 35px;
-    font-size: 1.2em;
-    margin-left: 50px;
+    padding: 10px 65px 10px 10px !important;
   }
-
-  .ic_search {
-    /* left: 260px; */
-    margin-top: -5px;
+  .ic_camera {
+    margin-right: 10px;
   }
-
-  .navbar button {
-    margin-left: 60px;
-    padding: 3px 15px;
-    font-size: 0.9em;
-    align-content: center;
-    margin-bottom: 5px;
+  .ic-search-out {
+    margin-right: 5px !important;
   }
-
-  .ic_basket {
-    margin-left: 25px;
-    width: 40px;
-    margin-top: -5px;
+  .navbar-basket-icon {
+    margin-right: -15px !important;
   }
-
-  .avatar-container {
-    width: 45px;
-    height: 45px;
-    margin-left: -15px;
-    margin-top: 0px;
-  }
-
-  .avatar-img {
-    width: 35px;
-    height: 35px;
+  .user-menu .avatar-container {
+    margin-right: -110px !important;
   }
 }
 
@@ -572,7 +536,6 @@ button {
     flex-direction: row;
   }
 
-  
   .navbar .logo-navbar {
     width: 50px;
     height: 50px;
@@ -605,7 +568,6 @@ button {
   }
 
   .ic_search {
-
     margin-top: -5px;
   }
 
@@ -722,10 +684,8 @@ button {
     font-size: 0.9em;
   }
 
-
   .user-menu {
     transform: scale(0.9); /* Shrinks the menu */
-
   }
   .navbar button {
     margin-left: 140px;
@@ -746,7 +706,6 @@ button {
   .ic_basket {
     font-size: 10px;
     width: 30px;
-
   }
 
   .dot {

@@ -7,14 +7,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IoCamera } from "react-icons/io5";
 
 export const EditProfile = () => {
-  const [username, setUserName] = useState("");
   const [usernameError, setUserNameError] = useState("");
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
-  const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState("");
-  const [address, setAddress] = useState("");
-  const [description, setDescription] = useState("");
   const [imgUser, setImgUser] = useState(null);
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -22,14 +18,14 @@ export const EditProfile = () => {
   const [oldPassError, setOldPassError] = useState("");
   const [rePassword, setRePassword] = useState("");
   const [rePasswordError, setRePasswordError] = useState("");
-  const [checkPass, setCheckPass] = useState(false);
+  const checkPass = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formSubmittedPass, setFormSubmittedPass] = useState(false);
   const [updateError, setUpdateError] = useState("");
-  const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
+  const jwtToken = useState(sessionStorage.getItem("jwtToken"));
   const [activeTab, setActiveTab] = useState("profile");
   const [noChangeError, setNoChangeError] = useState("");
   const navigate = useNavigate();
@@ -51,8 +47,22 @@ export const EditProfile = () => {
     description: "",
   });
 
+  const [originalInfo, setOriginalInfo] = useState(null);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (name === "username") {
+      const regex = /^[\p{L}\s]+$/u;
+      if (!regex.test(value) && value !== "") {
+        return;
+      }
+    }
+    if (name === "username") {
+      setUserNameError("");
+    }
+    if (name === "phone") {
+      setPhoneError("");
+    }
     setUpdateInfo((prevState) => ({
       ...prevState,
       [name]: value,
@@ -103,8 +113,6 @@ export const EditProfile = () => {
       setUserNameError("The full name must be at least 4 characters");
     } else if (updateInfo.username.length > 100) {
       setUserNameError("The full name must be less than 100 characters");
-    } else if (!/^[\p{L}\s]+$/u.test(updateInfo.username)) {
-      setUserNameError("Please enter only alphabetic characters");
     } else {
       setUserNameError("");
     }
@@ -311,49 +319,70 @@ export const EditProfile = () => {
     if (!jwtToken) {
       navigate("/sign_in");
       return;
-    } else {
-      const getAccount = async () => {
-        try {
-          const response = await AccountService.account(jwtToken);
-          setUpdateInfo((prevState) => ({
-            username: prevState.username || response.username,
-            phone: prevState.phone || response.phone,
-            address: prevState.address || response.address,
-            description: prevState.description || response.profileDescription,
-          }));
-
-          setEmail(response.email);
-          setImgUser(response.profilePictureUri);
-        } catch (error) {
-          console.error("Error fetching account information:", error);
-        }
-      };
-      getAccount();
     }
+
+    const getAccount = async () => {
+      try {
+        const response = await AccountService.account(jwtToken);
+        if (response) {
+          setOriginalInfo({
+            username: response.username || "",
+            phone: response.phone || "",
+            address: response.address || "",
+            description: response.profileDescription || "",
+          });
+
+          setUpdateInfo({
+            username: response.username || "",
+            phone: response.phone || "",
+            address: response.address || "",
+            description: response.profileDescription || "",
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching account information:", error);
+      }
+    };
+
+    getAccount();
   }, [jwtToken, navigate]);
 
   //Update account
   const updateAccount = async (e) => {
     e.preventDefault();
-    console.log("Data sent to API:", updateInfo);
     NameBlur();
     PhoneBlur();
-    if (
-      !updateInfo.username ||
-      !updateInfo.phone ||
-      !updateInfo.address ||
-      !updateInfo.description
-    ) {
-      alert("Please fill in all fields correctly before submitting.");
+
+    if (usernameError || phoneError) {
+      return;
+    }
+    if (!originalInfo) {
+      console.error("Original info not loaded yet.");
+      return;
+    }
+    const hasChanges = Object.keys(originalInfo).some((key) => {
+      const originalValue = originalInfo[key] ?? "";
+      const updatedValue = updateInfo[key] ?? "";
+
+      return originalValue !== updatedValue;
+    });
+
+    if (!hasChanges) {
+      setNoChangeError("Please change at least one field before updating.");
+      setFormSubmitted(false);
       return;
     }
 
     try {
       const response = await AccountService.updateInfo(updateInfo);
       console.log("Account updated", response);
+
+      // Sau khi update thành công, lưu lại giá trị mới vào originalInfo
+      setOriginalInfo({ ...updateInfo });
+
       setFormSubmitted(true);
-      setNoChangeError(false);
-      setUpdateError(false);
+      setNoChangeError(null);
+      setUpdateError(null);
     } catch (error) {
       if (error.response) {
         const errorMessage = error.response.data?.message;
@@ -371,11 +400,8 @@ export const EditProfile = () => {
           }
         } else {
           setUpdateError("An error occurred during update.");
-          setFormSubmitted(false);
-          setNoChangeError(false);
         }
       } else {
-        console.error("Network or unknown error occurred:", error);
         setUpdateError("Network error occurred, please try again.");
       }
       setFormSubmitted(false);

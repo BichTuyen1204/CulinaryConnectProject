@@ -9,7 +9,6 @@ import AccountService from "../../api/AccountService";
 
 export const Food_card = () => {
   const categories = ["All", "Meal kit", "Vegetables", "Meat", "Season"];
-  const [product, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [category, setCategory] = useState("All");
   const { id } = useParams();
@@ -73,6 +72,7 @@ export const Food_card = () => {
 
   const applyFilters = async (data) => {
     let filtered = data;
+
     if (searchQuery.trim()) {
       filtered = filtered.filter((product) =>
         product.productName.toLowerCase().includes(searchQuery.toLowerCase())
@@ -85,13 +85,18 @@ export const Food_card = () => {
           );
           const normalizedDescriptionResults =
             normalizeProductData(descriptionResults);
-          setFilteredProducts(normalizedDescriptionResults);
-          return;
+          filtered = [...filtered, ...normalizedDescriptionResults];
         } catch (error) {
           console.error("Error searching by description:", error);
         }
       }
     }
+
+    filtered = filtered.map((product) => ({
+      ...product,
+      availableQuantity: product.availableQuantity ?? 0,
+    }));
+    console.log("Filtered Products:", filtered);
     const normalizedProducts = normalizeProductData(filtered);
     setFilteredProducts(normalizedProducts);
   };
@@ -163,9 +168,9 @@ export const Food_card = () => {
                   display: "flex",
                   flexDirection: "column",
                   opacity: product.availableQuantity === 0 ? 0.5 : 1,
-                  pointerEvents:
-                    product.availableQuantity === 0 ? "none" : "auto",
+                  pointerEvents: product.availableQuantity === 0 ? "none" : "auto",
                 }}
+                
               >
                 <div>
                   <Link to={`/food_detail/${product.id}`}>
@@ -256,7 +261,7 @@ export const Food_card = () => {
                 {username ? (
                   <div
                     className="button-food-card mb-2"
-                    style={{ marginTop: "-15px", paddingBottom: "5px" }}
+                    style={{ paddingBottom: "5px" }}
                   >
                     <button
                       className="bt-add-to-cart"

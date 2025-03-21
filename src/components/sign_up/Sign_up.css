@@ -148,6 +148,16 @@
   background-color: rgb(255, 148, 129);
 }
 
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 @media (max-width: 800px) {
   .sign-up_ic_eye {
     margin-top: 2px;
@@ -177,7 +187,7 @@
   }
 }
 
-@media (max-width:320px){
+@media (max-width: 320px) {
   .sign-up-container {
     width: max(20vw, 230px) !important;
   }
