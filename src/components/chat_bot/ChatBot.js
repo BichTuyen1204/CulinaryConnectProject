@@ -5,7 +5,7 @@ import { BsChatTextFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import AccountService from "../../api/AccountService";
 
-const BACKEND_WS_ENDPOINT = process.env.BACKEND_WS_ENDPOINT;
+const REACT_APP_BACKEND_WS_ENDPOINT = process.env.REACT_APP_BACKEND_WS_ENDPOINT;
 
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);
@@ -28,7 +28,6 @@ const ChatBot = () => {
         const response = await AccountService.account(jwtToken);
         setIdUser(response.id);
       } catch (error) {
-        console.error("Error fetching account information:", error);
         sessionStorage.removeItem("jwtToken");
         navigate("/sign_in");
       }
@@ -43,39 +42,68 @@ const ChatBot = () => {
   const setupWebSocket = useCallback(() => {
     if (!jwtToken || !idUser) return;
     const ws = new WebSocket(
-      `${BACKEND_WS_ENDPOINT}/ws/chat/customer?token=${jwtToken}`
+      `${REACT_APP_BACKEND_WS_ENDPOINT}/ws/chat/customer?token=${jwtToken}`
     );
     socketRef.current = ws;
 
-    ws.onopen = () => console.log("✅ WebSocket Connected");
+    ws.onopen = () => "";
 
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log("📥 Received WebSocket Message:", data);
 
-      if (data.msg) {
-        try {
-          const messageContent = JSON.parse(data.msg);
-          const timestamp =
-            messageContent.timestamp || new Date().toISOString();
+      if (data.type === "data" && Array.isArray(data.chatlog)) {
+        const parsedMessages = data.chatlog
+          .map((msgObj) => {
+            try {
+              const messageContent = JSON.parse(msgObj.msg);
+              return {
+                text: messageContent.message,
+                sender: messageContent.sender,
+                timestamp: messageContent.timestamp,
+              };
+            } catch (error) {
+              return null;
+            }
+          })
+          .filter(Boolean);
 
-          const newMessage = {
-            text: messageContent.message,
-            sender: data.sender,
-            timestamp: timestamp,
-          };
+        const newMessages = parsedMessages.filter(
+          (msg) =>
+            !messagesRef.current.some((m) => m.timestamp === msg.timestamp)
+        );
 
-          messagesRef.current = [...messagesRef.current, newMessage];
+        if (newMessages.length > 0) {
+          messagesRef.current = [...messagesRef.current, ...newMessages];
           setMessages([...messagesRef.current]);
           saveMessagesToLocal(idUser, messagesRef.current);
+        }
+      } else if (data.msg) {
+        try {
+          const messageContent = JSON.parse(data.msg);
+          if (messageContent.type === "chat") {
+            const newMessage = {
+              text: messageContent.message,
+              sender: messageContent.sender,
+              timestamp: messageContent.timestamp,
+            };
+
+            if (
+              !messagesRef.current.some(
+                (m) => m.timestamp === newMessage.timestamp
+              )
+            ) {
+              messagesRef.current = [...messagesRef.current, newMessage];
+              setMessages([...messagesRef.current]);
+              saveMessagesToLocal(idUser, messagesRef.current);
+            }
+          }
         } catch (error) {
-          console.error("❌ Error parsing message:", error);
+          console.error("Lỗi khi parse tin nhắn từ server:", error);
         }
       }
     };
 
     ws.onclose = () => {
-      console.warn("WebSocket Disconnected. Reconnecting in 3s...");
       setTimeout(() => {
         if (
           !socketRef.current ||
@@ -98,6 +126,14 @@ const ChatBot = () => {
   }, [idUser]);
 
   useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
     setupWebSocket();
   }, [setupWebSocket]);
 
@@ -108,6 +144,7 @@ const ChatBot = () => {
   const sendMessage = () => {
     if (!socketRef.current || socketRef.current.readyState !== WebSocket.OPEN)
       return;
+
     if (input.trim()) {
       const timestamp = new Date().toISOString();
       const messageData = {
@@ -118,13 +155,13 @@ const ChatBot = () => {
       };
 
       socketRef.current.send(JSON.stringify(messageData));
-      console.log("📤 Sent Message:", messageData);
 
-      messagesRef.current = [
-        ...messagesRef.current,
-        { text: input, sender: "user", timestamp },
-      ];
+      const newMessage = { text: input, sender: "user", timestamp };
+      messagesRef.current = [...messagesRef.current, newMessage];
       setMessages([...messagesRef.current]);
+      saveMessagesToLocal(idUser, messagesRef.current);
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+
       setInput("");
     }
   };

@@ -164,7 +164,7 @@ export const Navbar = ({ setShowLogin }) => {
             </Link>
           </div>
 
-          <div className="navbar-right col-4  col-sm-4">
+          <div className="navbar-right col-4 col-md-8 col-sm-8 ">
             <form
               onSubmit={handleSubmit}
               className="search-container position-relative"
@@ -205,7 +205,7 @@ export const Navbar = ({ setShowLogin }) => {
 
           {/* Hamburger Menu */}
           <div
-            className="col-auto ms-auto d-flex align-items-center"
+            className="col-auto ms-auto d-flex align-items-center hamburger-big"
             style={{ position: "relative", zIndex: 15 }}
           >
             <Dropdown show={dropdownPhoneMenu} align="end">
