@@ -14,7 +14,7 @@ RUN npm ci
 COPY . .
 
 ARG BACKEND_API_ENDPOINT="https://culcon-user-be-30883260979.asia-east2.run.app"
-ARG BACKEND_WS_ENDPOINT="wss://culcon-user-be-30883260979.asia-east2.run.app"
+ARG BACKEND_WS_ENDPOINT="wss://culcon-ad-be-30883260979.asia-east1.run.app"
 ARG BACKEND_API_ENDPOINT_SEARCH="https://culcon-ad-be-30883260979.asia-east1.run.app"
 ARG DEPLOY_ENDPOINT="https://culcon-user-fe-30883260979.asia-east2.run.app"
 
