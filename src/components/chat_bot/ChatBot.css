@@ -77,6 +77,9 @@
   padding: 3px 14px;
   border-radius: 15px 15px 0 15px;
   transition: transform 0.2s ease-in-out;
+  max-width: 80%;
+  width: fit-content;
+  margin-left: auto;
 }
 
 .message.staff {
@@ -86,10 +89,9 @@
   padding: 8px 14px;
   border-radius: 15px 15px 15px 0px;
   transition: transform 0.2s ease-in-out;
-}
-
-.message.staff:hover {
-  transform: scale(1.05);
+  max-width: 80%;
+  width: fit-content;
+  margin-right: auto;
 }
 
 .format-time {
@@ -104,8 +106,12 @@
   text-align: left;
 }
 
+.message-container.user {
+  align-items: flex-end;
+}
 .format-time.user {
   text-align: right;
+  align-self: flex-end;
 }
 
 .role-chat-box.staff {
@@ -181,6 +187,7 @@
   flex-direction: column;
   align-items: flex-start;
   margin-bottom: 18px;
+  width: 100%;
 }
 
 .message {

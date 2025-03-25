@@ -85,7 +85,7 @@ class AccountService {
   }
 
   async account(jwtToken) {
-    if (!jwtToken || jwtToken.trim() === "") {
+    if (!jwtToken) {
       return null;
     } else {
       try {
@@ -94,7 +94,6 @@ class AccountService {
         });
         return response.data;
       } catch (error) {
-        console.error("Error in setting up the request:", error.message);
         return null;
       }
     }

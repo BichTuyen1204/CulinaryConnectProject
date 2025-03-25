@@ -7,7 +7,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IoCamera } from "react-icons/io5";
 
 export const EditProfile = () => {
+  const [username, setUsername] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [description, setDescription] = useState("");
   const [usernameError, setUserNameError] = useState("");
+  const [addressError, setAddressError] = useState("");
+  const [DescriptionError, setDescriptionError] = useState("");
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [phoneError, setPhoneError] = useState("");
@@ -25,7 +31,7 @@ export const EditProfile = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formSubmittedPass, setFormSubmittedPass] = useState(false);
   const [updateError, setUpdateError] = useState("");
-  const jwtToken = useState(sessionStorage.getItem("jwtToken"));
+  const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
   const [activeTab, setActiveTab] = useState("profile");
   const [noChangeError, setNoChangeError] = useState("");
   const navigate = useNavigate();
@@ -48,26 +54,6 @@ export const EditProfile = () => {
   });
 
   const [originalInfo, setOriginalInfo] = useState(null);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name === "username") {
-      const regex = /^[\p{L}\s]+$/u;
-      if (!regex.test(value) && value !== "") {
-        return;
-      }
-    }
-    if (name === "username") {
-      setUserNameError("");
-    }
-    if (name === "phone") {
-      setPhoneError("");
-    }
-    setUpdateInfo((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
 
   const ImgChange = async (e) => {
     const file = e.target.files[0];
@@ -105,6 +91,42 @@ export const EditProfile = () => {
     }
   };
 
+  const UserNameChange = (e) => {
+    const { value } = e.target;
+    setUsername(value);
+    setUpdateInfo((preState) => ({ ...preState, username: value }));
+    setFormSubmitted(false);
+    setUserNameError("");
+    setNoChangeError("");
+  };
+
+  const PhoneChange = (e) => {
+    const { value } = e.target;
+    setPhone(value);
+    setUpdateInfo((preState) => ({ ...preState, phone: value }));
+    setFormSubmitted(false);
+    setPhoneError("");
+    setNoChangeError("");
+  };
+
+  const AddressChange = (e) => {
+    const { value } = e.target;
+    setAddress(value);
+    setUpdateInfo((preState) => ({ ...preState, address: value }));
+    setFormSubmitted(false);
+    setAddressError("");
+    setNoChangeError("");
+  };
+
+  const DescriptionChange = (e) => {
+    const { value } = e.target;
+    setDescription(value);
+    setUpdateInfo((preState) => ({ ...preState, description: value }));
+    setFormSubmitted(false);
+    setDescriptionError("");
+    setNoChangeError("");
+  };
+  
   // Check full name
   const NameBlur = () => {
     if (updateInfo.username.trim() === "") {
@@ -314,7 +336,6 @@ export const EditProfile = () => {
     setShowOldPassword(!showOldPassword);
   };
 
-  //Call infor
   useEffect(() => {
     if (!jwtToken) {
       navigate("/sign_in");
@@ -324,23 +345,25 @@ export const EditProfile = () => {
     const getAccount = async () => {
       try {
         const response = await AccountService.account(jwtToken);
-        if (response) {
-          setOriginalInfo({
-            username: response.username || "",
-            phone: response.phone || "",
-            address: response.address || "",
-            description: response.profileDescription || "",
-          });
+        setUsername(response.username);
+        setPhone(response.phone);
+        setAddress(response.address);
+        setDescription(response.profileDescription);
 
-          setUpdateInfo({
-            username: response.username || "",
-            phone: response.phone || "",
-            address: response.address || "",
-            description: response.profileDescription || "",
-          });
-        }
+        setUpdateInfo({
+          username: response.username || "",
+          phone: response.phone || "",
+          address: response.address || "",
+          description: response.profileDescription || "",
+        });
+        setOriginalInfo({
+          username: response.username || "",
+          phone: response.phone || "",
+          address: response.address || "",
+          description: response.profileDescription || "",
+        });
       } catch (error) {
-        console.error("Error fetching account information:", error);
+        console.error("Lỗi khi lấy dữ liệu tài khoản:", error);
       }
     };
 
@@ -353,33 +376,22 @@ export const EditProfile = () => {
     NameBlur();
     PhoneBlur();
 
-    if (usernameError || phoneError) {
+    if (usernameError || phoneError || !username || !phone) {
       return;
     }
-    if (!originalInfo) {
-      console.error("Original info not loaded yet.");
+    const isChanged =
+      JSON.stringify(updateInfo) !== JSON.stringify(originalInfo);
+
+    if (!isChanged) {
+      setNoChangeError(
+        "Please change at least one piece of information before saving."
+      );
       return;
     }
-    const hasChanges = Object.keys(originalInfo).some((key) => {
-      const originalValue = originalInfo[key] ?? "";
-      const updatedValue = updateInfo[key] ?? "";
-
-      return originalValue !== updatedValue;
-    });
-
-    if (!hasChanges) {
-      setNoChangeError("Please change at least one field before updating.");
-      setFormSubmitted(false);
-      return;
-    }
-
     try {
       const response = await AccountService.updateInfo(updateInfo);
       console.log("Account updated", response);
-
-      // Sau khi update thành công, lưu lại giá trị mới vào originalInfo
-      setOriginalInfo({ ...updateInfo });
-
+      setOriginalInfo(updateInfo);
       setFormSubmitted(true);
       setNoChangeError(null);
       setUpdateError(null);
@@ -534,8 +546,8 @@ export const EditProfile = () => {
                   <input
                     type="text"
                     name="username"
-                    value={updateInfo.username}
-                    onChange={handleChange}
+                    value={username}
+                    onChange={UserNameChange}
                     onBlur={NameBlur}
                   />
                 </div>
@@ -553,8 +565,8 @@ export const EditProfile = () => {
                   <input
                     type="tel"
                     name="phone"
-                    value={updateInfo.phone}
-                    onChange={handleChange}
+                    value={phone}
+                    onChange={PhoneChange}
                     onBlur={PhoneBlur}
                   />
                 </div>
@@ -570,8 +582,8 @@ export const EditProfile = () => {
                   <input
                     type="text"
                     name="address"
-                    value={updateInfo.address}
-                    onChange={handleChange}
+                    value={address}
+                    onChange={AddressChange}
                   />
                 </div>
               </div>
@@ -585,8 +597,8 @@ export const EditProfile = () => {
                   <input
                     type="text"
                     name="description"
-                    value={updateInfo.description}
-                    onChange={handleChange}
+                    value={description}
+                    onChange={DescriptionChange}
                   />
                 </div>
               </div>
