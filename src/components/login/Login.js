@@ -31,7 +31,7 @@ const Login = ({
 
   // Receives username
   const userNameChange = (e) => {
-    const value = e.target.value;
+    const value = e.target.value.replace(/\s/g, "");
     setUserName(value);
     setAccount((preState) => ({ ...preState, username: value }));
   };

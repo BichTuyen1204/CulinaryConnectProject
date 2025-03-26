@@ -36,7 +36,7 @@ const ChatBot = () => {
   }, [jwtToken, navigate]);
 
   const saveMessagesToLocal = (userId, messages) => {
-    localStorage.setItem(`chat_${userId}`, JSON.stringify(messages));
+    localStorage.setItem(`chat_bot${userId}`, JSON.stringify(messages));
   };
 
   const setupWebSocket = useCallback(() => {
@@ -119,7 +119,7 @@ const ChatBot = () => {
 
   useEffect(() => {
     if (idUser) {
-      const storedMessages = localStorage.getItem(`chat_${idUser}`);
+      const storedMessages = localStorage.getItem(`chat_bot${idUser}`);
       setMessages(storedMessages ? JSON.parse(storedMessages) : []);
       messagesRef.current = storedMessages ? JSON.parse(storedMessages) : [];
     }
