@@ -46,7 +46,7 @@ const Register = () => {
   // Receive full name
   const NameChange = (e) => {
     const { value } = e.target;
-    const regex = /^[a-zA-Z\s]*$/;
+    const regex = /^[a-zA-Z]*$/;
   
     if (regex.test(value) || value === "") {
       setUserName(value);

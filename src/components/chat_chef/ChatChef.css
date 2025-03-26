@@ -1,32 +1,32 @@
-.chat-container {
+.chat-container-chef {
   position: fixed;
-  bottom: 20px;
+  bottom: 120px;
   right: 20px;
   z-index: 1000;
 }
 
-.ic-chat {
+.ic-chat-chef {
   margin-bottom: 8px;
 }
 
-@keyframes glowEffect {
+@keyframes chefGlow {
   0% {
-    box-shadow: 0 0 10px rgba(247, 170, 151, 0.5);
+    box-shadow: 0 0 10px #1e88e5;
     transform: scale(1);
   }
   50% {
-    box-shadow: 0 0 20px rgba(255, 99, 71, 0.8), 0 0 40px rgba(255, 38, 0, 0.5);
+    box-shadow: 0 0 20px #1565c0, 0 0 40px rgba(21, 101, 192, 0.5);
     transform: scale(1.05);
   }
   100% {
-    box-shadow: 0 0 10px rgba(255, 126, 95, 0.5);
+    box-shadow: 0 0 10px rgba(30, 136, 229, 0.5);
     transform: scale(1);
   }
 }
 
-.chat-toggle {
+.chat-toggle-chef {
   position: relative;
-  background: linear-gradient(135deg, #ff7e5f, #ff6347);
+  background: linear-gradient(135deg, #1976d2, #1565c0);
   color: white;
   font-size: 28px;
   border: none;
@@ -35,35 +35,35 @@
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease-in-out, box-shadow 0.7s ease-in-out;
-  animation: glowEffect 2s infinite alternate ease-in-out;
+  animation: chefGlow 2s infinite alternate ease-in-out;
 }
 
-.chat-toggle::before {
+.chat-toggle-chef::before {
   content: "";
   position: absolute;
   top: 50%;
   left: 50%;
   width: 100%;
   height: 100%;
-  background: rgba(255, 99, 71, 0.5);
+  background: rgba(0, 123, 255, 0.5);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   z-index: -1;
   animation: rippleEffect 2s infinite ease-out;
 }
 
-.chat-toggle:hover {
+.chat-toggle-chef:hover {
   transform: scale(1.1);
-  box-shadow: 0 6px 15px rgba(255, 99, 71, 0.4);
+  box-shadow: 0 6px 15px rgba(21, 101, 192, 0.4);
 }
 
-.chat-bot {
+.chat-chef-box {
   position: fixed;
   bottom: 10%;
   right: 20px;
   width: 340px;
   height: 500px;
-  background: #fff;
+  background: #e3f2fd;
   border-radius: 12px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
   display: flex;
@@ -72,8 +72,8 @@
   animation: slideIn 0.4s ease-in-out;
 }
 
-.message.user {
-  background: linear-gradient(135deg, #ff9a8b, tomato);
+.message-chef.user {
+  background: linear-gradient(135deg, #1e88e5, #1565c0);
   color: white;
   align-self: flex-end;
   text-align: right;
@@ -85,9 +85,9 @@
   margin-left: auto;
 }
 
-.message.staff {
-  background: #f1f1f1;
-  color: #333;
+.message-chef.Bot {
+  background: #b7e5ff;
+  color: #000000;
   align-self: flex-start;
   padding: 8px 14px;
   border-radius: 15px 15px 15px 0px;
@@ -97,7 +97,7 @@
   margin-right: auto;
 }
 
-.format-time {
+.format-time-chef {
   font-size: 0.65em;
   color: #666;
   text-align: right;
@@ -105,19 +105,20 @@
   margin-top: -4px;
 }
 
-.format-time.staff {
+.format-time-chef.Bot {
   text-align: left;
 }
 
-.message-container.user {
-  align-items: flex-end;
-}
-.format-time.user {
+.format-time-chef.user {
   text-align: right;
   align-self: flex-end;
 }
 
-.role-chat-box.staff {
+.message-container-chef.user {
+  align-items: flex-end;
+}
+
+.role-chat-box-chef.Bot {
   color: #333;
   align-items: flex-start;
   font-size: 0.9em;
@@ -126,7 +127,7 @@
   font-weight: 550;
 }
 
-.role-chat-box.user {
+.role-chat-box-chef.user {
   color: #333;
   align-items: flex-end;
   font-size: 0.9em;
@@ -146,8 +147,8 @@
   }
 }
 
-.chat-header {
-  background: linear-gradient(135deg, #ff7e5f, #ff6347);
+.chat-header-chef {
+  background: linear-gradient(135deg, #0d47a1, #1976d2);
   color: white;
   padding: 12px;
   display: flex;
@@ -158,11 +159,11 @@
   transition: background 0.3s ease-in-out;
 }
 
-.chat-header:hover {
-  background: linear-gradient(135deg, #ff6347, #ff3b5c);
+.chat-header-chef:hover {
+    background: linear-gradient(135deg, #19a3ff, #1976d2);
 }
 
-.close-chat {
+.close-chat-chef {
   background: none;
   border: none;
   color: white;
@@ -171,11 +172,11 @@
   transition: color 0.3s ease-in-out;
 }
 
-.close-chat:hover {
-  color: #ffddcc;
+.close-chat-chef:hover {
+  color: #93d9ff;
 }
 
-.chat-messages {
+.chat-messages-chef {
   flex: 1;
   overflow-y: auto;
   padding: 10px;
@@ -185,15 +186,14 @@
   transition: opacity 0.3s ease-in-out;
 }
 
-.message-container {
+.message-container-chef {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   margin-bottom: 18px;
   width: 100%;
 }
-
-.message {
+.message-chef {
   max-width: 80%;
   padding: 8px 12px;
   border-radius: 10px;
@@ -220,29 +220,20 @@
   color: white;
 }
 
-.bot {
-  background-color: #e0e0e0;
-  align-self: flex-start;
-}
-
-.chat-input {
+.chat-input-chef {
   display: flex;
   padding: 12px;
   border-top: 1px solid #ddd;
   align-items: center;
-  background: #fff;
+  background: #e3f2fd;
   transition: background 0.3s ease-in-out;
 }
 
-.chat-input:hover {
-  background: #f9f9f9;
-}
-
-.chat-textarea::placeholder {
+.chat-textarea-chef::placeholder {
   line-height: 1.2;
 }
 
-.chat-textarea {
+.chat-textarea-chef {
   flex: 1;
   min-height: 35px;
   max-height: 80px;
@@ -258,17 +249,17 @@
   -ms-overflow-style: none;
 }
 
-.chat-textarea::-webkit-scrollbar {
+.chat-textarea-chef::-webkit-scrollbar {
   display: none;
 }
 
-.chat-textarea:focus {
-  border: 1px solid #ff6a88;
-  background: #fff0f3;
+.chat-textarea-chef:focus {
+  border: 1px solid #42a5f5;
+  background: #f8fcff;
 }
 
-.ic-send {
-  color: tomato;
+.ic-send-chef {
+  color: #1565c0;
   width: 24px;
   height: 24px;
   margin-left: 10px;
@@ -276,7 +267,7 @@
   transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
-.ic-send:hover {
-  color: #ff3b5c;
+.ic-send-chef:hover {
+  color: #0d47a1;
   transform: scale(1.2);
 }

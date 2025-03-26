@@ -29,6 +29,7 @@ import BlogDetail from "./page/blog_detail/BlogDetail";
 import ForgotPassword from "./components/forget/ForgetPass";
 import { ListProductSearchImg } from "./page/list_product_search_img/ListProductSearchImg";
 import ChatBot from "./components/chat_bot/ChatBot";
+import ChatChef from "./components/chat_chef/ChatChef";
 
 const AppContent = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -114,7 +115,8 @@ const AppContent = () => {
             />
           )}
         </CartProvider>
-        <ChatBot />
+          <ChatChef />
+          <ChatBot />
       </div>
       <Footer />
     </>
