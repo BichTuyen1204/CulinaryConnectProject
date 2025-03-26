@@ -48,15 +48,11 @@ const ChatChef = () => {
     );
     socketRef.current = ws;
 
-    ws.onopen = () => {
-      console.log("WebSocket connected!");
-    };
+    ws.onopen = () => {};
 
     ws.onmessage = (event) => {
       try {
         const rawMessage = event.data;
-        console.log("Raw message received:", rawMessage);
-
         messageBuffer.current += rawMessage;
 
         if (
@@ -68,18 +64,14 @@ const ChatChef = () => {
           if (fullMessage && fullMessage[1]) {
             let messageContent = fullMessage[1].trim();
 
-            // **Xử lý Markdown và tách từ**
             messageContent = messageContent
-              .replace(/([a-z])([A-Z])/g, "$1 $2") // Thêm dấu cách giữa chữ thường và chữ hoa
-              .replace(/([a-zA-Z])(\d)/g, "$1 $2") // Thêm dấu cách giữa chữ và số
-              .replace(/(\d)([a-zA-Z])/g, "$1 $2") // Thêm dấu cách giữa số và chữ
-              .replace(/([.,!?])([A-Za-z])/g, "$1 $2") // Thêm dấu cách sau dấu câu
+              .replace(/([a-z])([A-Z])/g, "$1 $2")
+              .replace(/([a-zA-Z])(\d)/g, "$1 $2")
+              .replace(/(\d)([a-zA-Z])/g, "$1 $2")
+              .replace(/([.,!?])([A-Za-z])/g, "$1 $2")
               .replace(/([a-zA-Z])([.,!?])/g, "$1$2")
-              .replace(/---/g, "\n\n") // Không thêm dấu cách trước dấu câu
-              .replace(/\s+/g, " "); // Xóa khoảng trắng thừa
-
-            console.log("Formatted message:", messageContent);
-
+              .replace(/---/g, "\n\n")
+              .replace(/\s+/g, " ");
             let words = messageContent.split(/\s+/);
 
             let newMessage = {
@@ -92,10 +84,8 @@ const ChatChef = () => {
             const interval = setInterval(() => {
               if (index < words.length) {
                 newMessage.text += words[index] + " ";
-
                 setMessagesChef((prevMessages) => {
                   let updatedMessages = [...prevMessages];
-
                   if (
                     updatedMessages.length > 0 &&
                     updatedMessages[updatedMessages.length - 1].sender === "Bot"
@@ -106,20 +96,15 @@ const ChatChef = () => {
                   } else {
                     updatedMessages.push({ ...newMessage });
                   }
-
-                  // ✅ Lưu tin nhắn vào localStorage
                   messagesRef.current = updatedMessages;
                   saveMessagesToLocal(idUser, messagesRef.current);
-
                   return updatedMessages;
                 });
-
                 index++;
               } else {
                 clearInterval(interval);
               }
             }, 150);
-
             messageBuffer.current = "";
           }
         }
