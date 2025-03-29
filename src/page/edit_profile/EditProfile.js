@@ -37,6 +37,10 @@ export const EditProfile = () => {
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
   const [otpVisible, setOtpVisible] = useState(false);
+  const [img, setImg] = useState(null);
+
+  const defaultAvatar =
+    "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg";
 
   const [account, setAccount] = useState({
     email: "",
@@ -55,6 +59,10 @@ export const EditProfile = () => {
 
   const [originalInfo, setOriginalInfo] = useState(null);
 
+  const [firstAvatar, setFirstAvatar] = useState({
+    profilePictureUri: defaultAvatar,
+  });
+
   const ImgChange = async (e) => {
     const file = e.target.files[0];
     if (!file) {
@@ -62,12 +70,13 @@ export const EditProfile = () => {
       return;
     }
     const previewUrl = URL.createObjectURL(file);
+    setImgUser(previewUrl);
     setAccount((preState) => ({
       ...preState,
-      url: previewUrl,
+      profilePictureUri: previewUrl,
     }));
 
-    setImgUser(file);
+    // setImgUser(file);
     try {
       const formData = new FormData();
       formData.append("file", file);
@@ -76,6 +85,7 @@ export const EditProfile = () => {
       console.log("Response from server:", response);
 
       if (response && response.url) {
+        setImgUser(response.url);
         setAccount((prevState) => ({
           ...prevState,
           profilePictureUri: response.url,
@@ -92,7 +102,8 @@ export const EditProfile = () => {
   };
 
   const UserNameChange = (e) => {
-    const { value } = e.target;
+    let { value } = e.target;
+    value = value.replace(/[^a-zA-Z]/g, "");
     setUsername(value);
     setUpdateInfo((preState) => ({ ...preState, username: value }));
     setFormSubmitted(false);
@@ -126,7 +137,7 @@ export const EditProfile = () => {
     setDescriptionError("");
     setNoChangeError("");
   };
-  
+
   // Check full name
   const NameBlur = () => {
     if (updateInfo.username.trim() === "") {
@@ -349,6 +360,7 @@ export const EditProfile = () => {
         setPhone(response.phone);
         setAddress(response.address);
         setDescription(response.profileDescription);
+        setImg(response.profilePictureUri);
 
         setUpdateInfo({
           username: response.username || "",
@@ -363,7 +375,7 @@ export const EditProfile = () => {
           description: response.profileDescription || "",
         });
       } catch (error) {
-        console.error("Lỗi khi lấy dữ liệu tài khoản:", error);
+        console.error(error);
       }
     };
 
@@ -479,16 +491,11 @@ export const EditProfile = () => {
       <div className="edit-profile-header col-3 align-items-center">
         <img
           className="edit-profile-avatar"
-          src={
-            imgUser
-              ? imgUser
-              : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
-          }
+          src={img || defaultAvatar}
           alt="Avatar"
           onError={(e) => {
             e.target.onerror = null;
-            e.target.src =
-              "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg";
+            e.target.src = defaultAvatar;
           }}
         />
 

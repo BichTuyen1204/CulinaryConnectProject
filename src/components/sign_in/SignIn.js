@@ -18,7 +18,6 @@ const SignIn = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [loginError, setLoginError] = useState("");
   const [agreedToTerms, setAgreedToTerms] = useState(false);
-  const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
   const [isOpen, setIsOpen] = useState(true);
   const navigate = useNavigate();
 
@@ -37,7 +36,7 @@ const SignIn = () => {
 
   // Receives username
   const userNameChange = (e) => {
-    const value = e.target.value.replace(/\s/g, "");
+    const value = e.target.value.replace(/[^a-zA-Z]/g, "");
     setUserName(value);
     setAccount((preState) => ({ ...preState, username: value }));
   };

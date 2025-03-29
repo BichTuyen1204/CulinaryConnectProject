@@ -158,13 +158,13 @@ export const Navbar = ({ setShowLogin }) => {
       {/* phone drop down */}
       {dropdownPhone ? (
         <div className="navbar col-12 d-flex align-items-center justify-content-between">
-          <div className="logo-navbar d-none d-sm-block col-2">
+          <div className="logo-navbar d-none d-sm-block col-2 col-md-2 col-sm-2">
             <Link to="/">
               <img src={Logo} alt="Logo" />
             </Link>
           </div>
 
-          <div className="navbar-right col-4 col-md-8 col-sm-8 ">
+          <div className="navbar-right col-6 col-md-6 col-sm-6 ">
             <form
               onSubmit={handleSubmit}
               className="search-container position-relative"
@@ -204,8 +204,7 @@ export const Navbar = ({ setShowLogin }) => {
           </div>
 
           {/* Hamburger Menu */}
-          <div
-            className="col-auto ms-auto d-flex align-items-center hamburger-big"
+          <div className="col-2 col-md-2 ms-auto col-sm-2 d-flex align-items-center hamburger-big"
             style={{ position: "relative", zIndex: 15 }}
           >
             <Dropdown show={dropdownPhoneMenu} align="end">
@@ -220,7 +219,7 @@ export const Navbar = ({ setShowLogin }) => {
               </Dropdown.Toggle>
 
               {dropdownPhoneMenu && (
-                <Dropdown.Menu className="dropdown-menu-end">
+                <Dropdown.Menu className="dropdown-menu-list">
                   <Dropdown.Item
                     as={Link}
                     to="/"
@@ -280,8 +279,7 @@ export const Navbar = ({ setShowLogin }) => {
             </Dropdown>
           </div>
 
-          <nav
-            className=" col-2 col-sm-1  d-flex justify-content-end "
+          <div className="col-2 col-md-2 col-sm-2 d-flex justify-content-end "
             style={{ position: "relative", zIndex: 5 }}
           >
             {username ? (
@@ -371,7 +369,7 @@ export const Navbar = ({ setShowLogin }) => {
                 Login
               </button>
             )}
-          </nav>
+          </div>
         </div>
       ) : (
         // end of phone view

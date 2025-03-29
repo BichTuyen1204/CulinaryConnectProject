@@ -36,12 +36,9 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
   // Receive full name
   const NameChange = (e) => {
     const { value } = e.target;
-    const regex = /^[a-zA-Z]*$/;
-  
-    if (regex.test(value) || value === "") {
-      setUserName(value);
-      setAccount((preState) => ({ ...preState, username: value }));
-    }
+    const filteredValue = value.replace(/[^a-zA-Z]/g, "");
+    setUserName(filteredValue);
+    setAccount((preState) => ({ ...preState, username: filteredValue }));
   };
 
   // Check full name
@@ -188,7 +185,9 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
     RePasswordBlur();
 
     if (!agreedToTerms) {
-      alert("To continue registration, you need to agree to our Terms of Use and Privacy Policy.");
+      alert(
+        "To continue registration, you need to agree to our Terms of Use and Privacy Policy."
+      );
       return;
     }
 
@@ -270,21 +269,22 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
 
         {/* Input full name */}
         <div className="sign-up-input">
-            <div className="sign-up-username">
-              <label htmlFor="username">
-                Full name <span style={{ color: "red" }}>*</span>
-              </label>
-              <input
-                type="name"
-                id="username"
-                name="username"
-                value={username}
-                onChange={NameChange}
-                onBlur={NameBlur}
-                required
-              />
-              {usernameError && <p style={{ color: "red" }}>{usernameError}</p>}
-            </div>
+          <div className="sign-up-username">
+            <label htmlFor="username">
+              Full name <span style={{ color: "red" }}>*</span>
+            </label>
+            <input
+              type="name"
+              id="username"
+              name="username"
+              placeholder="Please enter your username without spaces."
+              value={username}
+              onChange={NameChange}
+              onBlur={NameBlur}
+              required
+            />
+            {usernameError && <p style={{ color: "red" }}>{usernameError}</p>}
+          </div>
 
           {/* Input email */}
           <div className="sign-up-email">
@@ -294,6 +294,7 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
             <input
               type="email"
               name="email"
+              placeholder="Please enter your email."
               value={email}
               onChange={EmailChange}
               onBlur={EmailBlur}
@@ -310,12 +311,13 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
             <input
               type="number"
               name="phone"
+              placeholder="Please enter your phone number."
               value={phone}
               onChange={PhoneChange}
               onBlur={PhoneBlur}
               required
               onInput={(e) => {
-                e.target.value = e.target.value.replace(/[eE.+-]/g, '');
+                e.target.value = e.target.value.replace(/[eE.+-]/g, "");
               }}
             />
             {phoneError && <p style={{ color: "red" }}>{phoneError}</p>}
@@ -330,6 +332,7 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
+                placeholder="Please enter your password."
                 value={password}
                 onChange={PasswordChange}
                 onBlur={PasswordBlur}
@@ -353,6 +356,7 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
               <input
                 type={showRePassword ? "text" : "password"}
                 name="rePassword"
+                placeholder="Please confirm your password."
                 value={rePassword}
                 onChange={ConfirmPasswordChange}
                 onBlur={RePasswordBlur}
@@ -379,6 +383,7 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
             <input
               type="text"
               name="address"
+              placeholder="Please enter your address."
               value={address}
               onChange={AddressChange}
             />

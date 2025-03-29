@@ -48,13 +48,15 @@ const ChatChef = () => {
     );
     socketRef.current = ws;
 
-    ws.onopen = () => {};
+    ws.onopen = () => {
+      console.log("✅ WebSocket connected successfully!");
+    };
 
     ws.onmessage = (event) => {
       try {
         const rawMessage = event.data;
         messageBuffer.current += rawMessage;
-
+        console.log(rawMessage);
         if (
           messageBuffer.current.includes("<chat>") &&
           messageBuffer.current.includes("</chat>")
@@ -189,7 +191,7 @@ const ChatChef = () => {
       {isOpenChef && (
         <div className="chat-chef-box">
           <div className="chat-header-chef">
-            <span>Chat with Chef</span>
+            <span>Chat with AI Chef</span>
             <button
               className="close-chat-chef"
               onClick={() => setIsOpenChef(false)}
