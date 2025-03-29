@@ -21,8 +21,6 @@ const Login = ({
   const [showPassword, setShowPassword] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [loginError, setLoginError] = useState("");
-  const [agreedToTerms, setAgreedToTerms] = useState(false);
-  const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
 
   const [account, setAccount] = useState({
     username: "",
@@ -31,7 +29,7 @@ const Login = ({
 
   // Receives username
   const userNameChange = (e) => {
-    const value = e.target.value.replace(/\s/g, "");
+    const value = e.target.value.replace(/[^a-zA-Z]/g, "");
     setUserName(value);
     setAccount((preState) => ({ ...preState, username: value }));
   };
@@ -141,7 +139,7 @@ const Login = ({
           onClick={handleContainerClick}
           onSubmit={(e) => {
             e.preventDefault();
-            // validateForm();
+            validateForm();
           }}
         >
           <div className="login-title">
@@ -222,7 +220,7 @@ const Login = ({
             {loginError && <p style={{ color: "red" }}>{loginError}</p>}
             <button
               className="login-button"
-              type="button"
+              type="submit"
               onClick={validateForm}
             >
               Login

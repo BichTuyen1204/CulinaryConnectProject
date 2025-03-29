@@ -46,14 +46,10 @@ const Register = () => {
   // Receive full name
   const NameChange = (e) => {
     const { value } = e.target;
-    const regex = /^[a-zA-Z]*$/;
-  
-    if (regex.test(value) || value === "") {
-      setUserName(value);
-      setAccount((preState) => ({ ...preState, username: value }));
-    }
+    const filteredValue = value.replace(/[^a-zA-Z]/g, "");
+    setUserName(filteredValue);
+    setAccount((preState) => ({ ...preState, username: filteredValue }));
   };
-  
 
   // Check full name
   const NameBlur = () => {
@@ -291,6 +287,7 @@ const Register = () => {
                 type="name"
                 id="username"
                 name="username"
+                placeholder="Please enter a username without spaces."
                 value={username}
                 onChange={NameChange}
                 onBlur={NameBlur}

@@ -147,61 +147,103 @@ const OrderDetail = () => {
       {orderData.summary && (
         <div className="shipping-info d-flex col-12 px-5 mt-4">
           <div className="col-7">
-            <h2>Delivery Information :</h2>
+            <h2>Delivery Information</h2>
             <div className="mt-2 font-size-for-text">
               <p>
-                <strong className="mx-2">Full name :</strong>
+                <strong className="mx-2">Date:</strong>
+                {(() => {
+                  const utcDate = new Date(orderData.summary.date);
+                  utcDate.setHours(utcDate.getHours() + 7);
+                  return utcDate.toLocaleString("vi-VN");
+                })()}
+              </p>
+              <p>
+                <strong className="mx-2">Payment Method:</strong>
+                <strong style={{ color: "tomato" }}>
+                  {orderData.summary.paymentMethod}
+                  {orderData.summary.paymentMethod === "PAYPAL" ||
+                  orderData.summary.paymentMethod === "VNPAY"
+                    ? " - PAID"
+                    : ""}
+                </strong>
+              </p>
+              <p>
+                <strong className="mx-2">Full Name:</strong>
                 {orderData.summary.receiver}
               </p>
               <p>
-                <strong className="mx-2">Phone number :</strong>
+                <strong className="mx-2">Phone Number:</strong>
                 {orderData.summary.phoneNumber}
               </p>
               <p>
-                <strong className="mx-2">Address :</strong>
+                <strong className="mx-2">Address:</strong>
                 {orderData.summary.deliveryAddress}
               </p>
               <p>
-                <strong className="mx-2">Note from receiver :</strong>
-                {orderData.summary.note ? orderData.summary.note : "Nothing"}
+                <strong className="mx-2">Note:</strong>
+                {orderData.summary.note
+                  ? orderData.summary.note
+                  : "No special instructions"}
               </p>
             </div>
           </div>
-          <div className="col-5 d-flex status-ship">
+          <div className="col-5 d-flex flex-column align-items-start status-ship">
             <h2>Shipping Status</h2>
-            <p>
-              :{" "}
-              <strong
-                style={{ color: getStatusColor(orderData.summary.status) }}
-              >
-                {" "}
-                {statusMap[orderData.summary.status]}
-              </strong>
+            <p
+              className="status-text"
+              style={{ color: getStatusColor(orderData.summary.status) }}
+            >
+              <strong>{statusMap[orderData.summary.status]}</strong>
             </p>
           </div>
         </div>
       )}
+
       {/* Product List */}
       {orderData.items && (
-        <div className="product-list">
+        <div className="product-list mt-4">
           {orderData.items.map((product) => (
-            <div className="product-item" key={product.id}>
+            <div
+              className="product-item d-flex align-items-center p-3 mb-3"
+              key={product.id}
+            >
               <img
                 src={product.imageUrl}
                 alt={product.name}
-                className="product-image"
+                className="product-image me-3"
               />
               <div className="product-info font-size-for-text">
-                <h3>{product.name}</h3>
-                <p>
+                <h3 className="mb-1">{product.name}</h3>
+                <p className="mt-3" style={{ fontSize: "0.85em" }}>
                   Price: <strong>${product.price}</strong>
                 </p>
-                <p>x{product.quantity}</p>
+                <p className="mb-0" style={{ fontSize: "0.85em" }}>
+                  Quantity: <strong>{product.quantity}</strong>
+                </p>
+                <p className="mb-0" style={{ fontSize: "0.85em" }}>
+                  Total price: <strong></strong>
+                </p>
               </div>
             </div>
           ))}
         </div>
       )}
+
+      <div className="summary-price">
+        {orderData.summary && (
+          <div className="coupon">
+            <p style={{ fontSize: "0.9em" }}>
+              <strong>Coupon:</strong> {orderData.summary.coupon.salePercent} %
+            </p>
+            <p className="mt-1 d-flex" style={{ fontSize: "1.2em" }}>
+              <strong>Total Price:</strong>
+              <p style={{ color: "red", fontWeight: "600", marginLeft: "5px" }}>
+                ${orderData.summary.totalPrice}
+              </p>
+            </p>
+          </div>
+        )}
+      </div>
 
       {/* Action Buttons */}
       {orderData.summary && orderData.summary.status === "SHIPPED" && (

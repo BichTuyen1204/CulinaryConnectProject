@@ -70,7 +70,7 @@ const BlogDetail = () => {
     setOpenInputReply(true);
   };
 
-  const deleteProduct = async (id) => {
+  const deleteBlog = async (id) => {
     if (jwtToken) {
       try {
         await BlogService.deleteComment(id);
@@ -96,7 +96,6 @@ const BlogDetail = () => {
             ? prevComment.filter((comment) => comment.id !== id)
             : [];
         });
-
         setPopupDeleteReply(false);
       } catch (error) {
         console.error("Failed to delete comment:", error.message);
@@ -112,6 +111,7 @@ const BlogDetail = () => {
       setBlogDetail(responseBlog);
 
       const responseComment = await BlogService.getAllComment(id);
+      console.log(responseComment);
       const sortedComments = responseComment.sort(
         (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
       );
@@ -173,7 +173,6 @@ const BlogDetail = () => {
   useEffect(() => {
     if (id) {
       getBlogDetail(id);
-      // window.scrollTo(0, 0);
       const savedBookmarks =
         JSON.parse(localStorage.getItem("bookmarks")) || {};
       setIsBookmarked(savedBookmarks[id] || false);
@@ -198,14 +197,14 @@ const BlogDetail = () => {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === "Enter") {
       e.preventDefault();
       addComment(e);
     }
   };
 
   const handleKeyDownReply = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === "Enter") {
       e.preventDefault();
       replyComment(e);
     }
@@ -213,7 +212,6 @@ const BlogDetail = () => {
 
   const addComment = async (e) => {
     e.preventDefault();
-
     if (newComment.trim() === "") {
       alert("Please comment before submit");
       return;
@@ -244,7 +242,6 @@ const BlogDetail = () => {
       alert("Please comment before submit");
       return;
     }
-
     try {
       const response = await BlogService.replyComment(
         id,
@@ -505,10 +502,12 @@ const BlogDetail = () => {
                                     <p className="reply-content">
                                       {reply.comment}
                                     </p>
-                                    <RiDeleteBin6Line
-                                      className="ic-delete ms-auto"
-                                      onClick={() => openModalReply(reply.id)}
-                                    />
+                                    {username === reply.accountName && (
+                                      <RiDeleteBin6Line
+                                        className="ic-delete ms-auto"
+                                        onClick={() => openModalReply(reply.id)}
+                                      />
+                                    )}
                                   </div>
                                 </div>
                               ) : null
@@ -603,7 +602,7 @@ const BlogDetail = () => {
                     fontSize: "0.9em",
                   }}
                 >
-                  Are you sure you want to disable this coupon?
+                  Are you sure you want to delete this comment?
                 </p>
                 <div
                   style={{
@@ -633,7 +632,7 @@ const BlogDetail = () => {
                       (e.target.style.backgroundColor = "#d32f2f")
                     }
                   >
-                    Delete
+                    Yes
                   </button>
                   <button
                     onClick={cancelDeleteReply}
@@ -655,9 +654,10 @@ const BlogDetail = () => {
                       (e.target.style.backgroundColor = "#1976d2")
                     }
                   >
-                    Cancel
+                    No
                   </button>
                 </div>
+                {}
                 <IoCloseSharp
                   className="ic-close"
                   onClick={cancelDeleteReply}
@@ -722,7 +722,7 @@ const BlogDetail = () => {
                     fontSize: "0.9em",
                   }}
                 >
-                  Are you sure you want to disable this coupon?
+                  Are you sure you want to delete this comment?
                 </p>
                 <div
                   style={{
@@ -733,7 +733,7 @@ const BlogDetail = () => {
                   }}
                 >
                   <button
-                    onClick={() => deleteProduct(selectedId)}
+                    onClick={() => deleteBlog(selectedId)}
                     style={{
                       flex: "1",
                       padding: "5px",
@@ -752,7 +752,7 @@ const BlogDetail = () => {
                       (e.target.style.backgroundColor = "#d32f2f")
                     }
                   >
-                    Delete
+                    Yes
                   </button>
                   <button
                     onClick={cancelDelete}
@@ -774,7 +774,7 @@ const BlogDetail = () => {
                       (e.target.style.backgroundColor = "#1976d2")
                     }
                   >
-                    Cancel
+                    No
                   </button>
                 </div>
                 <IoCloseSharp

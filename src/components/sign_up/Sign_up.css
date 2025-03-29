@@ -158,6 +158,11 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+  opacity: 0.5;
+}
+
 @media (max-width: 800px) {
   .sign-up_ic_eye {
     margin-top: 2px;

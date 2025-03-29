@@ -4,11 +4,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import ProductService from "../../api/ProductService";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import AccountService from "../../api/AccountService";
-import { FaLeaf, FaBox, FaInfoCircle } from "react-icons/fa";
-import ReactMarkdown from "react-markdown";
 import { MdArrowBackIosNew } from "react-icons/md";
 import { CartContext } from "../../components/context/Context";
-import { motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Thumbs } from "swiper/modules";
 import "swiper/css";
@@ -23,31 +20,11 @@ export const Food_detail = () => {
   const [username, setUserName] = useState("");
   const [accountRole, setAccountRole] = useState("");
   const images = product.imagesUrl || [];
-  const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
-  const [popupAddDetail, setPopupAddDetail] = useState(false);
+  const jwtToken = useState(sessionStorage.getItem("jwtToken"));
   const navigate = useNavigate();
   const { addToCart } = useContext(CartContext);
   const [popupAdd, setPopupAdd] = useState(false);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
-
-  // Xử lý khi nhấn nút Prev
-  const handlePrevClick = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
-    );
-  };
-
-  // Xử lý khi nhấn nút Next
-  const handleNextClick = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-
-  // Xử lý khi nhấn vào hình nhỏ
-  const handleImageClick = (index) => {
-    setCurrentImageIndex(index);
-  };
 
   const getDataDetail = async (id) => {
     try {
@@ -136,8 +113,8 @@ export const Food_detail = () => {
                               borderRadius: "15px",
                               height: "100%",
                               objectFit: "contain",
-                              backgroundColor: "#f8f8f8",
-                              border: "2px solid green"
+                              backgroundColor: "white",
+                              border: "2px solid green",
                             }}
                           />
                         </SwiperSlide>
@@ -147,18 +124,24 @@ export const Food_detail = () => {
                     {/* Ảnh nhỏ (Thumbnail) */}
                     <Swiper
                       onSwiper={setThumbsSwiper}
-                      spaceBetween={85}
-                      slidesPerView={6}
+                      spaceBetween={10}
+                      slidesPerView="auto"
                       watchSlidesProgress
                       modules={[Thumbs]}
                       className="productdisplay-img-thumbnails"
                     >
                       {images.map((url, index) => (
-                        <SwiperSlide key={index}>
+                        <SwiperSlide key={index} style={{ width: "auto" }}>
                           <img
                             src={url}
                             alt={`Thumbnail ${index + 1}`}
                             className="thumbnail"
+                            style={{
+                              width: "80px",
+                              height: "50px",
+                              objectFit: "cover",
+                              borderRadius: "5px"
+                            }}
                           />
                         </SwiperSlide>
                       ))}
