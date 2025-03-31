@@ -280,3 +280,62 @@
   color: #ff3b5c;
   transform: scale(1.2);
 }
+@media (max-width: 995px) {
+  .chat-bot {
+    width: 300px !important;
+    height: 400px !important;
+  }
+  .chat-header {
+    padding: 5px 10px;
+    font-size: 0.8em;
+  }
+  .close-chat {
+    font-size: 15px;
+  }
+  .message.user {
+    padding: 10px !important;
+    font-size: 0.75em;
+  }
+  .message.Bot {
+    padding: 10px !important;
+    font-size: 0.75em;
+  }
+  .chat-textarea {
+    min-height: 30px;
+    max-height: 50px;
+    padding: 5px;
+    font-size: 0.75em;
+  }
+  .ic-send {
+    width: 20px;
+  }
+}
+
+@media (max-width: 400px) {
+  .chat-bot {
+    width: 250px !important;
+    height: 330px !important;
+  }
+}
+
+@media (max-width: 330px) {
+  .chat-bot {
+    width: 200px !important;
+    height: 300px !important;
+  }
+  .chat-header {
+    padding: 5px;
+    font-size: 0.7em;
+  }
+  .close-chat {
+    font-size: 12px;
+  }
+  .role-chat-box.user,
+  .role-chat-box.Bot {
+    font-size: 0.7em;
+  }
+  .message.user,
+  .message.Bot {
+    font-size: 0.7em;
+  }
+}

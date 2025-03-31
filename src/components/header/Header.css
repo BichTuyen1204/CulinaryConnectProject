@@ -85,7 +85,7 @@
     width: 320px;
   }
   .header h2 {
-    font-size: 1.9em;
+    font-size: 2.7em;
   }
   .header p {
     font-size: 1em;
@@ -149,7 +149,7 @@
 
 @media (max-width: 575px) {
   .header {
-    margin-top: -18px !important;
+    margin-top: -55px !important;
   }
   .header h2 {
     font-size: 1.5em;
@@ -177,9 +177,6 @@
 }
 
 @media (max-width: 490px) {
-  .header {
-    margin-top: -40px !important;
-  }
   .header h2 {
     font-size: 1.1em;
   }
@@ -194,7 +191,7 @@
 
 @media (max-width: 481px) {
   .header {
-    margin-top: -70px !important;
+    margin-top: -80px !important;
   }
   .header h2 {
     font-size: 1.1em;
@@ -238,7 +235,7 @@
 
 @media (max-width: 417px) {
   .header {
-    margin-top: -40px !important;
+    margin-top: -52px !important;
     height: 30vw;
   }
   .header h2 {
@@ -314,7 +311,7 @@
 
 @media (max-width: 242px) {
   .header {
-    margin-top: -60px !important;  
+    margin-top: -60px !important;
     height: 45vw;
   }
   .header h2 {

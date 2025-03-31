@@ -29,9 +29,10 @@ const Login = ({
 
   // Receives username
   const userNameChange = (e) => {
-    const value = e.target.value.replace(/[^a-zA-Z]/g, "");
+    const value = e.target.value.replace(/[^a-zA-Z0-9]/g, "");
     setUserName(value);
     setAccount((preState) => ({ ...preState, username: value }));
+    setUserNameError("");
   };
 
   // Check full name
@@ -52,6 +53,7 @@ const Login = ({
     const value = e.target.value;
     setPassword(value);
     setAccount((preState) => ({ ...preState, password: value }));
+    setPasswordError("");
   };
 
   // Check password
@@ -219,7 +221,7 @@ const Login = ({
             )}
             {loginError && <p style={{ color: "red" }}>{loginError}</p>}
             <button
-              className="login-button"
+              className="login-form-button"
               type="submit"
               onClick={validateForm}
             >

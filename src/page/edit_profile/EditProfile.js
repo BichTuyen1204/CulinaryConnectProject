@@ -24,7 +24,7 @@ export const EditProfile = () => {
   const [oldPassError, setOldPassError] = useState("");
   const [rePassword, setRePassword] = useState("");
   const [rePasswordError, setRePasswordError] = useState("");
-  const checkPass = useState(false);
+  const [checkPass, setCheckPass] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showOldPassword, setShowOldPassword] = useState(false);
@@ -44,8 +44,6 @@ export const EditProfile = () => {
 
   const [account, setAccount] = useState({
     email: "",
-    oldPassword: "",
-    password: "",
     profilePictureUri: "",
     url: "",
   });
@@ -55,6 +53,11 @@ export const EditProfile = () => {
     phone: "",
     address: "",
     description: "",
+  });
+
+  const [updatePassword, setUpdatePassword] = useState({
+    oldPassword: "",
+    password: "",
   });
 
   const [originalInfo, setOriginalInfo] = useState(null);
@@ -271,7 +274,8 @@ export const EditProfile = () => {
   const OldPasswordChange = (e) => {
     const { value } = e.target;
     setOldPass(value);
-    setAccount((preState) => ({ ...preState, oldPassword: value }));
+    setUpdatePassword((preState) => ({ ...preState, oldPassword: value }));
+    setOldPassError("");
   };
 
   // Check old password
@@ -294,7 +298,9 @@ export const EditProfile = () => {
   const PasswordChange = (e) => {
     const { value } = e.target;
     setPassword(value);
-    setAccount((preState) => ({ ...preState, password: value }));
+    setUpdatePassword((preState) => ({ ...preState, password: value }));
+    setOldPassError("");
+    setPasswordError("");
   };
 
   // Check password
@@ -317,6 +323,7 @@ export const EditProfile = () => {
   const ConfirmPasswordChange = (e) => {
     const value = e.target.value;
     setRePassword(value);
+    setRePasswordError("");
   };
 
   // Check re-password
@@ -352,7 +359,6 @@ export const EditProfile = () => {
       navigate("/sign_in");
       return;
     }
-
     const getAccount = async () => {
       try {
         const response = await AccountService.account(jwtToken);
@@ -439,50 +445,43 @@ export const EditProfile = () => {
     PasswordBlur();
     RePasswordBlur();
     if (
-      !oldPassError &&
-      !passwordError &&
-      !rePasswordError &&
-      oldPass &&
-      password &&
-      rePassword &&
-      !checkPass
+      oldPassError ||
+      passwordError ||
+      rePasswordError ||
+      !oldPass.trim() ||
+      !password.trim() ||
+      !rePassword.trim() ||
+      checkPass
     ) {
-      try {
-        await AccountService.updatePass(account);
-        console.log("Updated info:", account);
-        setFormSubmittedPass(true);
-        setUpdateError(null);
-        setOldPass("");
-        setPassword("");
-        setRePassword("");
-        setTimeout(() => {
-          navigate("/sign_in");
-          setFormSubmittedPass(false);
-        }, 1000);
-      } catch (error) {
-        // Handle errors
-        if (error.response) {
-          const { data } = error.response;
-          if (data?.errors) {
-            data.errors.forEach((err) => {
-              if (err.fieldName === "oldPassword") {
-                setOldPassError(err.message || "Invalid old password.");
-              } else if (err.fieldName === "password") {
-                setPasswordError(err.message || "Invalid new password.");
-              }
-            });
-          } else if (data?.cause === "BadCredentialsException") {
-            setOldPassError("Incorrect old password.");
-          } else {
-            setOldPassError("Invalid old password.");
-          }
-        } else {
-          console.error("Network or unknown error occurred:", error);
-          setUpdateError("Network error occurred, please try again.");
-        }
+      return;
+    }
+    const updatedPasswordData = {
+      oldPassword: oldPass,
+      password: password,
+    };
+    try {
+      await AccountService.updatePass(updatedPasswordData);
+      setFormSubmittedPass(true);
+      setUpdateError(null);
+      setOldPass("");
+      setPassword("");
+      setRePassword("");
 
+      setTimeout(() => {
+        localStorage.removeItem("token");
+        navigate("/sign_in");
         setFormSubmittedPass(false);
+      }, 3000);
+    } catch (error) {
+      if (error.response && error.response.data) {
+        const errorMessage = error.response.data?.messages;
+        if (errorMessage === "Old password does not match") {
+          setOldPassError("Old password is incorrect.");
+        }
+      } else {
+        setUpdateError("Network error occurred, please try again.");
       }
+      setFormSubmittedPass(false);
     }
   };
 
@@ -783,11 +782,9 @@ export const EditProfile = () => {
                 {updateError}
               </p>
             )}
-            <Link to="/profile">
-              <button className="bt-edit-profile mt-3" onClick={updatePass}>
-                Save
-              </button>
-            </Link>
+            <button className="bt-edit-profile mt-3" onClick={updatePass}>
+              Save
+            </button>
             <p className="text-or text-center align-items-center justify-content-center">
               OR
             </p>

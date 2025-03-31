@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./Food_card.css";
-import image from "../../assets/image_food_menu.jpg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ProductService from "../../api/ProductService";
 import { useParams, useLocation, useNavigate, Link } from "react-router-dom";
@@ -182,7 +181,7 @@ export const Food_card = () => {
                     >
                       <img
                         className="food-item-image"
-                        src={product.imageUrl || image}
+                        src={product.imageUrl}
                         alt={product.productName}
                       />
 

@@ -19,18 +19,11 @@ const ChatBot = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!jwtToken) {
-      navigate("/sign_in");
-      return;
-    }
     const fetchAccount = async () => {
       try {
         const response = await AccountService.account(jwtToken);
         setIdUser(response.id);
-      } catch (error) {
-        sessionStorage.removeItem("jwtToken");
-        navigate("/sign_in");
-      }
+      } catch (error) {}
     };
     fetchAccount();
   }, [jwtToken, navigate]);

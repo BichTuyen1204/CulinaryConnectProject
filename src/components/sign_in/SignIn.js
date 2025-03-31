@@ -36,7 +36,7 @@ const SignIn = () => {
 
   // Receives username
   const userNameChange = (e) => {
-    const value = e.target.value.replace(/[^a-zA-Z]/g, "");
+    const value = e.target.value.replace(/[^a-zA-Z0-9]/g, "");
     setUserName(value);
     setAccount((preState) => ({ ...preState, username: value }));
   };
@@ -89,23 +89,10 @@ const SignIn = () => {
     e.stopPropagation();
   };
 
-  // Check box terms
-  const handleAgreementChange = (e) => {
-    setAgreedToTerms(e.target.checked);
-  };
-
   const validateForm = async () => {
     setLoginError("");
     userNameBlur();
     PasswordBlur();
-
-    if (!agreedToTerms) {
-      alert(
-        "To continue logging in, you need to agree to our Terms of Use and Privacy Policy."
-      );
-      return;
-    }
-
     if (!userNameError && !passwordError && username && password) {
       try {
         const response = await AccountService.signin(account);
@@ -158,7 +145,7 @@ const SignIn = () => {
           onClick={handleContainerClick}
           onSubmit={(e) => {
             e.preventDefault();
-            // validateForm();
+            validateForm();
           }}
         >
           <div className="login-title">
@@ -201,12 +188,6 @@ const SignIn = () => {
             </div>
           </div>
 
-          {/* Check box */}
-          <div className="login-condition">
-            <input type="checkbox" onChange={handleAgreementChange} />
-            <p>By continuing, I agree to the terms of use & privacy policy</p>
-          </div>
-
           {/* Forgot password */}
           <div className="forgot-pass">
             <p className="">Forgot password?</p>
@@ -229,7 +210,7 @@ const SignIn = () => {
             )}
             {loginError && <p style={{ color: "red" }}>{loginError}</p>}
             <button
-              className="login-button"
+              className="login-form-button"
               type="button"
               onClick={validateForm}
             >

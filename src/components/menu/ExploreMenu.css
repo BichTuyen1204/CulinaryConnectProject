@@ -192,6 +192,12 @@
   .explore-menu-text {
     max-width: 100%;
   }
+  .explore-menu h4 {
+    font-size: 1.2em !important;
+  }
+  .explore-menu p {
+    font-size: 0.9em !important;
+  }
 }
 
 @media (max-width: 541px) {
@@ -226,15 +232,18 @@
 }
 
 @media (max-width: 416px) {
+  .explore-menu h4 {
+    font-size: 0.9em !important;
+  }
+  .explore-menu p {
+    font-size: 0.7em !important;
+  }
   .explore-menu {
     margin-top: -15px;
   }
-  .explore-menu h1 {
-    font-size: 0.9em;
-  }
   .explore-menu p {
     font-size: 0.7em;
-    margin-top: -20px;
+    margin-top: -25px;
   }
   .explore-menu-list {
     margin-top: -5px;
@@ -313,11 +322,11 @@
     padding: 10px !important;
   }
   .explore-menu h4 {
-    font-size: 1em;
+    font-size: 0.7em !important;
     margin-bottom: 2px !important;
   }
   .explore-menu p {
-    font-size: 0.6em;
+    font-size: 0.5em !important;
   }
   .explore-menu-list-item img {
     width: 30px;

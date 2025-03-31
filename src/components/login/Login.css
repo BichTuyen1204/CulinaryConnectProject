@@ -69,7 +69,7 @@
   position: absolute;
 }
 
-.login-container .login-button {
+.login-container .login-form-button {
   border: none;
   padding: 10px;
   border-radius: 4px;
@@ -119,7 +119,7 @@
 }
 
 .button-login button {
-  width: 100%;
+  width: 85%;
 }
 
 .button-login .login-button:hover {
