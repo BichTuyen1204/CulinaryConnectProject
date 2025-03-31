@@ -36,7 +36,7 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
   // Receive full name
   const NameChange = (e) => {
     const { value } = e.target;
-    const filteredValue = value.replace(/[^a-zA-Z]/g, "");
+    const filteredValue = value.replace(/[^a-zA-Z0-9]/g, "");
     setUserName(filteredValue);
     setAccount((preState) => ({ ...preState, username: filteredValue }));
   };

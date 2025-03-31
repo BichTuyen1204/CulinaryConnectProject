@@ -6,10 +6,9 @@ import React, {
   useState,
 } from "react";
 import "./ListProductSearchImg.css";
-import placeholderImage from "../../assets/image_food_menu.jpg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ProductService from "../../api/ProductService";
-import { useParams, useLocation, useNavigate, Link } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { CartContext } from "../../components/context/Context";
 import AccountService from "../../api/AccountService";
 
@@ -142,14 +141,14 @@ export const ListProductSearchImg = () => {
                   {product.available_quantity > 0 ? (
                     <Link to={`/food_detail/${product.id}`}>
                       <img
-                        src={product.image_url || placeholderImage}
+                        src={product.image_url}
                         alt={product.product_name}
                         className="menu-image"
                       />
                     </Link>
                   ) : (
                     <img
-                      src={product.image_url || placeholderImage}
+                      src={product.image_url}
                       alt={product.product_name}
                       className="menu-image"
                       style={{ cursor: "not-allowed", opacity: 0.5 }}

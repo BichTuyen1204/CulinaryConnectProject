@@ -14,13 +14,11 @@ import "swiper/css/pagination";
 import "swiper/css/thumbs";
 
 export const Food_detail = () => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { id } = useParams();
   const [product, setProduct] = useState({});
   const [username, setUserName] = useState("");
-  const [accountRole, setAccountRole] = useState("");
   const images = product.imagesUrl || [];
-  const jwtToken = useState(sessionStorage.getItem("jwtToken"));
+  const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
   const navigate = useNavigate();
   const { addToCart } = useContext(CartContext);
   const [popupAdd, setPopupAdd] = useState(false);
@@ -45,17 +43,16 @@ export const Food_detail = () => {
 
   useEffect(() => {
     const getAccount = async () => {
-      if (jwtToken !== "") {
+      if (!jwtToken) {
+        return;
+      } else {
         try {
           const response = await AccountService.account(jwtToken);
+          console.log(response);
           setUserName(response.username);
-          setAccountRole(response.role);
         } catch (error) {
           console.error("Error fetching account information:", error);
         }
-      } else {
-        setUserName("");
-        setAccountRole("");
       }
     };
     getAccount();
@@ -140,7 +137,7 @@ export const Food_detail = () => {
                               width: "80px",
                               height: "50px",
                               objectFit: "cover",
-                              borderRadius: "5px"
+                              borderRadius: "5px",
                             }}
                           />
                         </SwiperSlide>

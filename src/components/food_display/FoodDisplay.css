@@ -1,100 +1,290 @@
 .food-display {
-    margin-top: 30px;
+  margin-top: 30px;
+  border-radius: 15px;
 }
 
 .food-display h2 {
-    font-size: max(2vw, 1px);
-    font-weight: 600;
+  font-size: max(2vw, 1px);
+  font-weight: 600;
 }
 
 .food-display-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(150px,1fr));
-    margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  margin-top: 30px;
+  gap: 15px;
+  row-gap: 5px;
+}
+
+@media (max-width: 1281px) {
+  .food-display h2 {
+    font-size: 1.4em;
+    margin-top: -15px;
+  }
+  .food-display-list {
+    margin-top: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+  }
+}
+
+@media (max-width: 1065px) {
+  .food-display-list {
+    margin-top: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
     gap: 15px;
-    row-gap: 30px;
+  }
 }
 
-@media (max-width:1281px) {
-    .food-display h2 {
-        font-size: 1.4em;
-        margin-top: -15px;
-    } 
-    .food-display-list {
-        margin-top: 25px;
-        grid-template-columns: repeat(auto-fill,minmax(140px,1fr));
-        gap: 10px;
-    }
+@media (max-width: 1025px) {
+  .food-display {
+    padding: 24px 20px !important;
+  }
+  .food-display-list {
+    margin-top: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(117px, 1fr));
+    gap: 10px;
+  }
 }
 
-@media (max-width:1025px) {
-    .food-display h2 {
-        font-size: 1.2em;
-        margin-top: -15px;
-    } 
-    .food-display-list {
-        margin-top: 25px;
-        grid-template-columns: repeat(auto-fill,minmax(130px,1fr));
-        gap: 10px;
-    }
+@media (max-width: 893px) {
+  .food-display-list {
+    margin-top: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+    gap: 10px;
+  }
 }
 
-@media (max-width:821px) {
-    .food-display h2 {
-        font-size: 1.2em;
-        margin-top: -15px;
-    } 
-    .food-display-list {
-        margin-top: 25px;
-        grid-template-columns: repeat(auto-fill,minmax(130px,1fr));
-        gap: 10px;
-    }
+@media (max-width: 880px) {
+  .food-display-list {
+    margin-top: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(114px, 1fr));
+    gap: 10px;
+  }
 }
 
-@media (max-width:769px) {
-    .food-display h2 {
-        font-size: 1.2em;
-        margin-top: -15px;
-    } 
-    .food-display-list {
-        margin-top: 25px;
-        grid-template-columns: repeat(auto-fill,minmax(120px,1fr));
-        gap: 10px;
-    }
+@media (max-width: 821px) {
+  .food-display-list {
+    margin-top: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+    gap: 10px;
+  }
 }
 
-@media (max-width:541px) {
-    .food-display h2 {
-        font-size: 0.9em;
-        margin-top: -28px;
-    } 
-    .food-display-list {
-        margin-top: 15px;
-        grid-template-columns: repeat(auto-fill,minmax(110px,1fr));
-        gap: 5px;
-    }
+@media (max-width: 769px) {
+  .food-display-list {
+    margin-top: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+    gap: 10px;
+  }
 }
 
-@media (max-width:431px) {
-    .food-display h2 {
-        font-size: 0.7em;
-        margin-top: -28px;
-    } 
-    .food-display-list {
-        margin-top: 15px;
-        grid-template-columns: repeat(auto-fill,minmax(150px,1fr));
-        gap: 10px;
-    }
+@media (max-width: 733px) {
+  .food-display-list {
+    margin-top: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(111px, 1fr));
+    row-gap: 2px;
+  }
 }
 
-@media (max-width:376px) {
-    .food-display h2 {
-        font-size: 0.7em;
-        margin-top: -28px;
-    } 
-    .food-display-list {
-        margin-top: 15px;
-        grid-template-columns: repeat(auto-fill,minmax(100px,1fr));
-        gap: 3px;
-    }
+@media (max-width: 728px) {
+  .food-display-list {
+    grid-template-columns: repeat(auto-fill, minmax(109px, 1fr));
+  }
+}
+
+@media (max-width: 717px) {
+  .food-display {
+    margin-top: 10px;
+  }
+  .food-display-list {
+    grid-template-columns: repeat(auto-fill, minmax(106px, 1fr));
+  }
+}
+
+@media (max-width: 565px) {
+  .food-display h4 {
+    font-size: 1.2em !important;
+  }
+}
+
+@media (max-width: 457px) {
+  .food-display {
+    padding: 20px 10px !important;
+  }
+  .food-display-list {
+    grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+    gap: 10px;
+    row-gap: 2px;
+  }
+}
+
+@media (max-width: 431px) {
+  .food-display h2 {
+    font-size: 0.7em;
+    margin-top: -28px;
+  }
+  .food-display-list {
+    margin-top: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    row-gap: 1px;
+  }
+}
+
+@media (max-width: 420px) {
+  .food-display-list {
+    margin-top: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 9px;
+    row-gap: 1px;
+  }
+}
+
+@media (max-width: 416px) {
+  .food-display h4 {
+    font-size: 0.9em !important;
+  }
+  .food-display-list {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  }
+}
+
+@media (max-width: 388px) {
+  .food-display-list {
+    grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+  }
+}
+
+@media (max-width: 381px) {
+  .food-display-list {
+    padding: 0px 10px !important;
+    grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
+    gap: 10px;
+    row-gap: 1px;
+  }
+}
+
+@media (max-width: 377px) {
+  .food-display-list {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    row-gap: 1px;
+  }
+}
+
+@media (max-width: 350px) {
+  .food-display-list {
+    gap: 5px;
+    row-gap: 1px;
+  }
+}
+
+@media (max-width: 310px) {
+  .food-display-list {
+    padding: 0px !important;
+    gap: 10px;
+    row-gap: 1px !important;
+  }
+}
+
+@media (max-width: 295px) {
+  .food-display-list {
+    padding: 0px 15px !important;
+    gap: 18px;
+  }
+}
+
+@media (max-width: 266px) {
+  .food-display {
+    padding: 10px !important;
+  }
+  .food-display h4 {
+    font-size: 0.7em !important;
+  }
+}
+
+@media (max-width: 263px) {
+  .food-display-list {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 10px;
+    row-gap: 1px !important;
+  }
+  .food-display h4 {
+    margin-top: -5px;
+    margin-left: 8px;
+  }
+  .food-display {
+    padding: 20px 1px !important;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 234px) {
+  .food-display-list {
+    gap: 5px;
+  }
+}
+
+@media (max-width: 229px) {
+  .food-display-list {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    row-gap: 1px !important;
+  }
+}
+
+@media (max-width: 225px) {
+  .food-display-list {
+    padding: 5px !important;
+    margin-top: -5px !important;
+  }
+}
+
+@media (max-width: 218px) {
+  .food-display-list {
+    padding: 0px !important;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 5px;
+    row-gap: 1px !important;
+  }
+  .food-display h4 {
+    margin-top: -5px;
+    margin-left: 8px;
+  }
+  .food-display {
+    padding: 20px 1px !important;
+  }
+}
+
+@media (max-width: 197px) {
+  .food-display-list {
+    grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+  }
+}
+
+@media (max-width: 186px) {
+  .food-display-list {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  }
+}
+
+@media (max-width: 176px) {
+  .food-display-list {
+    grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+  }
+}
+
+@media (max-width: 165px) {
+  .food-display-list {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 5px;
+    row-gap: 1px !important;
+  }
+}
+
+@media (max-width: 155px) {
+  .food-display-list {
+    grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
+    gap: 4px;
+    row-gap: 1px !important;
+  }
 }

@@ -160,7 +160,7 @@
 }
 
 .chat-header-chef:hover {
-    background: linear-gradient(135deg, #19a3ff, #1976d2);
+  background: linear-gradient(135deg, #19a3ff, #1976d2);
 }
 
 .close-chat-chef {
@@ -270,4 +270,64 @@
 .ic-send-chef:hover {
   color: #0d47a1;
   transform: scale(1.2);
+}
+
+@media (max-width: 995px) {
+  .chat-chef-box {
+    width: 300px;
+    height: 400px;
+  }
+  .chat-header-chef {
+    padding: 5px 10px;
+    font-size: 0.8em;
+  }
+  .close-chat-chef {
+    font-size: 15px;
+  }
+  .message-chef.user {
+    padding: 10px !important;
+    font-size: 0.75em;
+  }
+  .message-chef.Bot {
+    padding: 10px !important;
+    font-size: 0.75em;
+  }
+  .chat-textarea-chef {
+    min-height: 30px;
+    max-height: 50px;
+    padding: 5px;
+    font-size: 0.75em;
+  }
+  .ic-send-chef {
+    width: 20px;
+  }
+}
+
+@media (max-width: 400px) {
+  .chat-chef-box {
+    width: 250px;
+    height: 330px;
+  }
+}
+
+@media (max-width: 330px) {
+  .chat-chef-box {
+    width: 200px;
+    height: 300px;
+  }
+  .chat-header-chef {
+    padding: 5px;
+    font-size: 0.7em;
+  }
+  .close-chat-chef {
+    font-size: 12px;
+  }
+  .role-chat-box-chef.user,
+  .role-chat-box-chef.Bot {
+    font-size: 0.7em;
+  }
+  .message-chef.user,
+  .message-chef.Bot {
+    font-size: 0.7em;
+  }
 }

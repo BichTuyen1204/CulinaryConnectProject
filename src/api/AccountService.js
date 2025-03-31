@@ -37,7 +37,6 @@ class AccountService {
 
   async forgotGetOTP(email) {
     try {
-      // Send the email as a query parameter in the URL
       const response = await axios.post(
         `${API_BASE_URL}/forgot/otp/get?email=${encodeURIComponent(email)}`
       );
@@ -45,15 +44,11 @@ class AccountService {
       return response.data;
     } catch (error) {
       console.error("Error during OTP request:", error);
-
-      // Check for specific error codes (500 in this case)
       if (error.response && error.response.status === 500) {
         alert("Invalid email. Please try again.");
       } else {
         alert("Error sending OTP. Please try again.");
       }
-
-      // Rethrow the error to propagate it further if necessary
       throw error;
     }
   }
@@ -226,7 +221,7 @@ class AccountService {
     }
   }
 
-  async updatePass(account) {
+  async updatePass(updatePassword) {
     try {
       const jwtToken = sessionStorage.getItem("jwtToken");
       if (!jwtToken) {
@@ -234,13 +229,15 @@ class AccountService {
       }
       const response = await axios.post(
         `${API_BASE_URL_2}/edit/password`,
-        account,
+        updatePassword,
         {
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${jwtToken}`,
           },
         }
       );
+      console.log("Update pass success", response);
       return response.data;
     } catch (error) {
       console.error(

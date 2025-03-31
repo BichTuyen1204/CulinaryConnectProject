@@ -1,17 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./FoodItem.css";
-import { Link, useNavigate } from "react-router-dom";
-import CartService from "../../api/CartService";
+import { Link } from "react-router-dom";
 import AccountService from "../../api/AccountService";
-import { CartContext } from "../context/Context";
 
 export const FoodItem = ({ product }) => {
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
   const [username, setUserName] = useState("");
-  const [accountRole, setAccountRole] = useState("");
-  const [popupAdd, setPopupAdd] = useState(false);
-  const navigate = useNavigate();
-  const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
     const getAccount = async () => {
@@ -50,6 +44,7 @@ export const FoodItem = ({ product }) => {
               />
               {product.availableQuantity === 0 && (
                 <div
+                  className="out-of-stock"
                   style={{
                     position: "absolute",
                     top: "30%",
@@ -86,27 +81,27 @@ export const FoodItem = ({ product }) => {
                   {product.salePercent > 0 ? (
                     <>
                       <span className="original-price">
-                        ${product.price.toFixed(2)}
+                        ${product.price.toFixed(1)}
                       </span>{" "}
                       <span className="discounted-price">
                         $
                         {(
                           product.price -
                           (product.price * product.salePercent) / 100
-                        ).toFixed(2)}
+                        ).toFixed(1)}
                       </span>
                     </>
                   ) : (
                     <>
-                    <span>${product.price.toFixed(2)}</span>
-                    <span className="discounted-price"></span>
+                      <span>${product.price.toFixed(1)}</span>
+                      <span className="discounted-price"></span>
                     </>
                   )}
                 </p>
               </p>
 
               {product.availableQuantity > 0 ? (
-                <p className="food-item-quantity">
+                <p className="food-item-quantity mt-2">
                   <strong className="link">Quantity: In stock</strong>
                 </p>
               ) : product.availableQuantity === 0 ? (
@@ -142,6 +137,7 @@ export const FoodItem = ({ product }) => {
             </div>
             {product.availableQuantity === 0 && (
               <div
+                className="out-of-stock"
                 style={{
                   position: "absolute",
                   top: "30%",
@@ -177,18 +173,18 @@ export const FoodItem = ({ product }) => {
                   {product.salePercent > 0 ? (
                     <>
                       <span className="original-price">
-                        ${product.price.toFixed(2)}
+                        ${product.price.toFixed(1)}
                       </span>{" "}
                       <span className="discounted-price">
                         $
                         {(
                           product.price -
                           (product.price * product.salePercent) / 100
-                        ).toFixed(2)}
+                        ).toFixed(1)}
                       </span>
                     </>
                   ) : (
-                    <span>${product.price.toFixed(2)}</span>
+                    <span>${product.price.toFixed(1)}</span>
                   )}
                 </p>
               </p>
