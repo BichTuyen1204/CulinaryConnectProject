@@ -106,7 +106,7 @@ export const EditProfile = () => {
 
   const UserNameChange = (e) => {
     let { value } = e.target;
-    value = value.replace(/[^a-zA-Z]/g, "");
+    value = value.replace(/[^a-zA-Z0-9]/g, "");
     setUsername(value);
     setUpdateInfo((preState) => ({ ...preState, username: value }));
     setFormSubmitted(false);
@@ -470,6 +470,7 @@ export const EditProfile = () => {
       setTimeout(() => {
         localStorage.removeItem("token");
         navigate("/sign_in");
+        window.location.reload();
         setFormSubmittedPass(false);
       }, 3000);
     } catch (error) {

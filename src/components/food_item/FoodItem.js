@@ -5,20 +5,8 @@ import AccountService from "../../api/AccountService";
 
 export const FoodItem = ({ product }) => {
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
-  const [username, setUserName] = useState("");
-
   useEffect(() => {
-    const getAccount = async () => {
-      if (jwtToken !== "") {
-        try {
-          const response = await AccountService.account(jwtToken);
-          setUserName(response.username);
-        } catch (error) {}
-      } else {
-        setUserName("");
-      }
-    };
-    getAccount();
+    console.log("Token from sessionStorage:", jwtToken);
   }, [jwtToken]);
 
   return (
@@ -33,7 +21,7 @@ export const FoodItem = ({ product }) => {
         pointerEvents: product.availableQuantity === 0 ? "none" : "auto",
       }}
     >
-      {username ? (
+      {jwtToken ? (
         <Link to={`/food_detail/${product.id}`}>
           <div>
             <div className="food-item-img-container">

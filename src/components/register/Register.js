@@ -49,6 +49,7 @@ const Register = () => {
     const filteredValue = value.replace(/[^a-zA-Z0-9]/g, "");
     setUserName(filteredValue);
     setAccount((preState) => ({ ...preState, username: filteredValue }));
+    setUserNameError("");
   };
 
   // Check full name
@@ -69,6 +70,7 @@ const Register = () => {
     const { value } = e.target;
     setEmail(value);
     setAccount((preState) => ({ ...preState, email: value }));
+    setEmailError("");
   };
 
   // Check email
@@ -103,6 +105,7 @@ const Register = () => {
     const { value } = e.target;
     setPhone(value);
     setAccount((preState) => ({ ...preState, phone: value }));
+    setPhoneError("");
   };
 
   // Check phone number
@@ -132,6 +135,7 @@ const Register = () => {
     const { value } = e.target;
     setPassword(value);
     setAccount((preState) => ({ ...preState, password: value }));
+    setPasswordError("");
   };
 
   // Check password
@@ -167,6 +171,7 @@ const Register = () => {
       setPasswordError("");
       setCheckPass(false);
     }
+    setRePasswordError("");
   };
 
   // Check re-password
