@@ -7,6 +7,8 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { IoCloseSharp } from "react-icons/io5";
 import AccountService from "../../api/AccountService";
+import { AiFillDelete } from "react-icons/ai";
+import { Pagination } from "react-bootstrap";
 
 const BlogDetail = () => {
   const { id } = useParams();
@@ -17,7 +19,7 @@ const BlogDetail = () => {
   const [newCommentReply, setNewCommentReply] = useState("");
   const [selectedId, setSelectedId] = useState(null);
   const [selectedIdReply, setSelectedIdReply] = useState(null);
-  const [comment, setComment] = useState([]);
+  const [comments, setComments] = useState([]);
   const jwtToken = sessionStorage.getItem("jwtToken");
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [popupDelete, setPopupDelete] = useState(false);
@@ -27,6 +29,19 @@ const BlogDetail = () => {
   const [replyList, setReplyList] = useState([]);
   const navigate = useNavigate();
   const [username, setUserName] = useState("");
+  const pageSizeBlogReply = 6;
+  const [totalPagesBlog, setTotalPagesBlog] = useState(1);
+  const [totalPagesBlogReply, setTotalPagesBlogReply] = useState(1);
+  const [replyingTo, setReplyingTo] = useState(null);
+  const [replyText, setReplyText] = useState("");
+  const [replies, setReplies] = useState({});
+  const [pageBlog, setPageBlog] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const pageSizeBlog = 50;
+  const pageBlogReply = 1;
+  const pageSizeBlogRepageBlogReply = 50;
+  const [commentVisibility, setCommentVisibility] = useState({});
+  const [showComments, setShowComments] = useState(true);
 
   useEffect(() => {
     if (!jwtToken) {
@@ -47,6 +62,12 @@ const BlogDetail = () => {
     }
   }, [jwtToken, navigate]);
 
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setPageBlog(pageNumber);
+    }
+  };
+
   const cancelDelete = () => {
     setPopupDelete(false);
   };
@@ -56,6 +77,7 @@ const BlogDetail = () => {
   };
 
   const openModal = (id) => {
+    console.log("ID của comment:", id);
     setSelectedId(id);
     setPopupDelete(true);
   };
@@ -65,16 +87,11 @@ const BlogDetail = () => {
     setPopupDeleteReply(true);
   };
 
-  const openInputReplyBig = (id) => {
-    setSelectedIdReply(selectedIdReply === id ? null : id);
-    setOpenInputReply(true);
-  };
-
   const deleteBlog = async (id) => {
     if (jwtToken) {
       try {
         await BlogService.deleteComment(id);
-        setComment((prevComment) =>
+        setComments((prevComment) =>
           prevComment.filter((comment) => comment.id !== id)
         );
         setPopupDelete(false);
@@ -89,16 +106,23 @@ const BlogDetail = () => {
   const deleteReply = async (id) => {
     if (jwtToken) {
       try {
+        console.log("Id will delete: ", id);
         await BlogService.deleteComment(id);
-        setReplyList((prevComment) => {
-          console.log(prevComment);
-          return Array.isArray(prevComment)
-            ? prevComment.filter((comment) => comment.id !== id)
-            : [];
+        setReplies((prevReplies) => {
+          const updatedReplies = Object.keys(prevReplies).reduce(
+            (acc, commentId) => {
+              acc[commentId] = prevReplies[commentId].filter(
+                (reply) => reply.id !== id
+              );
+              return acc;
+            },
+            {}
+          );
+          return updatedReplies;
         });
         setPopupDeleteReply(false);
       } catch (error) {
-        console.error("Failed to delete comment:", error.message);
+        console.error("Failed to delete reply:", error.message);
       }
     } else {
       return;
@@ -106,73 +130,141 @@ const BlogDetail = () => {
   };
 
   const getBlogDetail = async (id) => {
+    if (!jwtToken) {
+      navigate("/sign-in");
+      return;
+    }
     try {
       const responseBlog = await BlogService.getBlogDetail(id);
       setBlogDetail(responseBlog);
-
-      const responseComment = await BlogService.getAllComment(id);
-      console.log(responseComment);
-      const sortedComments = responseComment.sort(
-        (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
-      );
-      setComment(sortedComments);
-      const commentImagesObj = {};
-      sortedComments.forEach((comment) => {
-        commentImagesObj[comment.id] = comment.profilePicture || "";
-      });
-
-      setCommentImages(commentImagesObj);
     } catch (error) {
       console.error("Fail load data:", error);
     }
   };
 
-  const toggleReplyList = (blogId, commentId) => {
-    setOpenReplyList((prev) => {
-      const isOpen = !prev[commentId];
-      if (isOpen && !replyList[commentId]) {
-        getReply(blogId, commentId);
-      }
-      return { ...prev, [commentId]: isOpen };
-    });
-  };
-
-  const getReply = async (blogId, commentId) => {
+  const getAllComment = async (id) => {
+    if (!jwtToken) {
+      navigate("/sign-in");
+      return;
+    }
     try {
-      const response = await BlogService.getBlogReply(blogId, commentId);
-      const sortedCommentsReply = response.sort(
-        (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+      const responseComment = await BlogService.getAllComment(
+        id,
+        pageBlog,
+        pageSizeBlog
       );
+      if (responseComment?.content?.length > 0) {
+        const formattedComments = responseComment.content.map((item) => ({
+          id: item.comment.id,
+          accountName: item.comment.accountName,
+          profilePicture: item.comment.profilePicture,
+          timestamp: item.comment.timestamp,
+          comment: item.comment.comment,
+          replyAmount: item.replyAmount,
+        }));
 
-      setReplyList((prevReplies) => ({
-        ...prevReplies,
-        [commentId]: sortedCommentsReply,
-      }));
-
-      const commentImagesReply = {};
-      sortedCommentsReply.forEach((reply) => {
-        commentImagesReply[reply.id] = reply.profilePicture || "";
-      });
-      setImgUser((prevImages) => ({
-        ...prevImages,
-        ...commentImagesReply,
-      }));
+        setComments(formattedComments);
+        setTotalPages(responseComment.totalPage || 1)
+      } else {
+        console.error("Lỗi: responseComment không có content");
+      }
     } catch (error) {
-      console.error("Fail load data:", error);
+      console.error("Lỗi khi tải bình luận:", error);
     }
   };
 
   useEffect(() => {
-    if (id) getReply(id);
-  }, [id]);
+    if (id) {
+      getAllComment(id);
+    }
+  }, [id, pageBlog]);
+
+  const getReplies = async (blogId, commentId) => {
+    try {
+      const response = await BlogService.getBlogReply(
+        blogId,
+        commentId,
+        pageBlogReply,
+        pageSizeBlog
+      );
+      console.log("API response:", response);
+      if (response.content && response.content.length > 0) {
+        const formattedReplies = response.content.map((item) => ({
+          id: item.comment.id,
+          accountName: item.comment.accountName,
+          profilePicture: item.comment.profilePicture,
+          timestamp: item.comment.timestamp,
+          comment: item.comment.comment,
+          replyAmount: item.replyAmount,
+        }));
+
+        setReplies((prevReplies) => ({
+          ...prevReplies,
+          [commentId]: formattedReplies,
+        }));
+      } else {
+        console.error("Lỗi: Không có nội dung trong API response");
+      }
+    } catch (error) {
+      console.error("Lỗi khi tải phản hồi:", error);
+    }
+  };
 
   useEffect(() => {
-    if (id) getReply(id);
-  }, [id, selectedIdReply]);
+    console.log("Replies state updated:", replies);
+  }, [replies]);
+
+  const toggleReplyInput = (commentId) => {
+    setReplyingTo(replyingTo === commentId ? null : commentId);
+    setReplyText("");
+  };
+
+  const handleReplyClick = (commentId) => {
+    setReplyingTo(commentId);
+    setReplyText("");
+  };
+
+  const addReplyHandler = async () => {
+    if (!replyText.trim()) return;
+    const newReply = {
+      id: Date.now(),
+      accountName: "Current User",
+      profilePicture: "https://example.com/avatar.jpg",
+      timestamp: new Date().toISOString(),
+      comment: replyText,
+      replyAmount: 0,
+    };
+    setReplies((prevReplies) => ({
+      ...prevReplies,
+      [replyingTo]: [...(prevReplies[replyingTo] || []), newReply],
+    }));
+    try {
+      await BlogService.replyComment(id, replyingTo, replyText);
+      console.log("Reply success");
+      getReplies(id, replyingTo);
+    } catch (error) {
+      console.error("Lỗi khi thêm phản hồi:", error);
+    } finally {
+      setReplyText("");
+      setReplyingTo(null);
+    }
+  };
+
+  const toggleReplies = (commentId) => {
+    if (!commentVisibility[commentId] && !replies[commentId]) {
+      getReplies(id, commentId);
+    }
+    setCommentVisibility((prevVisibility) => ({
+      ...prevVisibility,
+      [commentId]: !prevVisibility[commentId],
+    }));
+  };
 
   useEffect(() => {
     if (id) {
       getBlogDetail(id);
+      getAllComment(id);
+
       const savedBookmarks =
         JSON.parse(localStorage.getItem("bookmarks")) || {};
       setIsBookmarked(savedBookmarks[id] || false);
@@ -181,91 +273,32 @@ const BlogDetail = () => {
     }
   }, [id]);
 
-  useEffect(() => {
-    const savedBookmarks = JSON.parse(localStorage.getItem("bookmarks")) || {};
-    setIsBookmarked(savedBookmarks[id] || false);
-  }, [id]);
-
-  const newCommentChange = (e) => {
-    const { value } = e.target;
-    setNewComment(value);
+  const newCommentChange = (event) => {
+    setNewComment(event.target.value);
   };
 
-  const newReply = (e) => {
-    const { value } = e.target;
-    setNewCommentReply(value);
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
+  const handleKeyDown = async (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      addComment(e);
+      await addCommentHandler();
     }
   };
 
-  const handleKeyDownReply = (e) => {
-    if (e.key === "Enter") {
+  const handleKeyDownReply = async (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      replyComment(e);
+      await addReplyHandler();
     }
   };
 
-  const addComment = async (e) => {
-    e.preventDefault();
-    if (newComment.trim() === "") {
-      alert("Please comment before submit");
-      return;
-    } else {
-      console.log("postId:", id);
-      console.log("Comment:", newComment);
-      try {
-        const response = await BlogService.addComment(id, newComment);
-        const saveDataCommentAdded = [...comment, response];
-        const sortedComments = [...saveDataCommentAdded].sort((a, b) => {
-          return new Date(b.timestamp) - new Date(a.timestamp);
-        });
-        setComment(sortedComments);
-        setCommentImages((prevImages) => ({
-          ...prevImages,
-          [response.id]: response.profilePicture || "",
-        }));
-        setNewComment("");
-      } catch (error) {
-        console.error("Can not add comment", error.response.data.detail);
-      }
-    }
-  };
-
-  const replyComment = async (e) => {
-    e.preventDefault();
-    if (newCommentReply.trim() === "") {
-      alert("Please comment before submit");
-      return;
-    }
+  const addCommentHandler = async () => {
+    if (!newComment.trim()) return;
     try {
-      const response = await BlogService.replyComment(
-        id,
-        selectedIdReply,
-        newCommentReply
-      );
-
-      setReplyList((prevReplies) => ({
-        ...prevReplies,
-        [selectedIdReply]: [response, ...(prevReplies[selectedIdReply] || [])],
-      }));
-
-      setImgUser((prevImages) => ({
-        ...prevImages,
-        [response.id]: response.profilePicture || "",
-      }));
-
-      setNewCommentReply("");
-      setOpenInputReply(false);
+      await BlogService.addComment(id, newComment);
+      setNewComment("");
+      getAllComment(id);
     } catch (error) {
-      console.error(
-        "Can not reply comment",
-        error?.response?.data?.detail || error
-      );
+      console.error("Lỗi khi thêm bình luận:", error);
     }
   };
 
@@ -275,6 +308,7 @@ const BlogDetail = () => {
         <Link to="/blog" className="p-5">
           <IoArrowBackOutline className="ic_back mt-3" />
         </Link>
+        {/* Show blog start*/}
         {blogDetail.blog && (
           <div className="blog-detail">
             <div className="blog-header">
@@ -361,16 +395,18 @@ const BlogDetail = () => {
             </aside>
           </div>
         )}
+        {/* Show blog end*/}
       </div>
 
-      <div className="container-bg px-3 col-12 mt-3">
+      {/* Comment start */}
+      <div className="container-bg px-3 col-12 py-5">
         <div className="comment-section mt-1">
           <div style={{ marginBottom: "-15px" }}>
             <p className="pt-3">
               <strong>Comments:</strong>
             </p>
           </div>
-          {/* Khung nhập ý kiến */}
+          {/* Chat comment big start */}
           <div className="comment-input">
             <textarea
               placeholder="Share your opinion"
@@ -380,179 +416,447 @@ const BlogDetail = () => {
               onChange={newCommentChange}
               onKeyDown={handleKeyDown}
             />
-            <button className="send-opinion" onClick={addComment}>
+            <button className="send-opinion" onClick={addCommentHandler}>
               Send
             </button>
           </div>
 
-          {/* Tabs lọc bình luận */}
+          {/* Chat comment big end */}
+
+          {/* Header comment start */}
           <div className="comment-tabs">
             <span>Newest Comments</span>
           </div>
+          {/* Header comment end */}
 
           {/* List comment start */}
-          {comment.some((c) => c.accountName !== null) ? (
-            <div className="comment-list pb-5">
-              {comment.map((comments, index) =>
-                comments.accountName !== null ? (
+          <div>
+            {comments.length > 0 ? (
+              comments
+                .filter((comment) => comment.accountName)
+                .map((comment, index) => (
                   <div className="comment-item col-12" key={index}>
-                    <div className="comment-header col-12">
-                      <img
-                        className="comment-avatar"
-                        src={
-                          commentImages[comments.id]?.trim()
-                            ? commentImages[comments.id]
-                            : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
-                        }
-                        alt="Avatar"
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src =
-                            "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg";
-                        }}
-                      />
-
-                      <span className="comment-user col-8 mt-1">
-                        {comments.accountName}
-                      </span>
-                      <span className="comment-time col-3 mt-1 d-flex justify-content-end">
-                        {new Date(comments.timestamp).toLocaleString()}
-                      </span>
-                    </div>
-
-                    <div className="comment-info col-12 mx-5">
-                      {comments.comment}
-                    </div>
-
-                    <div className="d-flex">
-                      <div className="d-flex mx-4">
-                        <div className="button-show">
-                          <button
-                            className="show-reply"
-                            style={{
-                              fontWeight: "450",
-                              fontSize: "0.9em",
-                              marginLeft: "15px",
-                            }}
-                            onClick={() => toggleReplyList(id, comments.id)}
-                          >
-                            {openReplyList[comments.id]
-                              ? "Hide comments"
-                              : "Show comments"}
-                          </button>
-                        </div>
-
-                        <div className="button-show">
-                          <button
-                            className="reply"
-                            style={{
-                              fontWeight: "450",
-                              fontSize: "0.9em",
-                              marginLeft: "15px",
-                            }}
-                            onClick={() => openInputReplyBig(comments.id)}
-                          >
-                            Reply
-                          </button>
-                        </div>
+                    <div>
+                      <div className="comment-header col-12">
+                        <img
+                          className="comment-avatar"
+                          src={
+                            comment.profilePicture?.trim()
+                              ? comment.profilePicture
+                              : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
+                          }
+                          alt="Avatar"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src =
+                              "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg";
+                          }}
+                        />
+                        <span className="comment-user col-8 mt-1">
+                          {comment.accountName}
+                        </span>
+                        <span className="comment-time col-3 mt-1 d-flex justify-content-end">
+                          {new Date(comment.timestamp).toLocaleString()}
+                        </span>
+                      </div>
+                      <div className="comment-info col-12 px-5">
+                        {comment.comment ? comment.comment : "No content"}
                       </div>
 
-                      {username === comments.accountName && (
-                        <RiDeleteBin6Line
-                          className="ic-delete ms-auto"
-                          onClick={() => openModal(comments.id)}
-                        />
+                      <div className="d-flex">
+                        {comment.replyAmount > 0 && (
+                          <p
+                            className="view-replies"
+                            onClick={() => {
+                              if (!commentVisibility[comment.id]) {
+                                getReplies(id, comment.id);
+                              }
+                              toggleReplies(comment.id);
+                            }}
+                          >
+                            {commentVisibility[comment.id]
+                              ? `Hide replies (${
+                                  (replies[comment.id] || []).filter(
+                                    (reply) => reply.accountName
+                                  ).length
+                                })`
+                              : `View replies (${
+                                  (replies[comment.id] || []).filter(
+                                    (reply) => reply.accountName
+                                  ).length
+                                })`}
+                          </p>
+                        )}
+
+                        {/* Nút Reply */}
+                        <p
+                          className="view-replies"
+                          onClick={() =>
+                            setReplyingTo((prev) =>
+                              prev === comment.id ? null : comment.id
+                            )
+                          }
+                        >
+                          Reply
+                        </p>
+                        {comment.accountName === username ? (
+                          <AiFillDelete
+                            className="icon-delete"
+                            onClick={() => openModal(comment.id)}
+                          />
+                        ) : null}
+                      </div>
+
+                      {/* Ô nhập phản hồi */}
+                      {replyingTo === comment.id && (
+                        <div className="comment-input">
+                          <textarea
+                            placeholder="Share your opinion..."
+                            className="mt-4"
+                            value={replyText}
+                            onChange={(e) => setReplyText(e.target.value)}
+                            onKeyDown={handleKeyDownReply}
+                          />
+                          <button
+                            className="send-opinion"
+                            onClick={addReplyHandler}
+                          >
+                            Send
+                          </button>
+                        </div>
                       )}
                     </div>
 
-                    {openReplyList[comments.id] && (
-                      <div className="reply-list">
-                        {replyList[comments.id]?.length > 0 ? (
-                          replyList[comments.id].some(
-                            (reply) => reply.accountName !== null
-                          ) ? (
-                            replyList[comments.id].map((reply) =>
-                              reply.accountName !== null ? (
-                                <div key={reply.id} className="reply-item my-3">
-                                  <div className="reply-header">
-                                    <img
-                                      className="reply-avatar"
-                                      src={
-                                        imgUser[reply.id]?.trim()
-                                          ? imgUser[reply.id]
-                                          : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
-                                      }
-                                      alt="Avatar"
-                                      onError={(e) => {
-                                        e.target.onerror = null;
-                                        e.target.src =
-                                          "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg";
-                                      }}
-                                    />
-                                    <span className="reply-user">
-                                      {reply.accountName}
-                                    </span>
-                                    <span className="reply-time">
-                                      {new Date(
-                                        reply.timestamp
-                                      ).toLocaleString()}
-                                    </span>
-                                  </div>
-                                  <div className="d-flex">
-                                    <p className="reply-content">
-                                      {reply.comment}
-                                    </p>
-                                    {username === reply.accountName && (
-                                      <RiDeleteBin6Line
-                                        className="ic-delete ms-auto"
-                                        onClick={() => openModalReply(reply.id)}
-                                      />
-                                    )}
-                                  </div>
-                                </div>
-                              ) : null
-                            )
-                          ) : (
-                            <p className="no-reply">No reply comment</p>
-                          )
-                        ) : (
-                          <p className="no-reply">No reply comment</p>
-                        )}
-                      </div>
-                    )}
+                    {/* Hiển thị danh sách phản hồi reply */}
+                    {commentVisibility[comment.id] &&
+                      replies[comment.id]?.length > 0 && (
+                        <div className="replies-list col-12 mx-5 mt-2">
+                          {replies[comment.id]
+                            .filter((reply) => reply.accountName)
+                            .map((reply, replyIndex) => (
+                              <div
+                                className="reply-item"
+                                key={reply.id || replyIndex}
+                              >
+                                <img
+                                  className="reply-avatar-reply"
+                                  src={
+                                    reply.profilePicture?.trim()
+                                      ? reply.profilePicture
+                                      : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
+                                  }
+                                  alt="Reply Avatar"
+                                />
+                                <span className="reply-user-reply">
+                                  {reply.accountName || ""}:
+                                </span>
+                                <span className="reply-time-reply">
+                                  {new Date(reply.timestamp).toLocaleString()}
+                                </span>
+                                <p className="reply-text-reply">
+                                  {reply.comment || "No content"}
+                                </p>
 
-                    {openInputReply && (
-                      <>
-                        {selectedIdReply === comments.id && (
-                          <div className="comment-input input-reply">
-                            <textarea
-                              placeholder="Share your opinion"
-                              id="comment"
-                              className="mt-4"
-                              value={newCommentReply}
-                              onChange={newReply}
-                              onKeyDown={handleKeyDownReply}
-                            />
-                            <button
-                              className="send-opinion"
-                              onClick={replyComment}
-                            >
-                              Send
-                            </button>
-                          </div>
-                        )}
-                      </>
-                    )}
+                                {/* Nút hiển thị/ẩn phản hồi */}
+                                <div className="d-flex">
+                                  {reply.replyAmount > 0 && (
+                                    <p
+                                      className="view-replies"
+                                      onClick={() => {
+                                        if (!commentVisibility[reply.id]) {
+                                          getReplies(id, reply.id);
+                                        }
+                                        toggleReplies(reply.id);
+                                      }}
+                                    >
+                                      {commentVisibility[reply.id]
+                                        ? `Hide replies (${
+                                            (replies[reply.id] || []).filter(
+                                              (superReply) =>
+                                                superReply.accountName
+                                            ).length
+                                          })`
+                                        : `View replies (${
+                                            (replies[reply.id] || []).filter(
+                                              (superReply) =>
+                                                superReply.accountName
+                                            ).length
+                                          })`}
+                                    </p>
+                                  )}
+
+                                  {/* Nút Reply cho reply */}
+                                  <p
+                                    className="view-replies"
+                                    onClick={() =>
+                                      setReplyingTo((prev) =>
+                                        prev === reply.id ? null : reply.id
+                                      )
+                                    }
+                                  >
+                                    Reply
+                                  </p>
+                                  {reply.accountName === username ? (
+                                    <AiFillDelete
+                                      className="icon-delete-reply"
+                                      onClick={() => openModalReply(reply.id)}
+                                    />
+                                  ) : null}
+                                </div>
+                                {/* Ô nhập phản hồi cho reply */}
+                                {replyingTo === reply.id && (
+                                  <div className="comment-input-reply">
+                                    <textarea
+                                      placeholder="Share your opinion..."
+                                      value={replyText}
+                                      className="mt-4"
+                                      onChange={(e) =>
+                                        setReplyText(e.target.value)
+                                      }
+                                      onKeyDown={handleKeyDownReply}
+                                    />
+                                    <button
+                                      className="send-opinion"
+                                      onClick={() => addReplyHandler(reply.id)}
+                                    >
+                                      Send
+                                    </button>
+                                  </div>
+                                )}
+
+                                {/* Hiển thị danh sách phản hồi supper reply */}
+                                {commentVisibility[reply.id] &&
+                                  replies[reply.id]?.length > 0 && (
+                                    <div className="replies-list col-11 mx-5 mt-2">
+                                      {replies[reply.id]
+                                        .filter(
+                                          (superReply) => superReply.accountName
+                                        )
+                                        .map((superReply, supperReplyIndex) => (
+                                          <div
+                                            className="reply-item"
+                                            key={
+                                              superReply.id || supperReplyIndex
+                                            }
+                                          >
+                                            <img
+                                              className="reply-avatar-reply"
+                                              src={
+                                                superReply.profilePicture?.trim()
+                                                  ? superReply.profilePicture
+                                                  : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
+                                              }
+                                              alt="Reply Avatar"
+                                            />
+                                            <span className="reply-user-reply">
+                                              {superReply.accountName || ""}:
+                                            </span>
+                                            <span className="reply-time-reply">
+                                              {new Date(
+                                                superReply.timestamp
+                                              ).toLocaleString()}
+                                            </span>
+                                            <p className="reply-text-reply">
+                                              {superReply.comment ||
+                                                "No content"}
+                                            </p>
+
+                                            {/* Nút hiển thị/ẩn phản hồi */}
+                                            <div className="d-flex">
+                                              {superReply.replyAmount > 0 && (
+                                                <p
+                                                  className="view-replies"
+                                                  onClick={() => {
+                                                    if (
+                                                      !commentVisibility[
+                                                        superReply.id
+                                                      ]
+                                                    ) {
+                                                      getReplies(
+                                                        id,
+                                                        superReply.id
+                                                      );
+                                                    }
+                                                    toggleReplies(
+                                                      superReply.id
+                                                    );
+                                                  }}
+                                                >
+                                                  {commentVisibility[
+                                                    superReply.id
+                                                  ]
+                                                    ? `Hide replies (${
+                                                        (
+                                                          replies[
+                                                            superReply.id
+                                                          ] || []
+                                                        ).filter(
+                                                          (superReplySmall) =>
+                                                            superReplySmall.accountName
+                                                        ).length
+                                                      })`
+                                                    : `View replies (${
+                                                        (
+                                                          replies[
+                                                            superReply.id
+                                                          ] || []
+                                                        ).filter(
+                                                          (superReplySmall) =>
+                                                            superReplySmall.accountName
+                                                        ).length
+                                                      })`}
+                                                </p>
+                                              )}
+
+                                              {/* Nút Reply cho reply */}
+                                              <p
+                                                className="view-replies"
+                                                onClick={() =>
+                                                  setReplyingTo((prev) =>
+                                                    prev === superReply.id
+                                                      ? null
+                                                      : superReply.id
+                                                  )
+                                                }
+                                              >
+                                                Reply
+                                              </p>
+                                              {superReply.accountName ===
+                                              username ? (
+                                                <AiFillDelete
+                                                  className="icon-delete-reply"
+                                                  onClick={() =>
+                                                    openModalReply(
+                                                      superReply.id
+                                                    )
+                                                  }
+                                                />
+                                              ) : null}
+                                            </div>
+
+                                            {/* Ô nhập phản hồi cho reply */}
+                                            {replyingTo === superReply.id && (
+                                              <div className="comment-input-reply">
+                                                <textarea
+                                                  placeholder="Share your opinion..."
+                                                  value={replyText}
+                                                  className="mt-4"
+                                                  onChange={(e) =>
+                                                    setReplyText(e.target.value)
+                                                  }
+                                                  onKeyDown={handleKeyDownReply}
+                                                />
+                                                <button
+                                                  className="btn btn-success"
+                                                  onClick={() =>
+                                                    addReplyHandler(
+                                                      superReply.id
+                                                    )
+                                                  }
+                                                >
+                                                  Send
+                                                </button>
+                                              </div>
+                                            )}
+
+                                            {/* Hiển thị danh sách phản hồi supper supper reply */}
+                                            {commentVisibility[superReply.id] &&
+                                              replies[superReply.id] &&
+                                              replies[superReply.id].length >
+                                                0 && (
+                                                <div className="replies-list col-11 mx-5 mt-2">
+                                                  {replies[superReply.id]
+                                                    .filter(
+                                                      (superReplySmall) =>
+                                                        superReplySmall.accountName
+                                                    )
+                                                    .map(
+                                                      (
+                                                        superReplySmall,
+                                                        index
+                                                      ) => (
+                                                        <div
+                                                          className="reply-item"
+                                                          key={
+                                                            superReplySmall.id ||
+                                                            index
+                                                          }
+                                                        >
+                                                          <img
+                                                            className="reply-avatar-reply"
+                                                            src={
+                                                              superReplySmall.profilePicture?.trim()
+                                                                ? superReplySmall.profilePicture
+                                                                : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
+                                                            }
+                                                            alt="Reply Avatar"
+                                                          />
+                                                          <span className="reply-user-reply">
+                                                            {superReplySmall.accountName ||
+                                                              ""}
+                                                          </span>
+                                                          <span className="reply-time-reply">
+                                                            {new Date(
+                                                              superReplySmall.timestamp
+                                                            ).toLocaleString()}
+                                                          </span>
+                                                          <p className="reply-text-reply d-flex">
+                                                            {superReplySmall.comment ||
+                                                              "No content"}
+                                                            {/* Nút Reply cho reply */}
+                                                            <p className="view-replies"></p>
+                                                            {superReplySmall.accountName ===
+                                                            username ? (
+                                                              <AiFillDelete
+                                                                className="icon-delete-reply ms-auto"
+                                                                onClick={() =>
+                                                                  openModalReply(
+                                                                    superReplySmall.id
+                                                                  )
+                                                                }
+                                                              />
+                                                            ) : null}
+                                                          </p>
+                                                        </div>
+                                                      )
+                                                    )}
+                                                </div>
+                                              )}
+                                          </div>
+                                        ))}
+                                    </div>
+                                  )}
+                              </div>
+                            ))}
+                        </div>
+                      )}
                   </div>
-                ) : (
-                  <div key={index}></div>
-                )
-              )}
-            </div>
-          ) : (
-            <div></div>
-          )}
-          {/* List comment end */}
+                ))
+            ) : (
+              <p>No comments</p>
+            )}
+          </div>
+          <div style={{marginLeft: "55px"}} className="pagination-container-card mt-4">
+            <Pagination className="custom-pagination-card">
+              <Pagination.Prev
+                onClick={() => handlePageChange(pageBlog - 1)}
+                disabled={pageBlog === 1}
+              />
+              {[...Array(totalPages)].map((_, index) => (
+                <Pagination.Item
+                  key={index}
+                  active={index + 1 === pageBlog}
+                  onClick={() => handlePageChange(index + 1)}
+                >
+                  {index + 1}
+                </Pagination.Item>
+              ))}
+              <Pagination.Next
+                onClick={() => handlePageChange(pageBlog + 1)}
+                disabled={pageBlog === totalPages}
+              />
+            </Pagination>
+          </div>
 
           {popupDeleteReply && (
             <>
@@ -794,6 +1098,7 @@ const BlogDetail = () => {
           {/* Popup delete end */}
         </div>
       </div>
+      {/* Comment end */}
     </div>
   );
 };

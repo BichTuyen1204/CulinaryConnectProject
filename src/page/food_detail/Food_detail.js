@@ -12,6 +12,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/thumbs";
+import ReactMarkdown from "react-markdown";
 
 export const Food_detail = () => {
   const { id } = useParams();
@@ -35,7 +36,7 @@ export const Food_detail = () => {
   useEffect(() => {
     if (id) {
       getDataDetail(id);
-      window.scrollTo(1, 0);
+      // window.scrollTo(1, 0);
     } else {
       console.error("ID is undefined");
     }
@@ -190,7 +191,7 @@ export const Food_detail = () => {
                         <div className="d-flex gap-10 align-items-center my-2">
                           <h3 className="product-heading">Weight: </h3>
                           <p className="product-data">
-                            {product.infos?.weight}
+                            {product.infos?.weight} gam
                           </p>
                         </div>
 
@@ -199,7 +200,7 @@ export const Food_detail = () => {
                             Days Before Expiry:{" "}
                           </h3>
                           <p className="product-data">
-                            {product.daysBeforeExpiry}
+                            {product.daysBeforeExpiry} days
                           </p>
                         </div>
 
@@ -267,10 +268,12 @@ export const Food_detail = () => {
 
                 {/* Information about product */}
                 <div className="mt-5">
-                  <p style={{ fontWeight: "500", fontSize: "1.2em" }}>
-                    INFORMATION OF PRODUCT
+                  <p style={{ fontSize: "1.2em" }}>
+                    <strong>INFORMATION OF PRODUCT</strong>
                   </p>
-                  <p className="px-2">{product.description}</p>
+                  <p style={{ fontSize: "0.9em" }} className="px-4">
+                    {product.description}
+                  </p>
                 </div>
 
                 <div className="product-table-container">
@@ -282,87 +285,200 @@ export const Food_detail = () => {
                       alignItems: "center",
                     }}
                   >
-                    <table
+                    {product && product.infos && (
+                      <table
+                        style={{
+                          width: "100%",
+                          borderCollapse: "collapse",
+                          border: "1px solid #ddd",
+                        }}
+                      >
+                        <tbody>
+                          {product.name && (
+                            <tr style={{ border: "1px solid #ddd" }}>
+                              <td
+                                className="bg-for-des-pro"
+                                style={{
+                                  width: "20%",
+                                  padding: "5px 15px",
+                                  border: "1px solid #ddd",
+                                }}
+                              >
+                                <strong style={{ fontSize: "0.9em" }}>
+                                  Name of product
+                                </strong>
+                              </td>
+                              <td
+                                className="text-description"
+                                style={{
+                                  padding: "12px 15px",
+                                  border: "1px solid #ddd",
+                                  width: "80%",
+                                }}
+                              >
+                                {product.name}
+                              </td>
+                            </tr>
+                          )}
+
+                          {product.productTypes && (
+                            <tr style={{ border: "1px solid #ddd" }}>
+                              <td
+                                className="bg-for-des-pro"
+                                style={{
+                                  padding: "12px 15px",
+                                  border: "1px solid #ddd",
+                                }}
+                              >
+                                <strong className="text-description">
+                                  Category
+                                </strong>
+                              </td>
+                              <td
+                                className="text-description"
+                                style={{
+                                  padding: "12px 15px",
+                                  border: "1px solid #ddd",
+                                }}
+                              >
+                                {product.productTypes}
+                              </td>
+                            </tr>
+                          )}
+
+                          {product.daysBeforeExpiry && (
+                            <tr style={{ border: "1px solid #ddd" }}>
+                              <td
+                                className="bg-for-des-pro"
+                                style={{
+                                  padding: "12px 15px",
+                                  border: "1px solid #ddd",
+                                }}
+                              >
+                                <strong className="text-description">
+                                  Expiry date
+                                </strong>
+                              </td>
+                              <td
+                                className="text-description"
+                                style={{
+                                  padding: "12px 15px",
+                                  border: "1px solid #ddd",
+                                }}
+                              >
+                                {product.daysBeforeExpiry} days
+                              </td>
+                            </tr>
+                          )}
+
+                          {product.infos?.weight && (
+                            <tr style={{ border: "1px solid #ddd" }}>
+                              <td
+                                className="bg-for-des-pro"
+                                style={{
+                                  padding: "12px 15px",
+                                  border: "1px solid #ddd",
+                                }}
+                              >
+                                <strong className="text-description">
+                                  Weight
+                                </strong>
+                              </td>
+                              <td
+                                className="text-description"
+                                style={{
+                                  padding: "12px 15px",
+                                  border: "1px solid #ddd",
+                                }}
+                              >
+                                {product.infos.weight} gam
+                              </td>
+                            </tr>
+                          )}
+
+                          {product.infos?.storage_instructions && (
+                            <tr style={{ border: "1px solid #ddd" }}>
+                              <td
+                                className="bg-for-des-pro"
+                                style={{
+                                  padding: "12px 15px",
+                                  border: "1px solid #ddd",
+                                }}
+                              >
+                                <strong className="text-description">
+                                  Storage instructions
+                                </strong>
+                              </td>
+                              <td
+                                className="text-description"
+                                style={{
+                                  padding: "12px 15px",
+                                  border: "1px solid #ddd",
+                                }}
+                              >
+                                {product.infos.storage_instructions}
+                              </td>
+                            </tr>
+                          )}
+
+                          {product.infos?.made_in && (
+                            <tr style={{ border: "1px solid #ddd" }}>
+                              <td
+                                className="bg-for-des-pro"
+                                style={{
+                                  padding: "12px 15px",
+                                  border: "1px solid #ddd",
+                                }}
+                              >
+                                <strong className="text-description">
+                                  Made in
+                                </strong>
+                              </td>
+                              <td
+                                className="text-description"
+                                style={{
+                                  padding: "12px 15px",
+                                  border: "1px solid #ddd",
+                                }}
+                              >
+                                {product.infos.made_in}
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+
+                  {/* article */}
+                  <div>
+                    <p
                       style={{
-                        width: "100%",
-                        borderCollapse: "collapse",
-                        border: "1px solid #ddd",
+                        textTransform: "uppercase",
+                        wordSpacing: "10px",
+                        fontSize: "1.2em",
+                        marginTop: "55px",
                       }}
                     >
-                      <tbody>
-                        <tr style={{ border: "1px solid #ddd" }}>
-                          <td
-                            className="bg-for-des-pro"
-                            style={{
-                              width: "20%",
-                              padding: "5px 15px",
-                              border: "1px solid #ddd",
-                            }}
-                          >
-                            <strong style={{ fontSize: "0.9em" }}>
-                              Name of product
-                            </strong>
-                          </td>
+                      <strong className="d-flex">
+                        ARTICLE ABOUT{" "}
+                        <span
+                          style={{
+                            color: "tomato",
+                            wordSpacing: "5px",
+                            marginLeft: "8px",
+                          }}
+                        >
+                          {product.name}
+                        </span>
+                      </strong>
+                    </p>
 
-                          <td
-                            className="text-description"
-                            style={{
-                              padding: "12px 15px",
-                              border: "1px solid #ddd",
-                              width: "80%",
-                            }}
-                          >
-                            {product.name}
-                          </td>
-                        </tr>
-
-                        <tr style={{ border: "1px solid #ddd" }}>
-                          <td
-                            className="bg-for-des-pro"
-                            style={{
-                              padding: "12px 15px",
-                              border: "1px solid #ddd",
-                            }}
-                          >
-                            <strong className="text-description">
-                              Category
-                            </strong>
-                          </td>
-                          <td
-                            className="text-description"
-                            style={{
-                              padding: "12px 15px",
-                              border: "1px solid #ddd",
-                            }}
-                          >
-                            {product.productTypes}
-                          </td>
-                        </tr>
-
-                        <tr style={{ border: "1px solid #ddd" }}>
-                          <td
-                            className="bg-for-des-pro"
-                            style={{
-                              padding: "12px 15px",
-                              border: "1px solid #ddd",
-                            }}
-                          >
-                            <strong className="text-description">
-                              Expiry date
-                            </strong>
-                          </td>
-                          <td
-                            className="text-description"
-                            style={{
-                              padding: "12px 15px",
-                              border: "1px solid #ddd",
-                            }}
-                          >
-                            {product.daysBeforeExpiry}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <p
+                      style={{ fontSize: "0.9em" }}
+                      className="px-4"
+                      dangerouslySetInnerHTML={{ __html: product.articleMD }}
+                    />
                   </div>
                 </div>
               </div>

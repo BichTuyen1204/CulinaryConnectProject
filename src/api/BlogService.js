@@ -7,9 +7,9 @@ const API_BASE_URL_2 = `${REACT_APP_BACKEND_API_ENDPOINT}/api/customer/blog`;
 const API_BASE_URL_3 = `${REACT_APP_BACKEND_API_ENDPOINT}/api/customer/fetch`;
 
 class BlogService {
-  async getAllBlog() {
+  async getAllBlog(pageNo, pageSize) {
     try {
-      const response = await axios.get(`${API_BASE_URL}/fetch/blog/all`);
+      const response = await axios.get(`${API_BASE_URL}/fetch/blog/all?pageNo=${pageNo -1}&pageSize=${pageSize}`);
       return response.data;
     } catch (error) {
       console.error(
@@ -25,7 +25,7 @@ class BlogService {
       const response = await axios.get(`${API_BASE_URL}/search/blog`, {
         params: {
           keyword,
-          tags: tags.join(","), // Join tags as comma-separated string if necessary
+          tags: tags.join(","),
         },
       });
       return response.data;
@@ -56,11 +56,13 @@ class BlogService {
     }
   }
 
-  async getBlogReply(blogId, commentId) {
+  async getBlogReply(blogId, commentId, pageNo, pageSize) {
     try {
       const jwtToken = sessionStorage.getItem("jwtToken");
       const response = await axios.get(
-        `${REACT_APP_BACKEND_API_ENDPOINT}/api/public/fetch/blog/reply?blogId=${blogId}&commentId=${commentId}`,
+        `${REACT_APP_BACKEND_API_ENDPOINT}/api/public/fetch/blog/reply?blogId=${blogId}&commentId=${commentId}&pageNo=${
+          pageNo - 1
+        }&pageSize=${pageSize}`,
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
@@ -77,14 +79,16 @@ class BlogService {
     }
   }
 
-  async getAllComment(id) {
+  async getAllComment(id, pageNo, pageSize) {
     const jwtToken = sessionStorage.getItem("jwtToken");
     if (!jwtToken) {
       return null;
     }
     try {
       const response = await axios.get(
-        `${REACT_APP_BACKEND_API_ENDPOINT}/api/public/fetch/blog/comment?id=${id}`,
+        `${REACT_APP_BACKEND_API_ENDPOINT}/api/public/fetch/blog/comment?id=${id}&pageNo=${
+          pageNo - 1
+        }&pageSize=${pageSize}`,
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,

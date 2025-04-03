@@ -8,12 +8,10 @@ export const CartProvider = ({ children }) => {
   const [cartCount, setCartCount] = useState(0);
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
 
-  // Hàm cập nhật tổng số lượng sản phẩm riêng biệt trong giỏ hàng
   const updateCartCount = (items) => {
     setCartCount(items.length);
   };
 
-  // Lấy tất cả sản phẩm trong giỏ hàng từ backend khi component được mount hoặc khi jwtToken thay đổi
   useEffect(() => {
     const fetchCartItems = async () => {
       if (jwtToken) {
@@ -36,7 +34,6 @@ export const CartProvider = ({ children }) => {
     fetchCartItems();
   }, [jwtToken]);
 
-  // Hàm thêm sản phẩm vào giỏ hàng
   const addToCart = async (product) => {
     if (!jwtToken) {
       window.location.href = "/sign_in";
@@ -65,7 +62,6 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // Hàm xoá sản phẩm khỏi giỏ hàng
   const removeFromCart = async (productId) => {
     if (!jwtToken) return;
     try {
@@ -81,7 +77,6 @@ export const CartProvider = ({ children }) => {
   };
 
 
-  // Cập nhật số lượng khi cartItems thay đổi
   useEffect(() => {
     updateCartCount(cartItems);
   }, [cartItems]);

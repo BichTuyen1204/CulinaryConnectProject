@@ -20,7 +20,7 @@
 }
 
 .logo {
-  font-size: 1.0em;
+  font-size: 1em;
 }
 
 .search-bar {
@@ -63,40 +63,6 @@
 .tag-input {
   display: none;
 }
-
-/* Tag Input */
-/* .tag-input input {
-  padding: 5px 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-}
-
-.tags-list {
-  margin-top: 5px;
-}
-
-.tag {
-  display: inline-flex;
-  align-items: center;
-  margin-right: 10px;
-  background-color: #e1e1e1;
-  padding: 5px 10px;
-  border-radius: 20px;
-  font-size: 0.9em;
-}
-
-.remove-tag {
-  background-color: transparent;
-  border: none;
-  color: red;
-  font-size: 1em;
-  margin-left: 5px;
-  cursor: pointer;
-}
-
-.remove-tag:hover {
-  color: darkred;
-} */
 
 /* Save Dish Button */
 .button-save-dish {
@@ -199,6 +165,73 @@
 
 .related-posts a:hover {
   text-decoration: underline;
+}
+
+.pagination-container-blog {
+  display: flex;
+  justify-content: flex-end;
+  background-color: white;
+  border-radius: 0px 0px 15px 15px;
+}
+
+.custom-pagination-blog {
+  display: flex;
+  gap: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.custom-pagination-blog .page-item .page-link {
+  border-radius: 50%;
+  padding: 8px 15px;
+  margin: 0 3px;
+  border: none;
+  font-weight: 600;
+  font-size: 0.8em;
+  background-color: #f5f5f5;
+  font-size: 0.8em;
+  color: #333;
+  transition: all 0.3s ease-in-out;
+}
+
+.custom-pagination-blog .page-item .page-link:hover {
+  background-color: #ff7f50;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0px 3px 6px rgba(255, 127, 80, 0.4);
+}
+
+.custom-pagination-blog .page-item.active .page-link {
+  background: linear-gradient(135deg, #ff6600, #ff4500);
+  color: white;
+  font-weight: bold;
+  box-shadow: 0px 4px 10px rgba(255, 69, 0, 0.4);
+  transform: scale(1.05);
+}
+
+.custom-pagination-blog .page-item:first-child .page-link,
+.custom-pagination-blog .page-item:last-child .page-link {
+  border-radius: 8px;
+  background-color: #ddd;
+  color: #444;
+  transition: all 0.3s ease-in-out;
+}
+
+.custom-pagination-blog .page-item:first-child .page-link:hover,
+.custom-pagination-blog .page-item:last-child .page-link:hover {
+  background-color: #ff6600;
+  color: white;
+  transform: scale(1.1);
+}
+
+.custom-pagination-blog .page-item.disabled .page-link {
+  background-color: #e0e0e0;
+  color: #aaa;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 @media (max-width: 1024px) {
