@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../blog/Blog.css";
 import BlogService from "../../api/BlogService";
 import { Link, useNavigate } from "react-router-dom";
+import { Pagination } from "react-bootstrap";
 
 const Blog = () => {
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
@@ -12,6 +13,9 @@ const Blog = () => {
   const [blogs, setBlogs] = useState([]);
   const [showSavedDishes, setShowSavedDishes] = useState(false);
   const [tagInput, setTagInput] = useState("");
+  const [page, setPage] = useState(1);
+  const pageSize = 50;
+  const [totalPages, setTotalPages] = useState(1);
 
   // Search term change handler
   const handleSearch = (e) => {
@@ -23,7 +27,7 @@ const Blog = () => {
     setTagInput(e.target.value);
   };
 
-  // Handling tag addition
+  // Handle tag addition
   const handleTagKeyPress = (e) => {
     if (e.key === "Enter" || e.key === ",") {
       e.preventDefault();
@@ -36,7 +40,7 @@ const Blog = () => {
 
   // Handle tag removal
   const handleTagRemove = (tagToRemove) => {
-    setTags(tags.filter(tag => tag !== tagToRemove));
+    setTags(tags.filter((tag) => tag !== tagToRemove));
   };
 
   // Fetch bookmarked blogs
@@ -51,12 +55,27 @@ const Blog = () => {
     }
   };
 
-  // Fetch all blogs based on search term and tags
-  const getAllBlog = async () => {
+  // Fetch all blogs with search term, tags, and pagination
+  const getSearchBlog = async () => {
     if (jwtToken) {
       try {
         const response = await BlogService.getSearchBlog(searchTerm, tags);
-        setBlogs(response);
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+      } catch (error) {
+        console.error("Error fetching blogs:", error);
+      }
+    } else {
+      navigate("/sign_in");
+    }
+  };
+
+  const getAllBlog = async (page, pageSize) => {
+    if (jwtToken) {
+      try {
+        const response = await BlogService.getAllBlog(page, pageSize); // Đúng API
+        console.log(response); // Kiểm tra dữ liệu có nhận được không
+        setBlogs(response.content || []);
+        setTotalPages(response.totalPage || 1);
         window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
       } catch (error) {
         console.error("Error fetching blogs:", error);
@@ -96,7 +115,7 @@ const Blog = () => {
             `Blog ${newStatus ? "bookmarked" : "unbookmarked"} successfully.`
           );
         } else {
-          console.log("Not success when add bookmark");
+          console.log("Failed to add/remove bookmark");
         }
       } catch (error) {
         console.error("Failed to save or unsave blog:", error);
@@ -111,8 +130,8 @@ const Blog = () => {
     setShowSavedDishes((prevState) => !prevState);
   };
 
-  // Filtered blogs based on search term and saved dishes toggle
-  const filteredBlogs = blogs
+  // Filter blogs based on search term and saved dishes toggle
+  const filteredBlogs = (blogs || [])
     .filter(
       (post) =>
         post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -125,11 +144,24 @@ const Blog = () => {
       return true;
     });
 
+  console.log(filteredBlogs);
+
   // Fetch blogs and bookmarked blogs on component mount or dependency change
   useEffect(() => {
-    getAllBlog();
+    getAllBlog(page, pageSize);
     fetchBookmarkedBlogs();
-  }, [jwtToken, tags]);
+  }, [jwtToken, tags, page]);
+
+  // Handle page change for pagination
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setPage(pageNumber);
+    }
+  };
+
+  useEffect(() => {
+    getAllBlog(page, pageSize);
+  }, [searchTerm, tags, page]);
 
   return (
     <div className="App">
@@ -137,7 +169,6 @@ const Blog = () => {
         <div className="logo">CULINARY CONNECT</div>
 
         <div className="search-container-blog">
-          {/* Search Bar */}
           <input
             type="text"
             placeholder="Search..."
@@ -146,7 +177,6 @@ const Blog = () => {
             onChange={handleSearch}
           />
 
-          {/* Tag Input Section */}
           <div className="tag-input">
             <input
               type="text"
@@ -209,6 +239,30 @@ const Blog = () => {
                 </div>
               ))
             )}
+          </div>
+
+          {/* Pagination Controls */}
+
+          <div className="pagination-container-blog">
+            <Pagination className="custom-pagination-blog">
+              <Pagination.Prev
+                onClick={() => handlePageChange(page - 1)}
+                disabled={page === 1}
+              />
+              {[...Array(totalPages)].map((_, index) => (
+                <Pagination.Item
+                  key={index}
+                  active={index + 1 === page}
+                  onClick={() => handlePageChange(index + 1)}
+                >
+                  {index + 1}
+                </Pagination.Item>
+              ))}
+              <Pagination.Next
+                onClick={() => handlePageChange(page + 1)}
+                disabled={page === totalPages}
+              />
+            </Pagination>
           </div>
         </main>
       </div>

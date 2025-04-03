@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./FoodItem.css";
 import { Link } from "react-router-dom";
-import AccountService from "../../api/AccountService";
 
 export const FoodItem = ({ product }) => {
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));

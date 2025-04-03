@@ -5,6 +5,7 @@ import ProductService from "../../api/ProductService";
 import { useParams, useLocation, useNavigate, Link } from "react-router-dom";
 import { CartContext } from "../../components/context/Context";
 import AccountService from "../../api/AccountService";
+import { Pagination } from "react-bootstrap";
 
 export const Food_card = () => {
   const categories = ["All", "Meal kit", "Vegetables", "Meat", "Season"];
@@ -17,6 +18,9 @@ export const Food_card = () => {
   const [username, setUserName] = useState("");
   const [popupAdd, setPopupAdd] = useState(false);
   const navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const pageSize = 50;
 
   useEffect(() => {
     const getAccount = async () => {
@@ -58,14 +62,27 @@ export const Food_card = () => {
       const renamedCategory = renameCategory(category);
 
       if (renamedCategory === "ALL") {
-        response = await ProductService.getAllProduct();
+        response = await ProductService.getAllProduct(page, pageSize);
       } else {
-        response = await ProductService.getProductsByCategory(renamedCategory);
+        response = await ProductService.getProductsByCategory(
+          renamedCategory,
+          page,
+          pageSize
+        );
       }
-      // setProducts(response);
-      await applyFilters(response);
+
+      if (!response || !response.content) {
+        console.error("Invalid response:", response);
+        setFilteredProducts([]);
+        return;
+      }
+
+      await applyFilters(response.content);
+      setFilteredProducts(normalizeProductData(response.content));
+      setTotalPages(response.totalPage || 1);
     } catch (error) {
       console.error("Error fetching products:", error);
+      setFilteredProducts([]);
     }
   };
 
@@ -121,7 +138,7 @@ export const Food_card = () => {
   useEffect(() => {
     fetchProducts();
     window.scrollTo(0, 0);
-  }, [category, searchQuery]);
+  }, [category, searchQuery, page]);
 
   const handleAddToCart = async (product) => {
     if (username) {
@@ -132,6 +149,11 @@ export const Food_card = () => {
       }, 1000);
     } else {
       navigate("/sign_in");
+    }
+  };
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setPage(pageNumber);
     }
   };
   return (
@@ -167,9 +189,9 @@ export const Food_card = () => {
                   display: "flex",
                   flexDirection: "column",
                   opacity: product.availableQuantity === 0 ? 0.5 : 1,
-                  pointerEvents: product.availableQuantity === 0 ? "none" : "auto",
+                  pointerEvents:
+                    product.availableQuantity === 0 ? "none" : "auto",
                 }}
-                
               >
                 <div>
                   <Link to={`/food_detail/${product.id}`}>
@@ -289,6 +311,27 @@ export const Food_card = () => {
             </div>
           )}
         </div>
+      </div>
+      <div className="pagination-container-card">
+        <Pagination className="custom-pagination-card">
+          <Pagination.Prev
+            onClick={() => handlePageChange(page - 1)}
+            disabled={page === 1}
+          />
+          {[...Array(totalPages)].map((_, index) => (
+            <Pagination.Item
+              key={index}
+              active={index + 1 === page}
+              onClick={() => handlePageChange(index + 1)}
+            >
+              {index + 1}
+            </Pagination.Item>
+          ))}
+          <Pagination.Next
+            onClick={() => handlePageChange(page + 1)}
+            disabled={page === totalPages}
+          />
+        </Pagination>
       </div>
     </div>
   );

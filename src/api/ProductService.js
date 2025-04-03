@@ -7,9 +7,13 @@ const REACT_APP_BACKEND_API_ENDPOINT_SEARCH =
 const API_BASE_URL_2 = `${REACT_APP_BACKEND_API_ENDPOINT}/api/public/fetch`;
 
 class ProductService {
-  async getAllProduct() {
+  async getAllProduct(pageNo, pageSize) {
     try {
-      const response = await axios.get(`${API_BASE_URL_2}/product/all`);
+      const response = await axios.get(
+        `${API_BASE_URL_2}/product/all?pageNo=${
+          pageNo - 1
+        }&pageSize=${pageSize}`
+      );
       return response.data;
     } catch (error) {
       console.error(
@@ -33,10 +37,12 @@ class ProductService {
     }
   }
 
-  async getProductsByCategory(category) {
+  async getProductsByCategory(category, pageNo, pageSize) {
     try {
       const response = await axios.get(
-        `${API_BASE_URL_2}/product/category/${category}`
+        `${API_BASE_URL_2}/product/category/${category}?pageNo=${
+          pageNo - 1
+        }&pageSize=${pageSize}`
       );
       return response.data;
     } catch (error) {
