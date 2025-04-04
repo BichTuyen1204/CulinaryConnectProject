@@ -31,6 +31,11 @@ const BlogDetail = () => {
   const pageSizeBlog = 50;
   const pageBlogReply = 1;
   const [commentVisibility, setCommentVisibility] = useState({});
+  const [isLeftVisible, setIsLeftVisible] = useState(true);
+
+  const toggleLeftColumn = () => {
+    setIsLeftVisible((prev) => !prev);
+  };
 
   useEffect(() => {
     if (!jwtToken) {
@@ -291,28 +296,44 @@ const BlogDetail = () => {
           </Link>
           {/* Show blog start*/}
           {blogDetail.blog && (
-            <div className="blog-detail">
-              <div className="blog-header">
-                <h1>
-                  <strong>{blogDetail.blog.title}</strong>
-                </h1>
+            <div className="blog-detail-container">
+              {/* Toggle Button for Mobile View */}
+              <button
+                className="toggle-left-column"
+                onClick={toggleLeftColumn}
+                style={{
+                  display: "none", // Hidden by default, shown only in mobile view via CSS
+                }}
+              >
+                {isLeftVisible ? "Hide Details" : "Show Details"}
+              </button>
 
+              {/* Left Section */}
+              <div
+                className={`blog-left ${isLeftVisible ? "" : "hidden"}`}
+                style={{
+                  display: isLeftVisible ? "block" : "none", // Inline style for fallback
+                }}
+              >
                 <img
                   src={blogDetail.blog.thumbnail}
                   alt={blogDetail.blog.title}
-                  className="blog-image"
+                  className="blog-thumbnail"
                 />
-              </div>
-
-              <section className="blog-content mt-3">
-                <ReactMarkdown>{blogDetail.blog.markdownText}</ReactMarkdown>
-              </section>
-              <aside className="blog-content">
-                {/* Info of blog start */}
-                <div>
-                  <h1 className="mt-3" style={{ fontSize: "1.2em" }}>
-                    Information
-                  </h1>
+                <div className="blog-description">
+                  <h1 style={{ fontSize: "1.2em" }}>Description:</h1>
+                  <p
+                    className="p-font-size mb-4"
+                    style={{
+                      fontSize: "0.9em",
+                      marginTop: "-5px",
+                    }}
+                  >
+                    {blogDetail.blog.description}
+                  </p>
+                </div>
+                <div className="blog-information">
+                  <h1 style={{ fontSize: "1.2em" }}>Information:</h1>
                   <table
                     style={{
                       width: "100%",
@@ -348,57 +369,20 @@ const BlogDetail = () => {
                     </tbody>
                   </table>
                 </div>
-                {/* Info of blog end */}
-              </aside>
-              <aside className="blog-content">
-                {/* Des of blog start */}
-                <div>
-                  <h1 style={{ fontSize: "1.2em" }}>Description:</h1>
-                  <p
-                    className="p-font-size mb-4"
-                    style={{
-                      fontSize: "0.9em",
-                      marginTop: "-5px",
-                      marginLeft: "25px",
-                    }}
-                  >
-                    {blogDetail.blog.description}
-                  </p>
-                </div>
-                {/* Des of blog end */}
+              </div>
 
-                {/* Article of blog start */}
-                <div>
-                  <h1 style={{ fontSize: "1.2em" }}>Article:</h1>
-                  <div
-                    className="p-font-size mb-4"
-                    style={{
-                      fontSize: "0.9em",
-                      marginTop: "-5px",
-                      marginLeft: "25px",
-                    }}
-                  >
-                    <ReactMarkdown>{blogDetail.blog.article}</ReactMarkdown>
-                  </div>
+              {/* Right Section */}
+              <div className="blog-right">
+                <div
+                  className="p-font-size mb-4"
+                  style={{
+                    fontSize: "0.9em",
+                    marginTop: "-5px",
+                  }}
+                >
+                  <ReactMarkdown>{blogDetail.blog.article}</ReactMarkdown>
                 </div>
-                {/* Article of blog end */}
-
-                {/* Tags of blog start */}
-                <div className="tags">
-                  <h1 style={{ fontSize: "1.2em" }}>Tags:</h1>
-                  <strong
-                    style={{
-                      fontSize: "0.9em",
-                      marginTop: "-5px",
-                      marginLeft: "25px",
-                    }}
-                  >
-                    {" "}
-                    #{blogDetail.blog.infos.tags}{" "}
-                  </strong>
-                </div>
-                {/* Tags of blog end */}
-              </aside>
+              </div>
             </div>
           )}
           {/* Show blog end*/}
