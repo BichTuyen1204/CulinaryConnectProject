@@ -308,85 +308,94 @@ const BlogDetail = () => {
                 <ReactMarkdown>{blogDetail.blog.markdownText}</ReactMarkdown>
               </section>
               <aside className="blog-content">
-                {/* Infor of blog start */}
+                {/* Info of blog start */}
                 <div>
                   <h1 className="mt-3" style={{ fontSize: "1.2em" }}>
                     Information
                   </h1>
-                  <div
+                  <table
                     style={{
-                      display: "grid",
-                      gridTemplateColumns: "1fr 1fr",
-                      gap: "10px",
+                      width: "100%",
+                      borderCollapse: "collapse",
                       fontSize: "0.9em",
                       marginTop: "-5px",
                     }}
                   >
-                    {Object.entries(blogDetail.blog.infos).map(
-                      ([key, value]) => (
-                        <div
-                          key={key}
-                          style={{ display: "flex", flexDirection: "column" }}
-                        >
-                          <strong>
-                            {key
-                              .replace(/_/g, " ")
-                              .replace(/\b\w/g, (char) => char.toUpperCase())}
-                            :
-                          </strong>
-                          <span>{value}</span>
-                        </div>
-                      )
-                    )}
-                  </div>
-                  {/* Infor of blog end */}
+                    <tbody>
+                      {Object.entries(blogDetail.blog.infos).map(
+                        ([key, value]) => (
+                          <tr key={key}>
+                            <td
+                              style={{
+                                padding: "8px",
+                                borderBottom: "1px solid #ddd",
+                                textTransform: "capitalize",
+                              }}
+                            >
+                              {key.replace(/_/g, " ")}
+                            </td>
+                            <td
+                              style={{
+                                padding: "8px",
+                                borderBottom: "1px solid #ddd",
+                              }}
+                            >
+                              {value}
+                            </td>
+                          </tr>
+                        )
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+                {/* Info of blog end */}
+              </aside>
+              <aside className="blog-content">
+                {/* Des of blog start */}
+                <div>
+                  <h1 style={{ fontSize: "1.2em" }}>Description:</h1>
+                  <p
+                    className="p-font-size mb-4"
+                    style={{
+                      fontSize: "0.9em",
+                      marginTop: "-5px",
+                      marginLeft: "25px",
+                    }}
+                  >
+                    {blogDetail.blog.description}
+                  </p>
+                </div>
+                {/* Des of blog end */}
 
-                  {/* Des of blog start */}
-                  <div>
-                    <h1 style={{ fontSize: "1.2em" }}>Description:</h1>
-                    <p
-                      className="p-font-size mb-4"
-                      style={{
-                        fontSize: "0.9em",
-                        marginTop: "-5px",
-                        marginLeft: "25px",
-                      }}
-                    >
-                      {blogDetail.blog.description}
-                    </p>
+                {/* Article of blog start */}
+                <div>
+                  <h1 style={{ fontSize: "1.2em" }}>Article:</h1>
+                  <div
+                    className="p-font-size mb-4"
+                    style={{
+                      fontSize: "0.9em",
+                      marginTop: "-5px",
+                      marginLeft: "25px",
+                    }}
+                  >
+                    <ReactMarkdown>{blogDetail.blog.article}</ReactMarkdown>
                   </div>
-                  {/* Des of blog end */}
+                </div>
+                {/* Article of blog end */}
 
-                  {/* Article of blog start */}
-                  <div>
-                    <h1 style={{ fontSize: "1.2em" }}>Article:</h1>
-                    <p
-                      className="p-font-size mb-4"
-                      style={{
-                        fontSize: "0.9em",
-                        marginTop: "-5px",
-                        marginLeft: "25px",
-                      }}
-                    >
-                      {blogDetail.blog.article}
-                    </p>
-                  </div>
-                  {/* Article of blog end */}
-
-                  {/* Tags of blog start */}
-                  <div className="tags">
-                    <h1 style={{ fontSize: "1.2em" }}>Tags:</h1>
-                    <strong
-                      style={{
-                        fontSize: "0.9em",
-                        marginTop: "-5px",
-                        marginLeft: "25px",
-                      }}
-                    >
-                      {" "}
-                      #{blogDetail.blog.infos.tags}{" "}
-                    </strong>
-                  </div>
+                {/* Tags of blog start */}
+                <div className="tags">
+                  <h1 style={{ fontSize: "1.2em" }}>Tags:</h1>
+                  <strong
+                    style={{
+                      fontSize: "0.9em",
+                      marginTop: "-5px",
+                      marginLeft: "25px",
+                    }}
+                  >
+                    {" "}
+                    #{blogDetail.blog.infos.tags}{" "}
+                  </strong>
                 </div>
                 {/* Tags of blog end */}
               </aside>
