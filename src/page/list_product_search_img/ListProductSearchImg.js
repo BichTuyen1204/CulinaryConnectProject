@@ -22,6 +22,7 @@ export const ListProductSearchImg = () => {
   const [jwtToken] = useState(sessionStorage.getItem("jwtToken"));
   const [username, setUsername] = useState("");
   const [uploadedImage, setUploadedImage] = useState(null);
+  const [predictedProduct, setPredictedProduct] = useState(null);
 
   useEffect(() => {
     const fetchAccount = async () => {
@@ -69,18 +70,39 @@ export const ListProductSearchImg = () => {
   }, [category, renameCategory]);
 
   useEffect(() => {
-    const imageSearchResults = sessionStorage.getItem("imageSearchResults");
-    if (location.search.includes("imageSearch=true") && imageSearchResults) {
-      try {
-        setProducts(JSON.parse(imageSearchResults));
-      } catch (error) {
-        console.error("Error parsing image search results:", error);
+    const updateProducts = () => {
+      const imageSearchResults = sessionStorage.getItem("imageSearchResults");
+
+      if (location.search.includes("imageSearch=true") && imageSearchResults) {
+        try {
+          const parsedResults = JSON.parse(imageSearchResults);
+          setProducts(parsedResults.page?.content || []);
+
+          if (parsedResults.predict) {
+            setPredictedProduct({
+              name: parsedResults.predict.name,
+              confidence: parsedResults.predict.confidence,
+            });
+          }
+        } catch (error) {
+          console.error("Error parsing image search results:", error);
+        }
+      } else {
+        fetchProducts();
       }
-    } else {
-      fetchProducts();
-    }
-    window.scrollTo(0, 0);
+    };
+
+    updateProducts();
+    window.addEventListener("storage", updateProducts);
+    return () => window.removeEventListener("storage", updateProducts);
   }, [location.search, fetchProducts]);
+
+  useEffect(() => {
+    const storedImage = sessionStorage.getItem("uploadedImage");
+    if (storedImage) {
+      setUploadedImage(storedImage); // Hiển thị lại ảnh sau khi reload
+    }
+  }, []);
 
   const searchQuery = useMemo(() => {
     return new URLSearchParams(location.search).get("search") || "";
@@ -142,7 +164,7 @@ export const ListProductSearchImg = () => {
                     <Link to={`/food_detail/${product.id}`}>
                       <img
                         src={product.image_url}
-                        alt={product.product_name}
+                        alt={product.product_name || product.name}
                         className="menu-image"
                       />
                     </Link>
@@ -158,7 +180,9 @@ export const ListProductSearchImg = () => {
 
                 {/* Thông tin sản phẩm */}
                 <div className="menu-info col-7">
-                  <h5 className="menu-name">{product.product_name}</h5>
+                  <h5 className="menu-name">
+                    {product.product_name || product.name}
+                  </h5>
                   <div className="line-bottom"></div>
                   <p>
                     <strong>Status:</strong>{" "}

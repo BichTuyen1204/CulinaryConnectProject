@@ -197,17 +197,17 @@
 }
 
 .custom-pagination-blog .page-item .page-link:hover {
-  background-color: #ff7f50;
+  background-color: #14c2f1;
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0px 3px 6px rgba(255, 127, 80, 0.4);
+  box-shadow: 0px 3px 6px rgba(9, 193, 255, 0.4);
 }
 
 .custom-pagination-blog .page-item.active .page-link {
-  background: linear-gradient(135deg, #ff6600, #ff4500);
+  background: linear-gradient(135deg, #40b9ff, #51cbff);
   color: white;
   font-weight: bold;
-  box-shadow: 0px 4px 10px rgba(255, 69, 0, 0.4);
+  box-shadow: 0px 4px 10px rgba(41, 187, 255, 0.4);
   transform: scale(1.05);
 }
 
@@ -221,7 +221,7 @@
 
 .custom-pagination-blog .page-item:first-child .page-link:hover,
 .custom-pagination-blog .page-item:last-child .page-link:hover {
-  background-color: #ff6600;
+  background-color: #51d4ff;
   color: white;
   transform: scale(1.1);
 }

@@ -3,6 +3,7 @@ import "../blog/Blog.css";
 import BlogService from "../../api/BlogService";
 import { Link, useNavigate } from "react-router-dom";
 import { Pagination } from "react-bootstrap";
+import { motion } from "framer-motion";
 
 const Blog = () => {
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
@@ -72,8 +73,7 @@ const Blog = () => {
   const getAllBlog = async (page, pageSize) => {
     if (jwtToken) {
       try {
-        const response = await BlogService.getAllBlog(page, pageSize); // Đúng API
-        console.log(response); // Kiểm tra dữ liệu có nhận được không
+        const response = await BlogService.getAllBlog(page, pageSize);
         setBlogs(response.content || []);
         setTotalPages(response.totalPage || 1);
         window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -164,109 +164,117 @@ const Blog = () => {
   }, [searchTerm, tags, page]);
 
   return (
-    <div className="App">
-      <header className="header-blog">
-        <div className="logo">CULINARY CONNECT</div>
+    <motion.div
+      initial={{ opacity: 0, x: -200 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{
+        duration: 0.3,
+        delay: 0.3,
+      }}
+    >
+      <div className="App">
+        <header className="header-blog">
+          <div className="logo">CULINARY CONNECT</div>
 
-        <div className="search-container-blog">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="search-bar"
-            value={searchTerm}
-            onChange={handleSearch}
-          />
-
-          <div className="tag-input">
+          <div className="search-container-blog">
             <input
               type="text"
-              placeholder="Add tags..."
-              value={tagInput}
-              onChange={handleTagInputChange}
-              onKeyDown={handleTagKeyPress}
+              placeholder="Search..."
+              className="search-bar"
+              value={searchTerm}
+              onChange={handleSearch}
             />
-            <div className="tags-list">
-              {tags.map((tag, index) => (
-                <span key={index} className="tag">
-                  {tag}{" "}
-                  <button
-                    onClick={() => handleTagRemove(tag)}
-                    className="remove-tag"
-                  >
-                    X
-                  </button>
-                </span>
-              ))}
+
+            <div className="tag-input">
+              <input
+                type="text"
+                placeholder="Add tags..."
+                value={tagInput}
+                onChange={handleTagInputChange}
+                onKeyDown={handleTagKeyPress}
+              />
+              <div className="tags-list">
+                {tags.map((tag, index) => (
+                  <span key={index} className="tag">
+                    {tag}{" "}
+                    <button
+                      onClick={() => handleTagRemove(tag)}
+                      className="remove-tag"
+                    >
+                      X
+                    </button>
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="saved-items">
-          <button onClick={toggleSavedView}>
-            {showSavedDishes ? "Show All Dishes" : "Show Saved Dishes"}:{" "}
-            {bookmarkedBlogs.length}
-          </button>
-        </div>
-      </header>
+          <div className="saved-items">
+            <button onClick={toggleSavedView}>
+              {showSavedDishes ? "Show All Dishes" : "Show Saved Dishes"}:{" "}
+              {bookmarkedBlogs.length}
+            </button>
+          </div>
+        </header>
 
-      <div className="container-bg col-12 mt-3">
-        <main className="main-content col-12">
-          <div className="blog-list col-12">
-            {filteredBlogs.length === 0 ? (
-              <p className="text-center">No blogs to display.</p>
-            ) : (
-              filteredBlogs.map((post) => (
-                <div key={post.id} className="blog-post">
-                  <Link to={`/blog_detail/${post.id}`}>
-                    <img
-                      src={post.imageUrl}
-                      alt={post.title}
-                      className="post-image"
-                    />
-                  </Link>
-                  <div className="post-content">
-                    <h2>{post.title}</h2>
-                    <p>{post.description}</p>
-                    <button
-                      className={`button-save-dish ${
-                        isBookmarked(post.id) ? "saved" : ""
-                      }`}
-                      onClick={() => handleSaveDish(post.id)}
-                    >
-                      {isBookmarked(post.id) ? "Saved" : "Save Dish"}
-                    </button>
+        <div className="container-bg col-12 mt-3">
+          <main className="main-content col-12">
+            <div className="blog-list col-12">
+              {filteredBlogs.length === 0 ? (
+                <p className="text-center">No blogs to display.</p>
+              ) : (
+                filteredBlogs.map((post) => (
+                  <div key={post.id} className="blog-post">
+                    <Link to={`/blog_detail/${post.id}`}>
+                      <img
+                        src={post.imageUrl}
+                        alt={post.title}
+                        className="post-image"
+                      />
+                    </Link>
+                    <div className="post-content">
+                      <h2>{post.title}</h2>
+                      <button
+                        className={`button-save-dish ${
+                          isBookmarked(post.id) ? "saved" : ""
+                        }`}
+                        onClick={() => handleSaveDish(post.id)}
+                      >
+                        {isBookmarked(post.id) ? "Saved" : "Save Dish"}
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))
-            )}
-          </div>
+                ))
+              )}
+            </div>
 
-          {/* Pagination Controls */}
+            {/* Pagination Controls */}
 
-          <div className="pagination-container-blog">
-            <Pagination className="custom-pagination-blog">
-              <Pagination.Prev
-                onClick={() => handlePageChange(page - 1)}
-                disabled={page === 1}
-              />
-              {[...Array(totalPages)].map((_, index) => (
-                <Pagination.Item
-                  key={index}
-                  active={index + 1 === page}
-                  onClick={() => handlePageChange(index + 1)}
-                >
-                  {index + 1}
-                </Pagination.Item>
-              ))}
-              <Pagination.Next
-                onClick={() => handlePageChange(page + 1)}
-                disabled={page === totalPages}
-              />
-            </Pagination>
-          </div>
-        </main>
+            <div className="pagination-container-blog">
+              <Pagination className="custom-pagination-blog">
+                <Pagination.Prev
+                  onClick={() => handlePageChange(page - 1)}
+                  disabled={page === 1}
+                />
+                {[...Array(totalPages)].map((_, index) => (
+                  <Pagination.Item
+                    key={index}
+                    active={index + 1 === page}
+                    onClick={() => handlePageChange(index + 1)}
+                  >
+                    {index + 1}
+                  </Pagination.Item>
+                ))}
+                <Pagination.Next
+                  onClick={() => handlePageChange(page + 1)}
+                  disabled={page === totalPages}
+                />
+              </Pagination>
+            </div>
+          </main>
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
