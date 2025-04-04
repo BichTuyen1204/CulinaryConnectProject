@@ -2,6 +2,22 @@ body {
   background-color: #f9f9f9;
 }
 
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 1.1s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .container-bg {
   background-color: white;
 }

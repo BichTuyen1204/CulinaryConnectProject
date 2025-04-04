@@ -116,7 +116,9 @@ export const Navbar = ({ setShowLogin }) => {
     if (!jwtToken) return;
     try {
       const response = await ProductService.searchImage(formData);
-      if (response && response.length > 0) {
+      console.log("Search Image Response:", response); // Debug API Response
+
+      if (response && response.page && response.page.content.length > 0) {
         sessionStorage.setItem("imageSearchResults", JSON.stringify(response));
         navigate("/list_product_search_img?imageSearch=true");
       } else {
@@ -130,15 +132,16 @@ export const Navbar = ({ setShowLogin }) => {
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     if (file) {
-      sessionStorage.removeItem("uploadedImage");
-      const imageURL = URL.createObjectURL(file);
-      sessionStorage.setItem("uploadedImage", imageURL);
-      window.dispatchEvent(new Event("imageUpdated"));
-      setSelectedImage(file);
-      setPreviewImage(imageURL);
-      const formData = new FormData();
-      formData.append("image", file);
-      await searchImage(formData);
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const base64Image = reader.result;
+        sessionStorage.setItem("uploadedImage", base64Image);
+        const formData = new FormData();
+        formData.append("image", file);
+        await searchImage(formData);
+        window.location.reload();
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -204,7 +207,8 @@ export const Navbar = ({ setShowLogin }) => {
           </div>
 
           {/* Hamburger Menu */}
-          <div className="col-2 col-md-2 ms-auto col-sm-2 d-flex align-items-center hamburger-big"
+          <div
+            className="col-2 col-md-2 ms-auto col-sm-2 d-flex align-items-center hamburger-big"
             style={{ position: "relative", zIndex: 15 }}
           >
             <Dropdown show={dropdownPhoneMenu} align="end">
@@ -279,7 +283,8 @@ export const Navbar = ({ setShowLogin }) => {
             </Dropdown>
           </div>
 
-          <div className="col-2 col-md-2 col-sm-2 d-flex justify-content-end "
+          <div
+            className="col-2 col-md-2 col-sm-2 d-flex justify-content-end "
             style={{ position: "relative", zIndex: 5 }}
           >
             {username ? (

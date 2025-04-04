@@ -228,7 +228,7 @@ const Login = ({
               Login
             </button>
             <div className="text-center p-2 text-or-login">OR</div>
-            <button className="button-google" onClick={handleRedirect}>
+            <button className="button-google" type="button" onClick={handleRedirect}>
               Login with Google
             </button>
           </div>

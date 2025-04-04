@@ -13,10 +13,7 @@ import { Pagination } from "react-bootstrap";
 const BlogDetail = () => {
   const { id } = useParams();
   const [blogDetail, setBlogDetail] = useState({});
-  const [imgUser, setImgUser] = useState("");
-  const [commentImages, setCommentImages] = useState("");
   const [newComment, setNewComment] = useState("");
-  const [newCommentReply, setNewCommentReply] = useState("");
   const [selectedId, setSelectedId] = useState(null);
   const [selectedIdReply, setSelectedIdReply] = useState(null);
   const [comments, setComments] = useState([]);
@@ -24,14 +21,8 @@ const BlogDetail = () => {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [popupDelete, setPopupDelete] = useState(false);
   const [popupDeleteReply, setPopupDeleteReply] = useState(false);
-  const [openInputReply, setOpenInputReply] = useState(false);
-  const [openReplyList, setOpenReplyList] = useState({});
-  const [replyList, setReplyList] = useState([]);
   const navigate = useNavigate();
   const [username, setUserName] = useState("");
-  const pageSizeBlogReply = 6;
-  const [totalPagesBlog, setTotalPagesBlog] = useState(1);
-  const [totalPagesBlogReply, setTotalPagesBlogReply] = useState(1);
   const [replyingTo, setReplyingTo] = useState(null);
   const [replyText, setReplyText] = useState("");
   const [replies, setReplies] = useState({});
@@ -39,9 +30,7 @@ const BlogDetail = () => {
   const [totalPages, setTotalPages] = useState(1);
   const pageSizeBlog = 50;
   const pageBlogReply = 1;
-  const pageSizeBlogRepageBlogReply = 50;
   const [commentVisibility, setCommentVisibility] = useState({});
-  const [showComments, setShowComments] = useState(true);
 
   useEffect(() => {
     if (!jwtToken) {
@@ -165,6 +154,7 @@ const BlogDetail = () => {
 
         setComments(formattedComments);
         setTotalPages(responseComment.totalPage || 1);
+        setTotalPages(responseComment.totalPage || 1);
       } else {
         console.error("Lỗi: responseComment không có content");
       }
@@ -213,16 +203,6 @@ const BlogDetail = () => {
   useEffect(() => {
     console.log("Replies state updated:", replies);
   }, [replies]);
-
-  const toggleReplyInput = (commentId) => {
-    setReplyingTo(replyingTo === commentId ? null : commentId);
-    setReplyText("");
-  };
-
-  const handleReplyClick = (commentId) => {
-    setReplyingTo(commentId);
-    setReplyText("");
-  };
 
   const addReplyHandler = async () => {
     if (!replyText.trim()) return;
@@ -303,182 +283,184 @@ const BlogDetail = () => {
   };
 
   return (
-    <div className="outer-wrapper">
-      <div className="container-bg col-12 mt-3">
-        <Link to="/blog" className="p-5">
-          <IoArrowBackOutline className="ic_back mt-3" />
-        </Link>
-        {/* Show blog start*/}
-        {blogDetail.blog && (
-          <div className="blog-detail">
-            <div className="blog-header">
-              <h1>
-                <strong>{blogDetail.blog.title}</strong>
-              </h1>
+    <div className="fade-in">
+      <div className="outer-wrapper">
+        <div className="container-bg col-12 mt-3">
+          <Link to="/blog" className="p-5">
+            <IoArrowBackOutline className="ic_back mt-3" />
+          </Link>
+          {/* Show blog start*/}
+          {blogDetail.blog && (
+            <div className="blog-detail">
+              <div className="blog-header">
+                <h1>
+                  <strong>{blogDetail.blog.title}</strong>
+                </h1>
 
-              <img
-                src={blogDetail.blog.thumbnail}
-                alt={blogDetail.blog.title}
-                className="blog-image"
+                <img
+                  src={blogDetail.blog.thumbnail}
+                  alt={blogDetail.blog.title}
+                  className="blog-image"
+                />
+              </div>
+
+              <section className="blog-content mt-3">
+                <ReactMarkdown>{blogDetail.blog.markdownText}</ReactMarkdown>
+              </section>
+              <aside className="blog-content">
+                {/* Infor of blog start */}
+                <div>
+                  <h1 className="mt-3" style={{ fontSize: "1.2em" }}>
+                    Information
+                  </h1>
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr",
+                      gap: "10px",
+                      fontSize: "0.9em",
+                      marginTop: "-5px",
+                    }}
+                  >
+                    {Object.entries(blogDetail.blog.infos).map(
+                      ([key, value]) => (
+                        <div
+                          key={key}
+                          style={{ display: "flex", flexDirection: "column" }}
+                        >
+                          <strong>
+                            {key
+                              .replace(/_/g, " ")
+                              .replace(/\b\w/g, (char) => char.toUpperCase())}
+                            :
+                          </strong>
+                          <span>{value}</span>
+                        </div>
+                      )
+                    )}
+                  </div>
+                  {/* Infor of blog end */}
+
+                  {/* Des of blog start */}
+                  <div>
+                    <h1 style={{ fontSize: "1.2em" }}>Description:</h1>
+                    <p
+                      className="p-font-size mb-4"
+                      style={{
+                        fontSize: "0.9em",
+                        marginTop: "-5px",
+                        marginLeft: "25px",
+                      }}
+                    >
+                      {blogDetail.blog.description}
+                    </p>
+                  </div>
+                  {/* Des of blog end */}
+
+                  {/* Article of blog start */}
+                  <div>
+                    <h1 style={{ fontSize: "1.2em" }}>Article:</h1>
+                    <p
+                      className="p-font-size mb-4"
+                      style={{
+                        fontSize: "0.9em",
+                        marginTop: "-5px",
+                        marginLeft: "25px",
+                      }}
+                    >
+                      {blogDetail.blog.article}
+                    </p>
+                  </div>
+                  {/* Article of blog end */}
+
+                  {/* Tags of blog start */}
+                  <div className="tags">
+                    <h1 style={{ fontSize: "1.2em" }}>Tags:</h1>
+                    <strong
+                      style={{
+                        fontSize: "0.9em",
+                        marginTop: "-5px",
+                        marginLeft: "25px",
+                      }}
+                    >
+                      {" "}
+                      #{blogDetail.blog.infos.tags}{" "}
+                    </strong>
+                  </div>
+                </div>
+                {/* Tags of blog end */}
+              </aside>
+            </div>
+          )}
+          {/* Show blog end*/}
+        </div>
+
+        {/* Comment start */}
+        <div className="container-bg px-3 col-12 py-5">
+          <div className="comment-section mt-1">
+            <div style={{ marginBottom: "-15px" }}>
+              <p className="pt-3">
+                <strong>Comments:</strong>
+              </p>
+            </div>
+            {/* Chat comment big start */}
+            <div className="comment-input">
+              <textarea
+                placeholder="Share your opinion"
+                id="comment"
+                className="mt-4"
+                value={newComment}
+                onChange={newCommentChange}
+                onKeyDown={handleKeyDown}
               />
+              <button className="send-opinion" onClick={addCommentHandler}>
+                Send
+              </button>
             </div>
 
-            <section className="blog-content mt-3">
-              <ReactMarkdown>{blogDetail.blog.markdownText}</ReactMarkdown>
-            </section>
-            <aside className="blog-content">
-              {/* Infor of blog start */}
-              <div>
-                <h1 className="mt-3" style={{ fontSize: "1.2em" }}>
-                  Information
-                </h1>
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
-                    gap: "10px",
-                    fontSize: "0.9em",
-                    marginTop: "-5px",
-                  }}
-                >
-                  {Object.entries(blogDetail.blog.infos).map(([key, value]) => (
-                    <div
-                      key={key}
-                      style={{ display: "flex", flexDirection: "column" }}
-                    >
-                      <strong>
-                        {key
-                          .replace(/_/g, " ")
-                          .replace(/\b\w/g, (char) => char.toUpperCase())}
-                        :
-                      </strong>
-                      <span>{value}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              {/* Infor of blog end */}
+            {/* Chat comment big end */}
 
-              {/* Des of blog start */}
-              <div>
-                <h1 style={{ fontSize: "1.2em" }}>Description:</h1>
-                <p
-                  className="p-font-size mb-4"
-                  style={{
-                    fontSize: "0.9em",
-                    marginTop: "-5px",
-                    marginLeft: "25px",
-                  }}
-                >
-                  {blogDetail.blog.description}
-                </p>
-              </div>
-              {/* Des of blog end */}
+            {/* Header comment start */}
+            <div className="comment-tabs">
+              <span>Newest Comments</span>
+            </div>
+            {/* Header comment end */}
 
-              {/* Article of blog start */}
-              <div>
-                <h1 style={{ fontSize: "1.2em" }}>Article:</h1>
-                <p
-                  className="p-font-size mb-4"
-                  style={{
-                    fontSize: "0.9em",
-                    marginTop: "-5px",
-                    marginLeft: "25px",
-                  }}
-                >
-                  {blogDetail.blog.article}
-                </p>
-              </div>
-              {/* Article of blog end */}
+            {/* List comment start */}
+            <div>
+              {comments.length > 0 ? (
+                comments
+                  .filter((comment) => comment.accountName)
+                  .map((comment, index) => (
+                    <div className="comment-item col-12" key={index}>
+                      <div>
+                        <div className="comment-header col-12">
+                          <img
+                            className="comment-avatar"
+                            src={
+                              comment.profilePicture?.trim()
+                                ? comment.profilePicture
+                                : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
+                            }
+                            alt="Avatar"
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src =
+                                "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg";
+                            }}
+                          />
+                          <span className="comment-user col-8 mt-1">
+                            {comment.accountName}
+                          </span>
+                          <span className="comment-time col-3 mt-1 d-flex justify-content-end">
+                            {new Date(comment.timestamp).toLocaleString()}
+                          </span>
+                        </div>
+                        <div className="comment-info col-12 px-5">
+                          {comment.comment ? comment.comment : "No content"}
+                        </div>
 
-              {/* Tags of blog start */}
-              <div className="tags">
-                <h1 style={{ fontSize: "1.2em" }}>Tags:</h1>
-                <strong
-                  style={{
-                    fontSize: "0.9em",
-                    marginTop: "-5px",
-                    marginLeft: "25px",
-                  }}
-                >
-                  {" "}
-                  #{blogDetail.blog.infos.tags}{" "}
-                </strong>
-              </div>
-              {/* Tags of blog end */}
-            </aside>
-          </div>
-        )}
-        {/* Show blog end*/}
-      </div>
-
-      {/* Comment start */}
-      <div className="container-bg px-3 col-12 py-5">
-        <div className="comment-section mt-1">
-          <div style={{ marginBottom: "-15px" }}>
-            <p className="pt-3">
-              <strong>Comments:</strong>
-            </p>
-          </div>
-          {/* Chat comment big start */}
-          <div className="comment-input">
-            <textarea
-              placeholder="Share your opinion"
-              id="comment"
-              className="mt-4"
-              value={newComment}
-              onChange={newCommentChange}
-              onKeyDown={handleKeyDown}
-            />
-            <button className="send-opinion" onClick={addCommentHandler}>
-              Send
-            </button>
-          </div>
-
-          {/* Chat comment big end */}
-
-          {/* Header comment start */}
-          <div className="comment-tabs">
-            <span>Newest Comments</span>
-          </div>
-          {/* Header comment end */}
-
-          {/* List comment start */}
-          <div>
-            {comments.length > 0 ? (
-              comments
-                .filter((comment) => comment.accountName)
-                .map((comment, index) => (
-                  <div className="comment-item col-12" key={index}>
-                    <div>
-                      <div className="comment-header col-12">
-                        <img
-                          className="comment-avatar"
-                          src={
-                            comment.profilePicture?.trim()
-                              ? comment.profilePicture
-                              : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
-                          }
-                          alt="Avatar"
-                          onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.src =
-                              "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg";
-                          }}
-                        />
-                        <span className="comment-user col-8 mt-1">
-                          {comment.accountName}
-                        </span>
-                        <span className="comment-time col-3 mt-1 d-flex justify-content-end">
-                          {new Date(comment.timestamp).toLocaleString()}
-                        </span>
-                      </div>
-                      <div className="comment-info col-12 px-5">
-                        {comment.comment ? comment.comment : "No content"}
-                      </div>
-
-                      <div className="d-flex">
-                        {comment.replyAmount > 0 && (
+                        <div className="d-flex">
                           <p
                             className="view-replies"
                             onClick={() => {
@@ -494,86 +476,80 @@ const BlogDetail = () => {
                                     (reply) => reply.accountName
                                   ).length
                                 })`
-                              : `View replies (${
-                                  (replies[comment.id] || []).filter(
-                                    (reply) => reply.accountName
-                                  ).length
-                                })`}
+                              : `View replies`}
                           </p>
-                        )}
 
-                        {/* Nút Reply */}
-                        <p
-                          className="view-replies"
-                          onClick={() =>
-                            setReplyingTo((prev) =>
-                              prev === comment.id ? null : comment.id
-                            )
-                          }
-                        >
-                          Reply
-                        </p>
-                        {comment.accountName === username ? (
-                          <AiFillDelete
-                            className="icon-delete"
-                            onClick={() => openModal(comment.id)}
-                          />
-                        ) : null}
+                          {/* Nút Reply */}
+                          <p
+                            className="view-replies"
+                            onClick={() =>
+                              setReplyingTo((prev) =>
+                                prev === comment.id ? null : comment.id
+                              )
+                            }
+                          >
+                            Reply
+                          </p>
+                          {comment.accountName === username ? (
+                            <AiFillDelete
+                              className="icon-delete"
+                              onClick={() => openModal(comment.id)}
+                            />
+                          ) : null}
+                        </div>
+
+                        {/* Ô nhập phản hồi */}
+                        {replyingTo === comment.id && (
+                          <div className="comment-input">
+                            <textarea
+                              placeholder="Share your opinion..."
+                              className="mt-4"
+                              value={replyText}
+                              onChange={(e) => setReplyText(e.target.value)}
+                              onKeyDown={handleKeyDownReply}
+                            />
+                            <button
+                              className="send-opinion"
+                              onClick={addReplyHandler}
+                            >
+                              Send
+                            </button>
+                          </div>
+                        )}
                       </div>
 
-                      {/* Ô nhập phản hồi */}
-                      {replyingTo === comment.id && (
-                        <div className="comment-input">
-                          <textarea
-                            placeholder="Share your opinion..."
-                            className="mt-4"
-                            value={replyText}
-                            onChange={(e) => setReplyText(e.target.value)}
-                            onKeyDown={handleKeyDownReply}
-                          />
-                          <button
-                            className="send-opinion"
-                            onClick={addReplyHandler}
-                          >
-                            Send
-                          </button>
-                        </div>
-                      )}
-                    </div>
+                      {/* Hiển thị danh sách phản hồi reply */}
+                      {commentVisibility[comment.id] &&
+                        replies[comment.id]?.length > 0 && (
+                          <div className="replies-list col-12 mx-5 mt-2">
+                            {replies[comment.id]
+                              .filter((reply) => reply.accountName)
+                              .map((reply, replyIndex) => (
+                                <div
+                                  className="reply-item"
+                                  key={reply.id || replyIndex}
+                                >
+                                  <img
+                                    className="reply-avatar-reply"
+                                    src={
+                                      reply.profilePicture?.trim()
+                                        ? reply.profilePicture
+                                        : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
+                                    }
+                                    alt="Reply Avatar"
+                                  />
+                                  <span className="reply-user-reply">
+                                    {reply.accountName || ""}:
+                                  </span>
+                                  <span className="reply-time-reply">
+                                    {new Date(reply.timestamp).toLocaleString()}
+                                  </span>
+                                  <p className="reply-text-reply">
+                                    {reply.comment || "No content"}
+                                  </p>
 
-                    {/* Hiển thị danh sách phản hồi reply */}
-                    {commentVisibility[comment.id] &&
-                      replies[comment.id]?.length > 0 && (
-                        <div className="replies-list col-12 mx-5 mt-2">
-                          {replies[comment.id]
-                            .filter((reply) => reply.accountName)
-                            .map((reply, replyIndex) => (
-                              <div
-                                className="reply-item"
-                                key={reply.id || replyIndex}
-                              >
-                                <img
-                                  className="reply-avatar-reply"
-                                  src={
-                                    reply.profilePicture?.trim()
-                                      ? reply.profilePicture
-                                      : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
-                                  }
-                                  alt="Reply Avatar"
-                                />
-                                <span className="reply-user-reply">
-                                  {reply.accountName || ""}:
-                                </span>
-                                <span className="reply-time-reply">
-                                  {new Date(reply.timestamp).toLocaleString()}
-                                </span>
-                                <p className="reply-text-reply">
-                                  {reply.comment || "No content"}
-                                </p>
-
-                                {/* Nút hiển thị/ẩn phản hồi */}
-                                <div className="d-flex">
-                                  {reply.replyAmount > 0 && (
+                                  {/* Nút hiển thị/ẩn phản hồi */}
+                                  <div className="d-flex">
                                     <p
                                       className="view-replies"
                                       onClick={() => {
@@ -590,532 +566,530 @@ const BlogDetail = () => {
                                                 superReply.accountName
                                             ).length
                                           })`
-                                        : `View replies (${
-                                            (replies[reply.id] || []).filter(
-                                              (superReply) =>
-                                                superReply.accountName
-                                            ).length
-                                          })`}
+                                        : `View replies`}
                                     </p>
-                                  )}
 
-                                  {/* Nút Reply cho reply */}
-                                  <p
-                                    className="view-replies"
-                                    onClick={() =>
-                                      setReplyingTo((prev) =>
-                                        prev === reply.id ? null : reply.id
-                                      )
-                                    }
-                                  >
-                                    Reply
-                                  </p>
-                                  {reply.accountName === username ? (
-                                    <AiFillDelete
-                                      className="icon-delete-reply"
-                                      onClick={() => openModalReply(reply.id)}
-                                    />
-                                  ) : null}
-                                </div>
-                                {/* Ô nhập phản hồi cho reply */}
-                                {replyingTo === reply.id && (
-                                  <div className="comment-input-reply">
-                                    <textarea
-                                      placeholder="Share your opinion..."
-                                      value={replyText}
-                                      className="mt-4"
-                                      onChange={(e) =>
-                                        setReplyText(e.target.value)
-                                      }
-                                      onKeyDown={handleKeyDownReply}
-                                    />
-                                    <button
-                                      className="send-opinion"
-                                      onClick={() => addReplyHandler(reply.id)}
-                                    >
-                                      Send
-                                    </button>
-                                  </div>
-                                )}
-
-                                {/* Hiển thị danh sách phản hồi supper reply */}
-                                {commentVisibility[reply.id] &&
-                                  replies[reply.id]?.length > 0 && (
-                                    <div className="replies-list col-11 mx-5 mt-2">
-                                      {replies[reply.id]
-                                        .filter(
-                                          (superReply) => superReply.accountName
+                                    {/* Nút Reply cho reply */}
+                                    <p
+                                      className="view-replies"
+                                      onClick={() =>
+                                        setReplyingTo((prev) =>
+                                          prev === reply.id ? null : reply.id
                                         )
-                                        .map((superReply, supperReplyIndex) => (
-                                          <div
-                                            className="reply-item"
-                                            key={
-                                              superReply.id || supperReplyIndex
-                                            }
-                                          >
-                                            <img
-                                              className="reply-avatar-reply"
-                                              src={
-                                                superReply.profilePicture?.trim()
-                                                  ? superReply.profilePicture
-                                                  : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
-                                              }
-                                              alt="Reply Avatar"
-                                            />
-                                            <span className="reply-user-reply">
-                                              {superReply.accountName || ""}:
-                                            </span>
-                                            <span className="reply-time-reply">
-                                              {new Date(
-                                                superReply.timestamp
-                                              ).toLocaleString()}
-                                            </span>
-                                            <p className="reply-text-reply">
-                                              {superReply.comment ||
-                                                "No content"}
-                                            </p>
-
-                                            {/* Nút hiển thị/ẩn phản hồi */}
-                                            <div className="d-flex">
-                                              {superReply.replyAmount > 0 && (
-                                                <p
-                                                  className="view-replies"
-                                                  onClick={() => {
-                                                    if (
-                                                      !commentVisibility[
-                                                        superReply.id
-                                                      ]
-                                                    ) {
-                                                      getReplies(
-                                                        id,
-                                                        superReply.id
-                                                      );
-                                                    }
-                                                    toggleReplies(
-                                                      superReply.id
-                                                    );
-                                                  }}
-                                                >
-                                                  {commentVisibility[
-                                                    superReply.id
-                                                  ]
-                                                    ? `Hide replies (${
-                                                        (
-                                                          replies[
-                                                            superReply.id
-                                                          ] || []
-                                                        ).filter(
-                                                          (superReplySmall) =>
-                                                            superReplySmall.accountName
-                                                        ).length
-                                                      })`
-                                                    : `View replies (${
-                                                        (
-                                                          replies[
-                                                            superReply.id
-                                                          ] || []
-                                                        ).filter(
-                                                          (superReplySmall) =>
-                                                            superReplySmall.accountName
-                                                        ).length
-                                                      })`}
-                                                </p>
-                                              )}
-
-                                              {/* Nút Reply cho reply */}
-                                              <p
-                                                className="view-replies"
-                                                onClick={() =>
-                                                  setReplyingTo((prev) =>
-                                                    prev === superReply.id
-                                                      ? null
-                                                      : superReply.id
-                                                  )
-                                                }
-                                              >
-                                                Reply
-                                              </p>
-                                              {superReply.accountName ===
-                                              username ? (
-                                                <AiFillDelete
-                                                  className="icon-delete-reply"
-                                                  onClick={() =>
-                                                    openModalReply(
-                                                      superReply.id
-                                                    )
-                                                  }
-                                                />
-                                              ) : null}
-                                            </div>
-
-                                            {/* Ô nhập phản hồi cho reply */}
-                                            {replyingTo === superReply.id && (
-                                              <div className="comment-input-reply">
-                                                <textarea
-                                                  placeholder="Share your opinion..."
-                                                  value={replyText}
-                                                  className="mt-4"
-                                                  onChange={(e) =>
-                                                    setReplyText(e.target.value)
-                                                  }
-                                                  onKeyDown={handleKeyDownReply}
-                                                />
-                                                <button
-                                                  className="btn btn-success"
-                                                  onClick={() =>
-                                                    addReplyHandler(
-                                                      superReply.id
-                                                    )
-                                                  }
-                                                >
-                                                  Send
-                                                </button>
-                                              </div>
-                                            )}
-
-                                            {/* Hiển thị danh sách phản hồi supper supper reply */}
-                                            {commentVisibility[superReply.id] &&
-                                              replies[superReply.id] &&
-                                              replies[superReply.id].length >
-                                                0 && (
-                                                <div className="replies-list col-11 mx-5 mt-2">
-                                                  {replies[superReply.id]
-                                                    .filter(
-                                                      (superReplySmall) =>
-                                                        superReplySmall.accountName
-                                                    )
-                                                    .map(
-                                                      (
-                                                        superReplySmall,
-                                                        index
-                                                      ) => (
-                                                        <div
-                                                          className="reply-item"
-                                                          key={
-                                                            superReplySmall.id ||
-                                                            index
-                                                          }
-                                                        >
-                                                          <img
-                                                            className="reply-avatar-reply"
-                                                            src={
-                                                              superReplySmall.profilePicture?.trim()
-                                                                ? superReplySmall.profilePicture
-                                                                : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
-                                                            }
-                                                            alt="Reply Avatar"
-                                                          />
-                                                          <span className="reply-user-reply">
-                                                            {superReplySmall.accountName ||
-                                                              ""}
-                                                          </span>
-                                                          <span className="reply-time-reply">
-                                                            {new Date(
-                                                              superReplySmall.timestamp
-                                                            ).toLocaleString()}
-                                                          </span>
-                                                          <p className="reply-text-reply d-flex">
-                                                            {superReplySmall.comment ||
-                                                              "No content"}
-                                                            {/* Nút Reply cho reply */}
-                                                            <p className="view-replies"></p>
-                                                            {superReplySmall.accountName ===
-                                                            username ? (
-                                                              <AiFillDelete
-                                                                className="icon-delete-reply ms-auto"
-                                                                onClick={() =>
-                                                                  openModalReply(
-                                                                    superReplySmall.id
-                                                                  )
-                                                                }
-                                                              />
-                                                            ) : null}
-                                                          </p>
-                                                        </div>
-                                                      )
-                                                    )}
-                                                </div>
-                                              )}
-                                          </div>
-                                        ))}
+                                      }
+                                    >
+                                      Reply
+                                    </p>
+                                    {reply.accountName === username ? (
+                                      <AiFillDelete
+                                        className="icon-delete-reply"
+                                        onClick={() => openModalReply(reply.id)}
+                                      />
+                                    ) : null}
+                                  </div>
+                                  {/* Ô nhập phản hồi cho reply */}
+                                  {replyingTo === reply.id && (
+                                    <div className="comment-input-reply">
+                                      <textarea
+                                        placeholder="Share your opinion..."
+                                        value={replyText}
+                                        className="mt-4"
+                                        onChange={(e) =>
+                                          setReplyText(e.target.value)
+                                        }
+                                        onKeyDown={handleKeyDownReply}
+                                      />
+                                      <button
+                                        className="send-opinion"
+                                        onClick={() =>
+                                          addReplyHandler(reply.id)
+                                        }
+                                      >
+                                        Send
+                                      </button>
                                     </div>
                                   )}
-                              </div>
-                            ))}
-                        </div>
-                      )}
-                  </div>
-                ))
-            ) : (
-              <p>No comments</p>
-            )}
-          </div>
-          <div
-            style={{ marginLeft: "55px" }}
-            className="pagination-container-card mt-4"
-          >
-            <Pagination className="custom-pagination-card">
-              <Pagination.Prev
-                onClick={() => handlePageChange(pageBlog - 1)}
-                disabled={pageBlog === 1}
-              />
-              {[...Array(totalPages)].map((_, index) => (
-                <Pagination.Item
-                  key={index}
-                  active={index + 1 === pageBlog}
-                  onClick={() => handlePageChange(index + 1)}
-                >
-                  {index + 1}
-                </Pagination.Item>
-              ))}
-              <Pagination.Next
-                onClick={() => handlePageChange(pageBlog + 1)}
-                disabled={pageBlog === totalPages}
-              />
-            </Pagination>
-          </div>
 
-          {popupDeleteReply && (
-            <>
-              <div
-                style={{
-                  position: "fixed",
-                  top: "0",
-                  left: "0",
-                  width: "100vw",
-                  height: "100vh",
-                  backgroundColor: "rgba(87, 87, 87, 0.2)",
-                  backdropFilter: "blur(0.05em)",
-                  zIndex: "999",
-                }}
-                onClick={cancelDeleteReply}
-              ></div>
+                                  {/* Hiển thị danh sách phản hồi supper reply */}
+                                  {commentVisibility[reply.id] &&
+                                    replies[reply.id]?.length > 0 && (
+                                      <div className="replies-list col-11 mx-5 mt-2">
+                                        {replies[reply.id]
+                                          .filter(
+                                            (superReply) =>
+                                              superReply.accountName
+                                          )
+                                          .map(
+                                            (superReply, supperReplyIndex) => (
+                                              <div
+                                                className="reply-item"
+                                                key={
+                                                  superReply.id ||
+                                                  supperReplyIndex
+                                                }
+                                              >
+                                                <img
+                                                  className="reply-avatar-reply"
+                                                  src={
+                                                    superReply.profilePicture?.trim()
+                                                      ? superReply.profilePicture
+                                                      : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
+                                                  }
+                                                  alt="Reply Avatar"
+                                                />
+                                                <span className="reply-user-reply">
+                                                  {superReply.accountName || ""}
+                                                  :
+                                                </span>
+                                                <span className="reply-time-reply">
+                                                  {new Date(
+                                                    superReply.timestamp
+                                                  ).toLocaleString()}
+                                                </span>
+                                                <p className="reply-text-reply">
+                                                  {superReply.comment ||
+                                                    "No content"}
+                                                </p>
 
-              <div
-                style={{
-                  position: "fixed",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  backgroundColor: "white",
-                  borderRadius: "8px",
-                  padding: "25px",
-                  width: "400px",
-                  boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
-                  zIndex: "1000",
-                  textAlign: "center",
-                }}
-              >
-                <h3
-                  style={{
-                    marginBottom: "20px",
-                    color: "#333",
-                    fontWeight: "bold",
-                    fontSize: "1.15em",
-                  }}
-                >
-                  Confirm Delete Comment
-                </h3>
-                <p
-                  style={{
-                    marginTop: "-10px",
-                    color: "#555",
-                    fontSize: "0.9em",
-                  }}
-                >
-                  Are you sure you want to delete this comment?
-                </p>
+                                                {/* Nút hiển thị/ẩn phản hồi */}
+                                                <div className="d-flex">
+                                                  <p
+                                                    className="view-replies"
+                                                    onClick={() => {
+                                                      if (
+                                                        !commentVisibility[
+                                                          superReply.id
+                                                        ]
+                                                      ) {
+                                                        getReplies(
+                                                          id,
+                                                          superReply.id
+                                                        );
+                                                      }
+                                                      toggleReplies(
+                                                        superReply.id
+                                                      );
+                                                    }}
+                                                  >
+                                                    {commentVisibility[
+                                                      superReply.id
+                                                    ]
+                                                      ? `Hide replies (${
+                                                          (
+                                                            replies[
+                                                              superReply.id
+                                                            ] || []
+                                                          ).filter(
+                                                            (superReplySmall) =>
+                                                              superReplySmall.accountName
+                                                          ).length
+                                                        })`
+                                                      : `View replies`}
+                                                  </p>
+
+                                                  {/* Nút Reply cho reply */}
+                                                  <p
+                                                    className="view-replies"
+                                                    onClick={() =>
+                                                      setReplyingTo((prev) =>
+                                                        prev === superReply.id
+                                                          ? null
+                                                          : superReply.id
+                                                      )
+                                                    }
+                                                  >
+                                                    Reply
+                                                  </p>
+                                                  {superReply.accountName ===
+                                                  username ? (
+                                                    <AiFillDelete
+                                                      className="icon-delete-reply"
+                                                      onClick={() =>
+                                                        openModalReply(
+                                                          superReply.id
+                                                        )
+                                                      }
+                                                    />
+                                                  ) : null}
+                                                </div>
+
+                                                {/* Ô nhập phản hồi cho reply */}
+                                                {replyingTo ===
+                                                  superReply.id && (
+                                                  <div className="comment-input-reply">
+                                                    <textarea
+                                                      placeholder="Share your opinion..."
+                                                      value={replyText}
+                                                      className="mt-4"
+                                                      onChange={(e) =>
+                                                        setReplyText(
+                                                          e.target.value
+                                                        )
+                                                      }
+                                                      onKeyDown={
+                                                        handleKeyDownReply
+                                                      }
+                                                    />
+                                                    <button
+                                                      className="btn btn-success"
+                                                      onClick={() =>
+                                                        addReplyHandler(
+                                                          superReply.id
+                                                        )
+                                                      }
+                                                    >
+                                                      Send
+                                                    </button>
+                                                  </div>
+                                                )}
+
+                                                {/* Hiển thị danh sách phản hồi supper supper reply */}
+                                                {commentVisibility[
+                                                  superReply.id
+                                                ] &&
+                                                  replies[superReply.id] &&
+                                                  replies[superReply.id]
+                                                    .length > 0 && (
+                                                    <div className="replies-list col-11 mx-5 mt-2">
+                                                      {replies[superReply.id]
+                                                        .filter(
+                                                          (superReplySmall) =>
+                                                            superReplySmall.accountName
+                                                        )
+                                                        .map(
+                                                          (
+                                                            superReplySmall,
+                                                            index
+                                                          ) => (
+                                                            <div
+                                                              className="reply-item"
+                                                              key={
+                                                                superReplySmall.id ||
+                                                                index
+                                                              }
+                                                            >
+                                                              <img
+                                                                className="reply-avatar-reply"
+                                                                src={
+                                                                  superReplySmall.profilePicture?.trim()
+                                                                    ? superReplySmall.profilePicture
+                                                                    : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
+                                                                }
+                                                                alt="Reply Avatar"
+                                                              />
+                                                              <span className="reply-user-reply">
+                                                                {superReplySmall.accountName ||
+                                                                  ""}
+                                                              </span>
+                                                              <span className="reply-time-reply">
+                                                                {new Date(
+                                                                  superReplySmall.timestamp
+                                                                ).toLocaleString()}
+                                                              </span>
+                                                              <p className="reply-text-reply d-flex">
+                                                                {superReplySmall.comment ||
+                                                                  "No content"}
+                                                                {/* Nút Reply cho reply */}
+                                                                <p className="view-replies"></p>
+                                                                {superReplySmall.accountName ===
+                                                                username ? (
+                                                                  <AiFillDelete
+                                                                    className="icon-delete-reply ms-auto"
+                                                                    onClick={() =>
+                                                                      openModalReply(
+                                                                        superReplySmall.id
+                                                                      )
+                                                                    }
+                                                                  />
+                                                                ) : null}
+                                                              </p>
+                                                            </div>
+                                                          )
+                                                        )}
+                                                    </div>
+                                                  )}
+                                              </div>
+                                            )
+                                          )}
+                                      </div>
+                                    )}
+                                </div>
+                              ))}
+                          </div>
+                        )}
+                    </div>
+                  ))
+              ) : (
+                <p>No comments</p>
+              )}
+            </div>
+            <div
+              style={{ marginLeft: "55px" }}
+              className="pagination-container-card mt-4"
+            >
+              <Pagination className="custom-pagination-card">
+                <Pagination.Prev
+                  onClick={() => handlePageChange(pageBlog - 1)}
+                  disabled={pageBlog === 1}
+                />
+                {[...Array(totalPages)].map((_, index) => (
+                  <Pagination.Item
+                    key={index}
+                    active={index + 1 === pageBlog}
+                    onClick={() => handlePageChange(index + 1)}
+                  >
+                    {index + 1}
+                  </Pagination.Item>
+                ))}
+                <Pagination.Next
+                  onClick={() => handlePageChange(pageBlog + 1)}
+                  disabled={pageBlog === totalPages}
+                />
+              </Pagination>
+            </div>
+
+            {popupDeleteReply && (
+              <>
                 <div
                   style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    gap: "10px",
-                    marginTop: "15px",
+                    position: "fixed",
+                    top: "0",
+                    left: "0",
+                    width: "100vw",
+                    height: "100vh",
+                    backgroundColor: "rgba(87, 87, 87, 0.2)",
+                    backdropFilter: "blur(0.05em)",
+                    zIndex: "999",
+                  }}
+                  onClick={cancelDeleteReply}
+                ></div>
+
+                <div
+                  style={{
+                    position: "fixed",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    backgroundColor: "white",
+                    borderRadius: "8px",
+                    padding: "25px",
+                    width: "400px",
+                    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+                    zIndex: "1000",
+                    textAlign: "center",
                   }}
                 >
-                  <button
-                    onClick={() => deleteReply(selectedIdReply)}
+                  <h3
                     style={{
-                      flex: "1",
-                      padding: "5px",
-                      backgroundColor: "#d32f2f",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "5px",
-                      cursor: "pointer",
+                      marginBottom: "20px",
+                      color: "#333",
                       fontWeight: "bold",
-                      fontSize: "0.8em",
+                      fontSize: "1.15em",
                     }}
-                    onMouseEnter={(e) =>
-                      (e.target.style.backgroundColor = "#c62828")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.target.style.backgroundColor = "#d32f2f")
-                    }
                   >
-                    Yes
-                  </button>
-                  <button
+                    Confirm Delete Comment
+                  </h3>
+                  <p
+                    style={{
+                      marginTop: "-10px",
+                      color: "#555",
+                      fontSize: "0.9em",
+                    }}
+                  >
+                    Are you sure you want to delete this comment?
+                  </p>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      gap: "10px",
+                      marginTop: "15px",
+                    }}
+                  >
+                    <button
+                      onClick={() => deleteReply(selectedIdReply)}
+                      style={{
+                        flex: "1",
+                        padding: "5px",
+                        backgroundColor: "#d32f2f",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                        fontWeight: "bold",
+                        fontSize: "0.8em",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.target.style.backgroundColor = "#c62828")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.target.style.backgroundColor = "#d32f2f")
+                      }
+                    >
+                      Yes
+                    </button>
+                    <button
+                      onClick={cancelDeleteReply}
+                      style={{
+                        flex: "1",
+                        padding: "10px",
+                        backgroundColor: "#1976d2",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                        fontWeight: "bold",
+                        fontSize: "0.9em",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.target.style.backgroundColor = "#1565c0")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.target.style.backgroundColor = "#1976d2")
+                      }
+                    >
+                      No
+                    </button>
+                  </div>
+                  {}
+                  <IoCloseSharp
+                    className="ic-close"
                     onClick={cancelDeleteReply}
                     style={{
-                      flex: "1",
-                      padding: "10px",
-                      backgroundColor: "#1976d2",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "5px",
+                      position: "absolute",
+                      top: "10px",
+                      right: "10px",
                       cursor: "pointer",
-                      fontWeight: "bold",
-                      fontSize: "0.9em",
+                      color: "#555",
                     }}
-                    onMouseEnter={(e) =>
-                      (e.target.style.backgroundColor = "#1565c0")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.target.style.backgroundColor = "#1976d2")
-                    }
-                  >
-                    No
-                  </button>
+                  />
                 </div>
-                {}
-                <IoCloseSharp
-                  className="ic-close"
-                  onClick={cancelDeleteReply}
-                  style={{
-                    position: "absolute",
-                    top: "10px",
-                    right: "10px",
-                    cursor: "pointer",
-                    color: "#555",
-                  }}
-                />
-              </div>
-            </>
-          )}
+              </>
+            )}
 
-          {/* Popup delete start */}
-          {popupDelete && (
-            <>
-              <div
-                style={{
-                  position: "fixed",
-                  top: "0",
-                  left: "0",
-                  width: "100vw",
-                  height: "100vh",
-                  backgroundColor: "rgba(87, 87, 87, 0.2)",
-                  backdropFilter: "blur(0.05em)",
-                  zIndex: "999",
-                }}
-                onClick={cancelDelete}
-              ></div>
-
-              <div
-                style={{
-                  position: "fixed",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  backgroundColor: "white",
-                  borderRadius: "8px",
-                  padding: "25px",
-                  width: "400px",
-                  boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
-                  zIndex: "1000",
-                  textAlign: "center",
-                }}
-              >
-                <h3
-                  style={{
-                    marginBottom: "20px",
-                    color: "#333",
-                    fontWeight: "bold",
-                    fontSize: "1.15em",
-                  }}
-                >
-                  Confirm Delete Comment
-                </h3>
-                <p
-                  style={{
-                    marginTop: "-10px",
-                    color: "#555",
-                    fontSize: "0.9em",
-                  }}
-                >
-                  Are you sure you want to delete this comment?
-                </p>
+            {/* Popup delete start */}
+            {popupDelete && (
+              <>
                 <div
                   style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    gap: "10px",
-                    marginTop: "15px",
+                    position: "fixed",
+                    top: "0",
+                    left: "0",
+                    width: "100vw",
+                    height: "100vh",
+                    backgroundColor: "rgba(87, 87, 87, 0.2)",
+                    backdropFilter: "blur(0.05em)",
+                    zIndex: "999",
+                  }}
+                  onClick={cancelDelete}
+                ></div>
+
+                <div
+                  style={{
+                    position: "fixed",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    backgroundColor: "white",
+                    borderRadius: "8px",
+                    padding: "25px",
+                    width: "400px",
+                    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+                    zIndex: "1000",
+                    textAlign: "center",
                   }}
                 >
-                  <button
-                    onClick={() => deleteBlog(selectedId)}
+                  <h3
                     style={{
-                      flex: "1",
-                      padding: "5px",
-                      backgroundColor: "#d32f2f",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "5px",
-                      cursor: "pointer",
+                      marginBottom: "20px",
+                      color: "#333",
                       fontWeight: "bold",
-                      fontSize: "0.8em",
+                      fontSize: "1.15em",
                     }}
-                    onMouseEnter={(e) =>
-                      (e.target.style.backgroundColor = "#c62828")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.target.style.backgroundColor = "#d32f2f")
-                    }
                   >
-                    Yes
-                  </button>
-                  <button
-                    onClick={cancelDelete}
+                    Confirm Delete Comment
+                  </h3>
+                  <p
                     style={{
-                      flex: "1",
-                      padding: "10px",
-                      backgroundColor: "#1976d2",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "5px",
-                      cursor: "pointer",
-                      fontWeight: "bold",
+                      marginTop: "-10px",
+                      color: "#555",
                       fontSize: "0.9em",
                     }}
-                    onMouseEnter={(e) =>
-                      (e.target.style.backgroundColor = "#1565c0")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.target.style.backgroundColor = "#1976d2")
-                    }
                   >
-                    No
-                  </button>
+                    Are you sure you want to delete this comment?
+                  </p>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      gap: "10px",
+                      marginTop: "15px",
+                    }}
+                  >
+                    <button
+                      onClick={() => deleteBlog(selectedId)}
+                      style={{
+                        flex: "1",
+                        padding: "5px",
+                        backgroundColor: "#d32f2f",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                        fontWeight: "bold",
+                        fontSize: "0.8em",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.target.style.backgroundColor = "#c62828")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.target.style.backgroundColor = "#d32f2f")
+                      }
+                    >
+                      Yes
+                    </button>
+                    <button
+                      onClick={cancelDelete}
+                      style={{
+                        flex: "1",
+                        padding: "10px",
+                        backgroundColor: "#1976d2",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                        fontWeight: "bold",
+                        fontSize: "0.9em",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.target.style.backgroundColor = "#1565c0")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.target.style.backgroundColor = "#1976d2")
+                      }
+                    >
+                      No
+                    </button>
+                  </div>
+                  <IoCloseSharp
+                    className="ic-close"
+                    onClick={cancelDelete}
+                    style={{
+                      position: "absolute",
+                      top: "10px",
+                      right: "10px",
+                      cursor: "pointer",
+                      color: "#555",
+                    }}
+                  />
                 </div>
-                <IoCloseSharp
-                  className="ic-close"
-                  onClick={cancelDelete}
-                  style={{
-                    position: "absolute",
-                    top: "10px",
-                    right: "10px",
-                    cursor: "pointer",
-                    color: "#555",
-                  }}
-                />
-              </div>
-            </>
-          )}
-          {/* Popup delete end */}
+              </>
+            )}
+            {/* Popup delete end */}
+          </div>
         </div>
+        {/* Comment end */}
       </div>
-      {/* Comment end */}
     </div>
   );
 };
