@@ -164,7 +164,7 @@ const BlogDetail = () => {
         }));
 
         setComments(formattedComments);
-        setTotalPages(responseComment.totalPage || 1)
+        setTotalPages(responseComment.totalPage || 1);
       } else {
         console.error("Lỗi: responseComment không có content");
       }
@@ -332,16 +332,30 @@ const BlogDetail = () => {
                 <h1 className="mt-3" style={{ fontSize: "1.2em" }}>
                   Information
                 </h1>
-                <ul style={{ fontSize: "0.9em", marginTop: "-5px" }}>
-                  <li>
-                    <strong>Serves:</strong> {blogDetail.blog.infos.serves}{" "}
-                    people
-                  </li>
-                  <li>
-                    <strong>Cook time:</strong>{" "}
-                    {blogDetail.blog.infos.cook_time} minutes
-                  </li>
-                </ul>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: "10px",
+                    fontSize: "0.9em",
+                    marginTop: "-5px",
+                  }}
+                >
+                  {Object.entries(blogDetail.blog.infos).map(([key, value]) => (
+                    <div
+                      key={key}
+                      style={{ display: "flex", flexDirection: "column" }}
+                    >
+                      <strong>
+                        {key
+                          .replace(/_/g, " ")
+                          .replace(/\b\w/g, (char) => char.toUpperCase())}
+                        :
+                      </strong>
+                      <span>{value}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
               {/* Infor of blog end */}
 
@@ -836,7 +850,10 @@ const BlogDetail = () => {
               <p>No comments</p>
             )}
           </div>
-          <div style={{marginLeft: "55px"}} className="pagination-container-card mt-4">
+          <div
+            style={{ marginLeft: "55px" }}
+            className="pagination-container-card mt-4"
+          >
             <Pagination className="custom-pagination-card">
               <Pagination.Prev
                 onClick={() => handlePageChange(pageBlog - 1)}
