@@ -9,6 +9,7 @@ const Google = () => {
   const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
   const [error, setError] = useState("");
+  const jwtToken = sessionStorage.getItem("jwtToken");
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
@@ -23,8 +24,6 @@ const Google = () => {
       sessionStorage.setItem("jwtToken", tokenValue);
     }
   }, []);
-
-  const jwtToken = sessionStorage.getItem("jwtToken");
 
   useEffect(() => {
     if (jwtToken) {
@@ -65,7 +64,9 @@ const Google = () => {
       {token ? (
         <div className="confirmation-container">
           <div className="confirmation-box">
-            <h3 className="mb-4">Are you sure you want to select this email?</h3>
+            <h3 className="mb-3">
+              Are you sure you want to select this email?
+            </h3>
             <div className="info-google d-flex text-center">
               <input
                 type="checkbox"
@@ -75,11 +76,11 @@ const Google = () => {
               />
               <h2>{email}</h2>
             </div>
-
-            {/* Hiển thị lỗi nếu chưa chọn checkbox */}
-            {error && <p className="error-message mb-4" style={{ color: "red" }}>{error}</p>}
-
-            {/* Nút xác nhận */}
+            {error && (
+              <p className="error-message mb-4" style={{ color: "red" }}>
+                {error}
+              </p>
+            )}
             <div className="confirmation-buttons">
               <button className="yes-button" onClick={handleYesClick}>
                 Yes
@@ -89,9 +90,11 @@ const Google = () => {
               </button>
             </div>
           </div>
-          </div>
+        </div>
       ) : (
-        <p className="mt-5 text-center">Could not find the email you registered with.</p>
+        <p className="mt-5 text-center">
+          Could not find the email you registered with.
+        </p>
       )}
     </div>
   );

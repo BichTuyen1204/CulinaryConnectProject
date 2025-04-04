@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 export const FoodItem = ({ product }) => {
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
   useEffect(() => {
-    console.log("Token from sessionStorage:", jwtToken);
   }, [jwtToken]);
 
   return (

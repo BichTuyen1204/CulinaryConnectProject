@@ -12,7 +12,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/thumbs";
-import ReactMarkdown from "react-markdown";
 
 export const Food_detail = () => {
   const { id } = useParams();
@@ -33,10 +32,11 @@ export const Food_detail = () => {
       console.error("Fail load data:", error);
     }
   };
+
   useEffect(() => {
     if (id) {
       getDataDetail(id);
-      // window.scrollTo(1, 0);
+      window.scrollTo(1, 0);
     } else {
       console.error("ID is undefined");
     }

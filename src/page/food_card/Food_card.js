@@ -42,9 +42,13 @@ export const Food_card = () => {
     return searchParams.get("search") || "";
   };
 
+  useEffect(() => {
+    console.log("Search params:", location.search);
+    console.log("Parsed search query:", getSearchQuery());
+  }, [location.search]);
+
   const [searchQuery, setSearchQuery] = useState(getSearchQuery());
 
-  // Function to rename category to API-friendly format
   const renameCategory = (cat) => {
     const categoryMapping = {
       All: "ALL",
@@ -70,15 +74,14 @@ export const Food_card = () => {
           pageSize
         );
       }
-
       if (!response || !response.content) {
         console.error("Invalid response:", response);
         setFilteredProducts([]);
         return;
       }
 
-      await applyFilters(response.content);
-      setFilteredProducts(normalizeProductData(response.content));
+      const filtered = await applyFilters(response.content);
+      setFilteredProducts(normalizeProductData(filtered));
       setTotalPages(response.totalPage || 1);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -88,33 +91,29 @@ export const Food_card = () => {
 
   const applyFilters = async (data) => {
     let filtered = data;
-
-    if (searchQuery.trim()) {
-      filtered = filtered.filter((product) =>
-        product.productName.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-
-      if (filtered.length === 0) {
-        try {
-          const descriptionResults = await ProductService.searchDescription(
-            searchQuery
-          );
-          const normalizedDescriptionResults =
-            normalizeProductData(descriptionResults);
-          filtered = [...filtered, ...normalizedDescriptionResults];
-        } catch (error) {
-          console.error("Error searching by description:", error);
-        }
+    if (searchQuery.trim() === "") {
+      return filtered;
+    }
+    try {
+      const response = await ProductService.searchDescription(searchQuery);
+      if (response.content) {
+        filtered = response.content.filter(
+          (product) =>
+            (product.product_name &&
+              product.product_name
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase())) ||
+            (product.description &&
+              product.description
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase()))
+        );
       }
+    } catch (error) {
+      console.error("Error searching by description:", error);
     }
 
-    filtered = filtered.map((product) => ({
-      ...product,
-      availableQuantity: product.availableQuantity ?? 0,
-    }));
-    console.log("Filtered Products:", filtered);
-    const normalizedProducts = normalizeProductData(filtered);
-    setFilteredProducts(normalizedProducts);
+    return filtered;
   };
 
   const normalizeProductData = (products) => {
@@ -128,6 +127,7 @@ export const Food_card = () => {
       imageUrl: product.image_url || product.imageUrl,
       price: product.price,
       salePercent: product.sale_percent || product.salePercent,
+      description: product.description || "",
     }));
   };
 
@@ -151,17 +151,19 @@ export const Food_card = () => {
       navigate("/sign_in");
     }
   };
+
   const handlePageChange = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
       setPage(pageNumber);
     }
   };
+
   return (
     <div>
       {/* Food Page */}
       <div className="food-page-container col-12 mt-3 bg-white px-2 py-5">
         {/* Category List */}
-        <div className="category-section px-5 col-2">
+        <div className="category-section px-2 col-1">
           <ul className="category-list">
             {categories.map((cat) => (
               <li
@@ -209,6 +211,7 @@ export const Food_card = () => {
 
                       {product.availableQuantity === 0 && (
                         <div
+                          className="out-of-stock"
                           style={{
                             position: "absolute",
                             width: "100%",
@@ -231,7 +234,7 @@ export const Food_card = () => {
                       )}
                     </div>
 
-                    <div className="food-info mx-3" style={{ flexGrow: 1 }}>
+                    <div className="food-info mx-2" style={{ flexGrow: 1 }}>
                       <h5 className="food-name">{product.productName}</h5>
                       <div className="food-price-and-quantity">
                         <p className="food-item-price">
@@ -253,7 +256,7 @@ export const Food_card = () => {
                             <span>${product.price.toFixed(2)}</span>
                           )}
                         </p>
-                        <div className="food-quantity">
+                        {/* <div className="food-quantity">
                           {product.availableQuantity > 0 ? (
                             <p className="food-item-quantity">
                               <strong className="link">
@@ -267,13 +270,13 @@ export const Food_card = () => {
                               </strong>
                             </p>
                           ) : null}
-                        </div>
-                        {product.salePercent > 0 ? (
-                          <p className="food-item-quantity">
-                            <strong className="link">Sale:</strong>{" "}
-                            {product.salePercent} %
-                          </p>
-                        ) : null}
+                        </div> */}
+                        {/* {product.salePercent > 0 ? ( */}
+                        <p className="food-item-quantity">
+                          <strong className="link">Sale:</strong>{" "}
+                          {product.salePercent} %
+                        </p>
+                        {/* ) : null} */}
                       </div>
                     </div>
                   </Link>
@@ -312,6 +315,7 @@ export const Food_card = () => {
           )}
         </div>
       </div>
+
       <div className="pagination-container-card">
         <Pagination className="custom-pagination-card">
           <Pagination.Prev
