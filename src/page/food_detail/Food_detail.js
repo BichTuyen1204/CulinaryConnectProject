@@ -12,6 +12,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/thumbs";
+import ReactDOM from "react-dom";
 
 export const Food_detail = () => {
   const { id } = useParams();
@@ -65,7 +66,7 @@ export const Food_detail = () => {
       setPopupAdd(true);
       setTimeout(() => {
         setPopupAdd(false);
-      }, 1000);
+      }, 2500);
     } else {
       navigate("/sign_in");
     }
@@ -255,13 +256,80 @@ export const Food_detail = () => {
                           </button>
                         </div>
                       )}
-                      {popupAdd && (
-                        <div className="popup">
-                          <div className="popup-content">
-                            <h5>Added to cart !</h5>
-                          </div>
-                        </div>
-                      )}
+                      {popupAdd &&
+                        ReactDOM.createPortal(
+                          <>
+                            <div
+                              style={{
+                                position: "fixed",
+                                top: 0,
+                                left: 0,
+                                width: "100vw",
+                                height: "100vh",
+                                backgroundColor: "rgba(0, 0, 0, 0.2)",
+                                backdropFilter: "blur(0.05em)",
+                                WebkitBackdropFilter: "blur(6px)",
+                                zIndex: 999,
+                              }}
+                            ></div>
+                            <div
+                              style={{
+                                position: "fixed",
+                                top: "50%",
+                                left: "50%",
+                                transform: "translate(-50%, -50%)",
+                                backgroundColor: "white",
+                                borderRadius: "8px",
+                                padding: "35px",
+                                width: "400px",
+                                boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+                                zIndex: 1000,
+                                textAlign: "center",
+                              }}
+                            >
+                              <svg
+                                className="checkmark"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 52 52"
+                                style={{
+                                  transform: "scale(0.3)",
+                                  animation: "scaleIn 0.5s ease-in-out both",
+                                  justifyContent: "space-between",
+                                }}
+                              >
+                                <circle
+                                  className="checkmark__circle"
+                                  cx="26"
+                                  cy="26"
+                                  r="25"
+                                  fill="none"
+                                  stroke="#4caf50"
+                                  strokeWidth="4"
+                                  strokeMiterlimit="10"
+                                />
+                                <path
+                                  className="checkmark__check"
+                                  fill="none"
+                                  stroke="#4caf50"
+                                  strokeWidth="4"
+                                  strokeMiterlimit="10"
+                                  d="M14 26l7 7 15-15"
+                                />
+                              </svg>
+                              <p
+                                style={{
+                                  marginTop: "20px",
+                                  color: "green",
+                                  fontSize: "1.1em",
+                                  fontWeight: "600",
+                                }}
+                              >
+                                Added to cart successfully
+                              </p>
+                            </div>
+                          </>,
+                          document.body
+                        )}
                     </div>
                   </div>
                 </div>

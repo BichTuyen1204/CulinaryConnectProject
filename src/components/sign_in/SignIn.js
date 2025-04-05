@@ -211,13 +211,13 @@ const SignIn = () => {
             {loginError && <p style={{ color: "red" }}>{loginError}</p>}
             <button
               className="login-form-button"
-              type="button"
+              type="submit"
               onClick={validateForm}
             >
               Login
             </button>
             <div className="text-center p-2">OR</div>
-            <button className="button-google" onClick={handleRedirect}>
+            <button className="button-google" type="button" onClick={handleRedirect}>
               Login with Google
             </button>
           </div>

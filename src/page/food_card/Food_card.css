@@ -1,3 +1,57 @@
+.checkmark {
+  width: 60px !important;
+  height: 60px !important;
+  margin: 0 auto;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 4;
+  stroke: #4caf50;
+  stroke-miterlimit: 10;
+  box-shadow: inset 0px 0px 0px #4caf50;
+  animation: scaleIn 2.5s ease-in-out forwards;
+}
+
+.checkmark__circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 4;
+  stroke-miterlimit: 10;
+  stroke: #4caf50;
+  fill: none;
+  animation: strokeCircle 1.5s ease-in-out forwards;
+}
+
+.checkmark__check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: strokeCheck 1.5s 1s ease-in-out forwards;
+  fill: none;
+}
+
+@keyframes strokeCircle {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes strokeCheck {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 .image-menu {
   width: 80%;
   height: 250px;
@@ -298,7 +352,7 @@
     gap: 4px;
     margin-bottom: 0px !important;
   }
-  
+
   .bt-add-to-cart,
   .bt-buy-now {
     font-size: 0.55em;
@@ -333,7 +387,7 @@
     gap: 4px;
     margin-bottom: 0px !important;
   }
-  
+
   .bt-add-to-cart,
   .bt-buy-now {
     font-size: 0.55em;
