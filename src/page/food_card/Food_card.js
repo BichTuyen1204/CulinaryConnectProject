@@ -43,10 +43,18 @@ export const Food_card = () => {
     return searchParams.get("search") || "";
   };
 
+  const getSearchType = () => {
+    const searchParams = new URLSearchParams(location.search);
+    return searchParams.get("type") || "name";
+  };
+
   useEffect(() => {
+    setSearchQuery(getSearchQuery());
+    setSearchType(getSearchType());
   }, [location.search]);
 
   const [searchQuery, setSearchQuery] = useState(getSearchQuery());
+  const [searchType, setSearchType] = useState(getSearchType());
 
   const renameCategory = (cat) => {
     const categoryMapping = {
@@ -63,7 +71,6 @@ export const Food_card = () => {
     try {
       let response;
       const renamedCategory = renameCategory(category);
-
       if (renamedCategory === "ALL") {
         response = await ProductService.getAllProduct(page, pageSize);
       } else {
@@ -78,8 +85,11 @@ export const Food_card = () => {
         setFilteredProducts([]);
         return;
       }
-
-      const filtered = await applyFilters(response.content);
+      const filtered = await applyFilters(
+        response.content,
+        searchQuery,
+        searchType
+      );
       setFilteredProducts(normalizeProductData(filtered));
       setTotalPages(response.totalPage || 1);
     } catch (error) {
@@ -89,30 +99,23 @@ export const Food_card = () => {
   };
 
   const applyFilters = async (data) => {
-    let filtered = data;
     if (searchQuery.trim() === "") {
-      return filtered;
+      return data;
     }
     try {
-      const response = await ProductService.searchDescription(searchQuery);
-      if (response.content) {
-        filtered = response.content.filter(
-          (product) =>
-            (product.product_name &&
-              product.product_name
-                .toLowerCase()
-                .includes(searchQuery.toLowerCase())) ||
-            (product.description &&
-              product.description
-                .toLowerCase()
-                .includes(searchQuery.toLowerCase()))
-        );
-      }
-    } catch (error) {
-      console.error("Error searching by description:", error);
-    }
+      const response = await ProductService.getProductsBySearch(searchQuery);
 
-    return filtered;
+      if (response.content && response.content.length > 0) {
+        return response.content;
+      }
+      const fallbackResponse = await ProductService.searchDescription(
+        searchQuery
+      );
+      return fallbackResponse.content || [];
+    } catch (error) {
+      console.error("Error applying search filters:", error);
+      return [];
+    }
   };
 
   const normalizeProductData = (products) => {

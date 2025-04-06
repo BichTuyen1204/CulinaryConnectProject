@@ -57,7 +57,9 @@ class ProductService {
   async getProductsBySearch(keyword) {
     try {
       const response = await axios.get(
-        `${REACT_APP_BACKEND_API_ENDPOINT}/api/public/search/product?keyword=${keyword}`
+        `${REACT_APP_BACKEND_API_ENDPOINT}/api/public/search/product?keyword=${encodeURIComponent(
+          keyword
+        )}`
       );
       return response.data;
     } catch (error) {
