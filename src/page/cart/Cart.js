@@ -246,26 +246,26 @@ const Cart = () => {
                 </p>
 
                 {popupDelete && productIdToDelete === item.product.id && (
-                  <div className="popup">
-                    <div className="popup-content">
+                  <div className="popup-delete">
+                    <div className="popup-content-delete">
                       <h5 className="info-delete">
                         Are you sure you want to delete this product?
                       </h5>
-                      <div className="popup-buttons">
+                      <div className="popup-buttons-delete">
                         <button
                           className="button-delete"
                           onClick={deleteProduct}
                         >
-                          Delete
+                          Yes
                         </button>
                         <button
                           className="button-cancel"
                           onClick={cancelDelete}
                         >
-                          Cancel
+                          No
                         </button>
                       </div>
-                      <IoClose className="popup-close" onClick={cancelDelete} />
+                      <IoClose className="popup-close-delete" onClick={cancelDelete} />
                     </div>
                   </div>
                 )}

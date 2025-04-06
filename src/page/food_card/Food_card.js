@@ -153,6 +153,15 @@ export const Food_card = () => {
     }
   };
 
+  const handleBuyNow = async (product) => {
+    if (username) {
+      await addToCart(product);
+      navigate("/cart");
+    } else {
+      navigate("/sign_in");
+    }
+  };
+
   const handlePageChange = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
       setPage(pageNumber);
@@ -305,7 +314,13 @@ export const Food_card = () => {
                     >
                       Add to cart
                     </button>
-                    <button className="bt-buy-now">Buy now</button>
+                    <button
+                      className="bt-buy-now"
+                      onClick={() => handleBuyNow(product)}
+                      disabled={product.availableQuantity === 0}
+                    >
+                      Buy now
+                    </button>
                   </div>
                 ) : (
                   <div></div>
@@ -355,7 +370,7 @@ export const Food_card = () => {
                     style={{
                       transform: "scale(0.3)",
                       animation: "scaleIn 0.5s ease-in-out both",
-                      justifyContent: "space-between"
+                      justifyContent: "space-between",
                     }}
                   >
                     <circle

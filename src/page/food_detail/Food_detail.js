@@ -72,6 +72,15 @@ export const Food_detail = () => {
     }
   };
 
+  const handleBuyNow = async () => {
+    if (username) {
+      await addToCart(product);
+      navigate("/cart");
+    } else {
+      navigate("/sign_in");
+    }
+  };
+
   return (
     <div>
       <div>
@@ -244,7 +253,13 @@ export const Food_detail = () => {
                           >
                             Add to cart
                           </button>
-                          <button className="button-buynow">Buy now</button>
+                          <button
+                            className="button-buynow"
+                            onClick={handleBuyNow}
+                            disabled={product.availableQuantity === 0}
+                          >
+                            Buy now
+                          </button>
                         </div>
                       ) : (
                         <div className="button-in-item mt-3">
