@@ -6,10 +6,10 @@ import AccountService from "../../api/AccountService.js";
 import CartService from "../../api/CartService.js";
 import { BiSolidEditAlt } from "react-icons/bi";
 import OrderService from "../../api/OrderService.js";
-import { IoClose } from "react-icons/io5";
 import { RiCoupon2Line } from "react-icons/ri";
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import CouponService from "../../api/CouponService.js";
+import ReactDOM from "react-dom";
+import { IoCloseSharp } from "react-icons/io5";
 
 const REACT_APP_BACKEND_API_ENDPOINT =
   process.env.REACT_APP_BACKEND_API_ENDPOINT;
@@ -30,19 +30,13 @@ export const Order = () => {
   const [tempSelect, setTempSelect] = useState(null);
   const [coupon, setCoupon] = useState(null);
   const [coupons, setCoupons] = useState([]);
-  const [amount, setAmount] = useState("");
-  const [error, setError] = useState("");
   const [note, setNote] = useState("");
   const [pay, setPay] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
-  const [items, setItems] = useState([]);
   const navigate = useNavigate();
   const [popupBuy, setPopupBuy] = useState(false);
-  const [salePercent, setSalePercent] = useState(null);
   const [popupOrderSuccessful, setPopupOrderSuccessful] = useState(false);
   const [popupCoupon, setPopupCoupon] = useState(false);
-  const [orderID, setOrderID] = useState(null);
-  const [paymentSuccessful, setPaymentSuccessful] = useState(false);
 
   const [orderData, setOrderData] = useState({
     couponId: "",
@@ -250,7 +244,7 @@ export const Order = () => {
 
   useEffect(() => {
     getAllProduct();
-    window.scrollTo(0, 0);
+    window.scrollTo(1, 0);
   }, []);
 
   // Calculator total
@@ -401,10 +395,6 @@ export const Order = () => {
       if (paymentUrl) {
         console.log("Returning orderId before redirect:", orderId);
         window.open(paymentUrl, "_blank");
-
-        // Show the modal pop-up
-        // setIsModalOpen(true);  // Open modal when PayPal is initiated
-
         return orderId;
       } else {
         throw new Error("Payment URL is undefined");
@@ -451,7 +441,7 @@ export const Order = () => {
         setTimeout(() => {
           navigate("/invoice", { state: { jwtToken } });
           window.location.reload();
-        }, 2000);
+        }, 2500);
       } catch (error) {
         console.error("Error creating order:", error);
         alert("Failed to create order.");
@@ -743,8 +733,9 @@ export const Order = () => {
                       background: "#159cfc",
                       color: "white",
                       border: "none",
-                      padding: "5px 15px",
+                      padding: "8px 15px",
                       marginBottom: "5px",
+                      borderRadius: "17px",
                     }}
                   >
                     Choose coupon
@@ -938,6 +929,7 @@ export const Order = () => {
                   <button
                     className="d-flex justify-content-end mb-3"
                     type="submit"
+                    style={{ borderRadius: "5px", padding: "10px" }}
                     onClick={handleProceedToPayment}
                   >
                     Proceed to Payment
@@ -966,40 +958,201 @@ export const Order = () => {
                 </div>
               )}
 
-              {popupBuy && (
-                <div className="popup-order">
-                  <div className="popup-content-order">
-                    <h5 className="info-buy">
-                      Are you sure you want to purchase this product?
-                    </h5>
-                    <div className="popup-buttons">
-                      <button
-                        className="button-buy"
-                        onClick={handleSubmitOrder}
-                      >
-                        Buy
-                      </button>
-                      <button
-                        className="button-cancel-order"
-                        onClick={cancelBuy}
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                    <IoClose className="popup-close" onClick={cancelBuy} />
-                  </div>
-                </div>
-              )}
+              {popupBuy &&
+                ReactDOM.createPortal(
+                  <>
+                    <div
+                      style={{
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        width: "100vw",
+                        height: "100vh",
+                        backgroundColor: "rgba(0, 0, 0, 0.2)",
+                        backdropFilter: "blur(0.05em)",
+                        WebkitBackdropFilter: "blur(6px)",
+                        zIndex: 999,
+                      }}
+                      onClick={cancelBuy}
+                    ></div>
 
-              {popupOrderSuccessful && (
-                <div className="popup">
-                  <div className="popup-content">
-                    <h5 className="info-delete" style={{ color: "green" }}>
-                      Your order has been successfully placed
-                    </h5>
-                  </div>
-                </div>
-              )}
+                    <div
+                      style={{
+                        position: "fixed",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        backgroundColor: "white",
+                        borderRadius: "8px",
+                        padding: "25px",
+                        width: "400px",
+                        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+                        zIndex: 1000,
+                        textAlign: "center",
+                      }}
+                    >
+                      <h3
+                        style={{
+                          marginBottom: "20px",
+                          color: "#333",
+                          fontWeight: "bold",
+                          fontSize: "1.15em",
+                        }}
+                      >
+                        Confirm Your Order
+                      </h3>
+                      <p
+                        style={{
+                          marginTop: "-10px",
+                          color: "#555",
+                          fontSize: "0.9em",
+                        }}
+                      >
+                        Are you sure you want to purchase this product?
+                      </p>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          gap: "10px",
+                          marginTop: "15px",
+                        }}
+                      >
+                        <button
+                          onClick={handleSubmitOrder}
+                          style={{
+                            flex: "1",
+                            padding: "5px",
+                            backgroundColor: "green",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "5px",
+                            cursor: "pointer",
+                            fontWeight: "bold",
+                            fontSize: "0.8em",
+                          }}
+                          onMouseEnter={(e) =>
+                            (e.target.style.backgroundColor = "#05a810")
+                          }
+                          onMouseLeave={(e) =>
+                            (e.target.style.backgroundColor = "#2d9631")
+                          }
+                        >
+                          Yes
+                        </button>
+                        <button
+                          onClick={cancelBuy}
+                          style={{
+                            flex: "1",
+                            padding: "10px",
+                            backgroundColor: "#b80707",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "5px",
+                            cursor: "pointer",
+                            fontWeight: "bold",
+                            fontSize: "0.9em",
+                          }}
+                          onMouseEnter={(e) =>
+                            (e.target.style.backgroundColor = "#c92e2e")
+                          }
+                          onMouseLeave={(e) =>
+                            (e.target.style.backgroundColor = "#db0000")
+                          }
+                        >
+                          No
+                        </button>
+                      </div>
+                      <IoCloseSharp
+                        className="ic-close"
+                        onClick={cancelBuy}
+                        style={{
+                          position: "absolute",
+                          top: "10px",
+                          right: "10px",
+                          cursor: "pointer",
+                          color: "#555",
+                        }}
+                      />
+                    </div>
+                  </>,
+                  document.body
+                )}
+
+              {popupOrderSuccessful &&
+                ReactDOM.createPortal(
+                  <>
+                    <div
+                      style={{
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        width: "100vw",
+                        height: "100vh",
+                        backgroundColor: "rgba(0, 0, 0, 0.2)",
+                        backdropFilter: "blur(0.05em)",
+                        WebkitBackdropFilter: "blur(6px)",
+                        zIndex: 999,
+                      }}
+                    ></div>
+                    <div
+                      style={{
+                        position: "fixed",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        backgroundColor: "white",
+                        borderRadius: "8px",
+                        padding: "35px",
+                        width: "400px",
+                        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+                        zIndex: 1000,
+                        textAlign: "center",
+                      }}
+                    >
+                      <svg
+                        className="checkmark"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 52 52"
+                        style={{
+                          transform: "scale(0.3)",
+                          animation: "scaleIn 0.5s ease-in-out both",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <circle
+                          className="checkmark__circle"
+                          cx="26"
+                          cy="26"
+                          r="25"
+                          fill="none"
+                          stroke="#4caf50"
+                          strokeWidth="4"
+                          strokeMiterlimit="10"
+                        />
+                        <path
+                          className="checkmark__check"
+                          fill="none"
+                          stroke="#4caf50"
+                          strokeWidth="4"
+                          strokeMiterlimit="10"
+                          d="M14 26l7 7 15-15"
+                        />
+                      </svg>
+                      <p
+                        style={{
+                          marginTop: "20px",
+                          color: "green",
+                          fontSize: "1.1em",
+                          fontWeight: "600",
+                        }}
+                      >
+                        Your order has been successfully placed
+                      </p>
+                    </div>
+                  </>,
+                  document.body
+                )}
 
               {popupCoupon && (
                 <>

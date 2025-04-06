@@ -9,6 +9,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import AccountService from "../../api/AccountService";
 import { AiFillDelete } from "react-icons/ai";
 import { Pagination } from "react-bootstrap";
+import ReactDOM from "react-dom";
 
 const BlogDetail = () => {
   const { id } = useParams();
@@ -213,7 +214,7 @@ const BlogDetail = () => {
     if (!replyText.trim()) return;
     const newReply = {
       id: Date.now(),
-      accountName: "Current User",
+      accountName: "",
       profilePicture: "https://example.com/avatar.jpg",
       timestamp: new Date().toISOString(),
       comment: replyText,
@@ -302,7 +303,7 @@ const BlogDetail = () => {
                 className="toggle-left-column"
                 onClick={toggleLeftColumn}
                 style={{
-                  display: "none", // Hidden by default, shown only in mobile view via CSS
+                  display: "none",
                 }}
               >
                 {isLeftVisible ? "Hide Details" : "Show Details"}
@@ -312,7 +313,7 @@ const BlogDetail = () => {
               <div
                 className={`blog-left ${isLeftVisible ? "" : "hidden"}`}
                 style={{
-                  display: isLeftVisible ? "block" : "none", // Inline style for fallback
+                  display: isLeftVisible ? "block" : "none",
                 }}
               >
                 <img
@@ -389,7 +390,7 @@ const BlogDetail = () => {
         </div>
 
         {/* Comment start */}
-        <div className="container-bg px-3 col-12 py-5">
+        <div className="container-bg-comment px-3 col-12 py-5">
           <div className="comment-section mt-1">
             <div style={{ marginBottom: "-15px" }}>
               <p className="pt-3">
@@ -445,7 +446,7 @@ const BlogDetail = () => {
                           <span className="comment-user col-8 mt-1">
                             {comment.accountName}
                           </span>
-                          <span className="comment-time col-3 mt-1 d-flex justify-content-end">
+                          <span className="comment-time col-3 mt-1 mx-2 d-flex justify-content-end">
                             {new Date(comment.timestamp).toLocaleString()}
                           </span>
                         </div>
@@ -523,22 +524,27 @@ const BlogDetail = () => {
                                   key={reply.id || replyIndex}
                                 >
                                   <img
-                                    className="reply-avatar-reply"
+                                    className="comment-avatar"
                                     src={
                                       reply.profilePicture?.trim()
                                         ? reply.profilePicture
                                         : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
                                     }
-                                    alt="Reply Avatar"
+                                    alt="Avatar"
+                                    onError={(e) => {
+                                      e.target.onerror = null;
+                                      e.target.src =
+                                        "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg";
+                                    }}
                                   />
-                                  <span className="reply-user-reply">
+                                  <span className="reply-user-reply mx-3">
                                     {reply.accountName || ""}:
                                   </span>
                                   <span className="reply-time-reply">
                                     {new Date(reply.timestamp).toLocaleString()}
                                   </span>
-                                  <p className="reply-text-reply">
-                                    {reply.comment || "No content"}
+                                  <p className="reply-text-reply mx-5">
+                                    {reply.comment || ""}
                                   </p>
 
                                   {/* Nút hiển thị/ẩn phản hồi */}
@@ -622,15 +628,20 @@ const BlogDetail = () => {
                                                 }
                                               >
                                                 <img
-                                                  className="reply-avatar-reply"
+                                                  className="comment-avatar"
                                                   src={
                                                     superReply.profilePicture?.trim()
                                                       ? superReply.profilePicture
                                                       : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
                                                   }
-                                                  alt="Reply Avatar"
+                                                  alt="Avatar"
+                                                  onError={(e) => {
+                                                    e.target.onerror = null;
+                                                    e.target.src =
+                                                      "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg";
+                                                  }}
                                                 />
-                                                <span className="reply-user-reply">
+                                                <span className="reply-user-reply mx-3">
                                                   {superReply.accountName || ""}
                                                   :
                                                 </span>
@@ -639,7 +650,7 @@ const BlogDetail = () => {
                                                     superReply.timestamp
                                                   ).toLocaleString()}
                                                 </span>
-                                                <p className="reply-text-reply">
+                                                <p className="reply-text-reply mx-5">
                                                   {superReply.comment ||
                                                     "No content"}
                                                 </p>
@@ -762,15 +773,23 @@ const BlogDetail = () => {
                                                               }
                                                             >
                                                               <img
-                                                                className="reply-avatar-reply"
+                                                                className="comment-avatar"
                                                                 src={
                                                                   superReplySmall.profilePicture?.trim()
                                                                     ? superReplySmall.profilePicture
                                                                     : "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg"
                                                                 }
-                                                                alt="Reply Avatar"
+                                                                alt="Avatar"
+                                                                onError={(
+                                                                  e
+                                                                ) => {
+                                                                  e.target.onerror =
+                                                                    null;
+                                                                  e.target.src =
+                                                                    "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg";
+                                                                }}
                                                               />
-                                                              <span className="reply-user-reply">
+                                                              <span className="reply-user-reply mx-3">
                                                                 {superReplySmall.accountName ||
                                                                   ""}
                                                               </span>
@@ -780,13 +799,25 @@ const BlogDetail = () => {
                                                                 ).toLocaleString()}
                                                               </span>
                                                               <p className="reply-text-reply d-flex">
-                                                                {superReplySmall.comment ||
-                                                                  "No content"}
+                                                                <p
+                                                                  style={{
+                                                                    marginLeft:
+                                                                      "0.5em",
+                                                                    marginRight:
+                                                                      "1em",
+                                                                  }}
+                                                                >
+                                                                  {superReplySmall.comment ||
+                                                                    "No content"}
+                                                                </p>
                                                                 {/* Nút Reply cho reply */}
-                                                                <p className="view-replies"></p>
                                                                 {superReplySmall.accountName ===
                                                                 username ? (
                                                                   <AiFillDelete
+                                                                    style={{
+                                                                      width:
+                                                                        "10%",
+                                                                    }}
                                                                     className="icon-delete-reply ms-auto"
                                                                     onClick={() =>
                                                                       openModalReply(
@@ -841,243 +872,248 @@ const BlogDetail = () => {
               </Pagination>
             </div>
 
-            {popupDeleteReply && (
-              <>
-                <div
-                  style={{
-                    position: "fixed",
-                    top: "0",
-                    left: "0",
-                    width: "100vw",
-                    height: "100vh",
-                    backgroundColor: "rgba(87, 87, 87, 0.2)",
-                    backdropFilter: "blur(0.05em)",
-                    zIndex: "999",
-                  }}
-                  onClick={cancelDeleteReply}
-                ></div>
-
-                <div
-                  style={{
-                    position: "fixed",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                    backgroundColor: "white",
-                    borderRadius: "8px",
-                    padding: "25px",
-                    width: "400px",
-                    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
-                    zIndex: "1000",
-                    textAlign: "center",
-                  }}
-                >
-                  <h3
-                    style={{
-                      marginBottom: "20px",
-                      color: "#333",
-                      fontWeight: "bold",
-                      fontSize: "1.15em",
-                    }}
-                  >
-                    Confirm Delete Comment
-                  </h3>
-                  <p
-                    style={{
-                      marginTop: "-10px",
-                      color: "#555",
-                      fontSize: "0.9em",
-                    }}
-                  >
-                    Are you sure you want to delete this comment?
-                  </p>
+            {popupDeleteReply &&
+              ReactDOM.createPortal(
+                <>
                   <div
                     style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      gap: "10px",
-                      marginTop: "15px",
+                      position: "fixed",
+                      top: "0",
+                      left: "0",
+                      width: "100vw",
+                      height: "100vh",
+                      backgroundColor: "rgba(87, 87, 87, 0.5)",
+                      backdropFilter: "blur(0.05em)",
+                      zIndex: "999",
+                    }}
+                    onClick={cancelDeleteReply}
+                  ></div>
+
+                  <div
+                    style={{
+                      position: "fixed",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      backgroundColor: "white",
+                      borderRadius: "8px",
+                      padding: "25px",
+                      width: "400px",
+                      boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+                      zIndex: "1000",
+                      textAlign: "center",
                     }}
                   >
-                    <button
-                      onClick={() => deleteReply(selectedIdReply)}
+                    <h3
                       style={{
-                        flex: "1",
-                        padding: "5px",
-                        backgroundColor: "#d32f2f",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "5px",
-                        cursor: "pointer",
+                        marginBottom: "20px",
+                        color: "#333",
                         fontWeight: "bold",
-                        fontSize: "0.8em",
+                        fontSize: "1.15em",
                       }}
-                      onMouseEnter={(e) =>
-                        (e.target.style.backgroundColor = "#c62828")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.target.style.backgroundColor = "#d32f2f")
-                      }
                     >
-                      Yes
-                    </button>
-                    <button
+                      Confirm Delete Comment
+                    </h3>
+                    <p
+                      style={{
+                        marginTop: "-10px",
+                        color: "#555",
+                        fontSize: "0.9em",
+                      }}
+                    >
+                      Are you sure you want to delete this comment?
+                    </p>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        gap: "10px",
+                        marginTop: "15px",
+                      }}
+                    >
+                      <button
+                        onClick={() => deleteReply(selectedIdReply)}
+                        style={{
+                          flex: "1",
+                          padding: "5px",
+                          backgroundColor: "#d32f2f",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "5px",
+                          cursor: "pointer",
+                          fontWeight: "bold",
+                          fontSize: "0.8em",
+                        }}
+                        onMouseEnter={(e) =>
+                          (e.target.style.backgroundColor = "#c62828")
+                        }
+                        onMouseLeave={(e) =>
+                          (e.target.style.backgroundColor = "#d32f2f")
+                        }
+                      >
+                        Yes
+                      </button>
+                      <button
+                        onClick={cancelDeleteReply}
+                        style={{
+                          flex: "1",
+                          padding: "10px",
+                          backgroundColor: "#1976d2",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "5px",
+                          cursor: "pointer",
+                          fontWeight: "bold",
+                          fontSize: "0.9em",
+                        }}
+                        onMouseEnter={(e) =>
+                          (e.target.style.backgroundColor = "#1565c0")
+                        }
+                        onMouseLeave={(e) =>
+                          (e.target.style.backgroundColor = "#1976d2")
+                        }
+                      >
+                        No
+                      </button>
+                    </div>
+                    {}
+                    <IoCloseSharp
+                      className="ic-close"
                       onClick={cancelDeleteReply}
                       style={{
-                        flex: "1",
-                        padding: "10px",
-                        backgroundColor: "#1976d2",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "5px",
+                        position: "absolute",
+                        top: "10px",
+                        right: "10px",
                         cursor: "pointer",
-                        fontWeight: "bold",
-                        fontSize: "0.9em",
+                        color: "#555",
                       }}
-                      onMouseEnter={(e) =>
-                        (e.target.style.backgroundColor = "#1565c0")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.target.style.backgroundColor = "#1976d2")
-                      }
-                    >
-                      No
-                    </button>
+                    />
                   </div>
-                  {}
-                  <IoCloseSharp
-                    className="ic-close"
-                    onClick={cancelDeleteReply}
-                    style={{
-                      position: "absolute",
-                      top: "10px",
-                      right: "10px",
-                      cursor: "pointer",
-                      color: "#555",
-                    }}
-                  />
-                </div>
-              </>
-            )}
+                </>,
+                document.body
+              )}
 
             {/* Popup delete start */}
-            {popupDelete && (
-              <>
-                <div
-                  style={{
-                    position: "fixed",
-                    top: "0",
-                    left: "0",
-                    width: "100vw",
-                    height: "100vh",
-                    backgroundColor: "rgba(87, 87, 87, 0.2)",
-                    backdropFilter: "blur(0.05em)",
-                    zIndex: "999",
-                  }}
-                  onClick={cancelDelete}
-                ></div>
-
-                <div
-                  style={{
-                    position: "fixed",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                    backgroundColor: "white",
-                    borderRadius: "8px",
-                    padding: "25px",
-                    width: "400px",
-                    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
-                    zIndex: "1000",
-                    textAlign: "center",
-                  }}
-                >
-                  <h3
-                    style={{
-                      marginBottom: "20px",
-                      color: "#333",
-                      fontWeight: "bold",
-                      fontSize: "1.15em",
-                    }}
-                  >
-                    Confirm Delete Comment
-                  </h3>
-                  <p
-                    style={{
-                      marginTop: "-10px",
-                      color: "#555",
-                      fontSize: "0.9em",
-                    }}
-                  >
-                    Are you sure you want to delete this comment?
-                  </p>
+            {popupDelete &&
+              ReactDOM.createPortal(
+                <>
                   <div
                     style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      gap: "10px",
-                      marginTop: "15px",
+                      position: "fixed",
+                      top: 0,
+                      left: 0,
+                      width: "100vw",
+                      height: "100vh",
+                      backgroundColor: "rgba(0, 0, 0, 0.2)",
+                      backdropFilter: "blur(0.05em)",
+                      WebkitBackdropFilter: "blur(6px)",
+                      zIndex: 999,
+                    }}
+                    onClick={cancelDelete}
+                  ></div>
+
+                  <div
+                    style={{
+                      position: "fixed",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      backgroundColor: "white",
+                      borderRadius: "8px",
+                      padding: "25px",
+                      width: "400px",
+                      boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+                      zIndex: 1000,
+                      textAlign: "center",
                     }}
                   >
-                    <button
-                      onClick={() => deleteBlog(selectedId)}
+                    <h3
                       style={{
-                        flex: "1",
-                        padding: "5px",
-                        backgroundColor: "#d32f2f",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "5px",
-                        cursor: "pointer",
+                        marginBottom: "20px",
+                        color: "#333",
                         fontWeight: "bold",
-                        fontSize: "0.8em",
+                        fontSize: "1.15em",
                       }}
-                      onMouseEnter={(e) =>
-                        (e.target.style.backgroundColor = "#c62828")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.target.style.backgroundColor = "#d32f2f")
-                      }
                     >
-                      Yes
-                    </button>
-                    <button
-                      onClick={cancelDelete}
+                      Confirm Delete Comment
+                    </h3>
+                    <p
                       style={{
-                        flex: "1",
-                        padding: "10px",
-                        backgroundColor: "#1976d2",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "5px",
-                        cursor: "pointer",
-                        fontWeight: "bold",
+                        marginTop: "-10px",
+                        color: "#555",
                         fontSize: "0.9em",
                       }}
-                      onMouseEnter={(e) =>
-                        (e.target.style.backgroundColor = "#1565c0")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.target.style.backgroundColor = "#1976d2")
-                      }
                     >
-                      No
-                    </button>
+                      Are you sure you want to delete this comment?
+                    </p>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        gap: "10px",
+                        marginTop: "15px",
+                      }}
+                    >
+                      <button
+                        onClick={() => deleteBlog(selectedId)}
+                        style={{
+                          flex: "1",
+                          padding: "5px",
+                          backgroundColor: "#d32f2f",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "5px",
+                          cursor: "pointer",
+                          fontWeight: "bold",
+                          fontSize: "0.8em",
+                        }}
+                        onMouseEnter={(e) =>
+                          (e.target.style.backgroundColor = "#c62828")
+                        }
+                        onMouseLeave={(e) =>
+                          (e.target.style.backgroundColor = "#d32f2f")
+                        }
+                      >
+                        Yes
+                      </button>
+                      <button
+                        onClick={cancelDelete}
+                        style={{
+                          flex: "1",
+                          padding: "10px",
+                          backgroundColor: "#1976d2",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "5px",
+                          cursor: "pointer",
+                          fontWeight: "bold",
+                          fontSize: "0.9em",
+                        }}
+                        onMouseEnter={(e) =>
+                          (e.target.style.backgroundColor = "#1565c0")
+                        }
+                        onMouseLeave={(e) =>
+                          (e.target.style.backgroundColor = "#1976d2")
+                        }
+                      >
+                        No
+                      </button>
+                    </div>
+                    <IoCloseSharp
+                      className="ic-close"
+                      onClick={cancelDelete}
+                      style={{
+                        position: "absolute",
+                        top: "10px",
+                        right: "10px",
+                        cursor: "pointer",
+                        color: "#555",
+                      }}
+                    />
                   </div>
-                  <IoCloseSharp
-                    className="ic-close"
-                    onClick={cancelDelete}
-                    style={{
-                      position: "absolute",
-                      top: "10px",
-                      right: "10px",
-                      cursor: "pointer",
-                      color: "#555",
-                    }}
-                  />
-                </div>
-              </>
-            )}
+                </>,
+                document.body
+              )}
             {/* Popup delete end */}
           </div>
         </div>

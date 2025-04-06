@@ -6,6 +6,7 @@ import { useParams, useLocation, useNavigate, Link } from "react-router-dom";
 import { CartContext } from "../../components/context/Context";
 import AccountService from "../../api/AccountService";
 import { Pagination } from "react-bootstrap";
+import ReactDOM from "react-dom";
 
 export const Food_card = () => {
   const categories = ["All", "Meal kit", "Vegetables", "Meat", "Season"];
@@ -43,8 +44,6 @@ export const Food_card = () => {
   };
 
   useEffect(() => {
-    console.log("Search params:", location.search);
-    console.log("Parsed search query:", getSearchQuery());
   }, [location.search]);
 
   const [searchQuery, setSearchQuery] = useState(getSearchQuery());
@@ -146,7 +145,16 @@ export const Food_card = () => {
       setPopupAdd(true);
       setTimeout(() => {
         setPopupAdd(false);
-      }, 1000);
+      }, 2500);
+    } else {
+      navigate("/sign_in");
+    }
+  };
+
+  const handleBuyNow = async (product) => {
+    if (username) {
+      await addToCart(product);
+      navigate("/cart");
     } else {
       navigate("/sign_in");
     }
@@ -190,9 +198,16 @@ export const Food_card = () => {
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  opacity: product.availableQuantity === 0 ? 0.5 : 1,
+                  opacity:
+                    product.productStatus === "OUT_OF_STOCK" ||
+                    product.productStatus === "NO_LONGER_IN_SALE"
+                      ? 0.5
+                      : 1,
                   pointerEvents:
-                    product.availableQuantity === 0 ? "none" : "auto",
+                    product.productStatus === "OUT_OF_STOCK" ||
+                    product.productStatus === "NO_LONGER_IN_SALE"
+                      ? "none"
+                      : "auto",
                 }}
               >
                 <div>
@@ -209,7 +224,8 @@ export const Food_card = () => {
                         alt={product.productName}
                       />
 
-                      {product.availableQuantity === 0 && (
+                      {(product.productStatus === "OUT_OF_STOCK" ||
+                        product.productStatus === "NO_LONGER_IN_SALE") && (
                         <div
                           className="out-of-stock"
                           style={{
@@ -229,7 +245,9 @@ export const Food_card = () => {
                             borderRadius: "0px",
                           }}
                         >
-                          Out of Stock
+                          {product.productStatus === "OUT_OF_STOCK"
+                            ? "Out of Stock"
+                            : "No Longer in Sale"}
                         </div>
                       )}
                     </div>
@@ -256,27 +274,12 @@ export const Food_card = () => {
                             <span>${product.price.toFixed(2)}</span>
                           )}
                         </p>
-                        {/* <div className="food-quantity">
-                          {product.availableQuantity > 0 ? (
-                            <p className="food-item-quantity">
-                              <strong className="link">
-                                Quantity: In stock
-                              </strong>
-                            </p>
-                          ) : product.availableQuantity === 0 ? (
-                            <p className="food-item-quantity mt-2">
-                              <strong className="link">
-                                Quantity: Out of stock
-                              </strong>
-                            </p>
-                          ) : null}
-                        </div> */}
-                        {/* {product.salePercent > 0 ? ( */}
-                        <p className="food-item-quantity">
-                          <strong className="link">Sale:</strong>{" "}
-                          {product.salePercent} %
-                        </p>
-                        {/* ) : null} */}
+                        {product.salePercent > 0 ? (
+                          <p className="food-item-quantity">
+                            <strong className="link">Sale:</strong>{" "}
+                            {product.salePercent} %
+                          </p>
+                        ) : null}
                       </div>
                     </div>
                   </Link>
@@ -294,10 +297,26 @@ export const Food_card = () => {
                     >
                       Add to cart
                     </button>
-                    <button className="bt-buy-now">Buy now</button>
+                    <button
+                      className="bt-buy-now"
+                      onClick={() => handleBuyNow(product)}
+                      disabled={product.availableQuantity === 0}
+                    >
+                      Buy now
+                    </button>
                   </div>
                 ) : (
-                  <div></div>
+                  <div
+                    className="button-food-card mb-2"
+                    style={{ paddingBottom: "5px" }}
+                  >
+                    <Link to={"/sign_in"}>
+                      <button className="bt-add-to-cart">Add to cart</button>
+                    </Link>
+                    <Link to={"/sign_in"}>
+                      <button className="bt-buy-now">Buy now</button>
+                    </Link>
+                  </div>
                 )}
               </div>
             ))
@@ -306,16 +325,84 @@ export const Food_card = () => {
               No products available in this category.
             </p>
           )}
-          {popupAdd && (
-            <div className="popup">
-              <div className="popup-content">
-                <h5>Added to cart !</h5>
-              </div>
-            </div>
-          )}
+          {popupAdd &&
+            ReactDOM.createPortal(
+              <>
+                <div
+                  style={{
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    width: "100vw",
+                    height: "100vh",
+                    backgroundColor: "rgba(0, 0, 0, 0.2)",
+                    backdropFilter: "blur(0.05em)",
+                    WebkitBackdropFilter: "blur(6px)",
+                    zIndex: 999,
+                  }}
+                ></div>
+                <div
+                  style={{
+                    position: "fixed",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    backgroundColor: "white",
+                    borderRadius: "8px",
+                    padding: "35px",
+                    width: "400px",
+                    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+                    zIndex: 1000,
+                    textAlign: "center",
+                  }}
+                >
+                  <svg
+                    className="checkmark"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 52 52"
+                    style={{
+                      transform: "scale(0.3)",
+                      animation: "scaleIn 0.5s ease-in-out both",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <circle
+                      className="checkmark__circle"
+                      cx="26"
+                      cy="26"
+                      r="25"
+                      fill="none"
+                      stroke="#4caf50"
+                      strokeWidth="4"
+                      strokeMiterlimit="10"
+                    />
+                    <path
+                      className="checkmark__check"
+                      fill="none"
+                      stroke="#4caf50"
+                      strokeWidth="4"
+                      strokeMiterlimit="10"
+                      d="M14 26l7 7 15-15"
+                    />
+                  </svg>
+                  <p
+                    style={{
+                      marginTop: "20px",
+                      color: "green",
+                      fontSize: "1.1em",
+                      fontWeight: "600",
+                    }}
+                  >
+                    Added to cart successfully
+                  </p>
+                </div>
+              </>,
+              document.body
+            )}
         </div>
       </div>
 
+      {/*Paging */}
       <div className="pagination-container-card">
         <Pagination className="custom-pagination-card">
           <Pagination.Prev
