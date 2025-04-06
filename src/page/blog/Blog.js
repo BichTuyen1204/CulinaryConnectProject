@@ -17,6 +17,7 @@ const Blog = () => {
   const [page, setPage] = useState(1);
   const pageSize = 50;
   const [totalPages, setTotalPages] = useState(1);
+  const [searchType, setSearchType] = useState("name");
 
   // Search term change handler
   const handleSearch = (e) => {
@@ -56,20 +57,6 @@ const Blog = () => {
     }
   };
 
-  // Fetch all blogs with search term, tags, and pagination
-  const getSearchBlog = async () => {
-    if (jwtToken) {
-      try {
-        const response = await BlogService.getSearchBlog(searchTerm, tags);
-        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-      } catch (error) {
-        console.error("Error fetching blogs:", error);
-      }
-    } else {
-      navigate("/sign_in");
-    }
-  };
-
   const getAllBlog = async (page, pageSize) => {
     if (jwtToken) {
       try {
@@ -84,6 +71,43 @@ const Blog = () => {
       navigate("/sign_in");
     }
   };
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      if (!jwtToken) {
+        navigate("/sign_in");
+        return;
+      }
+
+      try {
+        if (searchTerm.trim() !== "") {
+          if (searchType === "name") {
+            const response = await BlogService.getSearchBlog(searchTerm);
+            setBlogs(
+              Array.isArray(response) ? response : response.content || []
+            );
+            setTotalPages(1);
+          } else if (searchType === "desc") {
+            const response = await BlogService.searchDescriptionBlog(
+              page,
+              pageSize,
+              searchTerm
+            );
+            setBlogs(response.content || []);
+            setTotalPages(response.totalPage || 1);
+          }
+        } else {
+          getAllBlog(page, pageSize);
+        }
+      } catch (error) {
+        console.error("Error during search:", error);
+      }
+
+      fetchBookmarkedBlogs();
+    };
+
+    fetchBlogs();
+  }, [searchTerm, searchType, page]);
 
   // Check if a blog is bookmarked
   const isBookmarked = (blogId) => {
@@ -175,38 +199,29 @@ const Blog = () => {
       <div className="App">
         <header className="header-blog">
           <div className="logo">CULINARY CONNECT</div>
-
-          <div className="search-container-blog">
+          <div className="search-input-group">
             <input
               type="text"
-              placeholder="Search..."
-              className="search-bar"
+              placeholder={`Search by ${
+                searchType === "name" ? "name" : "description"
+              }...`}
               value={searchTerm}
               onChange={handleSearch}
             />
-
-            <div className="tag-input">
-              <input
-                type="text"
-                placeholder="Add tags..."
-                value={tagInput}
-                onChange={handleTagInputChange}
-                onKeyDown={handleTagKeyPress}
-              />
-              <div className="tags-list">
-                {tags.map((tag, index) => (
-                  <span key={index} className="tag">
-                    {tag}{" "}
-                    <button
-                      onClick={() => handleTagRemove(tag)}
-                      className="remove-tag"
-                    >
-                      X
-                    </button>
-                  </span>
-                ))}
+            <select
+              value={searchType}
+              onChange={(e) => setSearchType(e.target.value)}
+              className="search-dropdown"
+            >
+              <div className="option-choose-blog">
+                <option  value="name">
+                  Name
+                </option>
+                <option value="desc">
+                  Description
+                </option>
               </div>
-            </div>
+            </select>
           </div>
 
           <div className="saved-items">

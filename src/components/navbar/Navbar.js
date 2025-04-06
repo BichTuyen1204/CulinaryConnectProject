@@ -75,17 +75,6 @@ export const Navbar = ({ setShowLogin }) => {
     }
   };
 
-  const getPlaceholder = () => {
-    switch (searchType) {
-      case "image":
-        return "Search by Image";
-      case "desc":
-        return "Search by Description";
-      default:
-        return "Search by Name";
-    }
-  };
-
   useEffect(() => {
     const getAccount = async () => {
       if (jwtToken !== "") {
@@ -484,10 +473,10 @@ export const Navbar = ({ setShowLogin }) => {
             ) : null}
           </ul>
 
-          <div className="navbar-right col-4">
+          <div className="navbar-right col-5">
             <form
               onSubmit={handleSubmit}
-              className="d-flex align-items-center border rounded-pill px-3 py-1 position-relative bg-white"
+              className="d-flex align-items-center border rounded-pill px-3 py-1 position-relative bg-white col-11"
               style={{ minHeight: "40px" }}
             >
               <CiSearch className="me-2" size={20} />
