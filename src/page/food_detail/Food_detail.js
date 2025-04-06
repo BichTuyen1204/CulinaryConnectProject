@@ -294,156 +294,35 @@ export const Food_detail = () => {
                         }}
                       >
                         <tbody>
-                          {product.name && (
-                            <tr style={{ border: "1px solid #ddd" }}>
-                              <td
-                                className="bg-for-des-pro"
-                                style={{
-                                  width: "20%",
-                                  padding: "5px 15px",
-                                  border: "1px solid #ddd",
-                                }}
+                          {Object.entries(product.infos).map(
+                            ([key, value], index) => (
+                              <tr
+                                key={index}
+                                style={{ border: "1px solid #ddd" }}
                               >
-                                <strong style={{ fontSize: "0.9em" }}>
-                                  Name of product
-                                </strong>
-                              </td>
-                              <td
-                                className="text-description"
-                                style={{
-                                  padding: "12px 15px",
-                                  border: "1px solid #ddd",
-                                  width: "80%",
-                                }}
-                              >
-                                {product.name}
-                              </td>
-                            </tr>
-                          )}
-
-                          {product.productTypes && (
-                            <tr style={{ border: "1px solid #ddd" }}>
-                              <td
-                                className="bg-for-des-pro"
-                                style={{
-                                  padding: "12px 15px",
-                                  border: "1px solid #ddd",
-                                }}
-                              >
-                                <strong className="text-description">
-                                  Category
-                                </strong>
-                              </td>
-                              <td
-                                className="text-description"
-                                style={{
-                                  padding: "12px 15px",
-                                  border: "1px solid #ddd",
-                                }}
-                              >
-                                {product.productTypes}
-                              </td>
-                            </tr>
-                          )}
-
-                          {product.daysBeforeExpiry && (
-                            <tr style={{ border: "1px solid #ddd" }}>
-                              <td
-                                className="bg-for-des-pro"
-                                style={{
-                                  padding: "12px 15px",
-                                  border: "1px solid #ddd",
-                                }}
-                              >
-                                <strong className="text-description">
-                                  Expiry date
-                                </strong>
-                              </td>
-                              <td
-                                className="text-description"
-                                style={{
-                                  padding: "12px 15px",
-                                  border: "1px solid #ddd",
-                                }}
-                              >
-                                {product.daysBeforeExpiry} days
-                              </td>
-                            </tr>
-                          )}
-
-                          {product.infos?.weight && (
-                            <tr style={{ border: "1px solid #ddd" }}>
-                              <td
-                                className="bg-for-des-pro"
-                                style={{
-                                  padding: "12px 15px",
-                                  border: "1px solid #ddd",
-                                }}
-                              >
-                                <strong className="text-description">
-                                  Weight
-                                </strong>
-                              </td>
-                              <td
-                                className="text-description"
-                                style={{
-                                  padding: "12px 15px",
-                                  border: "1px solid #ddd",
-                                }}
-                              >
-                                {product.infos.weight} gam
-                              </td>
-                            </tr>
-                          )}
-
-                          {product.infos?.storage_instructions && (
-                            <tr style={{ border: "1px solid #ddd" }}>
-                              <td
-                                className="bg-for-des-pro"
-                                style={{
-                                  padding: "12px 15px",
-                                  border: "1px solid #ddd",
-                                }}
-                              >
-                                <strong className="text-description">
-                                  Storage instructions
-                                </strong>
-                              </td>
-                              <td
-                                className="text-description"
-                                style={{
-                                  padding: "12px 15px",
-                                  border: "1px solid #ddd",
-                                }}
-                              >
-                                {product.infos.storage_instructions}
-                              </td>
-                            </tr>
-                          )}
-
-                          {product.infos?.made_in && (
-                            <tr style={{ border: "1px solid #ddd" }}>
-                              <td
-                                className="bg-for-des-pro"
-                                style={{
-                                  padding: "12px 15px",
-                                  border: "1px solid #ddd",
-                                }}
-                              >
-                                <strong className="text-description">
-                                  Made in
-                                </strong>
-                              </td>
-                              <td
-                                className="text-description"
-                                style={{
-                                  padding: "12px 15px",
-                                  border: "1px solid #ddd",
-                                }}
-                              >
-                                {product.infos.made_in}
-                              </td>
-                            </tr>
+                                <td
+                                  className="bg-for-des-pro"
+                                  style={{
+                                    padding: "12px 15px",
+                                    border: "1px solid #ddd",
+                                    textTransform: "capitalize",
+                                  }}
+                                >
+                                  <strong className="text-description">
+                                    {key.replace(/_/g, " ")}
+                                  </strong>
+                                </td>
+                                <td
+                                  className="text-description"
+                                  style={{
+                                    padding: "12px 15px",
+                                    border: "1px solid #ddd",
+                                  }}
+                                >
+                                  {value}
+                                </td>
+                              </tr>
+                            )
                           )}
                         </tbody>
                       </table>
