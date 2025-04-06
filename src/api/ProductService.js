@@ -71,10 +71,6 @@ class ProductService {
 
   async searchDescription(desc) {
     try {
-      const jwtToken = sessionStorage.getItem("jwtToken");
-      if (!jwtToken) {
-        throw new Error("No JWT token found. Please log in again.");
-      }
       const response = await axios.post(
         `${REACT_APP_BACKEND_API_ENDPOINT_SEARCH}/public/search/desc?text_dist=0.7&img_dist=0.7&index=0&size=7`,
         {

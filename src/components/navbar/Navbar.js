@@ -30,8 +30,6 @@ export const Navbar = ({ setShowLogin }) => {
   const [imgUser, setImgUser] = useState(null);
   const navigate = useNavigate();
   const { cartCount } = useContext(CartContext);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [previewImage, setPreviewImage] = useState(null);
   const [dropdownPhone, setDropdownPhone] = useState(window.innerWidth <= 768);
   const [dropdownPhoneMenu, setDropdownPhoneMenu] = useState(false);
 

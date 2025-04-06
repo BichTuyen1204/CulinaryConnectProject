@@ -44,8 +44,6 @@ export const Food_card = () => {
   };
 
   useEffect(() => {
-    console.log("Search params:", location.search);
-    console.log("Parsed search query:", getSearchQuery());
   }, [location.search]);
 
   const [searchQuery, setSearchQuery] = useState(getSearchQuery());
@@ -276,21 +274,6 @@ export const Food_card = () => {
                             <span>${product.price.toFixed(2)}</span>
                           )}
                         </p>
-                        {/* <div className="food-quantity">
-                          {product.availableQuantity > 0 ? (
-                            <p className="food-item-quantity">
-                              <strong className="link">
-                                Quantity: In stock
-                              </strong>
-                            </p>
-                          ) : product.availableQuantity === 0 ? (
-                            <p className="food-item-quantity mt-2">
-                              <strong className="link">
-                                Quantity: Out of stock
-                              </strong>
-                            </p>
-                          ) : null}
-                        </div> */}
                         {product.salePercent > 0 ? (
                           <p className="food-item-quantity">
                             <strong className="link">Sale:</strong>{" "}
@@ -323,7 +306,17 @@ export const Food_card = () => {
                     </button>
                   </div>
                 ) : (
-                  <div></div>
+                  <div
+                    className="button-food-card mb-2"
+                    style={{ paddingBottom: "5px" }}
+                  >
+                    <Link to={"/sign_in"}>
+                      <button className="bt-add-to-cart">Add to cart</button>
+                    </Link>
+                    <Link to={"/sign_in"}>
+                      <button className="bt-buy-now">Buy now</button>
+                    </Link>
+                  </div>
                 )}
               </div>
             ))
@@ -409,6 +402,7 @@ export const Food_card = () => {
         </div>
       </div>
 
+      {/*Paging */}
       <div className="pagination-container-card">
         <Pagination className="custom-pagination-card">
           <Pagination.Prev
