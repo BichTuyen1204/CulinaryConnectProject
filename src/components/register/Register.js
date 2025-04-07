@@ -219,11 +219,9 @@ const Register = () => {
       !checkPass
     ) {
       try {
-        const response = await AccountService.register(account);
-        console.log("Account created", response.data);
+        await AccountService.register(account);
         setFormSubmitted(true);
         setRegisterError("");
-        console.log("Account:", username, email, phone, password, address);
         setTimeout(() => {
           closeRegister();
           setFormSubmitted(false);
@@ -249,7 +247,6 @@ const Register = () => {
             setRegisterError("An error occurred during registration.");
           }
         } else {
-          console.error("Network or unknown error occurred:", error);
           setRegisterError("Network error occurred, please try again.");
         }
         setFormSubmitted(false);

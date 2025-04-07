@@ -52,7 +52,6 @@ export const Navbar = ({ setShowLogin }) => {
       if (Array.isArray(response)) {
         setProducts(response);
       } else {
-        console.error("Invalid response format:", response);
         setProducts([]);
       }
     } catch (error) {}
@@ -127,9 +126,7 @@ export const Navbar = ({ setShowLogin }) => {
       } else {
         alert("No matching products found.");
       }
-    } catch (error) {
-      console.error("Can't search by image", error);
-    }
+    } catch (error) {}
   };
 
   const handleImageUpload = async (event) => {
@@ -485,7 +482,7 @@ export const Navbar = ({ setShowLogin }) => {
 
               {/* Dropdown toggle */}
               <div
-                className="dropdown-toggle d-flex align-items-center ms-2"
+                className="dropdown-icon d-flex align-items-center ms-2"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 style={{ cursor: "pointer" }}
               >

@@ -1,5 +1,5 @@
-import React, { createContext, useState, useEffect } from 'react';
-import CartService from '../../api/CartService';
+import React, { createContext, useState, useEffect } from "react";
+import CartService from "../../api/CartService";
 
 export const CartContext = createContext();
 
@@ -22,7 +22,6 @@ export const CartProvider = ({ children }) => {
             updateCartCount(response);
           }
         } catch (error) {
-          console.error('Failed to fetch cart items:', error);
           setCartItems([]);
           setCartCount(0);
         }
@@ -43,23 +42,26 @@ export const CartProvider = ({ children }) => {
       const response = await CartService.addToCart(product.id, 1);
       if (response && response.product) {
         setCartItems((prevItems) => {
-          const existingItem = prevItems.find(item => item.product.id === product.id);
+          const existingItem = prevItems.find(
+            (item) => item.product.id === product.id
+          );
           if (existingItem) {
-            return prevItems.map(item =>
+            return prevItems.map((item) =>
               item.product.id === product.id
                 ? { ...item, amount: item.amount + 1 }
                 : item
             );
           } else {
-            const updatedItems = [...prevItems, { product: response.product, amount: 1 }];
+            const updatedItems = [
+              ...prevItems,
+              { product: response.product, amount: 1 },
+            ];
             updateCartCount(updatedItems);
             return updatedItems;
           }
         });
       }
-    } catch (error) {
-      console.error("Error adding product to cart:", error);
-    }
+    } catch (error) {}
   };
 
   const removeFromCart = async (productId) => {
@@ -67,15 +69,14 @@ export const CartProvider = ({ children }) => {
     try {
       const response = await CartService.deleteCart(productId);
       if (response === true) {
-        const updatedItems = cartItems.filter(item => item.product.id !== productId);
+        const updatedItems = cartItems.filter(
+          (item) => item.product.id !== productId
+        );
         setCartItems(updatedItems);
         updateCartCount(updatedItems);
       }
-    } catch (error) {
-      console.error("Error removing product from cart:", error);
-    }
+    } catch (error) {}
   };
-
 
   useEffect(() => {
     updateCartCount(cartItems);
@@ -86,21 +87,22 @@ export const CartProvider = ({ children }) => {
     try {
       await CartService.updateCart(productId, quantity);
       setCartItems((prevItems) =>
-        prevItems.map(item =>
+        prevItems.map((item) =>
           item.product.id === productId ? { ...item, amount: quantity } : item
         )
       );
-    } catch (error) {
-      console.error("Error updating cart:", error);
-    }
+    } catch (error) {}
   };
   return (
-    <CartContext.Provider value={{
-      cartItems,
-      cartCount,
-      addToCart,
-      removeFromCart, updateCart
-    }}>
+    <CartContext.Provider
+      value={{
+        cartItems,
+        cartCount,
+        addToCart,
+        removeFromCart,
+        updateCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

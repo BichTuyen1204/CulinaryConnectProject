@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "../order_confirm/OrderConfirmation.css"
+import "../order_confirm/OrderConfirmation.css";
 
 const OrderConfirmation = ({ order }) => {
   const navigate = useNavigate();
@@ -72,9 +72,7 @@ const OrderConfirmation = ({ order }) => {
           <div className="mt-4 text-center">
             <p>
               <strong>Total Amount:</strong>{" "}
-              <span className="">
-                ${displayedOrder.totalPrice.toFixed(2)}
-              </span>
+              <span className="">${displayedOrder.totalPrice.toFixed(2)}</span>
             </p>
             <p>
               <strong>Order Date:</strong>{" "}

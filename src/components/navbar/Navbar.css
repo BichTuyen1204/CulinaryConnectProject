@@ -320,14 +320,14 @@ button {
 }
 
 /* Dropdown toggle icon */
-.dropdown-toggle {
+.dropdown-icon {
   color: tomato;
   font-size: 18px;
   transition: transform 0.3s ease;
   cursor: pointer;
 }
 
-.dropdown-toggle:hover {
+.dropdown-icon:hover {
   transform: rotate(180deg);
 }
 

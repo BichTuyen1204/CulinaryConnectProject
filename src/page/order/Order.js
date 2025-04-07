@@ -128,7 +128,6 @@ export const Order = () => {
   };
 
   const handleTempCouponSelect = (couponId) => {
-    console.log("Selected coupon ID:", couponId);
     setTempSelect(couponId);
     setPopupCoupon(true);
   };
@@ -151,9 +150,7 @@ export const Order = () => {
         const response = await CouponService.getAllCoupon();
         setCoupons(response);
         setPopupCoupon(true);
-      } catch (error) {
-        console.error("Can't load data of coupon:", error);
-      }
+      } catch (error) {}
     }
   };
 
@@ -163,12 +160,9 @@ export const Order = () => {
     } else {
       try {
         const response = await CouponService.getCouponDetail(selectedCouponId);
-        console.log("Coupon data:", response);
         setCoupon(response);
         setPopupCoupon(false);
-      } catch (error) {
-        console.error("Can't load data of coupon:", error);
-      }
+      } catch (error) {}
     }
   };
 
@@ -210,11 +204,8 @@ export const Order = () => {
             phoneNumber: response.phone,
             deliveryAddress: response.address,
           }));
-          console.log("address", address);
           setPopupBuy(false);
-        } catch (error) {
-          console.error("Error fetching account information:", error);
-        }
+        } catch (error) {}
       } else {
         setUserName("");
         setEmail("");
@@ -237,9 +228,7 @@ export const Order = () => {
         }, {});
         setOrderData((prev) => ({ ...prev, product: formattedProducts }));
       }
-    } catch (error) {
-      console.error("Failed to fetch products:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -269,16 +258,11 @@ export const Order = () => {
     try {
       const response = await OrderService.createOrder(orderData, jwtToken);
       if (response) {
-        console.log("Order created successfully. ID:", response.id);
         return response;
       } else {
         throw new Error("Failed to create order. No ID returned.");
       }
     } catch (error) {
-      console.error(
-        "Error creating order:",
-        error.response?.data || error.message
-      );
       throw error;
     }
   };
@@ -286,13 +270,8 @@ export const Order = () => {
   const getURLPaypal = async (orderId) => {
     try {
       const response = await OrderService.getURLPaypal(orderId);
-      console.log("Payment URL retrieved:", response.data);
       return response;
     } catch (error) {
-      console.error(
-        "Error fetching payment URL:",
-        error.response?.data || error.message
-      );
       throw error;
     }
   };
@@ -300,13 +279,8 @@ export const Order = () => {
   const getURLVNPay = async (orderId) => {
     try {
       const response = await OrderService.getURLVNPay(orderId);
-      console.log("Payment URL retrieved:", response.data);
       return response;
     } catch (error) {
-      console.error(
-        "Error fetching payment URL:",
-        error.response?.data || error.message
-      );
       throw error;
     }
   };
@@ -318,26 +292,16 @@ export const Order = () => {
     try {
       setPaymentMethod("PAYPAL");
       orderData.paymentMethod = "PAYPAL";
-      // setOrderData((orderData) => ({ ...orderData, paymentMethod: "PAYPAL" }));
-      // const updatedOrderData = { ...orderData, paymentMethod: "PAYPAL" };
-      console.log(orderData);
       const createdOrder = await createOrder(orderData, jwtToken);
       const orderId = createdOrder.id;
       if (!orderId) {
         throw new Error("Order ID is missing in the response from createOrder");
       }
-
-      console.log("Order ID:", orderId);
       const paymentUrl = await getURLPaypal(orderId, jwtToken);
-      console.log("Payment URL:", paymentUrl);
       if (paymentUrl) {
-        console.log("Returning orderId before redirect:", orderId);
         window.open(paymentUrl, "_blank");
-        // Extract PayPal token and save it
         const urlParams = new URLSearchParams(paymentUrl.split("?")[1]);
         setPaypaltoken(urlParams.get("token")); // Save the token
-
-        // Show the modal pop-up
         setIsModalOpen(true); // Open modal when PayPal is initiated
 
         return orderId;
@@ -345,10 +309,6 @@ export const Order = () => {
         throw new Error("Payment URL is undefined");
       }
     } catch (error) {
-      console.error(
-        "Error during order creation or fetching payment URL:",
-        error
-      );
       throw error;
     }
   };
@@ -361,18 +321,14 @@ export const Order = () => {
 
   const handleOnApprove = async () => {
     try {
-      console.log("PayPal token:", paypaltoken);
       const captureResult = await OrderService.handleApprove(paypaltoken);
-      console.log("Payment captured successfully:", captureResult);
       if (captureResult.status === "RECEIVED") {
         alert("Payment completed successfully!");
         window.location.href = `${REACT_APP_DEPLOY_ENDPOINT}/invoice`;
-        // navigate("/invoice", { state: { jwtToken, orderId: data.orderID } });
       } else {
         alert("Payment failed or not completed.");
       }
     } catch (error) {
-      // console.error("Error capturing payment:", error);
       alert("Payment failed or not completed.");
     }
   };
@@ -380,30 +336,21 @@ export const Order = () => {
   const handleVNPayPayment = async () => {
     try {
       setPaymentMethod("VNPAY");
-      // setOrderData((orderData) => ({ ...orderData, paymentMethod: "VNPAY" }));
       orderData.paymentMethod = "VNPAY";
-      console.log(orderData);
       const createdOrder = await createOrder(orderData, jwtToken);
       const orderId = createdOrder.id;
       if (!orderId) {
         throw new Error("Order ID is missing in the response from createOrder");
       }
 
-      console.log("Order ID:", orderId);
       const paymentUrl = await getURLVNPay(orderId, jwtToken);
-      console.log("Payment URL:", paymentUrl);
       if (paymentUrl) {
-        console.log("Returning orderId before redirect:", orderId);
         window.open(paymentUrl, "_blank");
         return orderId;
       } else {
         throw new Error("Payment URL is undefined");
       }
     } catch (error) {
-      console.error(
-        "Error during order creation or fetching payment URL:",
-        error
-      );
       throw error;
     }
   };
@@ -433,9 +380,7 @@ export const Order = () => {
       }));
 
       try {
-        console.log("Data order:", orderData);
-        const response = await OrderService.createOrder(orderData, jwtToken);
-        console.log("Order created successfully:", response.data);
+        await OrderService.createOrder(orderData, jwtToken);
         setPopupBuy(false);
         setPopupOrderSuccessful(true);
         setTimeout(() => {
@@ -443,11 +388,8 @@ export const Order = () => {
           window.location.reload();
         }, 2500);
       } catch (error) {
-        console.error("Error creating order:", error);
         alert("Failed to create order.");
       }
-    } else {
-      console.error("Error about info user");
     }
   };
 

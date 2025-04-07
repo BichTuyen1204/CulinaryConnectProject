@@ -57,9 +57,7 @@ const Invoice = () => {
         return dateB - dateA;
       });
       setOrders(sortedOrders);
-    } catch (error) {
-      console.error("Error fetching orders:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {

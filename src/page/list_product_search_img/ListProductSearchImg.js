@@ -30,9 +30,7 @@ export const ListProductSearchImg = () => {
       try {
         const response = await AccountService.account(jwtToken);
         setUsername(response.username);
-      } catch (error) {
-        console.error("Error fetching account info:", error);
-      }
+      } catch (error) {}
     };
     fetchAccount();
   }, [jwtToken]);
@@ -64,9 +62,7 @@ export const ListProductSearchImg = () => {
       }));
 
       setProducts(updatedProducts);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
+    } catch (error) {}
   }, [category, renameCategory]);
 
   useEffect(() => {
@@ -84,9 +80,7 @@ export const ListProductSearchImg = () => {
               confidence: parsedResults.predict.confidence,
             });
           }
-        } catch (error) {
-          console.error("Error parsing image search results:", error);
-        }
+        } catch (error) {}
       } else {
         fetchProducts();
       }

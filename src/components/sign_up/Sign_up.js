@@ -205,11 +205,9 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
       !checkPass
     ) {
       try {
-        const response = await AccountService.register(account);
-        console.log("Account created", response.data);
+        await AccountService.register(account);
         setFormSubmitted(true);
         setRegisterError("");
-        console.log("Account:", username, email, phone, password, address);
         setTimeout(() => {
           openLogin();
           setFormSubmitted(false);
@@ -235,7 +233,6 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
             setRegisterError("An error occurred during registration.");
           }
         } else {
-          console.error("Network or unknown error occurred:", error);
           setRegisterError("Network error occurred, please try again.");
         }
         setFormSubmitted(false);

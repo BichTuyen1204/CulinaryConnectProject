@@ -83,10 +83,7 @@ export const EditProfile = () => {
     try {
       const formData = new FormData();
       formData.append("file", file);
-
       const response = await AccountService.updateImage(formData);
-      console.log("Response from server:", response);
-
       if (response && response.url) {
         setImgUser(response.url);
         setAccount((prevState) => ({
@@ -99,7 +96,6 @@ export const EditProfile = () => {
         alert("Failed to retrieve new profile picture URL.");
       }
     } catch (error) {
-      console.error("Image update failed: ", error);
       alert("Failed to update image.");
     }
   };
@@ -188,26 +184,6 @@ export const EditProfile = () => {
     }
   };
 
-  const updateEmailOnly = async () => {
-    EmailBlur();
-    if (!emailError && email) {
-      try {
-        const response = await AccountService.updateInfo({ email });
-        console.log("Email updated", response);
-        alert("Email updated successfully!");
-      } catch (error) {
-        if (error.response) {
-          const errorMessage = error.response.data?.message;
-          if (errorMessage?.includes("email")) {
-            setEmailError("Email already exists.");
-          } else {
-            setEmailError("Failed to update email.");
-          }
-        }
-      }
-    }
-  };
-
   const [accountId, setAccountId] = useState(null);
   const handleVisibleOTP = async () => {
     try {
@@ -236,10 +212,7 @@ export const EditProfile = () => {
     }
     try {
       const response = await AccountService.updateEmail(accountId, email, otp);
-
-      console.log("OTP submitted:", otp);
       setOtpVisible(false);
-
       if (response) {
         alert("Email successfully updated!");
       }
@@ -380,9 +353,7 @@ export const EditProfile = () => {
           address: response.address || "",
           description: response.profileDescription || "",
         });
-      } catch (error) {
-        console.error(error);
-      }
+      } catch (error) {}
     };
 
     getAccount();
@@ -407,8 +378,7 @@ export const EditProfile = () => {
       return;
     }
     try {
-      const response = await AccountService.updateInfo(updateInfo);
-      console.log("Account updated", response);
+      await AccountService.updateInfo(updateInfo);
       setOriginalInfo(updateInfo);
       setFormSubmitted(true);
       setNoChangeError(null);

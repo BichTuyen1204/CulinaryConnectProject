@@ -29,9 +29,7 @@ export const Food_detail = () => {
     try {
       const response = await ProductService.getProductDetail(id);
       setProduct(response);
-    } catch (error) {
-      console.error("Fail load data:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -39,7 +37,6 @@ export const Food_detail = () => {
       getDataDetail(id);
       window.scrollTo(1, 0);
     } else {
-      console.error("ID is undefined");
     }
   }, [id]);
 
@@ -50,11 +47,8 @@ export const Food_detail = () => {
       } else {
         try {
           const response = await AccountService.account(jwtToken);
-          console.log(response);
           setUserName(response.username);
-        } catch (error) {
-          console.error("Error fetching account information:", error);
-        }
+        } catch (error) {}
       }
     };
     getAccount();
@@ -196,13 +190,6 @@ export const Food_detail = () => {
                         <div className="d-flex gap-10 align-items-center my-2">
                           <h3 className="product-heading">Category: </h3>
                           <p className="product-data">{product.productTypes}</p>
-                        </div>
-
-                        <div className="d-flex gap-10 align-items-center my-2">
-                          <h3 className="product-heading">Weight: </h3>
-                          <p className="product-data">
-                            {product.infos?.weight} gam
-                          </p>
                         </div>
 
                         <div className="d-flex gap-10 align-items-center my-2">

@@ -51,9 +51,7 @@ const Blog = () => {
       try {
         const data = await BlogService.getAllBookMark(jwtToken);
         setBookmarkedBlogs(data);
-      } catch (error) {
-        console.error("Error fetching bookmarked blogs:", error);
-      }
+      } catch (error) {}
     }
   };
 
@@ -64,9 +62,7 @@ const Blog = () => {
         setBlogs(response.content || []);
         setTotalPages(response.totalPage || 1);
         window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-      } catch (error) {
-        console.error("Error fetching blogs:", error);
-      }
+      } catch (error) {}
     } else {
       navigate("/sign_in");
     }
@@ -99,10 +95,7 @@ const Blog = () => {
         } else {
           getAllBlog(page, pageSize);
         }
-      } catch (error) {
-        console.error("Error during search:", error);
-      }
-
+      } catch (error) {}
       fetchBookmarkedBlogs();
     };
 
@@ -135,15 +128,8 @@ const Blog = () => {
               prev.filter((blog) => blog.id !== blogId)
             );
           }
-          console.log(
-            `Blog ${newStatus ? "bookmarked" : "unbookmarked"} successfully.`
-          );
-        } else {
-          console.log("Failed to add/remove bookmark");
         }
-      } catch (error) {
-        console.error("Failed to save or unsave blog:", error);
-      }
+      } catch (error) {}
     } else {
       navigate("/sign_in");
     }
@@ -167,8 +153,6 @@ const Blog = () => {
       }
       return true;
     });
-
-  console.log(filteredBlogs);
 
   // Fetch blogs and bookmarked blogs on component mount or dependency change
   useEffect(() => {
@@ -214,12 +198,8 @@ const Blog = () => {
               className="search-dropdown"
             >
               <div className="option-choose-blog">
-                <option  value="name">
-                  Name
-                </option>
-                <option value="desc">
-                  Description
-                </option>
+                <option value="name">Name</option>
+                <option value="desc">Description</option>
               </div>
             </select>
           </div>

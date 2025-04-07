@@ -18,23 +18,17 @@ class BlogService {
       );
       return response.data;
     } catch (error) {
-      console.error(
-        "Error during API calls: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }
 
   async getSearchBlog(keyword) {
     try {
-      const response = await axios.get(`${API_BASE_URL}/search/blog?keyword=${keyword}`);
+      const response = await axios.get(
+        `${API_BASE_URL}/search/blog?keyword=${keyword}`
+      );
       return response.data;
     } catch (error) {
-      console.error(
-        "Error during API calls: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }
@@ -51,7 +45,6 @@ class BlogService {
       );
       return response.data;
     } catch (error) {
-      console.error("Error searching description:", error);
       throw error;
     }
   }
@@ -66,10 +59,6 @@ class BlogService {
       });
       return response.data;
     } catch (error) {
-      console.error(
-        "Error during API calls: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }
@@ -89,10 +78,6 @@ class BlogService {
       );
       return response.data;
     } catch (error) {
-      console.error(
-        "Error during API calls: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }
@@ -115,10 +100,6 @@ class BlogService {
       );
       return response.data;
     } catch (error) {
-      console.error(
-        "Error during API calls: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }
@@ -139,10 +120,6 @@ class BlogService {
       );
       return response.data;
     } catch (error) {
-      console.error(
-        "Error during API calls: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }
@@ -170,10 +147,6 @@ class BlogService {
         );
         return response.data;
       } catch (error) {
-        console.error(
-          "Error during API calls: ",
-          error.response ? error.response.data : error.message
-        );
         throw error;
       }
     }
@@ -197,10 +170,6 @@ class BlogService {
         });
         return response.data;
       } catch (error) {
-        console.error(
-          "Error during API calls: ",
-          error.response ? error.response.data : error.message
-        );
         throw error;
       }
     }
@@ -209,7 +178,6 @@ class BlogService {
   async addBookMark(blogId, bookmark) {
     const jwtToken = sessionStorage.getItem("jwtToken");
     if (!jwtToken) {
-      console.log("JWT token not found. Cannot add bookmark.");
       return null;
     } else {
       try {
@@ -222,17 +190,8 @@ class BlogService {
             },
           }
         );
-        if (response.data) {
-          console.log(`Bookmark ${bookmark}`);
-        } else {
-          console.log("Failed to update bookmark status.");
-        }
         return response.data;
       } catch (error) {
-        console.error(
-          "Error during API calls: ",
-          error.response ? error.response.data : error.message
-        );
         throw error;
       }
     }
@@ -251,10 +210,6 @@ class BlogService {
         });
         return response.data;
       } catch (error) {
-        console.error(
-          "Error during API calls: ",
-          error.response ? error.response.data : error.message
-        );
         throw error;
       }
     }

@@ -89,19 +89,14 @@ const Login = ({
     PasswordBlur();
     if (!userNameError && !passwordError && username && password) {
       try {
-        const response = await AccountService.signin(account);
+        await AccountService.signin(account);
         setFormSubmitted(true);
         setLoginError("");
         setTimeout(() => {
           onLoginSuccess();
           window.location.reload();
-          console.log("Response data:", response);
         }, 1000);
       } catch (error) {
-        console.error(
-          "Error when logging in:",
-          error.response ? error.response.data : error.message
-        );
         if (error.response) {
           switch (error.response.status) {
             case 423:
@@ -228,7 +223,11 @@ const Login = ({
               Login
             </button>
             <div className="text-center p-2 text-or-login">OR</div>
-            <button className="button-google" type="button" onClick={handleRedirect}>
+            <button
+              className="button-google"
+              type="button"
+              onClick={handleRedirect}
+            >
               Login with Google
             </button>
           </div>

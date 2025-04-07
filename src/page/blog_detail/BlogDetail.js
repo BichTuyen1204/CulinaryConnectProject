@@ -48,7 +48,6 @@ const BlogDetail = () => {
           const response = await AccountService.account(jwtToken);
           setUserName(response.username);
         } catch (error) {
-          console.error("Error fetching account information:", error);
           sessionStorage.removeItem("jwtToken");
           navigate("/sign_in");
         }
@@ -72,7 +71,6 @@ const BlogDetail = () => {
   };
 
   const openModal = (id) => {
-    console.log("ID của comment:", id);
     setSelectedId(id);
     setPopupDelete(true);
   };
@@ -90,9 +88,7 @@ const BlogDetail = () => {
           prevComment.filter((comment) => comment.id !== id)
         );
         setPopupDelete(false);
-      } catch (error) {
-        console.error("Failed to delete comment:", error.message);
-      }
+      } catch (error) {}
     } else {
       return;
     }
@@ -101,7 +97,6 @@ const BlogDetail = () => {
   const deleteReply = async (id) => {
     if (jwtToken) {
       try {
-        console.log("Id will delete: ", id);
         await BlogService.deleteComment(id);
         setReplies((prevReplies) => {
           const updatedReplies = Object.keys(prevReplies).reduce(
@@ -116,9 +111,7 @@ const BlogDetail = () => {
           return updatedReplies;
         });
         setPopupDeleteReply(false);
-      } catch (error) {
-        console.error("Failed to delete reply:", error.message);
-      }
+      } catch (error) {}
     } else {
       return;
     }
@@ -132,9 +125,7 @@ const BlogDetail = () => {
     try {
       const responseBlog = await BlogService.getBlogDetail(id);
       setBlogDetail(responseBlog);
-    } catch (error) {
-      console.error("Fail load data:", error);
-    }
+    } catch (error) {}
   };
 
   const getAllComment = async (id) => {
@@ -162,11 +153,8 @@ const BlogDetail = () => {
         setTotalPages(responseComment.totalPage || 1);
         setTotalPages(responseComment.totalPage || 1);
       } else {
-        console.error("Lỗi: responseComment không có content");
       }
-    } catch (error) {
-      console.error("Lỗi khi tải bình luận:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -183,7 +171,6 @@ const BlogDetail = () => {
         pageBlogReply,
         pageSizeBlog
       );
-      console.log("API response:", response);
       if (response.content && response.content.length > 0) {
         const formattedReplies = response.content.map((item) => ({
           id: item.comment.id,
@@ -199,16 +186,11 @@ const BlogDetail = () => {
           [commentId]: formattedReplies,
         }));
       } else {
-        console.error("Lỗi: Không có nội dung trong API response");
       }
-    } catch (error) {
-      console.error("Lỗi khi tải phản hồi:", error);
-    }
+    } catch (error) {}
   };
 
-  useEffect(() => {
-    console.log("Replies state updated:", replies);
-  }, [replies]);
+  useEffect(() => {}, [replies]);
 
   const addReplyHandler = async () => {
     if (!replyText.trim()) return;
@@ -226,10 +208,8 @@ const BlogDetail = () => {
     }));
     try {
       await BlogService.replyComment(id, replyingTo, replyText);
-      console.log("Reply success");
       getReplies(id, replyingTo);
     } catch (error) {
-      console.error("Lỗi khi thêm phản hồi:", error);
     } finally {
       setReplyText("");
       setReplyingTo(null);
@@ -254,8 +234,6 @@ const BlogDetail = () => {
       const savedBookmarks =
         JSON.parse(localStorage.getItem("bookmarks")) || {};
       setIsBookmarked(savedBookmarks[id] || false);
-    } else {
-      console.error("ID is undefined");
     }
   }, [id]);
 
@@ -283,9 +261,7 @@ const BlogDetail = () => {
       await BlogService.addComment(id, newComment);
       setNewComment("");
       getAllComment(id);
-    } catch (error) {
-      console.error("Lỗi khi thêm bình luận:", error);
-    }
+    } catch (error) {}
   };
 
   return (

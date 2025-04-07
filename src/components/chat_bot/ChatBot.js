@@ -90,9 +90,7 @@ const ChatBot = () => {
               saveMessagesToLocal(idUser, messagesRef.current);
             }
           }
-        } catch (error) {
-          console.error("Lỗi khi parse tin nhắn từ server:", error);
-        }
+        } catch (error) {}
       }
     };
 

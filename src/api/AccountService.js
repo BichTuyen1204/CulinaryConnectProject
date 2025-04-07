@@ -12,10 +12,6 @@ class AccountService {
       const response = await axios.post(`${API_BASE_URL}/register`, account);
       return response.data;
     } catch (error) {
-      console.error(
-        "Registration failed: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }
@@ -25,12 +21,7 @@ class AccountService {
       const response = await axios.post(`${API_BASE_URL}/signin`, account);
       const jwtToken = response.data.accessToken;
       sessionStorage.setItem("jwtToken", jwtToken);
-      console.log("Data user: ", response);
     } catch (error) {
-      console.error(
-        "Login failed: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }
@@ -40,7 +31,6 @@ class AccountService {
       const response = await axios.post(
         `${API_BASE_URL}/forgot/otp/get?email=${encodeURIComponent(email)}`
       );
-      console.log("OTP Sent: ", response);
       return response.data;
     } catch (error) {
       console.error("Error during OTP request:", error);
@@ -56,11 +46,7 @@ class AccountService {
   async forgotReset(id, otp, password) {
     try {
       const otpForm = { id, otp, password };
-      const response = await axios.post(
-        `${API_BASE_URL}/forgot/reset`,
-        otpForm
-      );
-      console.log(response.data);
+      await axios.post(`${API_BASE_URL}/forgot/reset`, otpForm);
     } catch (error) {
       if (error.response) {
         const errorMessage =
@@ -74,8 +60,6 @@ class AccountService {
       } else {
         alert("An error occurred: " + error.message);
       }
-
-      console.error("Error:", error);
     }
   }
 
@@ -112,10 +96,6 @@ class AccountService {
       );
       return response.data;
     } catch (error) {
-      console.error(
-        "Update failed: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }
@@ -137,10 +117,6 @@ class AccountService {
       );
       return response.data;
     } catch (error) {
-      console.error(
-        "Update failed: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }
@@ -164,25 +140,10 @@ class AccountService {
 
       if (response.status === 200) {
         const { accountId, expireTime } = response.data;
-
         this.accountId = accountId;
-
-        console.log("OTP request successful. Account ID: ", accountId);
         return response.data;
       }
     } catch (error) {
-      if (error.response) {
-        if (error.response.status === 500) {
-          console.error("Error: ", error.response.data.messages);
-        } else {
-          console.error(
-            "Update failed: ",
-            error.response ? error.response.data : error.message
-          );
-        }
-      } else {
-        console.error("Error: ", error.message);
-      }
       throw error;
     }
   }
@@ -203,20 +164,10 @@ class AccountService {
           },
         }
       );
-
       if (response.status === 200) {
-        console.log("Email updated successfully:", response.data);
         return response.data;
       }
     } catch (error) {
-      if (error.response) {
-        console.error("Update failed: ", error.response.data || error.message);
-        if (error.response.status === 400) {
-          console.error("Bad request: ", error.response.data);
-        }
-      } else {
-        console.error("Error: ", error.message);
-      }
       throw error;
     }
   }
@@ -237,13 +188,8 @@ class AccountService {
           },
         }
       );
-      console.log("Update pass success", response);
       return response.data;
     } catch (error) {
-      console.error(
-        "Update failed: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }

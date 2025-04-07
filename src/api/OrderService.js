@@ -14,13 +14,8 @@ class OrderService {
           Authorization: `Bearer ${jwtToken}`,
         },
       });
-      console.log("Order successful :", response.data);
       return response.data;
     } catch (error) {
-      console.error(
-        "Error during API calls: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }
@@ -37,18 +32,12 @@ class OrderService {
         params: { orderId },
         headers: { Authorization: `Bearer ${jwtToken}` },
       });
-
-      console.log("API response:", response.data);
       const paymentUrl = response.data;
       if (!paymentUrl.startsWith("https://www.sandbox.paypal.com/")) {
         throw new Error("Invalid Payment URL returned by API");
       }
       return paymentUrl;
     } catch (error) {
-      console.error(
-        "Error fetching payment URL:",
-        error.response?.data || error.message
-      );
       throw error;
     }
   }
@@ -57,7 +46,6 @@ class OrderService {
     const jwtToken = sessionStorage.getItem("jwtToken");
 
     const transactionID = id;
-    console.log(transactionID);
     try {
       const response = await axios.post(
         `${API_BASE_URL_3}/capture?transactionID=${transactionID}`,
@@ -68,14 +56,8 @@ class OrderService {
           },
         }
       );
-
-      console.log("Payment successful:", response.data);
       return response.data;
     } catch (error) {
-      console.error(
-        "Error during API call:",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }
@@ -93,15 +75,10 @@ class OrderService {
         headers: { Authorization: `Bearer ${jwtToken}` },
       });
 
-      console.log("API response:", response.data);
       const paymentUrl = response.data;
 
       return paymentUrl;
     } catch (error) {
-      console.error(
-        "Error fetching payment URL:",
-        error.response?.data || error.message
-      );
       throw error;
     }
   }
@@ -116,10 +93,6 @@ class OrderService {
       });
       return response.data;
     } catch (error) {
-      console.error(
-        "Error during API calls: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }
@@ -137,7 +110,6 @@ class OrderService {
       );
       return response.data;
     } catch (error) {
-      console.error("Error during API call:", error.response || error.message);
       throw error;
     }
   }
@@ -156,7 +128,6 @@ class OrderService {
       );
       return response.data;
     } catch (error) {
-      console.error("Error during API call:", error.response || error.message);
       throw error;
     }
   }
@@ -175,7 +146,6 @@ class OrderService {
       );
       return response.data;
     } catch (error) {
-      console.error("Error during API call:", error.response || error.message);
       throw error;
     }
   }
@@ -191,7 +161,6 @@ class OrderService {
       });
       return response.data;
     } catch (error) {
-      console.error("Error during API call:", error.response || error.message);
       throw error;
     }
   }
@@ -214,7 +183,6 @@ class OrderService {
       );
       return response.data;
     } catch (error) {
-      console.error("Error when API calls:", error.message);
       throw error;
     }
   }

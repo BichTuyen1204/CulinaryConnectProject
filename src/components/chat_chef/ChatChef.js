@@ -41,15 +41,12 @@ const ChatChef = () => {
     );
     socketRef.current = ws;
 
-    ws.onopen = () => {
-      console.log("✅ WebSocket connected successfully!");
-    };
+    ws.onopen = () => {};
 
     ws.onmessage = (event) => {
       try {
         const rawMessage = event.data;
         messageBuffer.current += rawMessage;
-        console.log(rawMessage);
         if (
           messageBuffer.current.includes("<chat>") &&
           messageBuffer.current.includes("</chat>")
@@ -103,9 +100,7 @@ const ChatChef = () => {
             messageBuffer.current = "";
           }
         }
-      } catch (error) {
-        console.warn("Error processing message:", error);
-      }
+      } catch (error) {}
     };
 
     ws.onclose = () => {
