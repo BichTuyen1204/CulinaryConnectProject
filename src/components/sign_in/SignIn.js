@@ -96,19 +96,13 @@ const SignIn = () => {
     if (!userNameError && !passwordError && username && password) {
       try {
         const response = await AccountService.signin(account);
-        console.log("Login successful", response);
         setFormSubmitted(true);
         setLoginError("");
         setTimeout(() => {
           closeLogin();
           window.location.reload();
-          console.log("Response data:", response);
         }, 1000);
       } catch (error) {
-        console.error(
-          "Error when logging in:",
-          error.response ? error.response.data : error.message
-        );
         if (error.response) {
           switch (error.response.status) {
             case 404:
@@ -217,7 +211,11 @@ const SignIn = () => {
               Login
             </button>
             <div className="text-center p-2">OR</div>
-            <button className="button-google" type="button" onClick={handleRedirect}>
+            <button
+              className="button-google"
+              type="button"
+              onClick={handleRedirect}
+            >
               Login with Google
             </button>
           </div>

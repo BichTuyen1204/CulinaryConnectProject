@@ -21,7 +21,8 @@ const Cart = () => {
     cartItems.forEach((item) => {
       const price =
         item.product.salePercent > 0
-          ? item.product.price - (item.product.price * item.product.salePercent) / 100
+          ? item.product.price -
+            (item.product.price * item.product.salePercent) / 100
           : item.product.price;
       total += price * item.amount;
       quantity += item.amount;
@@ -32,7 +33,7 @@ const Cart = () => {
 
   // Tăng số lượng
   const increaseQuantity = (id) => {
-    const item = cartItems.find(item => item.product.id === id);
+    const item = cartItems.find((item) => item.product.id === id);
     if (item.amount < item.product.availableQuantity) {
       updateCart(id, item.amount + 1);
       setItems((prevItems) =>
@@ -45,7 +46,7 @@ const Cart = () => {
 
   // Giảm số lượng
   const decreaseQuantity = (id) => {
-    const item = cartItems.find(item => item.product.id === id);
+    const item = cartItems.find((item) => item.product.id === id);
     if (item.amount > 1) {
       updateCart(id, item.amount - 1);
       setItems((prevItems) =>
@@ -73,7 +74,9 @@ const Cart = () => {
     let value = e.target.value.replace(/[^0-9]/g, "");
     setItems((prevItems) =>
       prevItems.map((item) =>
-        item.product.id === id ? { ...item, amount: value === "" ? "" : parseInt(value, 10) } : item
+        item.product.id === id
+          ? { ...item, amount: value === "" ? "" : parseInt(value, 10) }
+          : item
       )
     );
   };
@@ -110,12 +113,9 @@ const Cart = () => {
       if (Array.isArray(response)) {
         setProducts(response);
       } else {
-        console.error("Invalid response format:", response);
         setProducts([]);
       }
-    } catch (error) {
-      console.error("Failed to fetch products:", error);
-    }
+    } catch (error) {}
   };
 
   // Gọi hàm khi component mount
@@ -128,7 +128,9 @@ const Cart = () => {
   const deleteProduct = async () => {
     if (productIdToDelete) {
       removeFromCart(productIdToDelete);
-      setItems((prevItems) => prevItems.filter(item => item.product.id !== productIdToDelete));
+      setItems((prevItems) =>
+        prevItems.filter((item) => item.product.id !== productIdToDelete)
+      );
       setProductIdToDelete(null);
       setPopupDelete(false);
     }
@@ -150,7 +152,8 @@ const Cart = () => {
     items.forEach((item) => {
       const price =
         item.product.salePercent > 0
-          ? item.product.price - (item.product.price * item.product.salePercent) / 100
+          ? item.product.price -
+            (item.product.price * item.product.salePercent) / 100
           : item.product.price;
       total += price * (item.amount || 1);
       quantity += item.amount || 1;
@@ -212,7 +215,10 @@ const Cart = () => {
                     -
                   </button>
                   <input
-                    value={items.find(it => it.product.id === item.product.id)?.amount || ""}
+                    value={
+                      items.find((it) => it.product.id === item.product.id)
+                        ?.amount || ""
+                    }
                     onChange={(e) => handleQuantityChange(item.product.id, e)}
                     onBlur={(e) => handleBlur(item.product.id, e)}
                     min="1"
@@ -234,9 +240,14 @@ const Cart = () => {
                         (item.product.price -
                           (item.product.price * item.product.salePercent) /
                             100) *
-                        (items.find(it => it.product.id === item.product.id)?.amount || 1)
+                        (items.find((it) => it.product.id === item.product.id)
+                          ?.amount || 1)
                       ).toFixed(2)
-                    : (item.product.price * (items.find(it => it.product.id === item.product.id)?.amount || 1)).toFixed(2)}
+                    : (
+                        item.product.price *
+                        (items.find((it) => it.product.id === item.product.id)
+                          ?.amount || 1)
+                      ).toFixed(2)}
                 </p>
                 <p className="ic_close">
                   <IoClose
@@ -265,7 +276,10 @@ const Cart = () => {
                           No
                         </button>
                       </div>
-                      <IoClose className="popup-close-delete" onClick={cancelDelete} />
+                      <IoClose
+                        className="popup-close-delete"
+                        onClick={cancelDelete}
+                      />
                     </div>
                   </div>
                 )}

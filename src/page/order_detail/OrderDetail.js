@@ -32,7 +32,6 @@ const OrderDetail = () => {
   const accecptDelivered = async (id) => {
     const jwtToken = sessionStorage.getItem("jwtToken");
     if (!jwtToken) {
-      console.log("No JWT token found");
       return;
     }
     try {
@@ -45,12 +44,8 @@ const OrderDetail = () => {
           setPopupDeliveredSuccess(false);
           navigate("/invoice");
         }, 4000);
-      } else {
-        console.log("Failed to update order status:", response);
       }
-    } catch (error) {
-      console.error("Failed to update order status:", error.message);
-    }
+    } catch (error) {}
   };
 
   // Hàm hủy xóa
@@ -63,17 +58,12 @@ const OrderDetail = () => {
     try {
       const response = await OrderService.getOrderDetail(id);
       setOrderData(response);
-      console.log(response);
-    } catch (error) {
-      console.error("Fail load data:", error);
-    }
+    } catch (error) {}
   };
   useEffect(() => {
     if (id) {
       getOrderDetail(id);
       window.scrollTo(0, 0);
-    } else {
-      console.error("ID is undefined");
     }
   }, [id]);
 
@@ -84,9 +74,8 @@ const OrderDetail = () => {
     } else {
       const getAccount = async () => {
         try {
-          const response = await AccountService.account(jwtToken);
+          await AccountService.account(jwtToken);
         } catch (error) {
-          console.error("Error fetching account information:", error);
           sessionStorage.removeItem("jwtToken");
           navigate("/sign_in");
         }
@@ -98,17 +87,14 @@ const OrderDetail = () => {
   // Delete order detail
   const deleteOrderDetail = async () => {
     try {
-      const response = await OrderService.deleteOrderDetail(productIdToDelete);
-      console.log("Response data:", response);
+      await OrderService.deleteOrderDetail(productIdToDelete);
       setPopupDelete(false);
       setPopupDeleteSuccessful(true);
       setTimeout(() => {
         navigate("/invoice", { state: { jwtToken } });
       }, 2000);
       return "Delete successful", id;
-    } catch (error) {
-      console.error("Fail load data:", error);
-    }
+    } catch (error) {}
   };
 
   // Open popup delete

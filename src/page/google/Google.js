@@ -32,7 +32,6 @@ const Google = () => {
           const response = await AccountService.account(jwtToken);
           setEmail(response.email);
         } catch (error) {
-          console.error("Error fetching account information:", error);
           sessionStorage.removeItem("jwtToken");
           navigate("/sign_in");
         }

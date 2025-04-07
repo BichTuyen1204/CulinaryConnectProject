@@ -30,9 +30,7 @@ export const Food_detail = () => {
     try {
       const response = await ProductService.getProductDetail(id);
       setProduct(response);
-    } catch (error) {
-      console.error("Fail load data:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -40,7 +38,6 @@ export const Food_detail = () => {
       getDataDetail(id);
       window.scrollTo(1, 0);
     } else {
-      console.error("ID is undefined");
     }
   }, [id]);
 
@@ -51,11 +48,8 @@ export const Food_detail = () => {
       } else {
         try {
           const response = await AccountService.account(jwtToken);
-          console.log(response);
           setUserName(response.username);
-        } catch (error) {
-          console.error("Error fetching account information:", error);
-        }
+        } catch (error) {}
       }
     };
     getAccount();

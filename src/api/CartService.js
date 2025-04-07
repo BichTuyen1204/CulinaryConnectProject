@@ -21,13 +21,8 @@ class CartService {
           },
         }
       );
-      console.log("Add product successful:", response.data);
       return response.data;
     } catch (error) {
-      console.error(
-        "Error add product: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }
@@ -48,13 +43,8 @@ class CartService {
           },
         }
       );
-      console.log("Update product successful:", response.data);
       return response.data;
     } catch (error) {
-      console.error(
-        "Error update product: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }
@@ -72,10 +62,6 @@ class CartService {
       });
       return response.data;
     } catch (error) {
-      console.error(
-        "Error show product in cart: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }
@@ -94,10 +80,6 @@ class CartService {
       });
       return response.data;
     } catch (error) {
-      console.error(
-        "Error show product in cart: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }

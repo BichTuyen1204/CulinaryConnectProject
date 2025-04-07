@@ -6,11 +6,8 @@ import "./Breadcrumb.css";
 function Breadcrumb() {
   const location = useLocation();
   const pathname = location.pathname;
-
-  // Tách đường dẫn thành các phần
   const pathnames = pathname.split("/").filter((x) => x);
 
-  // Điều kiện để không hiển thị breadcrumb cho các trang cụ thể
   const hiddenPaths = [
     "/",
     "/profile",

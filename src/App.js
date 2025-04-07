@@ -37,10 +37,6 @@ const AppContent = () => {
   const [showForgotPass, setShowForgotPass] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log("Current Path:", window.location.pathname);
-  }, []);
-
   const handleLoginSuccess = () => {
     setShowLogin(false);
     navigate("/");

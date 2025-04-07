@@ -19,10 +19,6 @@ class CouponService {
       );
       return response.data;
     } catch (error) {
-      console.error(
-        "Error show product in cart: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }
@@ -40,10 +36,6 @@ class CouponService {
       );
       return response.data;
     } catch (error) {
-      console.error(
-        "Error during API calls: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }

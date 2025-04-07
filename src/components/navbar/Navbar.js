@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { MdShoppingBasket } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
-import { IoPersonSharp } from "react-icons/io5";
+import { IoChevronDown, IoPersonSharp } from "react-icons/io5";
 import "./Navbar.css";
 import Logo from "../../assets/logo_new.jpg";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -32,6 +32,9 @@ export const Navbar = ({ setShowLogin }) => {
   const { cartCount } = useContext(CartContext);
   const [dropdownPhone, setDropdownPhone] = useState(window.innerWidth <= 768);
   const [dropdownPhoneMenu, setDropdownPhoneMenu] = useState(false);
+  const [searchType, setSearchType] = useState("name");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -49,7 +52,6 @@ export const Navbar = ({ setShowLogin }) => {
       if (Array.isArray(response)) {
         setProducts(response);
       } else {
-        console.error("Invalid response format:", response);
         setProducts([]);
       }
     } catch (error) {}
@@ -64,7 +66,11 @@ export const Navbar = ({ setShowLogin }) => {
     if (searchQuery.trim() === "") {
       navigate("/food_card");
     } else {
-      navigate(`/food_card?search=${encodeURIComponent(searchQuery)}`);
+      navigate(
+        `/food_card?search=${encodeURIComponent(
+          searchQuery
+        )}&type=${searchType}`
+      );
     }
   };
 
@@ -114,17 +120,13 @@ export const Navbar = ({ setShowLogin }) => {
     if (!jwtToken) return;
     try {
       const response = await ProductService.searchImage(formData);
-      console.log("Search Image Response:", response); // Debug API Response
-
       if (response && response.page && response.page.content.length > 0) {
         sessionStorage.setItem("imageSearchResults", JSON.stringify(response));
         navigate("/list_product_search_img?imageSearch=true");
       } else {
         alert("No matching products found.");
       }
-    } catch (error) {
-      console.error("Can't search by image", error);
-    }
+    } catch (error) {}
   };
 
   const handleImageUpload = async (event) => {
@@ -153,6 +155,46 @@ export const Navbar = ({ setShowLogin }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showMenu]);
+
+  const handleTypeSelect = (type) => {
+    setSearchType(type);
+    setDropdownOpen(false);
+    setSearchQuery(""); // clear input khi đổi loại
+  };
+
+  const renderInput = () => {
+    if (searchType === "image") {
+      return (
+        <div
+          className="d-flex align-items-center flex-grow-1"
+          onClick={() => fileInputRef.current && fileInputRef.current.click()}
+          style={{ cursor: "pointer" }}
+        >
+          <IoCamera className="me-2" />
+          <span className="text-muted">Search by Image</span>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            style={{ display: "none" }}
+          />
+        </div>
+      );
+    } else {
+      return (
+        <input
+          type="text"
+          className="form-control border-0 flex-grow-1"
+          placeholder={`Search by ${
+            searchType === "name" ? "Name" : "Description"
+          }`}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      );
+    }
+  };
 
   return (
     <div>
@@ -428,44 +470,54 @@ export const Navbar = ({ setShowLogin }) => {
             ) : null}
           </ul>
 
-          <div className="navbar-right col-4">
+          <div className="navbar-right col-5">
             <form
               onSubmit={handleSubmit}
-              className="search-container position-relative col-12 mx-1"
+              className="d-flex align-items-center border rounded-pill px-3 py-1 position-relative bg-white col-11"
+              style={{ minHeight: "40px" }}
             >
-              <input
-                type="text"
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="form-control search-input"
-              />
+              <CiSearch className="me-2" size={20} />
 
-              {/* Icon Camera */}
-              <>
-                {username ? (
-                  <>
-                    <label
-                      htmlFor="fileInput"
-                      className="position-absolute end-0 me-4 top-50 translate-middle-y"
-                    >
-                      <IoCamera className="ic_camera" />
-                    </label>
-                    <input
-                      id="fileInput"
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      style={{ display: "none" }}
-                    />
-                  </>
-                ) : (
-                  <div></div>
-                )}
-              </>
+              {renderInput()}
 
-              {/* Icon Search */}
-              <CiSearch className="ic_search position-absolute end-0 me-0 top-50 translate-middle-y" />
+              {/* Dropdown toggle */}
+              <div
+                className="dropdown-icon d-flex align-items-center ms-2"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                style={{ cursor: "pointer" }}
+              >
+                <IoChevronDown />
+              </div>
+
+              {/* Dropdown menu */}
+              {dropdownOpen && (
+                <div
+                  className="position-absolute top-100 end-0 mt-1 bg-white border rounded shadow-sm z-10"
+                  style={{ minWidth: "150px" }}
+                >
+                  <div
+                    className="dropdown-item p-2"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => handleTypeSelect("name")}
+                  >
+                    Search by Name
+                  </div>
+                  <div
+                    className="dropdown-item p-2"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => handleTypeSelect("desc")}
+                  >
+                    Search by Description
+                  </div>
+                  <div
+                    className="dropdown-item p-2"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => handleTypeSelect("image")}
+                  >
+                    Search by Image
+                  </div>
+                </div>
+              )}
             </form>
 
             <nav className="col-1 d-flex justify-content-end">

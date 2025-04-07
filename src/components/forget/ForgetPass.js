@@ -32,7 +32,6 @@ const ForgotPassword = ({ setShowForgotPass, openLogin }) => {
         const response = await AccountService.forgotGetOTP(email);
         if (response && response.accountId) {
           setAccountId(response.accountId);
-          console.log("Account ID received: ", response.accountId);
           alert("OTP sent successfully!");
         }
       } catch (error) {}
@@ -44,22 +43,10 @@ const ForgotPassword = ({ setShowForgotPass, openLogin }) => {
       alert("Please enter OTP and password.");
       return;
     }
-
-    // Log the form data
-    console.log("Submitting form with the following data:");
-    console.log({
-      accountId: accountId,
-      otp: otp,
-      password: password,
-    });
-
     try {
-      // Call the reset function and pass accountId, OTP, and new password
       await AccountService.forgotReset(accountId, otp, password);
-      setShowForgotPass(false); // Close the forgot password modal
-    } catch (error) {
-      //   alert("Error resetting password. Please try again.");
-    }
+      setShowForgotPass(false);
+    } catch (error) {}
   };
 
   return (

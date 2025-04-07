@@ -16,10 +16,6 @@ class ProductService {
       );
       return response.data;
     } catch (error) {
-      console.error(
-        "Error during API calls: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }
@@ -29,10 +25,6 @@ class ProductService {
       const response = await axios.get(`${API_BASE_URL_2}/product/${id}`);
       return response.data;
     } catch (error) {
-      console.error(
-        "Error during API calls: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }
@@ -46,10 +38,6 @@ class ProductService {
       );
       return response.data;
     } catch (error) {
-      console.error(
-        "Error during API calls: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }
@@ -57,14 +45,12 @@ class ProductService {
   async getProductsBySearch(keyword) {
     try {
       const response = await axios.get(
-        `${REACT_APP_BACKEND_API_ENDPOINT}/api/public/search/product?keyword=${keyword}`
+        `${REACT_APP_BACKEND_API_ENDPOINT}/api/public/search/product?keyword=${encodeURIComponent(
+          keyword
+        )}`
       );
       return response.data;
     } catch (error) {
-      console.error(
-        "Error during API calls: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }
@@ -79,7 +65,6 @@ class ProductService {
       );
       return response.data;
     } catch (error) {
-      console.error("Error searching description:", error);
       throw error;
     }
   }
@@ -102,10 +87,6 @@ class ProductService {
       );
       return response.data;
     } catch (error) {
-      console.error(
-        "Update failed: ",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }

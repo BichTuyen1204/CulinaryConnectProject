@@ -22,6 +22,8 @@ export const Food_card = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const pageSize = 50;
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchType, setSearchType] = useState("");
 
   useEffect(() => {
     const getAccount = async () => {
@@ -37,16 +39,15 @@ export const Food_card = () => {
     getAccount();
   }, [jwtToken]);
 
-  // Function to get search query from URL
   const getSearchQuery = () => {
     const searchParams = new URLSearchParams(location.search);
     return searchParams.get("search") || "";
   };
 
-  useEffect(() => {
-  }, [location.search]);
-
-  const [searchQuery, setSearchQuery] = useState(getSearchQuery());
+  const getSearchType = () => {
+    const searchParams = new URLSearchParams(location.search);
+    return searchParams.get("type") || "name";
+  };
 
   const renameCategory = (cat) => {
     const categoryMapping = {
@@ -73,46 +74,60 @@ export const Food_card = () => {
           pageSize
         );
       }
+
       if (!response || !response.content) {
-        console.error("Invalid response:", response);
         setFilteredProducts([]);
         return;
       }
 
-      const filtered = await applyFilters(response.content);
+      const filtered = await applyFilters(
+        response.content,
+        getSearchQuery(),
+        getSearchType()
+      );
+
       setFilteredProducts(normalizeProductData(filtered));
       setTotalPages(response.totalPage || 1);
     } catch (error) {
-      console.error("Error fetching products:", error);
       setFilteredProducts([]);
     }
   };
 
-  const applyFilters = async (data) => {
-    let filtered = data;
+  const applyFilters = async (data, searchQuery, searchType) => {
     if (searchQuery.trim() === "") {
-      return filtered;
-    }
-    try {
-      const response = await ProductService.searchDescription(searchQuery);
-      if (response.content) {
-        filtered = response.content.filter(
-          (product) =>
-            (product.product_name &&
-              product.product_name
-                .toLowerCase()
-                .includes(searchQuery.toLowerCase())) ||
-            (product.description &&
-              product.description
-                .toLowerCase()
-                .includes(searchQuery.toLowerCase()))
-        );
-      }
-    } catch (error) {
-      console.error("Error searching by description:", error);
+      return data;
     }
 
-    return filtered;
+    try {
+      if (searchType === "name") {
+        const nameResponse = await ProductService.getProductsBySearch(
+          searchQuery
+        );
+        const nameResults = Array.isArray(nameResponse)
+          ? nameResponse
+          : nameResponse?.content || [];
+
+        if (nameResults.length > 0) {
+          return nameResults;
+        }
+
+        const descResponse = await ProductService.searchDescription(
+          searchQuery
+        );
+        return descResponse.content || [];
+      }
+
+      if (searchType === "desc") {
+        const descResponse = await ProductService.searchDescription(
+          searchQuery
+        );
+        return descResponse.content || [];
+      }
+
+      return [];
+    } catch (error) {
+      return [];
+    }
   };
 
   const normalizeProductData = (products) => {
@@ -125,19 +140,28 @@ export const Food_card = () => {
       productStatus: product.product_status || product.productStatus,
       imageUrl: product.image_url || product.imageUrl,
       price: product.price,
-      salePercent: product.sale_percent || product.salePercent,
+      salePercent: product.sale_percent || product.salePercent || 0,
       description: product.description || "",
     }));
   };
 
+  // --- Update state khi URL thay đổi ---
   useEffect(() => {
-    setSearchQuery(getSearchQuery());
+    const newSearch = getSearchQuery();
+    const newType = getSearchType();
+
+    setSearchQuery(newSearch);
+    setSearchType(newType);
   }, [location.search]);
 
   useEffect(() => {
+  }, [filteredProducts]);
+
+  // --- Fetch khi search hoặc category thay đổi ---
+  useEffect(() => {
     fetchProducts();
     window.scrollTo(0, 0);
-  }, [category, searchQuery, page]);
+  }, [searchQuery, searchType, category, page]);
 
   const handleAddToCart = async (product) => {
     if (username) {

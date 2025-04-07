@@ -49,15 +49,12 @@ const MenuPage = () => {
             );
             break;
           default:
-            console.warn("Unknown category:", category);
             response = { content: [], totalPages: 1 };
             break;
         }
         setProducts(response.content);
         setTotalPages(response.totalPage);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
+      } catch (error) {}
     };
 
     fetchProducts();
