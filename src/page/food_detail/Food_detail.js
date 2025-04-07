@@ -8,6 +8,7 @@ import { MdArrowBackIosNew } from "react-icons/md";
 import { CartContext } from "../../components/context/Context";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Thumbs } from "swiper/modules";
+import ReactMarkdown from "react-markdown";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -196,13 +197,6 @@ export const Food_detail = () => {
                         <div className="d-flex gap-10 align-items-center my-2">
                           <h3 className="product-heading">Category: </h3>
                           <p className="product-data">{product.productTypes}</p>
-                        </div>
-
-                        <div className="d-flex gap-10 align-items-center my-2">
-                          <h3 className="product-heading">Weight: </h3>
-                          <p className="product-data">
-                            {product.infos?.weight} gam
-                          </p>
                         </div>
 
                         <div className="d-flex gap-10 align-items-center my-2">
@@ -436,11 +430,7 @@ export const Food_detail = () => {
                       </strong>
                     </p>
 
-                    <p
-                      style={{ fontSize: "0.9em" }}
-                      className="px-4"
-                      dangerouslySetInnerHTML={{ __html: product.articleMD }}
-                    />
+                    <ReactMarkdown>{product.articleMD}</ReactMarkdown>
                   </div>
                 </div>
               </div>
