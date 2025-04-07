@@ -134,7 +134,25 @@ export const ListProductSearchImg = () => {
       <div className="bg-white px-4 pt-1 pb-4">
         <p className="my-3">The image you uploaded:</p>
         {uploadedImage ? (
-          <img src={uploadedImage} alt="Uploaded" className="uploaded-image" />
+          <div className="d-flex flex-column flex-md-row align-items-start">
+            {predictedProduct && (
+              <div className="prediction-info p-3 border rounded me-md-4 mb-3 mb-md-0">
+                <p className="mb-1">
+                  <strong>Detected:</strong> {predictedProduct.name}
+                </p>
+                <p className="mb-0">
+                  <strong>Confidence:</strong> {predictedProduct.confidence}%
+                </p>
+              </div>
+            )}
+            <div>
+              <img
+                src={uploadedImage}
+                alt="Uploaded"
+                className="uploaded-image"
+              />
+            </div>
+          </div>
         ) : (
           <p>There is no image</p>
         )}
