@@ -38,6 +38,7 @@ export const EditProfile = () => {
   const [otp, setOtp] = useState("");
   const [otpVisible, setOtpVisible] = useState(false);
   const [img, setImg] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const defaultAvatar =
     "https://i.pinimg.com/originals/2c/47/d5/2c47d5dd5b532f83bb55c4cd6f5bd1ef.jpg";
@@ -155,6 +156,7 @@ export const EditProfile = () => {
     const { value } = e.target;
     setEmail(value);
     setAccount((preState) => ({ ...preState, email: value }));
+    setEmailError("");
   };
 
   // Check email
@@ -186,18 +188,21 @@ export const EditProfile = () => {
 
   const [accountId, setAccountId] = useState(null);
   const handleVisibleOTP = async () => {
-    try {
-      const response = await AccountService.updateEmailOTP(email);
+    EmailBlur();
+    if (!emailError && email) {
+      try {
+        setLoading(true);
+        const response = await AccountService.updateEmailOTP(email);
 
-      if (response) {
-        setAccountId(response.accountId);
-        setOtpVisible(true);
+        if (response) {
+          setAccountId(response.accountId);
+          setOtpVisible(true);
+        }
+      } catch (error) {
+        setEmailError("Please enter your email");
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      alert(
-        "Error: " +
-          (error.response ? error.response.data.messages : error.message)
-      );
     }
   };
 
@@ -627,6 +632,21 @@ export const EditProfile = () => {
                 />
               </div>
               {emailError && <p style={{ color: "red" }}>{emailError}</p>}
+            </div>
+
+            <div style={{ marginBottom: "-10px" }}>
+              {loading && (
+                <p
+                  style={{
+                    color: "green",
+                    fontStyle: "italic",
+                    marginTop: "10px",
+                    fontSize: "0.9em",
+                  }}
+                >
+                  Please wait...
+                </p>
+              )}
             </div>
 
             <button className="bt-edit-profile mt-3" onClick={handleVisibleOTP}>
