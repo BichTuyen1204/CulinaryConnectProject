@@ -8,6 +8,7 @@ import { MdArrowBackIosNew } from "react-icons/md";
 import { CartContext } from "../../components/context/Context";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Thumbs } from "swiper/modules";
+import ReactMarkdown from "react-markdown";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -423,11 +424,7 @@ export const Food_detail = () => {
                       </strong>
                     </p>
 
-                    <p
-                      style={{ fontSize: "0.9em" }}
-                      className="px-4"
-                      dangerouslySetInnerHTML={{ __html: product.articleMD }}
-                    />
+                    <ReactMarkdown>{product.articleMD}</ReactMarkdown>
                   </div>
                 </div>
               </div>
