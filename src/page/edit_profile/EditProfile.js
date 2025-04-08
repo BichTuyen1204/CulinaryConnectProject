@@ -222,10 +222,7 @@ export const EditProfile = () => {
         alert("Email successfully updated!");
       }
     } catch (error) {
-      alert(
-        "Error: " +
-          (error.response ? error.response.data.messages : error.message)
-      );
+      alert("Sorry, you cannot use this email to perform the update.");
     }
   };
 

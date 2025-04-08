@@ -284,18 +284,18 @@ export const Food_card = () => {
                           {product.salePercent > 0 ? (
                             <>
                               <span className="original-price">
-                                ${product.price.toFixed(2)}
+                                ${product.price.toFixed(1)}
                               </span>{" "}
                               <span className="discounted-price">
                                 $
                                 {(
                                   product.price -
                                   (product.price * product.salePercent) / 100
-                                ).toFixed(2)}
+                                ).toFixed(1)}
                               </span>
                             </>
                           ) : (
-                            <span>${product.price.toFixed(2)}</span>
+                            <span>${product.price.toFixed(1)}</span>
                           )}
                         </p>
                         {product.salePercent > 0 ? (
