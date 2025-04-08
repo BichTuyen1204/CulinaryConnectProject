@@ -333,27 +333,27 @@ export const Order = () => {
     }
   };
 
-  const handleVNPayPayment = async () => {
-    try {
-      setPaymentMethod("VNPAY");
-      orderData.paymentMethod = "VNPAY";
-      const createdOrder = await createOrder(orderData, jwtToken);
-      const orderId = createdOrder.id;
-      if (!orderId) {
-        throw new Error("Order ID is missing in the response from createOrder");
-      }
+  // const handleVNPayPayment = async () => {
+  //   try {
+  //     setPaymentMethod("VNPAY");
+  //     orderData.paymentMethod = "VNPAY";
+  //     const createdOrder = await createOrder(orderData, jwtToken);
+  //     const orderId = createdOrder.id;
+  //     if (!orderId) {
+  //       throw new Error("Order ID is missing in the response from createOrder");
+  //     }
 
-      const paymentUrl = await getURLVNPay(orderId, jwtToken);
-      if (paymentUrl) {
-        window.open(paymentUrl, "_blank");
-        return orderId;
-      } else {
-        throw new Error("Payment URL is undefined");
-      }
-    } catch (error) {
-      throw error;
-    }
-  };
+  //     const paymentUrl = await getURLVNPay(orderId, jwtToken);
+  //     if (paymentUrl) {
+  //       window.open(paymentUrl, "_blank");
+  //       return orderId;
+  //     } else {
+  //       throw new Error("Payment URL is undefined");
+  //     }
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // };
 
   // Order
   const handleSubmitOrder = async (e) => {
@@ -850,7 +850,7 @@ export const Order = () => {
                       Pay with PayPal
                     </button>
 
-                    <button
+                    {/* <button
                       onClick={handleVNPayPayment}
                       style={{
                         backgroundColor: "#ff0000",
@@ -865,7 +865,7 @@ export const Order = () => {
                       }}
                     >
                       Pay with VNPay
-                    </button>
+                    </button> */}
                   </div>
                 ) : (
                   <button
