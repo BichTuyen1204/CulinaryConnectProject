@@ -17,6 +17,10 @@
   margin-bottom: 10%; 
 }
 
+.edit-profile-container button {
+  border-radius: 5px;
+}
+
 .edit-profile-header {
   display: flex;
   justify-content: center;
