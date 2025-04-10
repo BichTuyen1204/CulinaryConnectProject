@@ -72,19 +72,19 @@ export const FoodItem = ({ product }) => {
                 {product.salePercent > 0 ? (
                   <>
                     <span className="original-price">
-                      ${product.price.toFixed(1)}
+                      ${Number(product.price).toFixed(1)}
                     </span>{" "}
                     <span className="discounted-price">
                       $
                       {(
-                        product.price -
-                        (product.price * product.salePercent) / 100
+                        Number(product.price) -
+                        (Number(product.price) * product.salePercent) / 100
                       ).toFixed(1)}
                     </span>
                   </>
                 ) : (
                   <>
-                    <span>${product.price.toFixed(1)}</span>
+                    <span> ${Number(product.price).toFixed(1)}</span>
                     <span className="discounted-price"></span>
                   </>
                 )}
