@@ -154,8 +154,7 @@ export const Food_card = () => {
     setSearchType(newType);
   }, [location.search]);
 
-  useEffect(() => {
-  }, [filteredProducts]);
+  useEffect(() => {}, [filteredProducts]);
 
   // --- Fetch khi search hoặc category thay đổi ---
   useEffect(() => {
@@ -284,18 +283,20 @@ export const Food_card = () => {
                           {product.salePercent > 0 ? (
                             <>
                               <span className="original-price">
-                                ${product.price.toFixed(1)}
+                                ${Number(product.price).toFixed(1)}
                               </span>{" "}
                               <span className="discounted-price">
                                 $
                                 {(
-                                  product.price -
-                                  (product.price * product.salePercent) / 100
+                                  Number(product.price) -
+                                  (Number(product.price) *
+                                    product.salePercent) /
+                                    100
                                 ).toFixed(1)}
                               </span>
                             </>
                           ) : (
-                            <span>${product.price.toFixed(1)}</span>
+                            <span>${Number(product.price).toFixed(1)}</span>
                           )}
                         </p>
                         {product.salePercent > 0 ? (
