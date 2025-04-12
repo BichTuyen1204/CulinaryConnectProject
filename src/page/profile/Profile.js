@@ -8,6 +8,7 @@ export const Profile = () => {
   const [username, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [profileName, setProfileName] = useState("");
   const [address, setAddress] = useState("");
   const [description, setDescription] = useState("");
   const [imgUser, setImgUser] = useState("");
@@ -29,6 +30,7 @@ export const Profile = () => {
           setUserName(response.username);
           setEmail(response.email);
           setPhone(response.phone);
+          setProfileName(response.profileName);
           setAddress(response.address);
           setDescription(response.profileDescription);
           setImgUser(response.profilePictureUri);
@@ -70,6 +72,9 @@ export const Profile = () => {
           </p>
           <p className="mt-3">
             <strong>Phone:</strong> {phone}
+          </p>
+          <p className="mt-3">
+            <strong>Profile name:</strong> {profileName}
           </p>
           <p className="mt-3">
             <strong>Address:</strong> {address}

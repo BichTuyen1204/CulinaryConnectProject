@@ -8,10 +8,12 @@ import { IoCamera } from "react-icons/io5";
 
 export const EditProfile = () => {
   const [username, setUsername] = useState("");
+  const [profileName, setProfileName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [description, setDescription] = useState("");
   const [usernameError, setUserNameError] = useState("");
+  const [profileNameError, setProfileNameError] = useState("");
   const [addressError, setAddressError] = useState("");
   const [DescriptionError, setDescriptionError] = useState("");
   const [email, setEmail] = useState("");
@@ -52,6 +54,7 @@ export const EditProfile = () => {
   const [updateInfo, setUpdateInfo] = useState({
     username: "",
     phone: "",
+    profileName: "",
     address: "",
     description: "",
   });
@@ -120,6 +123,16 @@ export const EditProfile = () => {
     setNoChangeError("");
   };
 
+  const ProfileNameChange = (e) => {
+    let { value } = e.target;
+    value = value.replace(/[^a-zA-Z0-9]/g, "");
+    setProfileName(value);
+    setUpdateInfo((preState) => ({ ...preState, profileName: value }));
+    setFormSubmitted(false);
+    setProfileNameError("");
+    setNoChangeError("");
+  };
+
   const AddressChange = (e) => {
     const { value } = e.target;
     setAddress(value);
@@ -148,6 +161,18 @@ export const EditProfile = () => {
       setUserNameError("The full name must be less than 100 characters");
     } else {
       setUserNameError("");
+    }
+  };
+
+  const ProfileNameBlur = () => {
+    if (updateInfo.profileName.trim() === "") {
+      setProfileNameError("Please enter your profile name");
+    } else if (updateInfo.profileName.length < 3) {
+      setProfileNameError("The profile name must be at least 3 characters");
+    } else if (updateInfo.profileName.length > 100) {
+      setProfileNameError("The profile name must be less than 100 characters");
+    } else {
+      setProfileNameError("");
     }
   };
 
@@ -339,6 +364,7 @@ export const EditProfile = () => {
         const response = await AccountService.account(jwtToken);
         setUsername(response.username);
         setPhone(response.phone);
+        setProfileName(response.profileName);
         setAddress(response.address);
         setDescription(response.profileDescription);
         setImg(response.profilePictureUri);
@@ -352,6 +378,7 @@ export const EditProfile = () => {
         setOriginalInfo({
           username: response.username || "",
           phone: response.phone || "",
+          profileName: response.profileName || "",
           address: response.address || "",
           description: response.profileDescription || "",
         });
@@ -519,7 +546,10 @@ export const EditProfile = () => {
               {/* Input user name */}
               <div className="input-container">
                 <p>
-                  <strong>User name:</strong>
+                  <span>
+                    <strong>Username</strong>{" "}
+                    <span style={{ color: "red" }}>*</span>
+                  </span>
                 </p>
                 <div className="input-wrapper">
                   <input
@@ -538,7 +568,10 @@ export const EditProfile = () => {
               {/* Input phone */}
               <div className="input-container">
                 <p className="mt-3">
-                  <strong>Phone:</strong>
+                  <span>
+                    <strong>Phone</strong>{" "}
+                    <span style={{ color: "red" }}>*</span>
+                  </span>
                 </p>
                 <div className="input-wrapper">
                   <input
@@ -550,6 +583,28 @@ export const EditProfile = () => {
                   />
                 </div>
                 {phoneError && <p style={{ color: "red" }}>{phoneError}</p>}
+              </div>
+
+              {/* Input profile name */}
+              <div className="input-container">
+                <p>
+                  <span>
+                    <strong>Profile name</strong>{" "}
+                    <span style={{ color: "red" }}>*</span>
+                  </span>
+                </p>
+                <div className="input-wrapper">
+                  <input
+                    type="text"
+                    name="profilename"
+                    value={profileName}
+                    onChange={ProfileNameChange}
+                    onBlur={ProfileNameBlur}
+                  />
+                </div>
+                {profileNameError && (
+                  <p style={{ color: "red" }}>{profileNameError}</p>
+                )}
               </div>
 
               {/* Input address */}
@@ -617,7 +672,9 @@ export const EditProfile = () => {
             {/* Input email */}
             <div className="input-container">
               <p className="mt-3">
-                <strong>Email:</strong>
+                <span>
+                  <strong>Email</strong> <span style={{ color: "red" }}>*</span>
+                </span>
               </p>
               <div className="input-wrapper">
                 <input
@@ -693,7 +750,10 @@ export const EditProfile = () => {
               {/* Input old password */}
               <div className="input-container">
                 <p>
-                  <strong>Old Password:</strong>
+                  <span>
+                    <strong>Old Password</strong>{" "}
+                    <span style={{ color: "red" }}>*</span>
+                  </span>
                 </p>
                 <div className="input-wrapper">
                   <input
@@ -715,7 +775,10 @@ export const EditProfile = () => {
               {/* Input new password */}
               <div className="input-container">
                 <p className="mt-3">
-                  <strong>New Password:</strong>
+                  <span>
+                    <strong>New Password</strong>{" "}
+                    <span style={{ color: "red" }}>*</span>
+                  </span>
                 </p>
                 <div className="input-wrapper">
                   <input
@@ -739,7 +802,10 @@ export const EditProfile = () => {
               {/* Input confirm password */}
               <div className="input-container">
                 <p className="mt-3">
-                  <strong>Confirm New Password:</strong>
+                  <span>
+                    <strong>Confirm New Password</strong>{" "}
+                    <span style={{ color: "red" }}>*</span>
+                  </span>
                 </p>
                 <div className="input-wrapper">
                   <input
