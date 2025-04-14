@@ -58,7 +58,7 @@ class ProductService {
   async searchDescription(desc) {
     try {
       const response = await axios.post(
-        `${REACT_APP_BACKEND_API_ENDPOINT_SEARCH}/public/search/desc?text_dist=0.7&img_dist=0.7&index=0&size=7`,
+        `https://culcon-ad-be-30883260979.asia-southeast1.run.app/public/search/desc?text_dist=0.7&img_dist=0.7&index=0&size=7`,
         {
           prompt: desc,
         }
@@ -76,7 +76,7 @@ class ProductService {
         throw new Error("No JWT token found. Please log in again.");
       }
       const response = await axios.post(
-        `${REACT_APP_BACKEND_API_ENDPOINT_SEARCH}/public/search/image?yolo_dist=1.4&clip_dist=0.7&index=0&size=7`,
+        `https://culcon-ad-be-30883260979.asia-southeast1.run.app/public/search/image?yolo_dist=1.4&clip_dist=0.7&index=0&size=7`,
         formData,
         {
           headers: {
