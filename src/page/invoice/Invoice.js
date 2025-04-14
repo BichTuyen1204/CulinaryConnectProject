@@ -35,8 +35,49 @@ const Invoice = () => {
     CANCELLED: "CANCELLED",
   };
 
+  const paymentStatusMap = {
+    RECEIVED: "RECEIVED",
+    PENDING: "PENDING",
+    REFUNDED: "REFUNDED",
+  };
+
+  const paymentMethodMap = {
+    COD: "Cash on Delivery",
+    PAYPAL: "PayPal",
+    VNPAY: "VNPay",
+    BANKING: "Banking",
+  };
+
   const getStatusColor = (status) => {
     return status === "CANCELLED" ? "red" : "green";
+  };
+
+  const getPaymentStatusColor = (paymentStatus) => {
+    switch (paymentStatus) {
+      case "RECEIVED":
+        return "green";
+      case "PENDING":
+        return "orange";
+      case "FAILED":
+        return "red";
+      default:
+        return "gray";
+    }
+  };
+
+  const getPaymentMethodColor = (paymentMethod) => {
+    switch (paymentMethod) {
+      case "COD":
+        return "#ff7700";
+      case "PAYPAL":
+        return "#0070ba";
+      case "VNPAY":
+        return "#0066b3";
+      case "BANKING":
+        return "#6b5b95";
+      default:
+        return "gray";
+    }
   };
 
   const fetchOrders = async (status) => {
@@ -103,6 +144,24 @@ const Invoice = () => {
                     style={{ color: getStatusColor(order.status) }}
                   >
                     {statusMap[order.status] || "Unknown Status"}
+                  </span>
+                  <strong className="ms-2">Payment:</strong>
+                  <span
+                    className="mx-1 text-truncate"
+                    style={{
+                      color: getPaymentStatusColor(order.paymentStatus),
+                    }}
+                  >
+                    {paymentStatusMap[order.paymentStatus] || "Unknown"}
+                  </span>
+                  <strong className="ms-2">Method:</strong>
+                  <span
+                    className="mx-1 text-truncate"
+                    style={{
+                      color: getPaymentMethodColor(order.paymentMethod),
+                    }}
+                  >
+                    {paymentMethodMap[order.paymentMethod] || "Unknown"}
                   </span>
                 </div>
               </div>

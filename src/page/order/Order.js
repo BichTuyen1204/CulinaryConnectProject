@@ -722,6 +722,22 @@ export const Order = () => {
                       class="form-check-input"
                       type="radio"
                       name="paymentMethod"
+                      id="PAYPAL"
+                      value="PAYPAL"
+                      checked={pay === "PAYPAL"}
+                      onChange={PayChange}
+                    />
+                    <label class="form-check-label" for="paypal">
+                      <p style={{ fontSize: "0.85em", fontWeight: "500" }}>
+                        PAYPAL
+                      </p>
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="paymentMethod"
                       id="BANKING"
                       value="BANKING"
                       checked={pay === "BANKING"}
@@ -813,70 +829,14 @@ export const Order = () => {
               </div>
 
               <div className="col-5 mt-3 button-order">
-                {pay === "BANKING" ? (
-                  // <PayPalScriptProvider
-                  //   options={{
-                  //     "client-id":
-                  //       "AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R",
-                  //     currency: "USD",
-                  //   }}
-                  // >
-                  //   <PayPalButtons
-                  //     style={{ layout: "vertical", color: "gold" }}
-                  //     createOrder={handleCreateOrderAndPayment} // Gọi hàm để tạo order và lấy URL
-                  //     onApprove={handleOnApprove} // Xử lý sau khi thanh toán thành công
-                  //   />
-                  // </PayPalScriptProvider>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "10px",
-                    }}
-                  >
-                    <button
-                      onClick={handleCreateOrderAndPayment}
-                      style={{
-                        backgroundColor: "#0070ba",
-                        padding: "10px 20px",
-                        border: "none",
-                        borderRadius: "5px",
-                        fontSize: "16px",
-                        cursor: "pointer",
-                        transition: "background-color 0.3s ease",
-                        color: "#fff",
-                      }}
-                    >
-                      Pay with PayPal
-                    </button>
-
-                    {/* <button
-                      onClick={handleVNPayPayment}
-                      style={{
-                        backgroundColor: "#ff0000",
-                        color: "#fff",
-                        padding: "10px 20px",
-                        border: "none",
-                        borderRadius: "5px",
-                        fontSize: "16px",
-                        cursor: "pointer",
-                        marginBottom: "15px",
-                        transition: "background-color 0.3s ease",
-                      }}
-                    >
-                      Pay with VNPay
-                    </button> */}
-                  </div>
-                ) : (
-                  <button
-                    className="d-flex justify-content-end mb-3"
-                    type="submit"
-                    style={{ borderRadius: "5px", padding: "10px" }}
-                    onClick={handleProceedToPayment}
-                  >
-                    Proceed to Payment
-                  </button>
-                )}
+                <button
+                  className="d-flex justify-content-end mb-3"
+                  type="submit"
+                  style={{ borderRadius: "5px", padding: "10px" }}
+                  onClick={handleProceedToPayment}
+                >
+                  Proceed to Payment
+                </button>
               </div>
 
               {isModalOpen && (
