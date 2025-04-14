@@ -126,23 +126,46 @@ export const Navbar = ({ setShowLogin }) => {
       } else {
         alert("No matching products found.");
       }
-    } catch (error) {}
+    } catch (error) {
+      alert("An error occurred while searching for the image.");
+      console.error("Search image error:", error);
+    }
   };
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        const base64Image = reader.result;
+    if (!file) {
+      alert("Please select an image to upload.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const base64Image = reader.result;
+
+      try {
         sessionStorage.setItem("uploadedImage", base64Image);
+
         const formData = new FormData();
         formData.append("image", file);
-        await searchImage(formData);
-        window.location.reload();
-      };
-      reader.readAsDataURL(file);
-    }
+
+        const response = await ProductService.searchImage(formData);
+        if (response && response.page && response.page.content.length > 0) {
+          sessionStorage.setItem(
+            "imageSearchResults",
+            JSON.stringify(response)
+          );
+          navigate("/list_product_search_img?imageSearch=true");
+        } else {
+          alert("No matching products found.");
+        }
+      } catch (error) {
+        console.error("Image search failed:", error);
+        alert("Something went wrong while processing the image.");
+      }
+    };
+
+    reader.readAsDataURL(file);
   };
 
   useEffect(() => {
@@ -159,7 +182,7 @@ export const Navbar = ({ setShowLogin }) => {
   const handleTypeSelect = (type) => {
     setSearchType(type);
     setDropdownOpen(false);
-    setSearchQuery(""); // clear input khi đổi loại
+    setSearchQuery("");
   };
 
   const renderInput = () => {
