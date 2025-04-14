@@ -31,6 +31,7 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
     password: "",
     profileName: "",
     address: "",
+    profileName: "",
     description: "",
   });
 
@@ -205,6 +206,7 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
       rePassword &&
       !checkPass
     ) {
+      account.profileName = account.username;
       try {
         await AccountService.register(account);
         setFormSubmitted(true);

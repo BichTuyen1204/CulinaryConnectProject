@@ -149,7 +149,7 @@ const OrderDetail = () => {
                   {orderData.summary.paymentMethod}
                   {orderData.summary.paymentMethod === "PAYPAL" ||
                   orderData.summary.paymentMethod === "VNPAY"
-                    ? " - PAID"
+                    ? " - " + orderData.summary.paymentStatus
                     : ""}
                 </strong>
               </p>
