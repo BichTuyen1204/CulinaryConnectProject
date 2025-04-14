@@ -738,14 +738,14 @@ export const Order = () => {
                       class="form-check-input"
                       type="radio"
                       name="paymentMethod"
-                      id="BANKING"
-                      value="BANKING"
-                      checked={pay === "BANKING"}
+                      id="VNPAY"
+                      value="VNPAY"
+                      checked={pay === "VNPAY"}
                       onChange={PayChange}
                     />
                     <label class="form-check-label" for="banking">
                       <p style={{ fontSize: "0.85em", fontWeight: "500" }}>
-                        BANKING
+                        VNPAY
                       </p>
                     </label>
                   </div>
