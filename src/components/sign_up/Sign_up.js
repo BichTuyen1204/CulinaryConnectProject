@@ -29,6 +29,7 @@ const Sign_up = ({ setShowSignUp, openLogin }) => {
     email: "",
     phone: "",
     password: "",
+    profileName: "",
     address: "",
     profileName: "",
     description: "",

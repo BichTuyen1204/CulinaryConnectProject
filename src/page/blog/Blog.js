@@ -206,7 +206,7 @@ const Blog = () => {
 
           <div className="saved-items">
             <button onClick={toggleSavedView}>
-              {showSavedDishes ? "Show All Dishes" : "Show Saved Dishes"}:{" "}
+              {showSavedDishes ? "Show All Dishes" : "Show Favourite Dishes"}:{" "}
               {bookmarkedBlogs.length}
             </button>
           </div>
@@ -235,7 +235,9 @@ const Blog = () => {
                         }`}
                         onClick={() => handleSaveDish(post.id)}
                       >
-                        {isBookmarked(post.id) ? "Saved" : "Save Dish"}
+                        {isBookmarked(post.id)
+                          ? "Favourited Dish"
+                          : "Favourite Dish"}
                       </button>
                     </div>
                   </div>

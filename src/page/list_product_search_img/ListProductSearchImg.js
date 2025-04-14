@@ -77,7 +77,6 @@ export const ListProductSearchImg = () => {
           if (parsedResults.predict) {
             setPredictedProduct({
               name: parsedResults.predict.name,
-              confidence: parsedResults.predict.confidence,
             });
           }
         } catch (error) {}

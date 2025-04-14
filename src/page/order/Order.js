@@ -1107,14 +1107,22 @@ export const Order = () => {
                   {/* Nội dung popup */}
                   <div className="coupon-popup-container">
                     <h2 className="coupon-popup-title d-flex justify-content-center align-items-center text-center">
-                      Choose{""}
+                      Choose
                       <p className="text-of-header-coupon mx-1">
                         CULINARY CONNECT
                       </p>
-                      {""}
                       Coupon
                     </h2>
-                    <div className="coupon-list col-12">
+
+                    {/* Danh sách coupon có thanh cuộn */}
+                    <div
+                      className="coupon-list col-12"
+                      style={{
+                        maxHeight: "300px",
+                        overflowY: "auto",
+                        paddingRight: "10px",
+                      }}
+                    >
                       {coupons.length > 0 ? (
                         coupons.map((item, index) => (
                           <div
@@ -1126,7 +1134,7 @@ export const Order = () => {
                             key={index}
                           >
                             <div className="col-3">
-                              <div className="coupon-left ">Free shipping</div>
+                              <div className="coupon-left">Free shipping</div>
                             </div>
 
                             <div className="coupon-details col-7 text-start">
