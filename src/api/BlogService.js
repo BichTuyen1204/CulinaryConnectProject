@@ -124,6 +124,26 @@ class BlogService {
     }
   }
 
+  async reportComment(id) {
+    const jwtToken = sessionStorage.getItem("jwtToken");
+    if (!jwtToken) {
+      return;
+    }
+    try {
+      const response = await axios.delete(
+        `${REACT_APP_BACKEND_API_ENDPOINT}/api/customer/comment/report?commentId=${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async replyComment(postId, commentId, comment) {
     const jwtToken = sessionStorage.getItem("jwtToken");
     if (!jwtToken) {

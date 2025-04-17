@@ -148,9 +148,6 @@
 }
 
 @media (max-width: 575px) {
-  .header {
-    margin-top: -55px !important;
-  }
   .header h2 {
     font-size: 1.5em;
   }
@@ -190,9 +187,6 @@
 }
 
 @media (max-width: 481px) {
-  .header {
-    margin-top: -80px !important;
-  }
   .header h2 {
     font-size: 1.1em;
   }

@@ -116,22 +116,6 @@ export const Navbar = ({ setShowLogin }) => {
     }
   };
 
-  const searchImage = async (formData) => {
-    if (!jwtToken) return;
-    try {
-      const response = await ProductService.searchImage(formData);
-      if (response && response.page && response.page.content.length > 0) {
-        sessionStorage.setItem("imageSearchResults", JSON.stringify(response));
-        navigate("/list_product_search_img?imageSearch=true");
-      } else {
-        alert("No matching products found.");
-      }
-    } catch (error) {
-      alert("An error occurred while searching for the image.");
-      console.error("Search image error:", error);
-    }
-  };
-
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) {
@@ -193,7 +177,7 @@ export const Navbar = ({ setShowLogin }) => {
           onClick={() => fileInputRef.current && fileInputRef.current.click()}
           style={{ cursor: "pointer" }}
         >
-          <IoCamera className="me-2" />
+          <IoCamera className="camera me-2" />
           <span className="text-muted">Search by Image</span>
           <input
             ref={fileInputRef}
@@ -233,39 +217,51 @@ export const Navbar = ({ setShowLogin }) => {
           <div className="navbar-right col-6 col-md-6 col-sm-6 ">
             <form
               onSubmit={handleSubmit}
-              className="search-container position-relative"
+              className="form-search d-flex align-items-center border rounded-pill px-3 py-1 position-relative bg-white col-11"
+              style={{ minHeight: "40px" }}
             >
-              <input
-                type="text"
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="search-input"
-              />
+              <CiSearch className="me-2" size={20} />
 
-              {/* Icon Camera */}
-              {username && (
-                <>
-                  <label
-                    htmlFor="fileInput"
-                    className="position-absolute end-0 me-4 top-50 translate-middle-y "
-                  >
-                    <IoCamera className="ic_camera" />
-                  </label>
-                  <input
-                    id="fileInput"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    style={{ display: "none" }}
-                  />
-                </>
-              )}
+              {renderInput()}
 
-              {/* Icon Search */}
-              <div className="ic-search-out">
-                <CiSearch className="ic_search position-absolute me-1 top-50 translate-middle-y" />
+              {/* Dropdown toggle */}
+              <div
+                className="dropdown-icon d-flex align-items-center ms-2"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                style={{ cursor: "pointer" }}
+              >
+                <IoChevronDown />
               </div>
+
+              {/* Dropdown menu */}
+              {dropdownOpen && (
+                <div
+                  className="position-absolute top-100 end-0 mt-1 bg-white border rounded shadow-sm z-10"
+                  style={{ minWidth: "150px" }}
+                >
+                  <div
+                    className="dropdown-item p-2"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => handleTypeSelect("name")}
+                  >
+                    Search by Name
+                  </div>
+                  <div
+                    className="dropdown-item p-2"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => handleTypeSelect("desc")}
+                  >
+                    Search by Description
+                  </div>
+                  <div
+                    className="dropdown-item p-2"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => handleTypeSelect("image")}
+                  >
+                    Search by Image
+                  </div>
+                </div>
+              )}
             </form>
           </div>
 
@@ -496,7 +492,7 @@ export const Navbar = ({ setShowLogin }) => {
           <div className="navbar-right col-5">
             <form
               onSubmit={handleSubmit}
-              className="d-flex align-items-center border rounded-pill px-3 py-1 position-relative bg-white col-11"
+              className="form-search d-flex align-items-center border rounded-pill px-3 py-1 position-relative bg-white col-11"
               style={{ minHeight: "40px" }}
             >
               <CiSearch className="me-2" size={20} />
