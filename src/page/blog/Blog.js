@@ -222,8 +222,9 @@ const Blog = () => {
                   <div key={post.id} className="blog-post">
                     <Link to={`/blog_detail/${post.id}`}>
                       <img
-                        src={post.imageUrl}
-                        alt={post.title}
+                        src={
+                          searchType === "desc" ? post.thumbnail : post.imageUrl
+                        }
                         className="post-image"
                       />
                     </Link>

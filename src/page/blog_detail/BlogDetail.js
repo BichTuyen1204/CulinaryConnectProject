@@ -227,7 +227,7 @@ const BlogDetail = () => {
         }));
 
         setComments(formattedComments);
-        console.log(formattedComments);
+        console.log(responseComment.content.status);
         setTotalPages(responseComment.totalPage || 1);
         setTotalPages(responseComment.totalPage || 1);
       } else {
@@ -352,91 +352,103 @@ const BlogDetail = () => {
           </Link>
           {/* Show blog start*/}
           {blogDetail.blog && (
-            <div className="blog-detail-container">
-              {/* Toggle Button for Mobile View */}
-              <button
-                className="toggle-left-column"
-                onClick={toggleLeftColumn}
+            <div>
+              <p
                 style={{
-                  display: "none",
+                  padding: "5px 20px",
+                  textAlign: "center",
+                  fontSize: "1.5em",
+                  fontWeight: "600",
                 }}
               >
-                {isLeftVisible ? "Hide Details" : "Show Details"}
-              </button>
+                {blogDetail.blog.title}
+              </p>
+              <div className="blog-detail-container">
+                {/* Toggle Button for Mobile View */}
+                <button
+                  className="toggle-left-column"
+                  onClick={toggleLeftColumn}
+                  style={{
+                    display: "none",
+                  }}
+                >
+                  {isLeftVisible ? "Hide Details" : "Show Details"}
+                </button>
 
-              {/* Left Section */}
-              <div
-                className={`blog-left ${isLeftVisible ? "" : "hidden"}`}
-                style={{
-                  display: isLeftVisible ? "block" : "none",
-                }}
-              >
-                <img
-                  src={blogDetail.blog.thumbnail}
-                  alt={blogDetail.blog.title}
-                  className="blog-thumbnail"
-                />
-                <div className="blog-description">
-                  <h1 style={{ fontSize: "1.2em" }}>Description:</h1>
-                  <p
+                {/* Left Section */}
+                <div
+                  className={`blog-left ${isLeftVisible ? "" : "hidden"}`}
+                  style={{
+                    display: isLeftVisible ? "block" : "none",
+                  }}
+                >
+                  <img
+                    src={blogDetail.blog.thumbnail}
+                    alt={blogDetail.blog.title}
+                    className="blog-thumbnail"
+                  />
+                  <div className="blog-description">
+                    <h1 style={{ fontSize: "1.2em" }}>Description:</h1>
+                    <p
+                      className="p-font-size mb-4"
+                      style={{
+                        fontSize: "0.9em",
+                        marginTop: "-5px",
+                      }}
+                    >
+                      {blogDetail.blog.description}
+                    </p>
+                  </div>
+                  <div className="blog-information">
+                    <h1 style={{ fontSize: "1.2em" }}>Information:</h1>
+                    <table
+                      style={{
+                        width: "100%",
+                        borderCollapse: "collapse",
+                        fontSize: "0.9em",
+                        marginTop: "-5px",
+                      }}
+                    >
+                      <tbody>
+                        {Object.entries(blogDetail.blog.infos).map(
+                          ([key, value]) => (
+                            <tr key={key}>
+                              <td
+                                style={{
+                                  padding: "8px",
+                                  borderBottom: "1px solid #ddd",
+                                  textTransform: "capitalize",
+                                }}
+                              >
+                                {key.replace(/_/g, " ")}
+                              </td>
+                              <td
+                                style={{
+                                  padding: "8px",
+                                  borderBottom: "1px solid #ddd",
+                                }}
+                              >
+                                {value}
+                              </td>
+                            </tr>
+                          )
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Right Section */}
+                <div className="blog-right">
+                  <div
                     className="p-font-size mb-4"
                     style={{
                       fontSize: "0.9em",
                       marginTop: "-5px",
                     }}
                   >
-                    {blogDetail.blog.description}
-                  </p>
-                </div>
-                <div className="blog-information">
-                  <h1 style={{ fontSize: "1.2em" }}>Information:</h1>
-                  <table
-                    style={{
-                      width: "100%",
-                      borderCollapse: "collapse",
-                      fontSize: "0.9em",
-                      marginTop: "-5px",
-                    }}
-                  >
-                    <tbody>
-                      {Object.entries(blogDetail.blog.infos).map(
-                        ([key, value]) => (
-                          <tr key={key}>
-                            <td
-                              style={{
-                                padding: "8px",
-                                borderBottom: "1px solid #ddd",
-                                textTransform: "capitalize",
-                              }}
-                            >
-                              {key.replace(/_/g, " ")}
-                            </td>
-                            <td
-                              style={{
-                                padding: "8px",
-                                borderBottom: "1px solid #ddd",
-                              }}
-                            >
-                              {value}
-                            </td>
-                          </tr>
-                        )
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              {/* Right Section */}
-              <div className="blog-right">
-                <div
-                  className="p-font-size mb-4"
-                  style={{
-                    fontSize: "0.9em",
-                    marginTop: "-5px",
-                  }}
-                >
-                  <ReactMarkdown>{blogDetail.blog.article}</ReactMarkdown>
+                    <ReactMarkdown>{blogDetail.blog.article}</ReactMarkdown>
+                  </div>
                 </div>
               </div>
             </div>
