@@ -733,7 +733,7 @@ export const Order = () => {
                       </p>
                     </label>
                   </div>
-                  <div class="form-check">
+                  {/* <div class="form-check">
                     <input
                       class="form-check-input"
                       type="radio"
@@ -748,7 +748,7 @@ export const Order = () => {
                         VNPAY
                       </p>
                     </label>
-                  </div>
+                  </div> */}
                   {/* Banking end */}
                 </div>
               </div>
