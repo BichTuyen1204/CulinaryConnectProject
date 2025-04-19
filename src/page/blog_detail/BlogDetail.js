@@ -491,7 +491,10 @@ const BlogDetail = () => {
             <div>
               {comments.length > 0 ? (
                 comments
-                  .filter((comment) => comment.accountName)
+                  .filter(
+                    (comment) =>
+                      comment.accountName && comment.accountName !== "Anonymous"
+                  )
                   .map((comment, index) => (
                     <div className="comment-item col-12" key={index}>
                       <div>
@@ -1044,13 +1047,13 @@ const BlogDetail = () => {
                   <div
                     style={{
                       position: "fixed",
-                      top: "0",
-                      left: "0",
+                      top: 0,
+                      left: 0,
                       width: "100vw",
                       height: "100vh",
                       backgroundColor: "rgba(87, 87, 87, 0.5)",
                       backdropFilter: "blur(0.05em)",
-                      zIndex: "999",
+                      zIndex: 999,
                     }}
                     onClick={cancelDeleteReply}
                   ></div>
@@ -1061,30 +1064,32 @@ const BlogDetail = () => {
                       top: "50%",
                       left: "50%",
                       transform: "translate(-50%, -50%)",
-                      backgroundColor: "white",
-                      borderRadius: "8px",
-                      padding: "25px",
-                      width: "400px",
+                      backgroundColor: "#fff",
+                      borderRadius: "12px",
+                      padding: "2em",
+                      width: "70%",
+                      maxWidth: "400px",
+                      minWidth: "280px",
                       boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
-                      zIndex: "1000",
+                      zIndex: 1000,
                       textAlign: "center",
                     }}
                   >
                     <h3
                       style={{
-                        marginBottom: "20px",
+                        marginBottom: "1em",
                         color: "#333",
                         fontWeight: "bold",
-                        fontSize: "1.15em",
+                        fontSize: "1.25em",
                       }}
                     >
                       Confirm Delete Comment
                     </h3>
                     <p
                       style={{
-                        marginTop: "-10px",
+                        marginTop: "-0.5em",
                         color: "#555",
-                        fontSize: "0.9em",
+                        fontSize: "0.95em",
                       }}
                     >
                       Are you sure you want to delete this comment?
@@ -1093,22 +1098,24 @@ const BlogDetail = () => {
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
-                        gap: "10px",
-                        marginTop: "15px",
+                        gap: "0.75em",
+                        marginTop: "1.5em",
+                        flexWrap: "wrap",
                       }}
                     >
                       <button
                         onClick={() => deleteReply(selectedIdReply)}
                         style={{
-                          flex: "1",
-                          padding: "5px",
+                          flex: "1 1 45%",
+                          padding: "0.75em",
                           backgroundColor: "#d32f2f",
                           color: "white",
                           border: "none",
-                          borderRadius: "5px",
+                          borderRadius: "6px",
                           cursor: "pointer",
                           fontWeight: "bold",
-                          fontSize: "0.8em",
+                          fontSize: "0.95em",
+                          transition: "background-color 0.2s ease-in-out",
                         }}
                         onMouseEnter={(e) =>
                           (e.target.style.backgroundColor = "#c62828")
@@ -1122,15 +1129,16 @@ const BlogDetail = () => {
                       <button
                         onClick={cancelDeleteReply}
                         style={{
-                          flex: "1",
-                          padding: "10px",
+                          flex: "1 1 45%",
+                          padding: "0.75em",
                           backgroundColor: "#1976d2",
                           color: "white",
                           border: "none",
-                          borderRadius: "5px",
+                          borderRadius: "6px",
                           cursor: "pointer",
                           fontWeight: "bold",
-                          fontSize: "0.9em",
+                          fontSize: "0.95em",
+                          transition: "background-color 0.2s ease-in-out",
                         }}
                         onMouseEnter={(e) =>
                           (e.target.style.backgroundColor = "#1565c0")
@@ -1142,7 +1150,7 @@ const BlogDetail = () => {
                         No
                       </button>
                     </div>
-                    {}
+
                     <IoCloseSharp
                       className="ic-close"
                       onClick={cancelDeleteReply}
@@ -1152,6 +1160,7 @@ const BlogDetail = () => {
                         right: "10px",
                         cursor: "pointer",
                         color: "#555",
+                        fontSize: "1.2em",
                       }}
                     />
                   </div>
@@ -1185,7 +1194,7 @@ const BlogDetail = () => {
                       backgroundColor: "white",
                       borderRadius: "8px",
                       padding: "25px",
-                      width: "400px",
+                      width: "80%",
                       boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
                       zIndex: "1000",
                       textAlign: "center",
@@ -1234,7 +1243,7 @@ const BlogDetail = () => {
                       backgroundColor: "white",
                       borderRadius: "8px",
                       padding: "25px",
-                      width: "400px",
+                      width: "80%",
                       boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
                       zIndex: 1000,
                       textAlign: "center",
@@ -1354,7 +1363,7 @@ const BlogDetail = () => {
                       backgroundColor: "white",
                       borderRadius: "8px",
                       padding: "25px",
-                      width: "400px",
+                      width: "80%",
                       boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
                       zIndex: "1000",
                       textAlign: "center",
@@ -1402,7 +1411,7 @@ const BlogDetail = () => {
                       backgroundColor: "white",
                       borderRadius: "8px",
                       padding: "25px",
-                      width: "400px",
+                      width: "80%",
                       boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
                       zIndex: "1000",
                       textAlign: "center",
@@ -1523,7 +1532,7 @@ const BlogDetail = () => {
                       backgroundColor: "white",
                       borderRadius: "8px",
                       padding: "25px",
-                      width: "400px",
+                      width: "80%",
                       boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
                       zIndex: "1000",
                       textAlign: "center",
@@ -1572,7 +1581,7 @@ const BlogDetail = () => {
                       backgroundColor: "white",
                       borderRadius: "8px",
                       padding: "25px",
-                      width: "400px",
+                      width: "80%",
                       boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
                       zIndex: 1000,
                       textAlign: "center",
@@ -1692,7 +1701,7 @@ const BlogDetail = () => {
                       backgroundColor: "white",
                       borderRadius: "8px",
                       padding: "25px",
-                      width: "400px",
+                      width: "80%",
                       boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
                       zIndex: "1000",
                       textAlign: "center",
