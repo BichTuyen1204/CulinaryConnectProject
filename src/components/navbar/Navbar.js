@@ -343,7 +343,7 @@ export const Navbar = ({ setShowLogin }) => {
           </div>
 
           <div
-            className="col-2 col-md-2 col-sm-2 d-flex justify-content-end "
+            className="col-2 col-md-2 col-sm-2 d-flex justify-content-end button-login-big"
             style={{ position: "relative", zIndex: 5 }}
           >
             {username ? (

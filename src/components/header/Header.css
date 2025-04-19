@@ -100,6 +100,18 @@
   .header {
     margin-top: 25px !important;
   }
+  .header h2 {
+    font-size: 2.1em;
+  }
+}
+
+@media (max-width: 841px) {
+  .header {
+    margin-top: -20px !important;
+  }
+  .header h2 {
+    font-size: 2.1em;
+  }
 }
 
 @media (max-width: 821px) {
@@ -134,9 +146,27 @@
   }
 }
 
-@media (max-width: 610px) {
+@media (max-width: 660px) {
+  .header {
+    margin-top: -23px !important;
+  }
   .header h2 {
     font-size: 1.6em;
+  }
+}
+
+@media (max-width: 620px) {
+  .header {
+    margin-top: -23px !important;
+  }
+  .header h2 {
+    font-size: 1.4em;
+  }
+}
+
+@media (max-width: 610px) {
+  .header h2 {
+    font-size: 1.4em;
   }
   .header p {
     font-size: 0.8em;
@@ -148,8 +178,11 @@
 }
 
 @media (max-width: 575px) {
+  .header {
+    margin-top: -35px !important;
+  }
   .header h2 {
-    font-size: 1.5em;
+    font-size: 1.2em;
   }
   .header p {
     font-size: 0.8em;
@@ -157,6 +190,12 @@
   .header button {
     padding: 4px 17px;
     font-size: 0.7em;
+  }
+}
+@media (max-width: 520px) {
+  .header h2 {
+    font-size: 0.9em !important;
+    padding-top: 5px;
   }
 }
 
@@ -187,6 +226,9 @@
 }
 
 @media (max-width: 481px) {
+  .header {
+    margin-top: -60px !important;
+  }
   .header h2 {
     font-size: 1.1em;
   }
@@ -229,7 +271,7 @@
 
 @media (max-width: 417px) {
   .header {
-    margin-top: -52px !important;
+    margin-top: -35px !important;
     height: 30vw;
   }
   .header h2 {

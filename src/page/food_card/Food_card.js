@@ -190,263 +190,255 @@ export const Food_card = () => {
   return (
     <div>
       {/* Food Page */}
-      <div className="food-page-container container mt-4 bg-white p-4 rounded shadow-sm">
-        <div className="row">
-          {/* Category List */}
-          <div className="category-section col-md-2 border-end pe-3 mb-4 mb-md-0">
-            <h5 className="mb-3">Categories</h5>
-            <ul className="list-unstyled">
-              {categories.map((cat) => (
-                <li
-                  key={cat}
-                  onClick={() => setCategory(cat)}
+      <div className="food-page-container mt-4 bg-white p-4 rounded">
+        {/* Category List */}
+        <div className="category-section w-100">
+          <h5 className="mb-3">Categories</h5>
+          <ul className="category-list">
+            {categories.map((cat) => (
+              <li
+                key={cat}
+                onClick={() => setCategory(cat)}
+                className={`category-item ${category === cat ? "active" : ""}`}
+              >
+                {cat}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Food Grid */}
+        <div className="col-12 d-flex flex-column justify-content-between">
+          <div className="row gx-2 gy-1">
+            {filteredProducts.length > 0 ? (
+              filteredProducts.map((product) => (
+                <div
+                  key={product.id}
+                  className="custom-col"
                   style={{
-                    cursor: "pointer",
-                    fontWeight: category === cat ? "bold" : "normal",
-                    marginBottom: "8px",
-                    color: category === cat ? "#fa5c00" : "#333",
-                    transition: "color 0.2s",
+                    opacity:
+                      product.productStatus === "OUT_OF_STOCK" ||
+                      product.productStatus === "NO_LONGER_IN_SALE"
+                        ? 0.5
+                        : 1,
+                    pointerEvents:
+                      product.productStatus === "OUT_OF_STOCK" ||
+                      product.productStatus === "NO_LONGER_IN_SALE"
+                        ? "none"
+                        : "auto",
                   }}
                 >
-                  {cat}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Food Grid */}
-          <div className="col-md-10 d-flex flex-column justify-content-between">
-            <div className="row g-3">
-              {filteredProducts.length > 0 ? (
-                filteredProducts.map((product) => (
                   <div
-                    key={product.id}
-                    className="col-6 col-sm-4 col-md-2"
+                    className="card h-100 shadow-sm"
                     style={{
-                      opacity:
-                        product.productStatus === "OUT_OF_STOCK" ||
-                        product.productStatus === "NO_LONGER_IN_SALE"
-                          ? 0.5
-                          : 1,
-                      pointerEvents:
-                        product.productStatus === "OUT_OF_STOCK" ||
-                        product.productStatus === "NO_LONGER_IN_SALE"
-                          ? "none"
-                          : "auto",
+                      borderRadius: "12px",
+                      transition: "transform 0.2s ease, box-shadow 0.2s ease",
                     }}
                   >
-                    <div
-                      className="card h-100 shadow-sm"
-                      style={{
-                        borderRadius: "12px",
-                        transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                      }}
+                    <Link
+                      to={`/food_detail/${product.id}`}
+                      className="text-decoration-none text-dark"
                     >
-                      <Link
-                        to={`/food_detail/${product.id}`}
-                        className="text-decoration-none text-dark"
-                      >
-                        <div className="position-relative">
-                          <img
-                            src={product.imageUrl}
-                            alt={product.productName}
-                            className="card-img-top"
-                            style={{
-                              height: "130px",
-                              objectFit: "cover",
-                              padding: "5px",
-                              borderRadius: "15px 15px 10px 10px",
-                            }}
-                          />
-                          {(product.productStatus === "OUT_OF_STOCK" ||
-                            product.productStatus === "NO_LONGER_IN_SALE") && (
-                            <div className="position-absolute top-50 start-50 translate-middle bg-dark text-white px-3 py-1 text-uppercase fw-bold rounded">
-                              {product.productStatus === "OUT_OF_STOCK"
-                                ? "Out of Stock"
-                                : "No Longer in Sale"}
-                            </div>
-                          )}
-                        </div>
-                        <div className="card-body">
-                          <h6
-                            className="card-title mb-2"
-                            style={{
-                              whiteSpace: "nowrap",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                            }}
-                          >
-                            {product.productName}
-                          </h6>
-                          <p className="card-text mb-1 small">
-                            <strong>Price: </strong>
-                            {product.salePercent > 0 ? (
-                              <>
-                                <span className="text-muted text-decoration-line-through me-1">
-                                  ${Number(product.price).toFixed(1)}
-                                </span>
-                                <span className="text-danger fw-bold">
-                                  $
-                                  {(
-                                    Number(product.price) -
-                                    (Number(product.price) *
-                                      product.salePercent) /
-                                      100
-                                  ).toFixed(1)}
-                                </span>
-                              </>
-                            ) : (
-                              <span>${Number(product.price).toFixed(1)}</span>
-                            )}
-                          </p>
-                          {product.salePercent > 0 && (
-                            <p className="mb-0 small">
-                              <strong>Sale: </strong>
-                              {product.salePercent}%
-                            </p>
-                          )}
-                        </div>
-                      </Link>
-                      <div className="card-footer bg-white border-top-0 d-grid gap-2">
-                        {username ? (
-                          <>
-                            <button
-                              className="btn btn-sm"
-                              style={{
-                                backgroundColor: "green",
-                                color: "white",
-                                fontSize: "0.7em",
-                              }}
-                              onClick={() => handleAddToCart(product)}
-                              disabled={product.availableQuantity === 0}
-                            >
-                              Add to cart
-                            </button>
-                            <button
-                              className="btn btn-sm"
-                              style={{
-                                backgroundColor: "tomato",
-                                color: "white",
-                                fontSize: "0.7em",
-                              }}
-                              onClick={() => handleBuyNow(product)}
-                              disabled={product.availableQuantity === 0}
-                            >
-                              Buy now
-                            </button>
-                          </>
-                        ) : (
-                          <>
-                            <Link
-                              to="/sign_in"
-                              className="btn btn-sm"
-                              style={{
-                                backgroundColor: "green",
-                                color: "white",
-                                fontSize: "0.7em",
-                              }}
-                            >
-                              Add to cart
-                            </Link>
-                            <Link
-                              to="/sign_in"
-                              className="btn btn-sm"
-                              style={{
-                                backgroundColor: "tomato",
-                                color: "white",
-                                fontSize: "0.7em",
-                              }}
-                            >
-                              Buy now
-                            </Link>
-                          </>
+                      <div className="position-relative">
+                        <img
+                          src={product.imageUrl}
+                          alt={product.productName}
+                          className="card-img-top"
+                          style={{
+                            height: "130px",
+                            objectFit: "cover",
+                            padding: "5px",
+                            borderRadius: "15px 15px 10px 10px",
+                          }}
+                        />
+                        {(product.productStatus === "OUT_OF_STOCK" ||
+                          product.productStatus === "NO_LONGER_IN_SALE") && (
+                          <div className="position-absolute top-50 start-50 translate-middle bg-dark text-white px-3 py-1 text-uppercase fw-bold rounded">
+                            {product.productStatus === "OUT_OF_STOCK"
+                              ? "Out of Stock"
+                              : "No Longer in Sale"}
+                          </div>
                         )}
                       </div>
+                      <div className="card-body">
+                        <h6
+                          className="card-title mb-2"
+                          style={{
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }}
+                        >
+                          {product.productName}
+                        </h6>
+                        <p className="card-text mb-1 small">
+                          <strong>Price: </strong>
+                          {product.salePercent > 0 ? (
+                            <>
+                              <span className="text-muted text-decoration-line-through me-1">
+                                ${Number(product.price).toFixed(1)}
+                              </span>
+                              <span className="text-danger fw-bold">
+                                $
+                                {(
+                                  Number(product.price) -
+                                  (Number(product.price) *
+                                    product.salePercent) /
+                                    100
+                                ).toFixed(1)}
+                              </span>
+                            </>
+                          ) : (
+                            <span>${Number(product.price).toFixed(1)}</span>
+                          )}
+                        </p>
+                        {product.salePercent > 0 && (
+                          <p className="mb-0 small">
+                            <strong>Sale: </strong>
+                            {product.salePercent}%
+                          </p>
+                        )}
+                      </div>
+                    </Link>
+                    <div className="card-footer bg-white border-top-0 d-grid gap-2">
+                      {username ? (
+                        <>
+                          <button
+                            className="btn btn-sm"
+                            style={{
+                              backgroundColor: "green",
+                              color: "white",
+                              fontSize: "0.7em",
+                            }}
+                            onClick={() => handleAddToCart(product)}
+                            disabled={product.availableQuantity === 0}
+                          >
+                            Add to cart
+                          </button>
+                          <button
+                            className="btn btn-sm"
+                            style={{
+                              backgroundColor: "tomato",
+                              color: "white",
+                              fontSize: "0.7em",
+                            }}
+                            onClick={() => handleBuyNow(product)}
+                            disabled={product.availableQuantity === 0}
+                          >
+                            Buy now
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <Link
+                            to="/sign_in"
+                            className="btn btn-sm"
+                            style={{
+                              backgroundColor: "green",
+                              color: "white",
+                              fontSize: "0.7em",
+                            }}
+                          >
+                            Add to cart
+                          </Link>
+                          <Link
+                            to="/sign_in"
+                            className="btn btn-sm"
+                            style={{
+                              backgroundColor: "tomato",
+                              color: "white",
+                              fontSize: "0.7em",
+                            }}
+                          >
+                            Buy now
+                          </Link>
+                        </>
+                      )}
                     </div>
                   </div>
-                ))
-              ) : (
-                <p className="text-center">
-                  No products available in this category.
-                </p>
-              )}
-            </div>
+                </div>
+              ))
+            ) : (
+              <p className="text-center">
+                No products available in this category.
+              </p>
+            )}
+          </div>
 
-            {/* Popup Add to Cart */}
-            {popupAdd &&
-              ReactDOM.createPortal(
-                <>
-                  <div
-                    style={{
-                      position: "fixed",
-                      top: 0,
-                      left: 0,
-                      width: "100vw",
-                      height: "100vh",
-                      backgroundColor: "rgba(0, 0, 0, 0.2)",
-                      backdropFilter: "blur(3px)",
-                      zIndex: 999,
-                    }}
-                  />
-                  <div
-                    style={{
-                      position: "fixed",
-                      top: "50%",
-                      left: "50%",
-                      transform: "translate(-50%, -50%)",
-                      backgroundColor: "white",
-                      borderRadius: "12px",
-                      padding: "30px",
-                      width: "300px",
-                      boxShadow: "0 8px 20px rgba(0, 0, 0, 0.3)",
-                      zIndex: 1000,
-                      textAlign: "center",
-                    }}
-                  >
-                    <svg
-                      className="checkmark"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 52 52"
-                    >
-                      <circle
-                        className="checkmark__circle"
-                        cx="26"
-                        cy="26"
-                        r="25"
-                      />
-                      <path className="checkmark__check" d="M14 26l7 7 15-15" />
-                    </svg>
-
-                    <p className="mt-2 text-success fw-bold">
-                      Added to cart successfully
-                    </p>
-                  </div>
-                </>,
-                document.body
-              )}
-
-            {/* Pagination at the bottom */}
-            <div className="d-flex justify-content-center mt-4">
-              <Pagination className="custom-pagination-card">
-                <Pagination.Prev
-                  onClick={() => handlePageChange(page - 1)}
-                  disabled={page === 1}
+          {/* Popup Add to Cart */}
+          {popupAdd &&
+            ReactDOM.createPortal(
+              <>
+                <div
+                  style={{
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    width: "100vw",
+                    height: "100vh",
+                    backgroundColor: "rgba(0, 0, 0, 0.2)",
+                    backdropFilter: "blur(3px)",
+                    zIndex: 999,
+                  }}
                 />
-                {[...Array(totalPages)].map((_, index) => (
-                  <Pagination.Item
-                    key={index}
-                    active={index + 1 === page}
-                    onClick={() => handlePageChange(index + 1)}
+                <div
+                  style={{
+                    position: "fixed",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    backgroundColor: "white",
+                    borderRadius: "12px",
+                    padding: "30px",
+                    width: "300px",
+                    boxShadow: "0 8px 20px rgba(0, 0, 0, 0.3)",
+                    zIndex: 1000,
+                    textAlign: "center",
+                  }}
+                >
+                  <svg
+                    className="checkmark"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 52 52"
                   >
-                    {index + 1}
-                  </Pagination.Item>
-                ))}
-                <Pagination.Next
-                  onClick={() => handlePageChange(page + 1)}
-                  disabled={page === totalPages}
-                />
-              </Pagination>
-            </div>
+                    <circle
+                      className="checkmark__circle"
+                      cx="26"
+                      cy="26"
+                      r="25"
+                    />
+                    <path className="checkmark__check" d="M14 26l7 7 15-15" />
+                  </svg>
+
+                  <p className="mt-2 text-success fw-bold">
+                    Added to cart successfully
+                  </p>
+                </div>
+              </>,
+              document.body
+            )}
+
+          {/* Pagination at the bottom */}
+          <div className="d-flex justify-content-center mt-4">
+            <Pagination className="custom-pagination-card">
+              <Pagination.Prev
+                onClick={() => handlePageChange(page - 1)}
+                disabled={page === 1}
+              />
+              {[...Array(totalPages)].map((_, index) => (
+                <Pagination.Item
+                  key={index}
+                  active={index + 1 === page}
+                  onClick={() => handlePageChange(index + 1)}
+                >
+                  {index + 1}
+                </Pagination.Item>
+              ))}
+              <Pagination.Next
+                onClick={() => handlePageChange(page + 1)}
+                disabled={page === totalPages}
+              />
+            </Pagination>
           </div>
         </div>
       </div>
