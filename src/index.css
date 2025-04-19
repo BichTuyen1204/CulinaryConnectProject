@@ -74,15 +74,32 @@ a {
 
 @media (max-width: 1025px) {
     .app {
-        margin-top: 25px;
         min-height: 52vh !important;
-
+        margin-top: -15px !important;
     }
 }
 
-@media(max-width:480px) {
+@media (max-width: 854px) {
     .app {
-        margin-top: 50px;
+        margin-top: 25px !important;
+    }
+}
+
+@media (max-width: 841px) {
+    .app {
+        margin-top: -10px !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .app {
+        margin-top: -25px !important;
+    }
+}
+
+@media(max-width:417px) {
+    .app {
+        margin-top: 0px !important;
     }
 }
 

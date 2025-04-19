@@ -302,16 +302,6 @@ export const Navbar = ({ setShowLogin }) => {
                   >
                     Menu
                   </Dropdown.Item>
-                  <Dropdown.Item
-                    as={Link}
-                    to="/contact"
-                    className={`dropdown-item ${
-                      location.pathname === "/contact" ? "active-link" : ""
-                    }`}
-                    onClick={() => handleMenuItemClick("contact")}
-                  >
-                    Contact
-                  </Dropdown.Item>
 
                   {jwtToken && (
                     <>
@@ -343,7 +333,7 @@ export const Navbar = ({ setShowLogin }) => {
           </div>
 
           <div
-            className="col-2 col-md-2 col-sm-2 d-flex justify-content-end "
+            className="col-2 col-md-2 col-sm-2 d-flex justify-content-end button-login-big"
             style={{ position: "relative", zIndex: 5 }}
           >
             {username ? (
@@ -457,14 +447,6 @@ export const Navbar = ({ setShowLogin }) => {
               }`}
             >
               <Link to="/food_card">Menu</Link>
-            </li>
-            <li
-              onClick={() => handleMenuItemClick("contact")}
-              className={`item ${
-                location.pathname === "/contact" ? "active" : ""
-              }`}
-            >
-              <Link to="/contact">Contact</Link>
             </li>
             {jwtToken ? (
               <li

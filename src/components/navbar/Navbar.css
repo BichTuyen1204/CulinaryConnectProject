@@ -454,12 +454,25 @@ button {
   }
 }
 
+@media (max-width: 940px) {
+  .navbar .navbar-basket-icon .dot{
+    min-width: 15px;
+    min-height: 10px;
+    font-size: 0.7em;
+    left: 20px;
+  }
+}
+
 @media (max-width: 910px) {
   .navbar-right .form-search {
     margin-left: 15px !important;
   }
   .navbar-right nav {
     margin-left: -10px;
+  }
+  .button-login {
+    margin-right: -40px !important;
+    padding: 5px 15px !important;
   }
 }
 
@@ -588,9 +601,10 @@ button {
   }
   .navbar .button-login {
     margin-right: 10px !important;
-    margin-top: -75px !important;
-    padding: 0px 5px !important;
-    height: 48px !important;
+    margin-top: -80px !important;
+    padding: 0px 10px !important;
+    font-size: 0.7em;
+    height: 40px !important;
   }
 }
 
@@ -632,10 +646,6 @@ button {
 }
 
 @media (max-width: 700px) {
-  .navbar .button-login {
-    margin-right: 5px !important;
-    height: 48px !important;
-  }
 }
 
 @media (max-width: 695px) {
@@ -677,22 +687,51 @@ button {
   }
 }
 
+@media (max-width: 580px) {
+  .navbar .logo-navbar img {
+    display: none;
+  }
+  .navbar-right {
+    margin-top: -145px !important;
+  }
+  .dropdown {
+    margin-top: -140px !important;
+  }
+  .dropdown button {
+    margin-top: 35px !important;
+  }
+  .user-menu .avatar-container {
+    margin-top: 25px !important;
+  }
+  .navbar-right .form-search {
+    margin-top: 20px !important;
+    margin-left: 15px !important;
+    width: 78% !important;
+  }
+}
+
 @media (max-width: 576px) {
   .navbar {
     height: 65px !important;
   }
   .hamburger-menu-btn {
-    margin-top: 70px !important;
+    margin-top: 170px !important;
     margin-left: -55px !important;
   }
+  .dropdown button {
+    margin-top: 80px !important;
+  }
   .user-menu .avatar-container {
-    margin-top: 60px !important;
+    margin-top: -16px !important;
   }
   .navbar-right .form-search {
-    margin-top: 10px !important;
+    margin-top: 155px !important;
     width: 75% !important;
     margin-left: 15px !important;
     font-size: 0.9em !important;
+  }
+  .button-login-big {
+    padding-top: 40px !important;
   }
 }
 
@@ -708,15 +747,21 @@ button {
   }
 }
 
+@media (max-width: 495px) {
+  .hamburger-menu-btn {
+    margin-left: -78px !important;
+  }
+}
+
 @media (max-width: 480px) {
   .hamburger-menu-btn {
     margin-left: -75px !important;
   }
 }
 
-@media (max-width: 465px) {
+@media (max-width: 475px) {
   .hamburger-menu-btn {
-    margin-left: -80px !important;
+    margin-left: -83px !important;
   }
 }
 
@@ -747,18 +792,51 @@ button {
   }
 }
 
+@media (max-width: 356px) {
+  .hamburger-menu-btn {
+    margin-left: -120px !important;
+  }
+}
+
 @media (max-width: 340px) {
+  .navbar-right {
+    margin-top: -135px !important;
+  }
   .hamburger-menu-btn {
     margin-left: -120px !important;
   }
   .avatar-img {
-    width: 20px;
-    height: 20px;
+    width: 23px;
+    height: 23px;
   }
   .user-menu .avatar-container {
-    margin-top: 61px !important;
-    width: 30px;
-    height: 30px;
+    width: 34px;
+    height: 34px;
+  }
+  .hamburger-menu-btn {
+    font-size: 0.6em !important;
+  }
+  .navbar-right .form-search {
+    width: 68% !important;
+    min-height: 30px !important;
+    font-size: 0.7em !important;
+  }
+}
+
+@media (max-width: 335px) {
+  .navbar-right {
+    margin-top: -135px !important;
+  }
+  .hamburger-menu-btn {
+    margin-left: -125px !important;
+  }
+  .avatar-img {
+    width: 23px;
+    height: 23px;
+  }
+  .user-menu .avatar-container {
+    width: 34px;
+    height: 34px;
   }
   .hamburger-menu-btn {
     font-size: 0.6em !important;

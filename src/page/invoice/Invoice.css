@@ -1,3 +1,19 @@
+.tab-invoice {
+  background-color: #e5e7eb;
+  color: #333;
+  transition: 0.2s;
+}
+
+.tab-invoice:hover {
+  background-color: #d1d5db;
+}
+
+.tab-invoice.active {
+  background-color: #2563eb;
+  color: white;
+  font-weight: 500;
+}
+
 .order-page {
   width: 90%;
   margin: 20px auto;
@@ -131,108 +147,39 @@
   align-items: center;
 }
 
-@media (max-width: 1024px) {
-  .order-page {
-    width: 90%;
-    margin: 0px auto;
+@media (max-width: 1025px) {
+  .tab-invoice {
+    font-size: 0.7em !important;
   }
-  .order-content {
-    width: 90%;
-    box-shadow: none;
-    margin: auto;
-    padding: 0;
-    background: none;
+  .order-title {
+    font-size: 0.8em;
+    color: #464646;
   }
-  .order-tabs {
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    gap: 5px;
+  .order-price {
+    font-size: 0.8em;
+    color: #464646;
   }
   .order-summary {
-    font-size: 0.7em;
+    font-size: 0.85em;
   }
   .status {
-    justify-content: end;
-    font-size: 0.7em;
-  }
-  .tab {
-    padding: 8px;
-    font-size: 12px;
-  }
-
-  .order-card {
-    padding: 10px;
-  }
-
-  .order-summary,
-  .total-amount-size,
-  .status {
-    font-size: 0.5em;
-  }
-
-  .total {
-    padding-left: 0rem !important;
-  }
-
-  .status {
-    padding-right: 0rem !important;
-    display: flex;
-  }
-
-  .order-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    border-bottom: 1px solid #f0f0f0;
-  }
-
-  .order-info {
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-    gap: 10px;
-  }
-
-  .order-image {
-    width: 50px;
-    height: 50px;
-  }
-
-  .order-title {
-    font-size: 12px;
-  }
-
-  .order-quantity {
-    font-size: 12px;
-  }
-
-  .order-price {
-    font-size: 12px;
-  }
-
-  .total-amount-size {
-    font-size: 14px;
-    text-align: center;
-    margin-top: 10px;
-  }
-
-  .contact-seller-btn {
-    width: 100%;
-    text-align: center;
-    padding: 10px;
-    font-size: 14px;
+    font-size: 0.85em;
   }
 }
 
 @media (max-width: 800px) {
+  .tab-invoice {
+    font-size: 0.6em !important;
+  }
+  .mask-delevered {
+    font-size: 0.6em !important;
+    padding: 7px 10px;
+  }
   .status {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     margin-top: -15px;
-  }
-  .tab {
-    font-size: 0.5em;
   }
   .order-page {
     width: 100%;
@@ -255,16 +202,24 @@
     height: 40px;
   }
   .order-title {
-    font-size: 0.6em;
+    font-size: 0.65em;
   }
   .order-quantity {
     font-size: 0.5em;
   }
   .order-price {
-    font-size: 0.5em;
+    font-size: 0.65em;
   }
   .total-amount-size {
-    font-size: 0.5em;
+    font-size: 0.8em;
+  }
+  .tab-invoice {
+    font-size: 0.7em;
+    padding: 5px 10px !important;
+  }
+  .order-tabs {
+    padding: 0px 10px;
+    gap: 5px !important;
   }
 }
 
@@ -287,10 +242,6 @@
     padding: 0;
     background: none;
   }
-  .total-amount-size {
-    font-size: 0.7em;
-    padding-right: 0px !important;
-  }
   .order-item {
     padding: 5px 15px 0px 0px;
   }
@@ -307,12 +258,16 @@
   .order-price {
     font-size: 0.5em;
   }
-  .total-amount-size {
-    font-size: 0.5em;
+  .order-summary,
+  .status {
+    font-size: 0.65em;
   }
 }
 
 @media (max-width: 480px) {
+  .tab-invoice {
+    font-size: 0.5em !important;
+  }
   .total {
     display: block;
     flex-direction: column;
@@ -335,9 +290,15 @@
     padding: 0;
     background: none;
   }
+  .mask-delevered {
+    font-size: 0.5em !important;
+    padding: 7px 10px;
+  }
   .total-amount-size {
     font-size: 0.7em;
-    padding-right: 0px !important;
+  }
+  .note p {
+    font-size: 0.5em !important;
   }
   .order-item {
     padding: 5px 15px 0px 0px;
@@ -353,9 +314,6 @@
     font-size: 0.5em;
   }
   .order-price {
-    font-size: 0.5em;
-  }
-  .total-amount-size {
     font-size: 0.5em;
   }
 }
