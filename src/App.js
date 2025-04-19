@@ -7,7 +7,6 @@ import Footer from "./components/footer/Footer";
 import Login from "./components/login/Login";
 import Sign_up from "./components/sign_up/Sign_up";
 import Cart from "./page/cart/Cart";
-import Contact from "./page/contact/Contact";
 import { Food_card } from "./page/food_card/Food_card";
 import { Food_detail } from "./page/food_detail/Food_detail";
 import Breadcrumb from "./components/bread_crumb/Breadcrumb";
@@ -69,7 +68,6 @@ const AppContent = () => {
             <Route path="sign_in" element={<SignIn />} />
             <Route path="exploreMenu" element={<ExploreMenu />} />
             <Route path="cart" element={<Cart />} />
-            <Route path="contact" element={<Contact />} />
             <Route path="food_card" element={<Food_card />} />
             <Route
               path="list_product_search_img"

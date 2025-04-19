@@ -13,14 +13,12 @@ const Invoice = () => {
   const [loadingPayment, setLoadingPayment] = useState(null);
   const [paymentWindows, setPaymentWindows] = useState({});
   const [paymentCheckInterval, setPaymentCheckInterval] = useState(null);
-  // Add these new state variables
   const [paypalModalOpen, setPaypalModalOpen] = useState(false);
   const [currentOrderId, setCurrentOrderId] = useState(null);
   const [paymentMessage, setPaymentMessage] = useState("");
 
-  // PayPal configuration options
   const paypalOptions = {
-    "client-id": "test", // Replace with your actual PayPal client ID in production
+    "client-id": "test",
     currency: "USD",
     components: "buttons",
   };
@@ -298,11 +296,13 @@ const Invoice = () => {
   return (
     <div className="bg-white py-4">
       <div className="order-page">
-        <div className="order-tabs">
+        <div className="order-tabs flex overflow-x-auto whitespace-nowrap gap-2 py-2">
           {tabs.map((tab) => (
             <button
               key={tab.id}
-              className={`tab-invoice ${currentTab === tab.id ? "active" : ""}`}
+              className={`tab-invoice flex-none px-3 py-2 rounded ${
+                currentTab === tab.id ? "active" : ""
+              }`}
               onClick={() => setCurrentTab(tab.id)}
             >
               {tab.label}
@@ -331,15 +331,6 @@ const Invoice = () => {
                     style={{ color: getStatusColor(order.status) }}
                   >
                     {statusMap[order.status] || "Unknown Status"}
-                  </span>
-                  <strong className="ms-2">Payment:</strong>
-                  <span
-                    className="mx-1 text-truncate"
-                    style={{
-                      color: getPaymentStatusColor(order.paymentStatus),
-                    }}
-                  >
-                    {paymentStatusMap[order.paymentStatus] || "Unknown"}
                   </span>
                   <strong className="ms-2">Method:</strong>
                   <span
@@ -379,7 +370,7 @@ const Invoice = () => {
                 <div>
                   {order.status === "SHIPPED" && (
                     <button
-                      className="btn me-2"
+                      className="btn me-2 mask-delevered"
                       style={{ backgroundColor: "tomato", color: "white" }}
                     >
                       Mark as Delivered
@@ -426,6 +417,22 @@ const Invoice = () => {
                     $ {order.totalPrice.toLocaleString()}
                   </span>
                 </p>
+              </div>
+              <div className="note">
+                {!["SHIPPED", "DELIVERED", "CANCELLED"].includes(
+                  order.status
+                ) && (
+                  <p
+                    style={{
+                      fontWeight: "500",
+                      fontStyle: "italic",
+                      fontSize: "0.7em",
+                    }}
+                  >
+                    Please complete your payment within 1 hour of placing the
+                    order.
+                  </p>
+                )}
               </div>
             </div>
           </Link>
