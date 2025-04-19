@@ -4,10 +4,10 @@ import ReactMarkdown from "react-markdown";
 import BlogService from "../../api/BlogService";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { IoArrowBackOutline } from "react-icons/io5";
-import { RiDeleteBin6Line } from "react-icons/ri";
 import { IoCloseSharp } from "react-icons/io5";
 import AccountService from "../../api/AccountService";
 import { AiFillDelete } from "react-icons/ai";
+import { AiFillFlag } from "react-icons/ai";
 import { Pagination } from "react-bootstrap";
 import ReactDOM from "react-dom";
 
@@ -17,11 +17,19 @@ const BlogDetail = () => {
   const [newComment, setNewComment] = useState("");
   const [selectedId, setSelectedId] = useState(null);
   const [selectedIdReply, setSelectedIdReply] = useState(null);
+  const [selectedIdReport, setSelectedIdReport] = useState(null);
+  const [selectedIdReportReply, setSelectedIdReportReply] = useState(null);
   const [comments, setComments] = useState([]);
   const jwtToken = sessionStorage.getItem("jwtToken");
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [popupReport, setPopupReport] = useState(false);
+  const [popupReportSuccess, setPopupReportSuccess] = useState(false);
+  const [popupReportReply, setPopupReportReply] = useState(false);
+  const [popupReportReplySuccess, setPopupReportReplySuccess] = useState(false);
   const [popupDelete, setPopupDelete] = useState(false);
+  const [popupDeleteSuccess, setPopupDeleteSuccess] = useState(false);
   const [popupDeleteReply, setPopupDeleteReply] = useState(false);
+  const [popupDeleteReplySuccess, setPopupDeleteReplySuccess] = useState(false);
   const navigate = useNavigate();
   const [username, setUserName] = useState("");
   const [replyingTo, setReplyingTo] = useState(null);
@@ -70,6 +78,14 @@ const BlogDetail = () => {
     setPopupDeleteReply(false);
   };
 
+  const cancelReport = () => {
+    setPopupReport(false);
+  };
+
+  const cancelReportReply = () => {
+    setPopupReportReply(false);
+  };
+
   const openModal = (id) => {
     setSelectedId(id);
     setPopupDelete(true);
@@ -80,6 +96,58 @@ const BlogDetail = () => {
     setPopupDeleteReply(true);
   };
 
+  const openReport = (id) => {
+    setSelectedIdReport(id);
+    setPopupReport(true);
+  };
+
+  const openReportReply = (id) => {
+    setSelectedIdReportReply(id);
+    setPopupReportReply(true);
+  };
+
+  const reportComment = async (id) => {
+    if (jwtToken) {
+      try {
+        await BlogService.reportComment(id);
+        setComments((prevComment) =>
+          prevComment.filter((comment) => comment.id !== id)
+        );
+        setPopupReport(false);
+        setPopupReportSuccess(true);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      } catch (error) {}
+    } else {
+      return;
+    }
+  };
+
+  const reportReply = async (id) => {
+    if (jwtToken) {
+      try {
+        await BlogService.reportComment(id);
+        setReplies((prevReplies) => {
+          const updatedReplies = Object.keys(prevReplies).reduce(
+            (acc, commentId) => {
+              acc[commentId] = prevReplies[commentId].filter(
+                (reply) => reply.id !== id
+              );
+              return acc;
+            },
+            {}
+          );
+          return updatedReplies;
+        });
+        setPopupReportReply(false);
+        setPopupReportReplySuccess(true);
+      } catch (error) {}
+    } else {
+      return;
+    }
+  };
+
   const deleteBlog = async (id) => {
     if (jwtToken) {
       try {
@@ -88,6 +156,10 @@ const BlogDetail = () => {
           prevComment.filter((comment) => comment.id !== id)
         );
         setPopupDelete(false);
+        setPopupDeleteSuccess(true);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       } catch (error) {}
     } else {
       return;
@@ -111,6 +183,10 @@ const BlogDetail = () => {
           return updatedReplies;
         });
         setPopupDeleteReply(false);
+        setPopupDeleteReplySuccess(true);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       } catch (error) {}
     } else {
       return;
@@ -147,9 +223,11 @@ const BlogDetail = () => {
           timestamp: item.comment.timestamp,
           comment: item.comment.comment,
           replyAmount: item.replyAmount,
+          status: item.status,
         }));
 
         setComments(formattedComments);
+        console.log(responseComment.content.status);
         setTotalPages(responseComment.totalPage || 1);
         setTotalPages(responseComment.totalPage || 1);
       } else {
@@ -179,6 +257,7 @@ const BlogDetail = () => {
           timestamp: item.comment.timestamp,
           comment: item.comment.comment,
           replyAmount: item.replyAmount,
+          status: item.status,
         }));
 
         setReplies((prevReplies) => ({
@@ -273,91 +352,103 @@ const BlogDetail = () => {
           </Link>
           {/* Show blog start*/}
           {blogDetail.blog && (
-            <div className="blog-detail-container">
-              {/* Toggle Button for Mobile View */}
-              <button
-                className="toggle-left-column"
-                onClick={toggleLeftColumn}
+            <div>
+              <p
                 style={{
-                  display: "none",
+                  padding: "5px 20px",
+                  textAlign: "center",
+                  fontSize: "1.5em",
+                  fontWeight: "600",
                 }}
               >
-                {isLeftVisible ? "Hide Details" : "Show Details"}
-              </button>
+                {blogDetail.blog.title}
+              </p>
+              <div className="blog-detail-container">
+                {/* Toggle Button for Mobile View */}
+                <button
+                  className="toggle-left-column"
+                  onClick={toggleLeftColumn}
+                  style={{
+                    display: "none",
+                  }}
+                >
+                  {isLeftVisible ? "Hide Details" : "Show Details"}
+                </button>
 
-              {/* Left Section */}
-              <div
-                className={`blog-left ${isLeftVisible ? "" : "hidden"}`}
-                style={{
-                  display: isLeftVisible ? "block" : "none",
-                }}
-              >
-                <img
-                  src={blogDetail.blog.thumbnail}
-                  alt={blogDetail.blog.title}
-                  className="blog-thumbnail"
-                />
-                <div className="blog-description">
-                  <h1 style={{ fontSize: "1.2em" }}>Description:</h1>
-                  <p
+                {/* Left Section */}
+                <div
+                  className={`blog-left ${isLeftVisible ? "" : "hidden"}`}
+                  style={{
+                    display: isLeftVisible ? "block" : "none",
+                  }}
+                >
+                  <img
+                    src={blogDetail.blog.thumbnail}
+                    alt={blogDetail.blog.title}
+                    className="blog-thumbnail"
+                  />
+                  <div className="blog-description">
+                    <h1 style={{ fontSize: "1.2em" }}>Description:</h1>
+                    <p
+                      className="p-font-size mb-4"
+                      style={{
+                        fontSize: "0.9em",
+                        marginTop: "-5px",
+                      }}
+                    >
+                      {blogDetail.blog.description}
+                    </p>
+                  </div>
+                  <div className="blog-information">
+                    <h1 style={{ fontSize: "1.2em" }}>Information:</h1>
+                    <table
+                      style={{
+                        width: "100%",
+                        borderCollapse: "collapse",
+                        fontSize: "0.9em",
+                        marginTop: "-5px",
+                      }}
+                    >
+                      <tbody>
+                        {Object.entries(blogDetail.blog.infos).map(
+                          ([key, value]) => (
+                            <tr key={key}>
+                              <td
+                                style={{
+                                  padding: "8px",
+                                  borderBottom: "1px solid #ddd",
+                                  textTransform: "capitalize",
+                                }}
+                              >
+                                {key.replace(/_/g, " ")}
+                              </td>
+                              <td
+                                style={{
+                                  padding: "8px",
+                                  borderBottom: "1px solid #ddd",
+                                }}
+                              >
+                                {value}
+                              </td>
+                            </tr>
+                          )
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Right Section */}
+                <div className="blog-right">
+                  <div
                     className="p-font-size mb-4"
                     style={{
                       fontSize: "0.9em",
                       marginTop: "-5px",
                     }}
                   >
-                    {blogDetail.blog.description}
-                  </p>
-                </div>
-                <div className="blog-information">
-                  <h1 style={{ fontSize: "1.2em" }}>Information:</h1>
-                  <table
-                    style={{
-                      width: "100%",
-                      borderCollapse: "collapse",
-                      fontSize: "0.9em",
-                      marginTop: "-5px",
-                    }}
-                  >
-                    <tbody>
-                      {Object.entries(blogDetail.blog.infos).map(
-                        ([key, value]) => (
-                          <tr key={key}>
-                            <td
-                              style={{
-                                padding: "8px",
-                                borderBottom: "1px solid #ddd",
-                                textTransform: "capitalize",
-                              }}
-                            >
-                              {key.replace(/_/g, " ")}
-                            </td>
-                            <td
-                              style={{
-                                padding: "8px",
-                                borderBottom: "1px solid #ddd",
-                              }}
-                            >
-                              {value}
-                            </td>
-                          </tr>
-                        )
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              {/* Right Section */}
-              <div className="blog-right">
-                <div
-                  className="p-font-size mb-4"
-                  style={{
-                    fontSize: "0.9em",
-                    marginTop: "-5px",
-                  }}
-                >
-                  <ReactMarkdown>{blogDetail.blog.article}</ReactMarkdown>
+                    <ReactMarkdown>{blogDetail.blog.article}</ReactMarkdown>
+                  </div>
                 </div>
               </div>
             </div>
@@ -428,6 +519,12 @@ const BlogDetail = () => {
                         </div>
                         <div className="comment-info col-12 px-5">
                           {comment.comment ? comment.comment : "No content"}
+                          {comment.accountName !== username &&
+                          comment.status === "REPORTED" ? (
+                            <p style={{ color: "red" }}>
+                              This comment has been reported
+                            </p>
+                          ) : null}
                         </div>
 
                         <div className="d-flex">
@@ -464,6 +561,15 @@ const BlogDetail = () => {
                             <AiFillDelete
                               className="icon-delete"
                               onClick={() => openModal(comment.id)}
+                            />
+                          ) : null}
+
+                          {comment.accountName !== username &&
+                          comment.status === "REPORTED" &&
+                          comment.status === "DELETED" ? (
+                            <AiFillFlag
+                              style={{ color: "red", cursor: "pointer" }}
+                              onClick={() => openReport(comment.id)}
                             />
                           ) : null}
                         </div>
@@ -521,6 +627,12 @@ const BlogDetail = () => {
                                   </span>
                                   <p className="reply-text-reply mx-5">
                                     {reply.comment || ""}
+                                    {reply.accountName !== username &&
+                                    reply.status === "REPORTED" ? (
+                                      <p style={{ color: "red" }}>
+                                        This comment has been reported
+                                      </p>
+                                    ) : null}
                                   </p>
 
                                   {/* Nút hiển thị/ẩn phản hồi */}
@@ -559,6 +671,20 @@ const BlogDetail = () => {
                                       <AiFillDelete
                                         className="icon-delete-reply"
                                         onClick={() => openModalReply(reply.id)}
+                                      />
+                                    ) : null}
+
+                                    {reply.accountName !== username &&
+                                    reply.status === "REPORTED" &&
+                                    comment.status === "DELETED" ? (
+                                      <AiFillFlag
+                                        style={{
+                                          color: "red",
+                                          cursor: "pointer",
+                                        }}
+                                        onClick={() =>
+                                          openReportReply(reply.id)
+                                        }
                                       />
                                     ) : null}
                                   </div>
@@ -630,6 +756,15 @@ const BlogDetail = () => {
                                                   {superReply.comment ||
                                                     "No content"}
                                                 </p>
+                                                {superReply.accountName !==
+                                                  username &&
+                                                superReply.status ===
+                                                  "REPORTED" ? (
+                                                  <p style={{ color: "red" }}>
+                                                    This comment has been
+                                                    reported
+                                                  </p>
+                                                ) : null}
 
                                                 {/* Nút hiển thị/ẩn phản hồi */}
                                                 <div className="d-flex">
@@ -686,6 +821,24 @@ const BlogDetail = () => {
                                                       className="icon-delete-reply"
                                                       onClick={() =>
                                                         openModalReply(
+                                                          superReply.id
+                                                        )
+                                                      }
+                                                    />
+                                                  ) : null}
+
+                                                  {superReply.accountName !==
+                                                    username &&
+                                                  reply.status === "REPORTED" &&
+                                                  comment.status ===
+                                                    "DELETED" ? (
+                                                    <AiFillFlag
+                                                      style={{
+                                                        color: "red",
+                                                        cursor: "pointer",
+                                                      }}
+                                                      onClick={() =>
+                                                        openReportReply(
                                                           superReply.id
                                                         )
                                                       }
@@ -786,6 +939,21 @@ const BlogDetail = () => {
                                                                   {superReplySmall.comment ||
                                                                     "No content"}
                                                                 </p>
+                                                                {superReplySmall.accountName !==
+                                                                  username &&
+                                                                superReplySmall.status ===
+                                                                  "REPORTED" ? (
+                                                                  <p
+                                                                    style={{
+                                                                      color:
+                                                                        "red",
+                                                                    }}
+                                                                  >
+                                                                    This comment
+                                                                    has been
+                                                                    reported
+                                                                  </p>
+                                                                ) : null}
                                                                 {/* Nút Reply cho reply */}
                                                                 {superReplySmall.accountName ===
                                                                 username ? (
@@ -797,6 +965,27 @@ const BlogDetail = () => {
                                                                     className="icon-delete-reply ms-auto"
                                                                     onClick={() =>
                                                                       openModalReply(
+                                                                        superReplySmall.id
+                                                                      )
+                                                                    }
+                                                                  />
+                                                                ) : null}
+
+                                                                {superReplySmall.accountName !==
+                                                                  username &&
+                                                                reply.status ===
+                                                                  "REPORTED" &&
+                                                                comment.status ===
+                                                                  "DELETED" ? (
+                                                                  <AiFillFlag
+                                                                    style={{
+                                                                      color:
+                                                                        "red",
+                                                                      cursor:
+                                                                        "pointer",
+                                                                    }}
+                                                                    onClick={() =>
+                                                                      openReportReply(
                                                                         superReplySmall.id
                                                                       )
                                                                     }
@@ -848,6 +1037,7 @@ const BlogDetail = () => {
               </Pagination>
             </div>
 
+            {/* Popup delete reply start */}
             {popupDeleteReply &&
               ReactDOM.createPortal(
                 <>
@@ -964,6 +1154,53 @@ const BlogDetail = () => {
                         color: "#555",
                       }}
                     />
+                  </div>
+                </>,
+                document.body
+              )}
+
+            {/* Popup delete reply success start */}
+            {popupDeleteReplySuccess &&
+              ReactDOM.createPortal(
+                <>
+                  <div
+                    style={{
+                      position: "fixed",
+                      top: "0",
+                      left: "0",
+                      width: "100vw",
+                      height: "100vh",
+                      backgroundColor: "rgba(87, 87, 87, 0.5)",
+                      backdropFilter: "blur(0.05em)",
+                      zIndex: "999",
+                    }}
+                  ></div>
+
+                  <div
+                    style={{
+                      position: "fixed",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      backgroundColor: "white",
+                      borderRadius: "8px",
+                      padding: "25px",
+                      width: "400px",
+                      boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+                      zIndex: "1000",
+                      textAlign: "center",
+                    }}
+                  >
+                    <h3
+                      style={{
+                        padding: "10px",
+                        color: "green",
+                        fontWeight: "bold",
+                        fontSize: "1.15em",
+                      }}
+                    >
+                      ✅ Comment deleted successfully
+                    </h3>
                   </div>
                 </>,
                 document.body
@@ -1090,7 +1327,391 @@ const BlogDetail = () => {
                 </>,
                 document.body
               )}
-            {/* Popup delete end */}
+
+            {/* Popup delete success start */}
+            {popupDeleteSuccess &&
+              ReactDOM.createPortal(
+                <>
+                  <div
+                    style={{
+                      position: "fixed",
+                      top: "0",
+                      left: "0",
+                      width: "100vw",
+                      height: "100vh",
+                      backgroundColor: "rgba(87, 87, 87, 0.5)",
+                      backdropFilter: "blur(0.05em)",
+                      zIndex: "999",
+                    }}
+                  ></div>
+
+                  <div
+                    style={{
+                      position: "fixed",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      backgroundColor: "white",
+                      borderRadius: "8px",
+                      padding: "25px",
+                      width: "400px",
+                      boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+                      zIndex: "1000",
+                      textAlign: "center",
+                    }}
+                  >
+                    <h3
+                      style={{
+                        padding: "10px",
+                        color: "green",
+                        fontWeight: "bold",
+                        fontSize: "1.15em",
+                      }}
+                    >
+                      ✅ Comment deleted successfully
+                    </h3>
+                  </div>
+                </>,
+                document.body
+              )}
+
+            {/* Popup report reply start */}
+            {popupReportReply &&
+              ReactDOM.createPortal(
+                <>
+                  <div
+                    style={{
+                      position: "fixed",
+                      top: "0",
+                      left: "0",
+                      width: "100vw",
+                      height: "100vh",
+                      backgroundColor: "rgba(87, 87, 87, 0.5)",
+                      backdropFilter: "blur(0.05em)",
+                      zIndex: "999",
+                    }}
+                    onClick={cancelReportReply}
+                  ></div>
+
+                  <div
+                    style={{
+                      position: "fixed",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      backgroundColor: "white",
+                      borderRadius: "8px",
+                      padding: "25px",
+                      width: "400px",
+                      boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+                      zIndex: "1000",
+                      textAlign: "center",
+                    }}
+                  >
+                    <h3
+                      style={{
+                        marginBottom: "20px",
+                        color: "#333",
+                        fontWeight: "bold",
+                        fontSize: "1.15em",
+                      }}
+                    >
+                      Confirm Report Comment
+                    </h3>
+                    <p
+                      style={{
+                        marginTop: "-10px",
+                        color: "#555",
+                        fontSize: "0.9em",
+                      }}
+                    >
+                      Are you sure you want to report this comment?
+                    </p>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        gap: "10px",
+                        marginTop: "15px",
+                      }}
+                    >
+                      <button
+                        onClick={() => reportReply(selectedIdReportReply)}
+                        style={{
+                          flex: "1",
+                          padding: "5px",
+                          backgroundColor: "#d32f2f",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "5px",
+                          cursor: "pointer",
+                          fontWeight: "bold",
+                          fontSize: "0.8em",
+                        }}
+                        onMouseEnter={(e) =>
+                          (e.target.style.backgroundColor = "#c62828")
+                        }
+                        onMouseLeave={(e) =>
+                          (e.target.style.backgroundColor = "#d32f2f")
+                        }
+                      >
+                        Yes
+                      </button>
+                      <button
+                        onClick={cancelReportReply}
+                        style={{
+                          flex: "1",
+                          padding: "10px",
+                          backgroundColor: "#1976d2",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "5px",
+                          cursor: "pointer",
+                          fontWeight: "bold",
+                          fontSize: "0.9em",
+                        }}
+                        onMouseEnter={(e) =>
+                          (e.target.style.backgroundColor = "#1565c0")
+                        }
+                        onMouseLeave={(e) =>
+                          (e.target.style.backgroundColor = "#1976d2")
+                        }
+                      >
+                        No
+                      </button>
+                    </div>
+                    {}
+                    <IoCloseSharp
+                      className="ic-close"
+                      onClick={cancelReportReply}
+                      style={{
+                        position: "absolute",
+                        top: "10px",
+                        right: "10px",
+                        cursor: "pointer",
+                        color: "#555",
+                      }}
+                    />
+                  </div>
+                </>,
+                document.body
+              )}
+
+            {/* Popup report reply success start */}
+            {popupReportReplySuccess &&
+              ReactDOM.createPortal(
+                <>
+                  <div
+                    style={{
+                      position: "fixed",
+                      top: "0",
+                      left: "0",
+                      width: "100vw",
+                      height: "100vh",
+                      backgroundColor: "rgba(87, 87, 87, 0.5)",
+                      backdropFilter: "blur(0.05em)",
+                      zIndex: "999",
+                    }}
+                  ></div>
+
+                  <div
+                    style={{
+                      position: "fixed",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      backgroundColor: "white",
+                      borderRadius: "8px",
+                      padding: "25px",
+                      width: "400px",
+                      boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+                      zIndex: "1000",
+                      textAlign: "center",
+                    }}
+                  >
+                    <h3
+                      style={{
+                        padding: "10px",
+                        color: "green",
+                        fontWeight: "bold",
+                        fontSize: "1.15em",
+                      }}
+                    >
+                      ✅ Comment reported successfully
+                    </h3>
+                  </div>
+                </>,
+                document.body
+              )}
+
+            {/* Popup report start */}
+            {popupReport &&
+              ReactDOM.createPortal(
+                <>
+                  <div
+                    style={{
+                      position: "fixed",
+                      top: 0,
+                      left: 0,
+                      width: "100vw",
+                      height: "100vh",
+                      backgroundColor: "rgba(0, 0, 0, 0.2)",
+                      backdropFilter: "blur(0.05em)",
+                      WebkitBackdropFilter: "blur(6px)",
+                      zIndex: 999,
+                    }}
+                    onClick={cancelReport}
+                  ></div>
+
+                  <div
+                    style={{
+                      position: "fixed",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      backgroundColor: "white",
+                      borderRadius: "8px",
+                      padding: "25px",
+                      width: "400px",
+                      boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+                      zIndex: 1000,
+                      textAlign: "center",
+                    }}
+                  >
+                    <h3
+                      style={{
+                        marginBottom: "20px",
+                        color: "#333",
+                        fontWeight: "bold",
+                        fontSize: "1.15em",
+                      }}
+                    >
+                      Confirm Report Comment
+                    </h3>
+                    <p
+                      style={{
+                        marginTop: "-10px",
+                        color: "#555",
+                        fontSize: "0.9em",
+                      }}
+                    >
+                      Are you sure you want to report this comment?
+                    </p>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        gap: "10px",
+                        marginTop: "15px",
+                      }}
+                    >
+                      <button
+                        onClick={() => reportComment(selectedIdReport)}
+                        style={{
+                          flex: "1",
+                          padding: "5px",
+                          backgroundColor: "#d32f2f",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "5px",
+                          cursor: "pointer",
+                          fontWeight: "bold",
+                          fontSize: "0.8em",
+                        }}
+                        onMouseEnter={(e) =>
+                          (e.target.style.backgroundColor = "#c62828")
+                        }
+                        onMouseLeave={(e) =>
+                          (e.target.style.backgroundColor = "#d32f2f")
+                        }
+                      >
+                        Yes
+                      </button>
+                      <button
+                        onClick={cancelReport}
+                        style={{
+                          flex: "1",
+                          padding: "10px",
+                          backgroundColor: "#1976d2",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "5px",
+                          cursor: "pointer",
+                          fontWeight: "bold",
+                          fontSize: "0.9em",
+                        }}
+                        onMouseEnter={(e) =>
+                          (e.target.style.backgroundColor = "#1565c0")
+                        }
+                        onMouseLeave={(e) =>
+                          (e.target.style.backgroundColor = "#1976d2")
+                        }
+                      >
+                        No
+                      </button>
+                    </div>
+                    <IoCloseSharp
+                      className="ic-close"
+                      onClick={cancelReport}
+                      style={{
+                        position: "absolute",
+                        top: "10px",
+                        right: "10px",
+                        cursor: "pointer",
+                        color: "#555",
+                      }}
+                    />
+                  </div>
+                </>,
+                document.body
+              )}
+
+            {/* Popup report success start */}
+            {popupReportSuccess &&
+              ReactDOM.createPortal(
+                <>
+                  <div
+                    style={{
+                      position: "fixed",
+                      top: "0",
+                      left: "0",
+                      width: "100vw",
+                      height: "100vh",
+                      backgroundColor: "rgba(87, 87, 87, 0.5)",
+                      backdropFilter: "blur(0.05em)",
+                      zIndex: "999",
+                    }}
+                  ></div>
+
+                  <div
+                    style={{
+                      position: "fixed",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      backgroundColor: "white",
+                      borderRadius: "8px",
+                      padding: "25px",
+                      width: "400px",
+                      boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+                      zIndex: "1000",
+                      textAlign: "center",
+                    }}
+                  >
+                    <h3
+                      style={{
+                        padding: "10px",
+                        color: "green",
+                        fontWeight: "bold",
+                        fontSize: "1.15em",
+                      }}
+                    >
+                      ✅ Comment reported successfully
+                    </h3>
+                  </div>
+                </>,
+                document.body
+              )}
           </div>
         </div>
         {/* Comment end */}

@@ -419,7 +419,9 @@ export const Order = () => {
                   {/* Name start */}
                   <div className="form-group">
                     <label htmlFor="name">
-                      <strong className="input-name">Customer name :</strong>
+                      <strong className="input-name">
+                        Customer name <span style={{ color: "red" }}>*</span> :
+                      </strong>
                     </label>
                     <input
                       type="text"
@@ -442,7 +444,9 @@ export const Order = () => {
                   {/* Email start */}
                   <div className="form-group mt-4">
                     <label htmlFor="email">
-                      <strong className="input-name">Email address :</strong>
+                      <strong className="input-name">
+                        Email address <span style={{ color: "red" }}>*</span> :
+                      </strong>
                     </label>
                     <input
                       type="email"
@@ -458,7 +462,9 @@ export const Order = () => {
                   {/* Phone number start */}
                   <div className="form-group mt-4">
                     <label htmlFor="phoneNumber">
-                      <strong className="input-name">Phone number :</strong>
+                      <strong className="input-name">
+                        Phone number <span style={{ color: "red" }}>*</span> :
+                      </strong>
                     </label>
                     <input
                       type="text"
@@ -480,7 +486,9 @@ export const Order = () => {
                   {/* Shipping Address start */}
                   <div className="form-group mt-4">
                     <label htmlFor="deliveryAddress">
-                      <strong className="input-name">Address :</strong>
+                      <strong className="input-name">
+                        Address <span style={{ color: "red" }}>*</span> :
+                      </strong>
                     </label>
                     <input
                       type="text"

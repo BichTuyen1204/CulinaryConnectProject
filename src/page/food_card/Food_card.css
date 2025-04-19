@@ -8,7 +8,6 @@
   stroke: #4caf50;
   stroke-miterlimit: 10;
   box-shadow: inset 0px 0px 0px #4caf50;
-  animation: scaleIn 2.5s ease-in-out forwards;
 }
 
 .checkmark__circle {
@@ -127,7 +126,8 @@
   background-color: #fff;
   box-sizing: border-box;
   width: 125px;
-  height: 230px;
+  height: 330px;
+  overflow: "hidden";
   display: flex;
   flex-direction: column;
   justify-content: space-between;
