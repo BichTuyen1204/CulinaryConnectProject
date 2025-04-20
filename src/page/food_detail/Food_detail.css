@@ -501,6 +501,15 @@ ol {
 }
 /* Responsive */
 @media (max-width: 800px) {
+  .category-product {
+    font-size: 0.8em;
+  }
+  .article-product p {
+    margin-top: 3px !important;
+  }
+  .big {
+    margin-left: 25px;
+  }
   .productDetail-content {
     padding: 0px !important;
   }
@@ -591,5 +600,12 @@ ol {
   }
   .detail-icon {
     font-size: 1rem;
+  }
+}
+
+@media (max-width: 335px) {
+  .information-product,
+  .article-product p {
+    font-size: 1.1em !important;
   }
 }

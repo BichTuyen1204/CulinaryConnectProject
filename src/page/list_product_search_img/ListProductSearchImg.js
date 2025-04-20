@@ -129,34 +129,34 @@ export const ListProductSearchImg = () => {
   }, []);
 
   return (
-    <div className="menu-container col-12">
-      <div className="bg-white px-4 pt-1 pb-4">
-        <p className="my-3">The image you uploaded:</p>
+    <div className="menu-container container-fluid py-3">
+      <div className="bg-white px-3 px-md-4 py-3 rounded shadow-sm">
+        <p className="fs-5 fw-semibold mb-3">The image you uploaded:</p>
+
         {uploadedImage ? (
           <div className="d-flex flex-column flex-md-row align-items-start">
             {predictedProduct && (
-              <div className="prediction-info p-3 border rounded me-md-4 mb-3 mb-md-0">
-                <p className="mb-1">
+              <div className="prediction-info p-3 border rounded me-md-4 mb-3 mb-md-0 w-100 w-md-50 bg-light">
+                <p className="mb-1 fs-6">
                   <strong>Detected:</strong> {predictedProduct.name}
-                </p>
-                <p className="mb-0">
-                  <strong>Confidence:</strong> {predictedProduct.confidence}%
                 </p>
               </div>
             )}
-            <div>
+            <div className="w-100 w-md-50">
               <img
                 src={uploadedImage}
                 alt="Uploaded"
-                className="uploaded-image"
+                className="img-fluid rounded shadow-sm"
+                style={{ maxHeight: "300px", objectFit: "contain" }}
               />
             </div>
           </div>
         ) : (
-          <p>There is no image</p>
+          <p className="text-muted">There is no image</p>
         )}
-        <p className="my-4 px-4">
-          Product found through image search :{" "}
+
+        <p className="my-4 px-2 fs-6">
+          Product found through image search:{" "}
           <strong style={{ fontStyle: "italic" }}>
             {filteredProducts.length}{" "}
             {filteredProducts.length === 1 || filteredProducts.length === 0
@@ -165,98 +165,112 @@ export const ListProductSearchImg = () => {
           </strong>
         </p>
 
-        <div className="menu-grid col-12">
+        <div className="row g-4">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
-              <div key={product.id} className="menu-card col-12">
-                {/* Hình ảnh sản phẩm */}
-                <div className="menu-image-wrapper col-5">
-                  {product.available_quantity > 0 ? (
-                    <Link to={`/food_detail/${product.id}`}>
+              <div key={product.id} className="col-12 col-md-6 col-lg-4">
+                <div className="border rounded p-3 h-100 d-flex flex-column shadow-sm">
+                  {/* Hình ảnh sản phẩm */}
+                  <div className="text-center mb-3">
+                    {product.available_quantity > 0 ? (
+                      <Link to={`/food_detail/${product.id}`}>
+                        <img
+                          src={product.image_url}
+                          alt={product.product_name || product.name}
+                          className="img-fluid rounded"
+                          style={{ maxHeight: "200px", objectFit: "cover" }}
+                        />
+                      </Link>
+                    ) : (
                       <img
                         src={product.image_url}
-                        alt={product.product_name || product.name}
-                        className="menu-image"
+                        alt={product.product_name}
+                        className="img-fluid rounded"
+                        style={{
+                          maxHeight: "200px",
+                          objectFit: "cover",
+                          cursor: "not-allowed",
+                          opacity: 0.5,
+                        }}
                       />
-                    </Link>
-                  ) : (
-                    <img
-                      src={product.image_url}
-                      alt={product.product_name}
-                      className="menu-image"
-                      style={{ cursor: "not-allowed", opacity: 0.5 }}
-                    />
-                  )}
-                </div>
+                    )}
+                  </div>
 
-                {/* Thông tin sản phẩm */}
-                <div className="menu-info col-7">
-                  <h5 className="menu-name">
-                    {product.product_name || product.name}
-                  </h5>
-                  <div className="line-bottom"></div>
-                  <p>
-                    <strong>Status:</strong>{" "}
-                    <span
-                      style={{
-                        color: product.available_quantity > 0 ? "green" : "red",
-                      }}
-                    >
-                      <strong className="text">
-                        {product.available_quantity > 0
-                          ? "IN STOCK"
-                          : "OUT OF STOCK"}
-                      </strong>
-                    </span>
-                  </p>
-
-                  <p className="d-flex">
-                    <strong>Type:</strong>
-                    <div className="text">
-                      {product.product_types === "SS"
-                        ? "Season"
-                        : product.product_types === "MEAT"
-                        ? "Meat"
-                        : product.product_types === "VEG"
-                        ? "Vegetables"
-                        : product.product_types === "MK"
-                        ? "Meal kit"
-                        : "Unknown"}
+                  {/* Thông tin sản phẩm */}
+                  <div className="flex-grow-1">
+                    <h5 className="fw-semibold mb-2">
+                      {product.product_name || product.name}
+                    </h5>
+                    <div className="mb-2">
+                      <strong>Status:</strong>{" "}
+                      <span
+                        style={{
+                          color:
+                            product.available_quantity > 0 ? "green" : "red",
+                        }}
+                      >
+                        <strong>
+                          {product.available_quantity > 0
+                            ? "IN STOCK"
+                            : "OUT OF STOCK"}
+                        </strong>
+                      </span>
                     </div>
-                  </p>
 
-                  <p className="d-flex">
-                    <strong>Available:</strong>{" "}
-                    <div className="text">{product.available_quantity}</div>
-                  </p>
-                  <p>
-                    <strong>Price: </strong>
-                    {product.sale_percent > 0 ? (
-                      <>
-                        <span className="original-cost">
+                    <p className="mb-1">
+                      <strong>Type:</strong>{" "}
+                      <span className="text-muted">
+                        {product.product_types === "SS"
+                          ? "Season"
+                          : product.product_types === "MEAT"
+                          ? "Meat"
+                          : product.product_types === "VEG"
+                          ? "Vegetables"
+                          : product.product_types === "MK"
+                          ? "Meal kit"
+                          : "Unknown"}
+                      </span>
+                    </p>
+
+                    <p className="mb-1">
+                      <strong>Available:</strong>{" "}
+                      <span className="text-muted">
+                        {product.available_quantity}
+                      </span>
+                    </p>
+
+                    <p className="mb-3">
+                      <strong>Price:</strong>{" "}
+                      {product.sale_percent > 0 ? (
+                        <>
+                          <span className="text-decoration-line-through text-muted me-2">
+                            ${product.price.toFixed(2)}
+                          </span>
+                          <span className="text-danger fw-bold me-2">
+                            $
+                            {(
+                              product.price -
+                              (product.price * product.sale_percent) / 100
+                            ).toFixed(2)}
+                          </span>
+                          <span className="text-success">
+                            (-{product.sale_percent}%)
+                          </span>
+                        </>
+                      ) : (
+                        <span className="fw-medium">
                           ${product.price.toFixed(2)}
                         </span>
-                        <span className="discount-cost">
-                          $
-                          {(
-                            product.price -
-                            (product.price * product.sale_percent) / 100
-                          ).toFixed(2)}{" "}
-                        </span>
-                        <span className="discount-rate">
-                          (-{product.sale_percent}%)
-                        </span>
-                      </>
-                    ) : (
-                      <span>${product.price.toFixed(2)}</span>
-                    )}
-                  </p>
+                      )}
+                    </p>
+                  </div>
 
+                  {/* Nút Add to Cart */}
                   {product.available_quantity > 0 && (
-                    <div className="menu-button-group">
+                    <div className="text-end mt-auto">
                       <button
                         onClick={() => handleAddToCart(product)}
-                        className="btn-add-menu"
+                        className="btn btn-success btn-sm px-3"
                       >
                         Add to Cart
                       </button>
@@ -266,12 +280,16 @@ export const ListProductSearchImg = () => {
               </div>
             ))
           ) : (
-            <p className="text-center">No matching products found.</p>
+            <p className="text-center text-muted fs-6">
+              No matching products found.
+            </p>
           )}
+
+          {/* Popup thêm vào giỏ */}
           {popupAdd && (
-            <div className="popup">
-              <div className="popup-content">
-                <h5>Added to cart !</h5>
+            <div className="popup position-fixed top-0 start-50 translate-middle-x mt-4 bg-success text-white py-2 px-4 rounded shadow">
+              <div className="popup-content text-center">
+                <strong>✅ Added to cart!</strong>
               </div>
             </div>
           )}

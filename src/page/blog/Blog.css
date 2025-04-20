@@ -37,6 +37,23 @@
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
+  height: 40px;
+}
+
+.custom-select__control {
+  height: 40px;
+}
+
+.custom-select__single-value {
+  margin-bottom: 12px;
+}
+
+.custom-select__indicator-separator {
+  height: 23px;
+}
+
+.custom-select__indicator {
+  margin-bottom: 12px;
 }
 
 .search-input-group input {
@@ -339,7 +356,7 @@
   }
 
   .custom-select__control {
-    min-height: 32px !important;
+    min-height: 15px !important;
     height: 40px !important;
   }
 
@@ -370,6 +387,18 @@
 }
 
 @media (max-width: 800px) {
+  .search-input-group {
+    height: 35px;
+  }
+  .custom-select__control {
+    height: 35px !important;
+  }
+  .custom-select__single-value {
+    margin-bottom: 14px;
+  }
+  .custom-select__indicator-separator {
+    height: 18px !important;
+  }
   .choose {
     margin-left: -50px;
   }
@@ -429,12 +458,24 @@
 }
 
 @media (max-width: 600px) {
+  .custom-select__single-value {
+    margin-bottom: 27px;
+  }
+  .custom-select__indicator-separator {
+    height: 13px !important;
+  }
+  .custom-select__indicator svg {
+    margin-bottom: 12px;
+    height: 15px !important;
+    width: 15px !important;
+  }
   .choose {
     margin-left: -60px;
   }
   .custom-select__control {
+    font-size: 0.8em;
     width: 100px;
-    height: 32px !important;
+    height: 28px !important;
     margin-top: 5px;
   }
   .search-input-group select {
@@ -447,7 +488,7 @@
     padding: 0px;
   }
   .search-input-group input {
-    height: 32px;
+    height: 28px;
     margin-top: 5px;
     font-size: 0.7em;
   }
@@ -504,13 +545,38 @@
 }
 
 @media (max-width: 480px) {
+  .search-input-group input {
+    height: 24px;
+    font-size: 0.6em;
+    border-radius: 4px;
+  }
+  .custom-select__single-value {
+    margin-bottom: 25px;
+    font-size: 0.85em;
+    width: 95px !important;
+  }
+  .custom-select__indicator-separator {
+    height: 13px !important;
+    margin-top: 5px !important;
+  }
+  .custom-select__indicator svg {
+    margin-top: 3px;
+    height: 13px !important;
+    width: 13px !important;
+  }
   .choose {
-    margin-left: -80px;
+    margin-left: -45px;
     font-size: 0.7em;
   }
+  .custom-select__value-container {
+    padding: 0px 4px !important;
+  }
+  .custom-select__indicator {
+    padding: 3px !important;
+  }
   .custom-select__control {
-    width: 100px;
-    height: 32px !important;
+    width: 70px;
+    height: 24px !important;
     margin-top: 5px;
   }
   .header-blog {
@@ -566,6 +632,9 @@
     font-size: 0.6em;
     margin-top: 5px;
   }
+  .custom-select__menu {
+    font-size: 0.5em !important;
+  }
 }
 
 @media (max-width: 410px) {
@@ -575,59 +644,38 @@
 }
 
 @media (max-width: 400px) {
-  .custom-select__single-value,
-  .custom-select__indicator {
-    margin-bottom: 5px;
-  }
-  .custom-select__indicators {
-    padding: 0 4px !important;
-  }
-
-  .custom-select__dropdown-indicator {
-    font-size: 14px !important;
-    padding: 0 !important;
-    width: 16px;
-    height: 16px;
-  }
-
-  .choose {
-    margin-left: -40px;
-    font-size: 0.6em;
-  }
-  .custom-select__control {
-    width: 80px;
-    height: 32px !important;
-    margin-top: 5px;
-  }
-}
-
-@media (max-width: 350px) {
-  .custom-select__single-value,
-  .custom-select__indicator {
-    margin-bottom: 5px;
-  }
-  .custom-select__indicators {
-    padding: 0 4px !important;
-  }
-
-  .custom-select__dropdown-indicator {
-    font-size: 10px !important;
-    padding: 0 !important;
-    margin-top: 2px;
-    width: 10px;
-    height: 16px;
-  }
-
-  .custom-select__control{
-    width: 65px;
-  }
-
   .choose {
     margin-left: -30px;
     font-size: 0.6em;
   }
-  .custom-pagination-blog {
-   
+  .custom-select__control {
+    margin-top: 5px;
+  }
+  .search-input-group input {
+    font-size: 0.5em !important;
+  }
+}
+
+@media (max-width: 350px) {
+  .custom-select__indicator-separator {
+    height: 12px !important;
+    margin-top: 5px !important;
+  }
+  .custom-select__indicator svg {
+    margin-top: 3px;
+    height: 10px !important;
+    width: 10px !important;
+  }
+  .custom-select__single-value {
+    margin-bottom: 20px;
+    font-size: 0.8em;
+    width: 90px !important;
+  }
+  .custom-select__control {
+    width: 60px !important;
+  }
+  .custom-select__menu {
+    font-size: 0.4em !important;
   }
 }
 

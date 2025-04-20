@@ -70,16 +70,39 @@ const Blog = () => {
   };
 
   useEffect(() => {
+    if (searchType === "desc" && searchTerm.trim() !== "") {
+      fetchDescriptionBlogs();
+    }
+  }, [searchTerm, page]);
+
+  const fetchDescriptionBlogs = async () => {
+    try {
+      const response = await BlogService.searchDescriptionBlog(
+        page,
+        pageSize,
+        searchTerm
+      );
+      setBlogs(response?.content || []);
+      setTotalPages(response?.totalPage || 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (error) {
+      console.error("Error fetching description blogs:", error);
+    }
+  };
+
+  useEffect(() => {
     const fetchBlogs = async () => {
       if (!jwtToken) {
         navigate("/sign_in");
         return;
       }
-
       try {
+        console.log("🔍 SearchTerm:", searchTerm);
+        console.log("🔍 SearchType:", searchType);
         if (searchTerm.trim() !== "") {
           if (searchType === "name") {
             const response = await BlogService.getSearchBlog(searchTerm);
+            console.log("✅ NAME Result:", response);
             setBlogs(
               Array.isArray(response) ? response : response.content || []
             );
@@ -90,18 +113,33 @@ const Blog = () => {
               pageSize,
               searchTerm
             );
-            setBlogs(response.content || []);
-            setTotalPages(response.totalPage || 1);
+            setBlogs(
+              Array.isArray(response) ? response : response?.content || []
+            );
+            setTotalPages(response?.totalPage || 1);
           }
         } else {
-          getAllBlog(page, pageSize);
+          console.log("📦 Fetch all blogs");
+          const response = await BlogService.getAllBlog(page, pageSize);
+          setBlogs(response?.content || []);
+          setTotalPages(response?.totalPage || 1);
         }
-      } catch (error) {}
-      fetchBookmarkedBlogs();
+
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+      } catch (err) {
+        console.error("❌ Fetch error:", err);
+      }
+
+      try {
+        const bookmarks = await BlogService.getAllBookMark(jwtToken);
+        setBookmarkedBlogs(bookmarks);
+      } catch (err) {
+        console.error("❌ Bookmark error:", err);
+      }
     };
 
     fetchBlogs();
-  }, [searchTerm, searchType, page]);
+  }, [searchTerm, searchType, page, jwtToken]);
 
   // Check if a blog is bookmarked
   const isBookmarked = (blogId) => {
@@ -142,24 +180,12 @@ const Blog = () => {
   };
 
   // Filter blogs based on search term and saved dishes toggle
-  const filteredBlogs = (blogs || [])
-    .filter(
-      (post) =>
-        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.description.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .filter((post) => {
-      if (showSavedDishes) {
-        return isBookmarked(post.id);
-      }
-      return true;
-    });
-
-  // Fetch blogs and bookmarked blogs on component mount or dependency change
-  useEffect(() => {
-    getAllBlog(page, pageSize);
-    fetchBookmarkedBlogs();
-  }, [jwtToken, tags, page]);
+  const filteredBlogs = (blogs || []).filter((post) => {
+    if (showSavedDishes) {
+      return isBookmarked(post.id);
+    }
+    return true;
+  });
 
   // Handle page change for pagination
   const handlePageChange = (pageNumber) => {
@@ -167,10 +193,6 @@ const Blog = () => {
       setPage(pageNumber);
     }
   };
-
-  useEffect(() => {
-    getAllBlog(page, pageSize);
-  }, [searchTerm, tags, page]);
 
   return (
     <motion.div
@@ -213,7 +235,7 @@ const Blog = () => {
                   menu: (base) => ({
                     ...base,
                     width: "100%",
-                    fontSize: "0.7em"
+                    fontSize: "0.7em",
                   }),
                   menuPortal: (base) => ({ ...base, zIndex: 9999 }),
                 }}
@@ -233,6 +255,7 @@ const Blog = () => {
         <div className="container-bg col-12 mt-3">
           <main className="main-content col-12">
             <div className="blog-list col-12">
+              {console.log("👀 Filtered Blogs:", filteredBlogs)}
               {filteredBlogs.length === 0 ? (
                 <p className="text-center">No blogs to display.</p>
               ) : (
@@ -240,9 +263,7 @@ const Blog = () => {
                   <div key={post.id} className="blog-post">
                     <Link to={`/blog_detail/${post.id}`}>
                       <img
-                        src={
-                          searchType === "desc" ? post.thumbnail : post.imageUrl
-                        }
+                        src={post.thumbnail || post.imageUrl || "/fallback.jpg"}
                         className="post-image"
                       />
                     </Link>

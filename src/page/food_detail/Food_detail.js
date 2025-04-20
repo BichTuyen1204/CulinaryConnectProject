@@ -84,7 +84,7 @@ export const Food_detail = () => {
             <Link to="/food_card">
               <MdArrowBackIosNew className="icon-back-pro-detail" />
             </Link>
-            <p className="mx-5">
+            <p className="mx-5 category-product">
               <strong>{product.productTypes}</strong>
             </p>
           </div>
@@ -153,7 +153,7 @@ export const Food_detail = () => {
                 </div>
 
                 <div className="productDetail-content col-5">
-                  <div className="">
+                  <div className="big">
                     <div className="main-product-details">
                       <div className="border-bottom">
                         <h3 className="title-of-product-detail">
@@ -339,7 +339,7 @@ export const Food_detail = () => {
 
                 {/* Information about product */}
                 <div className="mt-5">
-                  <p style={{ fontSize: "1.2em" }}>
+                  <p className="information-product" style={{ fontSize: "1.2em" }}>
                     <strong>INFORMATION OF PRODUCT</strong>
                   </p>
                   <p style={{ fontSize: "0.9em" }} className="px-4">
@@ -401,27 +401,26 @@ export const Food_detail = () => {
                   </div>
 
                   {/* article */}
-                  <div>
+                  <div className="article-product">
                     <p
                       style={{
                         textTransform: "uppercase",
-                        wordSpacing: "10px",
+                        wordSpacing: "5px",
                         fontSize: "1.2em",
                         marginTop: "55px",
+                        fontWeight: "600"
                       }}
                     >
-                      <strong className="d-flex">
-                        ARTICLE ABOUT{" "}
-                        <span
-                          style={{
-                            color: "tomato",
-                            wordSpacing: "5px",
-                            marginLeft: "8px",
-                          }}
-                        >
-                          {product.name}
-                        </span>
-                      </strong>
+                      ARTICLE ABOUT
+                      <span
+                        style={{
+                          color: "tomato",
+                          wordSpacing: "5px",
+                          marginLeft: "8px",
+                        }}
+                      >
+                        {product.name}
+                      </span>
                     </p>
 
                     <ReactMarkdown>{product.articleMD}</ReactMarkdown>
