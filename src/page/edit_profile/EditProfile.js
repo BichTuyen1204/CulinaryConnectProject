@@ -372,6 +372,7 @@ export const EditProfile = () => {
         setUpdateInfo({
           username: response.username || "",
           phone: response.phone || "",
+          profileName: response.profileName || "",
           address: response.address || "",
           description: response.profileDescription || "",
         });
@@ -393,8 +394,7 @@ export const EditProfile = () => {
     e.preventDefault();
     NameBlur();
     PhoneBlur();
-
-    if (usernameError || phoneError || !username || !phone) {
+    if (usernameError || phoneError) {
       return;
     }
     const isChanged =
@@ -407,6 +407,7 @@ export const EditProfile = () => {
       return;
     }
     try {
+      console.log("updateInfo gửi đi:", updateInfo);
       await AccountService.updateInfo(updateInfo);
       setOriginalInfo(updateInfo);
       setFormSubmitted(true);

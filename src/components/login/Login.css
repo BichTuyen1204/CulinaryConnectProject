@@ -118,11 +118,11 @@
   color: #666;
 }
 
-.button-login button {
-  width: 85%;
+.button-login-form button {
+  width: 100%;
 }
 
-.button-login .login-button:hover {
+.button-login-form .login-button:hover {
   background-color: rgb(255, 148, 129);
 }
 
@@ -146,13 +146,15 @@
   margin-top: -25px;
 }
 
+.text-or-login {
+  text-align: center !important;
+  background-color: white;
+  border: 1px solid white;
+  pointer-events: none;
+}
+
 .button-google {
-  background: linear-gradient(
-    55deg,
-    #4285f4,
-    #34a853,
-    tomato
-  ); /* Các màu của Google */
+  background: linear-gradient(55deg, #4285f4, #34a853, tomato);
   color: white;
   border: none;
   padding: 10px 20px;
@@ -162,16 +164,38 @@
 }
 
 .button-google:hover {
-  background: linear-gradient(
-    55deg,
-    tomato,
-    #0a9f49,
-    #4285f4
-  ); /* Thay đổi màu khi hover */
+  background: linear-gradient(55deg, tomato, #0a9f49, #4285f4);
   color: #fff;
 }
 
-@media (max-width:1024px) {
+@media (max-width: 1200px) {
+  .login-title h2 {
+    font-size: 1.8em;
+  }
+  .login-container {
+    gap: 15px;
+  }
+  .login-input {
+    gap: 15px;
+  }
+  .login-input input {
+    height: 35px;
+  }
+  .forgot-pass {
+    margin-top: -5px !important;
+  }
+  .part-end-login p {
+    margin-top: 15px;
+  }
+  .login-container .login-form-button {
+    padding: 8px;
+  }
+  .button-google {
+    padding: 8px !important;
+  }
+}
+
+@media (max-width: 1024px) {
   .part-end-login p {
     margin-top: 20px;
     margin-bottom: -10px !important;
@@ -186,11 +210,12 @@
   .login-input input {
     margin-top: -10px;
   }
-  .button-login button {
+  .button-login-form button {
     font-size: 0.9em !important;
   }
   .text-or-login {
     text-align: center !important;
+    padding: 5px 15px !important;
   }
 }
 
@@ -204,6 +229,16 @@
   .login-container {
     width: max(20vw, 250px) !important;
     font-size: 0.6em !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .login-input {
+    gap: 25px;
+  }
+  .login-input input {
+    margin-top: 0px !important;
+    height: 32px;
   }
 }
 

@@ -163,38 +163,93 @@ const Cart = () => {
   }, [items]);
 
   return (
-    <div className="cart bg-white px-4 py-4">
+    <div
+      className="cart bg-white px-4 py-4"
+      style={{ margin: "0 auto", overflowX: "auto" }}
+    >
       <div className="cart-items">
-        <div className="cart-items-titile">
-          <p>Image</p>
-          <p className="title">Title</p>
-          <p className="mx-4">Price</p>
-          <p className="quantity">Quantity</p>
-          <p>Total</p>
-          <p>Remove</p>
+        <div
+          className="cart-items-titile"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            fontWeight: "bold",
+            fontSize: "1em",
+            borderBottom: "1px solid #ddd",
+            padding: "10px 0",
+            color: "#333",
+          }}
+        >
+          <p style={{ flex: 1, textAlign: "center", fontSize: "0.85em" }}>
+            Image
+          </p>
+          <p style={{ flex: 2, textAlign: "left", fontSize: "0.85em" }}>
+            Title
+          </p>
+          <p style={{ flex: 1, textAlign: "center", fontSize: "0.85em" }}>
+            Price
+          </p>
+          <p style={{ flex: 1, textAlign: "center", fontSize: "0.85em" }}>
+            Quantity
+          </p>
+          <p style={{ flex: 1, textAlign: "center", fontSize: "0.85em" }}>
+            Total
+          </p>
+          <p style={{ flex: 1, textAlign: "center", fontSize: "0.85em" }}>
+            Remove
+          </p>
         </div>
-        <hr className="mt-2" />
+        <hr className="mt-1" />
+
         {cartItems.length > 0 ? (
           cartItems.map((item) => (
             <div key={item.product.id}>
-              <div className="cart-items-titile cart-items-item">
-                <div className="mb-3">
+              <div
+                className="cart-items-titile cart-items-item"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "10px 0",
+                  gap: "10px",
+                }}
+              >
+                {/* Image */}
+                <div style={{ flex: 1, textAlign: "center" }}>
                   <Link to={`/food_detail/${item.product.id}`}>
                     <img
                       src={item.product.imageUrl}
                       alt={item.product.productName}
+                      style={{
+                        maxWidth: "60px",
+                        maxHeight: "60px",
+                        borderRadius: "6px",
+                        objectFit: "contain",
+                      }}
                     />
                   </Link>
                 </div>
 
-                <p className="mb-4 title-info">{item.product.productName}</p>
-                <div className="mb-4">
+                {/* Title */}
+                <p className="mb-4 title-info" style={{ flex: 2 }}>
+                  {item.product.productName}
+                </p>
+
+                {/* Price */}
+                <div className="mb-4" style={{ flex: 1, textAlign: "center" }}>
                   {item.product.salePercent > 0 ? (
                     <>
-                      <span className="original-price">
+                      <span
+                        style={{
+                          textDecoration: "line-through",
+                          color: "#888",
+                          fontSize: "0.85em",
+                        }}
+                      >
                         ${item.product.price.toFixed(2)}
                       </span>{" "}
-                      <span className="discounted-price">
+                      <span style={{ color: "#e53935", fontWeight: "bold" }}>
                         $
                         {(
                           item.product.price -
@@ -207,33 +262,111 @@ const Cart = () => {
                   )}
                 </div>
 
-                <div className="d-flex input-quantity mb-4">
+                {/* Quantity */}
+                <div
+                  className="d-flex input-quantity mb-4"
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
+                >
+                  {/* Nút trừ */}
                   <button
-                    className="decrease-quantity"
                     onClick={() => decreaseQuantity(item.product.id)}
+                    style={{
+                      width: "20px",
+                      height: "30px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#fceaea", // đỏ nhạt ban đầu
+                      border: "1px solid #f44336", // viền đỏ
+                      borderRadius: "50%",
+                      fontWeight: "bold",
+                      fontSize: "0.8em",
+                      color: "#f44336", // chữ đỏ
+                      cursor: "pointer",
+                      transition: "all 0.2s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = "#f28b82";
+                      e.currentTarget.style.color = "white";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = "#fceaea";
+                      e.currentTarget.style.color = "#f44336";
+                    }}
+                    onMouseDown={(e) => {
+                      e.currentTarget.style.backgroundColor = "#d32f2f"; // nhấn giữ
+                    }}
+                    onMouseUp={(e) => {
+                      e.currentTarget.style.backgroundColor = "#f28b82"; // thả ra
+                    }}
                   >
-                    -
+                    −
                   </button>
+
+                  {/* Ô nhập số lượng */}
                   <input
                     value={
                       items.find((it) => it.product.id === item.product.id)
                         ?.amount || ""
                     }
                     onChange={(e) => handleQuantityChange(item.product.id, e)}
-                    onBlur={(e) => handleBlur(item.product.id, e)}
+                    onBlur={(e) => {
+                      handleBlur(item.product.id, e);
+                      e.currentTarget.style.border = "1px solid #ccc"; // reset về mặc định
+                    }}
+                    onFocus={(e) => {
+                      e.currentTarget.style.border = "1px solid tomato"; // border cam khi focus
+                    }}
                     min="1"
                     className="text-center input-change-quantity-cart bg-white"
+                    style={{
+                      width: "50px",
+                      height: "30px",
+                      textAlign: "center",
+                      border: "1px solid #ccc",
+                      borderRadius: "6px",
+                      padding: "6px",
+                      fontSize: "0.9em",
+                      transition: "border 0.2s ease",
+                    }}
                   />
+
+                  {/* Nút cộng */}
                   <button
-                    className="increase-quantity"
                     onClick={() => increaseQuantity(item.product.id)}
-                    style={{ color: "green" }}
+                    style={{
+                      width: "20px",
+                      height: "30px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#e8f5e9",
+                      border: "1px solid #4caf50",
+                      borderRadius: "50%",
+                      fontWeight: "bold",
+                      fontSize: "0.8rem",
+                      color: "#388e3c",
+                      cursor: "pointer",
+                      transition: "background-color 0.2s",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#c8e6c9")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#e8f5e9")
+                    }
                   >
                     +
                   </button>
                 </div>
 
-                <p className="mb-4">
+                {/* Total */}
+                <p className="mb-4" style={{ flex: 1, textAlign: "center" }}>
                   $
                   {item.product.salePercent > 0
                     ? (
@@ -249,36 +382,151 @@ const Cart = () => {
                           ?.amount || 1)
                       ).toFixed(2)}
                 </p>
-                <p className="ic_close">
+
+                {/* Remove */}
+                <p
+                  className="ic_close"
+                  style={{ flex: 1, textAlign: "center" }}
+                >
                   <IoClose
                     className="ic_remove mb-4"
+                    style={{
+                      fontSize: "1.2em",
+                      cursor: "pointer",
+                      color: "#888",
+                      transition: "color 0.2s ease",
+                    }}
                     onClick={() => openModal(item.product.id)}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = "#f44336"; // đỏ khi hover
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = "#888"; // trở lại xám
+                    }}
+                    onMouseDown={(e) => {
+                      e.currentTarget.style.color = "#d32f2f"; // đỏ đậm khi nhấn
+                    }}
+                    onMouseUp={(e) => {
+                      e.currentTarget.style.color = "#f44336"; // quay lại đỏ hover
+                    }}
                   />
                 </p>
 
+                {/* Popup xác nhận xoá */}
                 {popupDelete && productIdToDelete === item.product.id && (
-                  <div className="popup-delete">
-                    <div className="popup-content-delete">
-                      <h5 className="info-delete">
+                  <div
+                    className="popup-delete"
+                    style={{
+                      position: "fixed",
+                      top: 0,
+                      left: 0,
+                      width: "100vw",
+                      height: "100vh",
+                      backgroundColor: "rgba(0, 0, 0, 0.4)",
+                      zIndex: 999,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                    onClick={cancelDelete}
+                  >
+                    <div
+                      className="popup-content-delete"
+                      style={{
+                        backgroundColor: "#fff",
+                        padding: "30px 10px",
+                        borderRadius: "12px",
+                        textAlign: "center",
+                        position: "relative",
+                        maxWidth: "360px",
+                        width: "80%",
+                        boxShadow: "0 8px 24px rgba(0,0,0,0.25)",
+                        zIndex: 1000,
+                      }}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <h4
+                        style={{
+                          marginBottom: "10px",
+                          fontWeight: "450",
+                          color: "#333",
+                          fontSize: "1.1rem",
+                        }}
+                      >
                         Are you sure you want to delete this product?
-                      </h5>
-                      <div className="popup-buttons-delete">
+                      </h4>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          gap: "15px",
+                          marginTop: "20px",
+                        }}
+                      >
                         <button
-                          className="button-delete"
                           onClick={deleteProduct}
+                          style={{
+                            backgroundColor: "#d32f2f",
+                            color: "white",
+                            padding: "8px 18px",
+                            border: "none",
+                            borderRadius: "5px",
+                            fontWeight: "bold",
+                            cursor: "pointer",
+                            transition: "background-color 0.3s",
+                            fontSize: "0.8em",
+                          }}
+                          onMouseEnter={(e) =>
+                            (e.currentTarget.style.backgroundColor = "#b71c1c")
+                          }
+                          onMouseLeave={(e) =>
+                            (e.currentTarget.style.backgroundColor = "#d32f2f")
+                          }
                         >
                           Yes
                         </button>
                         <button
-                          className="button-cancel"
                           onClick={cancelDelete}
+                          style={{
+                            backgroundColor: "#1976d2",
+                            color: "white",
+                            padding: "5px 18px",
+                            border: "none",
+                            borderRadius: "5px",
+                            fontWeight: "bold",
+                            cursor: "pointer",
+                            transition: "background-color 0.3s",
+                            fontSize: "0.8em",
+                          }}
+                          onMouseEnter={(e) =>
+                            (e.currentTarget.style.backgroundColor = "#1565c0")
+                          }
+                          onMouseLeave={(e) =>
+                            (e.currentTarget.style.backgroundColor = "#1976d2")
+                          }
                         >
                           No
                         </button>
                       </div>
+
                       <IoClose
-                        className="popup-close-delete"
                         onClick={cancelDelete}
+                        style={{
+                          position: "absolute",
+                          top: "12px",
+                          right: "12px",
+                          fontSize: "1.1rem",
+                          cursor: "pointer",
+                          color: "#666",
+                          transition: "color 0.2s ease",
+                        }}
+                        onMouseEnter={(e) =>
+                          (e.currentTarget.style.color = "#000")
+                        }
+                        onMouseLeave={(e) =>
+                          (e.currentTarget.style.color = "#666")
+                        }
                       />
                     </div>
                   </div>
@@ -292,32 +540,75 @@ const Cart = () => {
         )}
       </div>
 
-      <div className="part-total">
-        <div className="total-quantity">
-          <p>
-            <strong>Total quantity: </strong> {totalQuantity}
-          </p>
-        </div>
-        <div className="total-price-first">
-          <p>
-            <strong>Total price: </strong> $ {totalPrice}
-          </p>
-        </div>
+      {/* Tổng kết */}
+      <div
+        className="part-total"
+        style={{
+          textAlign: "right",
+          marginTop: "20px",
+          fontSize: "0.95em",
+          fontWeight: "500",
+        }}
+      >
+        <p>
+          <strong>Total quantity: </strong> {totalQuantity}
+        </p>
+        <p>
+          <strong>Total price: </strong> $ {totalPrice}
+        </p>
       </div>
 
-      <div className="button-in-cart">
+      {/* Nút điều hướng */}
+      <div
+        className="button-in-cart"
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginTop: "30px",
+          gap: "15px",
+          flexWrap: "wrap",
+        }}
+      >
         <Link to="/food_card">
           <div className="button-go-back">
-            <button>Go to menu</button>
-          </div>
-        </Link>
-        {products.length > 0 ? (
-          <div className="button-go-checkout">
-            <button>
-              <Link to="/order">Check out</Link>
+            <button
+              style={{
+                padding: "10px 20px",
+                fontWeight: "500",
+                backgroundColor: "tomato",
+                color: "white",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+              }}
+            >
+              Go to menu
             </button>
           </div>
-        ) : null}
+        </Link>
+
+        {products.length > 0 && (
+          <div className="button-go-checkout">
+            <button
+              style={{
+                padding: "10px 20px",
+                fontWeight: "500",
+                backgroundColor: "tomato",
+                color: "white",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+              }}
+            >
+              <Link
+                to="/order"
+                style={{ color: "white", textDecoration: "none" }}
+              >
+                Check out
+              </Link>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
