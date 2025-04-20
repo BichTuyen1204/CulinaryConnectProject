@@ -202,7 +202,7 @@ const Login = ({
           </div>
 
           {/* Button login */}
-          <div className="button-login">
+          <div className="button-login-form">
             {formSubmitted && !loginError && (
               <p
                 style={{
@@ -222,7 +222,7 @@ const Login = ({
             >
               Login
             </button>
-            <div className="text-center p-2 text-or-login">OR</div>
+            <button className="text-or-login">OR</button>
             <button
               className="button-google"
               type="button"

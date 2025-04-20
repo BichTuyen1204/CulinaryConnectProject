@@ -233,6 +233,7 @@ export const Food_card = () => {
                     style={{
                       borderRadius: "12px",
                       transition: "transform 0.2s ease, box-shadow 0.2s ease",
+                      position: "relative",
                     }}
                   >
                     <Link
@@ -292,15 +293,26 @@ export const Food_card = () => {
                             <span>${Number(product.price).toFixed(1)}</span>
                           )}
                         </p>
-                        {product.salePercent > 0 && (
-                          <p className="mb-0 small">
-                            <strong>Sale: </strong>
-                            {product.salePercent}%
-                          </p>
-                        )}
+                        <p className="mb-0 small" style={{ minHeight: "18px" }}>
+                          {product.salePercent > 0 ? (
+                            <>
+                              <strong>Sale: </strong>
+                              {product.salePercent}%
+                            </>
+                          ) : (
+                            ""
+                          )}
+                        </p>
                       </div>
                     </Link>
-                    <div className="card-footer bg-white border-top-0 d-grid gap-2">
+                    <div
+                      className="card-footer bg-white border-top-0 d-grid gap-2"
+                      style={{
+                        bottom: "2px",
+                        left: "0",
+                        right: "0",
+                      }}
+                    >
                       {username ? (
                         <>
                           <button
@@ -321,6 +333,7 @@ export const Food_card = () => {
                               backgroundColor: "tomato",
                               color: "white",
                               fontSize: "0.7em",
+                              marginBottom: "5px",
                             }}
                             onClick={() => handleBuyNow(product)}
                             disabled={product.availableQuantity === 0}

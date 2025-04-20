@@ -107,10 +107,12 @@ class AccountService {
         throw new Error("No JWT token found. Please log in again.");
       }
       const response = await axios.post(
-        `${API_BASE_URL_2}/edit/profile`,
+        `https://culcon-user-be-30883260979.asia-east2.run.app/api/customer/edit/profile`,
         data,
         {
           headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
             Authorization: `Bearer ${jwtToken}`,
           },
         }

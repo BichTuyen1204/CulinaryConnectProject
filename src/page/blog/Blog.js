@@ -4,6 +4,7 @@ import BlogService from "../../api/BlogService";
 import { Link, useNavigate } from "react-router-dom";
 import { Pagination } from "react-bootstrap";
 import { motion } from "framer-motion";
+import Select from "react-select";
 
 const Blog = () => {
   const [jwtToken, setJwtToken] = useState(sessionStorage.getItem("jwtToken"));
@@ -192,16 +193,33 @@ const Blog = () => {
               value={searchTerm}
               onChange={handleSearch}
             />
-            <select
-              value={searchType}
-              onChange={(e) => setSearchType(e.target.value)}
-              className="search-dropdown"
-            >
-              <div className="option-choose-blog">
-                <option value="name">Name</option>
-                <option value="desc">Description</option>
-              </div>
-            </select>
+
+            <div className="choose">
+              <Select
+                value={{
+                  value: searchType,
+                  label: searchType === "name" ? "Name" : "Description",
+                }}
+                onChange={(selectedOption) =>
+                  setSearchType(selectedOption.value)
+                }
+                options={[
+                  { value: "name", label: "Name" },
+                  { value: "desc", label: "Description" },
+                ]}
+                classNamePrefix="custom-select"
+                menuPortalTarget={document.body}
+                styles={{
+                  menu: (base) => ({
+                    ...base,
+                    width: "100%",
+                    fontSize: "0.7em"
+                  }),
+                  menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                }}
+                isSearchable={false}
+              />
+            </div>
           </div>
 
           <div className="saved-items">

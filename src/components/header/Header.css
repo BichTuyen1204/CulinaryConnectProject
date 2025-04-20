@@ -79,7 +79,7 @@
 
 @media (max-width: 1025px) {
   .header {
-    margin-top: -25px !important;
+    margin-top: 10px !important;
   }
   .header-contents {
     width: 320px;
@@ -107,7 +107,7 @@
 
 @media (max-width: 841px) {
   .header {
-    margin-top: -20px !important;
+    margin-top: 20px !important;
   }
   .header h2 {
     font-size: 2.1em;
@@ -131,7 +131,7 @@
 
 @media (max-width: 769px) {
   .header {
-    margin-top: -30px !important;
+    margin-top: 10px !important;
   }
   .header h2 {
     font-size: 1.8em;
@@ -148,17 +148,22 @@
 
 @media (max-width: 660px) {
   .header {
-    margin-top: -23px !important;
+    margin-top: 10px !important;
   }
   .header h2 {
-    font-size: 1.6em;
+    font-size: 1.5em !important;
+  }
+  .header p {
+    font-size: 0.9em;
+  }
+
+  .header button {
+    padding: 4px 17px;
+    font-size: 0.8em;
   }
 }
 
 @media (max-width: 620px) {
-  .header {
-    margin-top: -23px !important;
-  }
   .header h2 {
     font-size: 1.4em;
   }
@@ -178,11 +183,8 @@
 }
 
 @media (max-width: 575px) {
-  .header {
-    margin-top: -35px !important;
-  }
   .header h2 {
-    font-size: 1.2em;
+    font-size: 1.2em !important;
   }
   .header p {
     font-size: 0.8em;
@@ -194,7 +196,7 @@
 }
 @media (max-width: 520px) {
   .header h2 {
-    font-size: 0.9em !important;
+    font-size: 1.1em !important;
     padding-top: 5px;
   }
 }
@@ -226,11 +228,8 @@
 }
 
 @media (max-width: 481px) {
-  .header {
-    margin-top: -60px !important;
-  }
   .header h2 {
-    font-size: 1.1em;
+    font-size: 0.9em !important;
   }
   .header p {
     font-size: 0.6em;
@@ -243,11 +242,10 @@
 
 @media (max-width: 430px) {
   .header h2 {
-    font-size: 1.05em;
+    margin-bottom: -5px !important;
   }
-
   .header p {
-    font-size: 0.65em;
+    font-size: 0.65em !important;
   }
 
   .header button {
@@ -259,6 +257,7 @@
 @media (max-width: 420px) {
   .header h2 {
     font-size: 0.9em;
+    margin-bottom: 0px !important;
   }
   .header p {
     font-size: 0.5em;
@@ -271,7 +270,6 @@
 
 @media (max-width: 417px) {
   .header {
-    margin-top: -35px !important;
     height: 30vw;
   }
   .header h2 {
