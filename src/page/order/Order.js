@@ -675,7 +675,7 @@ export const Order = () => {
                   </h4>
                 </div>
 
-                <div>
+                <div className="button-coupon-choose">
                   <button
                     onClick={openPopupCoupon}
                     style={{
@@ -715,11 +715,9 @@ export const Order = () => {
                       onChange={PayChange}
                     />
                     <label class="form-check-label" for="cod">
-                      <h5 className="payment col-12">
-                        <p style={{ fontSize: "0.9em", fontWeight: "500" }}>
-                          COD (Cash on Delivery)
-                        </p>
-                      </h5>
+                      <p style={{ fontSize: "0.9em", fontWeight: "500" }}>
+                        COD (Cash on Delivery)
+                      </p>
                     </label>
                   </div>
                   {/* COD end */}
@@ -741,22 +739,6 @@ export const Order = () => {
                       </p>
                     </label>
                   </div>
-                  {/* <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      name="paymentMethod"
-                      id="VNPAY"
-                      value="VNPAY"
-                      checked={pay === "VNPAY"}
-                      onChange={PayChange}
-                    />
-                    <label class="form-check-label" for="banking">
-                      <p style={{ fontSize: "0.85em", fontWeight: "500" }}>
-                        VNPAY
-                      </p>
-                    </label>
-                  </div> */}
                   {/* Banking end */}
                 </div>
               </div>

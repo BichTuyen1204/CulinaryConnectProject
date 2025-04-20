@@ -47,9 +47,9 @@
 
 .product-image {
   width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 8px;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
 }
 
 .product-info h3 {
@@ -160,78 +160,94 @@
   cursor: pointer;
 }
 
-@media (max-width: 800px) {
-  .product-image {
-    width: 70px;
-    height: 70px;
-  }
-  .font-size-for-text {
-    font-size: 0.8em;
-  }
-  .product-info {
-    text-align: start;
-  }
-  .product-info h3 {
-    font-size: 1.1em;
-  }
-  .shipping-info h2 {
-    font-size: 0.9em;
-  }
-  .status-ship {
-    align-items: center;
-    margin-top: -85px;
-    margin-left: -25px;
-  }
-  .status-ship p {
-    font-size: 0.9em;
-  }
-  .cancel-button {
-    padding: 5px 15px;
-    font-size: 0.8em;
-  }
-}
-
-@media (max-width: 600px) {
+@media (max-width: 801px) {
   .shipping-info {
-    padding-left: 0px !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
   }
-  .font-size-for-text {
-    font-size: 0.7em;
-  }
-  .product-info h3 {
-    font-size: 1em;
-  }
-  .shipping-info h2 {
-    font-size: 0.8em;
-  }
-  .status-ship {
-    margin-top: -78px;
-    margin-left: -15px;
-  }
-  .status-ship p {
-    font-size: 0.8em;
-  }
-  .cancel-button {
-    font-size: 0.7em;
-  }
-}
-
-@media (max-width: 480px) {
-  .shipping-info {
-    flex-direction: column;
-    align-items: stretch;
-    margin: auto;
-    padding-right: 0px !important;
-  }
-  .col-7, .col-5 {
+  .delivery-info {
     width: 100%;
   }
-  .status-ship {
-    margin-top: 10px;
-    padding-left: 15px;
+  .shipping-info h2 {
+    font-size: 1.2em;
   }
-  .product-image {
-    width: 50px;
-    height: 50px;
+  .status-ship{
+    margin-top: 25px;
+  }
+  .product-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .order-detail {
+    margin-top: 5px !important;
+  }
+  .product-info {
+    margin-top: 10px;
+  }
+  .total-price-summary {
+    font-size: 0.9em !important;
+  }
+  .coupon-summary {
+    font-size: 0.7em !important;
+  }
+  .mark-as-delivered {
+    padding: 10px !important;
+    font-size: 0.8em !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .shipping-info h2 {
+    font-size: 1em;
+  }
+  .shipping-info p {
+    font-size: 0.75em;
+  }
+  .status-ship{
+    margin-top: 25px;
+  }
+  .product-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .order-detail {
+    margin-top: 25px !important;
+  }
+  .product-info {
+    margin-top: 0px !important;
+  }
+  .product-info h3 {
+    font-size: 0.9em;
+  }
+  .product-info p {
+    font-size: 0.7em !important;
+  }
+  .mark-as-delivered {
+    padding: 7px 10px !important;
+    font-size: 0.7em !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .shipping-info h2 {
+    font-size: 0.9em;
+  }
+  .shipping-info p {
+    font-size: 0.65em;
+  }
+  .status-ship{
+    margin-top: 15px;
+  }
+  .order-detail {
+    margin-top: 15px !important;
+  }
+  .product-info h3 {
+    font-size: 0.8em;
+    padding: 0px 45px !important;
+    text-align: center;
+  }
+  .product-info p {
+    font-size: 0.65em !important;
+    text-align: center;
   }
 }

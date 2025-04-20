@@ -196,7 +196,7 @@ const Cart = () => {
           <p style={{ flex: 1, textAlign: "center", fontSize: "0.85em" }}>
             Total
           </p>
-          <p style={{ flex: 1, textAlign: "center", fontSize: "0.85em" }}>
+          <p style={{ flex: 1, textAlign: "left", fontSize: "0.85em" }}>
             Remove
           </p>
         </div>
@@ -440,7 +440,7 @@ const Cart = () => {
                         borderRadius: "12px",
                         textAlign: "center",
                         position: "relative",
-                        maxWidth: "360px",
+                        maxWidth: "400px",
                         width: "80%",
                         boxShadow: "0 8px 24px rgba(0,0,0,0.25)",
                         zIndex: 1000,
@@ -450,7 +450,7 @@ const Cart = () => {
                       <h4
                         style={{
                           marginBottom: "10px",
-                          fontWeight: "450",
+                          fontWeight: "500",
                           color: "#333",
                           fontSize: "1.1rem",
                         }}

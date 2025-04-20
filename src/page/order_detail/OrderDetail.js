@@ -36,7 +36,6 @@ const OrderDetail = () => {
     }
     try {
       const response = await OrderService.shippedOrder(id);
-
       if (response && response.status === "DELIVERED") {
         setPopupDelivered(false);
         setPopupDeliveredSuccess(true);
@@ -46,11 +45,6 @@ const OrderDetail = () => {
         }, 4000);
       }
     } catch (error) {}
-  };
-
-  // Hàm hủy xóa
-  const closeDeliveredSucess = () => {
-    setPopupDeliveredSuccess(false);
   };
 
   // Call order detail
@@ -93,7 +87,7 @@ const OrderDetail = () => {
       setTimeout(() => {
         navigate("/invoice", { state: { jwtToken } });
       }, 2000);
-      return "Delete successful", id;
+      return;
     } catch (error) {}
   };
 
@@ -131,8 +125,8 @@ const OrderDetail = () => {
 
       {/* Shipping Info */}
       {orderData.summary && (
-        <div className="shipping-info d-flex col-12 px-5 mt-4">
-          <div className="col-7">
+        <div className="shipping-info flex-wrap d-flex col-12 px-5 mt-4">
+          <div className="col-7 delivery-info">
             <h2>Delivery Information</h2>
             <div className="mt-2 font-size-for-text">
               <p>
@@ -206,9 +200,6 @@ const OrderDetail = () => {
                 <p className="mb-0" style={{ fontSize: "0.85em" }}>
                   Quantity: <strong>{product.quantity}</strong>
                 </p>
-                <p className="mb-0" style={{ fontSize: "0.85em" }}>
-                  Total price: <strong></strong>
-                </p>
               </div>
             </div>
           ))}
@@ -218,10 +209,13 @@ const OrderDetail = () => {
       <div className="summary-price">
         {orderData.summary && (
           <div className="coupon">
-            <p style={{ fontSize: "0.9em" }}>
+            <p className="coupon-summary" style={{ fontSize: "0.9em" }}>
               <strong>Coupon:</strong> {orderData.summary.coupon.salePercent} %
             </p>
-            <p className="mt-1 d-flex" style={{ fontSize: "1.2em" }}>
+            <p
+              className="mt-1 d-flex total-price-summary"
+              style={{ fontSize: "1.2em" }}
+            >
               <strong>Total Price:</strong>
               <p style={{ color: "red", fontWeight: "600", marginLeft: "5px" }}>
                 ${orderData.summary.totalPrice}
@@ -235,7 +229,7 @@ const OrderDetail = () => {
       {orderData.summary && orderData.summary.status === "SHIPPED" && (
         <div className="actions d-flex justify-content-start mt-3">
           <button
-            className="btn"
+            className="btn mark-as-delivered"
             style={{ backgroundColor: "tomato", color: "white" }}
             onClick={() => openDelivered(orderData.summary.id)}
           >
@@ -259,35 +253,168 @@ const OrderDetail = () => {
           )}
 
           {popupDelete && (
-            <div className="popup">
-              <div className="popup-content">
-                <h5 className="info-delete">
+            <>
+              <div
+                style={{
+                  position: "fixed",
+                  top: "0",
+                  left: "0",
+                  width: "100vw",
+                  height: "100vh",
+                  backgroundColor: "rgba(87, 87, 87, 0.5)",
+                  backdropFilter: "blur(0.05em)",
+                  zIndex: "999",
+                }}
+                onClick={cancelDelete}
+              ></div>
+
+              {/* Popup nội dung */}
+              <div
+                style={{
+                  position: "fixed",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  backgroundColor: "white",
+                  borderRadius: "8px",
+                  padding: "20px",
+                  width: "80%",
+                  maxWidth: "400px",
+                  height: "150px",
+                  boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+                  zIndex: "1000",
+                  textAlign: "center",
+                }}
+              >
+                <h3
+                  style={{
+                    marginBottom: "10px",
+                    color: "#333",
+                    fontWeight: "bold",
+                    fontSize: "0.9em",
+                  }}
+                >
+                  Confirm Cancel Order
+                </h3>
+                <p
+                  style={{
+                    marginBottom: "45px",
+                    color: "#555",
+                    fontSize: "0.8em",
+                  }}
+                >
                   Are you sure you want to cancel this order?
-                </h5>
-                <div className="popup-buttons">
+                </p>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    gap: "10px",
+                    marginTop: "25px",
+                  }}
+                >
                   <button
-                    className="button-delete"
                     onClick={() => deleteOrderDetail(orderData.summary.id)}
+                    style={{
+                      flex: "1",
+                      padding: "10px",
+                      backgroundColor: "#d32f2f",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "5px",
+                      cursor: "pointer",
+                      fontWeight: "bold",
+                      fontSize: "0.7em",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.target.style.backgroundColor = "#c62828")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.target.style.backgroundColor = "#d32f2f")
+                    }
                   >
-                    Delete
+                    Yes
                   </button>
-                  <button className="button-cancel" onClick={cancelDelete}>
-                    Cancel
+                  <button
+                    onClick={cancelDelete}
+                    style={{
+                      flex: "1",
+                      padding: "10px",
+                      backgroundColor: "#1976d2",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "5px",
+                      cursor: "pointer",
+                      fontWeight: "bold",
+                      fontSize: "0.7em",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.target.style.backgroundColor = "#1565c0")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.target.style.backgroundColor = "#1976d2")
+                    }
+                  >
+                    No
                   </button>
                 </div>
-                <IoClose className="popup-close" onClick={cancelDelete} />
+                <IoClose
+                  onClick={cancelDelete}
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "10px",
+                    cursor: "pointer",
+                    color: "#555",
+                  }}
+                />
               </div>
-            </div>
+            </>
           )}
 
           {popupDeleteSuccessful && (
-            <div className="popup">
-              <div className="popup-content">
-                <h5 className="info-delete" style={{ color: "green" }}>
+            <>
+              {/* Popup nội dung */}
+              <div
+                style={{
+                  position: "fixed",
+                  top: "0",
+                  left: "0",
+                  width: "100%",
+                  height: "100vh",
+                  backgroundColor: "rgba(87, 87, 87, 0.5)",
+                  backdropFilter: "blur(0.05em)",
+                  zIndex: "999",
+                }}
+              ></div>
+              <div
+                style={{
+                  position: "fixed",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  backgroundColor: "white",
+                  borderRadius: "8px",
+                  padding: "20px",
+                  width: "80%",
+                  maxWidth: "400px",
+                  boxShadow: "0 4px 10px rgba(0, 0, 0, 0.9)",
+                  zIndex: "1000",
+                  textAlign: "center",
+                }}
+              >
+                <p
+                  style={{
+                    marginBottom: "20px",
+                    color: "green",
+                    fontSize: "0.9em",
+                    fontWeight: "500",
+                  }}
+                >
                   You have successfully canceled this order.
-                </h5>
+                </p>
               </div>
-            </div>
+            </>
           )}
 
           {popupDelivered && (
@@ -316,7 +443,8 @@ const OrderDetail = () => {
                   backgroundColor: "white",
                   borderRadius: "8px",
                   padding: "20px",
-                  width: "400px",
+                  width: "80%",
+                  maxWidth: "400px",
                   height: "150px",
                   boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
                   zIndex: "1000",
@@ -355,7 +483,7 @@ const OrderDetail = () => {
                     style={{
                       flex: "1",
                       padding: "10px",
-                      backgroundColor: "#d32f2f",
+                      backgroundColor: "green",
                       color: "white",
                       border: "none",
                       borderRadius: "5px",
@@ -364,10 +492,10 @@ const OrderDetail = () => {
                       fontSize: "0.7em",
                     }}
                     onMouseEnter={(e) =>
-                      (e.target.style.backgroundColor = "#c62828")
+                      (e.target.style.backgroundColor = "green")
                     }
                     onMouseLeave={(e) =>
-                      (e.target.style.backgroundColor = "#d32f2f")
+                      (e.target.style.backgroundColor = "green")
                     }
                   >
                     Yes
@@ -417,7 +545,7 @@ const OrderDetail = () => {
                   position: "fixed",
                   top: "0",
                   left: "0",
-                  width: "100vw",
+                  width: "100%",
                   height: "100vh",
                   backgroundColor: "rgba(87, 87, 87, 0.5)",
                   backdropFilter: "blur(0.05em)",
@@ -433,7 +561,8 @@ const OrderDetail = () => {
                   backgroundColor: "white",
                   borderRadius: "8px",
                   padding: "20px",
-                  width: "400px",
+                  width: "80%",
+                  maxWidth: "400px",
                   boxShadow: "0 4px 10px rgba(0, 0, 0, 0.9)",
                   zIndex: "1000",
                   textAlign: "center",
@@ -445,21 +574,10 @@ const OrderDetail = () => {
                     color: "green",
                     fontSize: "0.9em",
                     fontWeight: "500",
-                    marginTop: "20px",
                   }}
                 >
                   You have successfully received the order.
                 </p>
-                <IoClose
-                  onClick={closeDeliveredSucess}
-                  style={{
-                    position: "absolute",
-                    top: "10px",
-                    right: "10px",
-                    cursor: "pointer",
-                    color: "#555",
-                  }}
-                />
               </div>
             </>
           )}
