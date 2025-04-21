@@ -1,3 +1,7 @@
+p {
+  margin-bottom: 0px !important;
+}
+
 .website-name {
   color: tomato;
   font-weight: 600;
@@ -488,7 +492,11 @@
 
 @media (max-width: 1024px) {
   .checkout-form-wrapper {
-    padding: 3px 5px !important;
+    padding: 15px !important;
+  }
+  .button-coupon-choose button {
+    padding: 8px 10px !important;
+    font-size: 0.7em !important;
   }
   .website-name {
     font-size: 0.8em;
@@ -569,12 +577,11 @@
   .offset-1 {
     margin-top: 0px;
     margin-right: 0px;
+    margin-left: 45px;
   }
   .name-product-order,
   .price-checkout {
     font-size: 0.8em;
-  }
-  .name-product-order {
   }
   .container-xxl {
     padding: 0;
@@ -647,7 +654,8 @@
     width: 100%;
   }
   .checkout-form-wrapper {
-    padding: 3px 5px !important;
+    padding: 30px !important;
+    width: 100% !important;
   }
   .website-name {
     font-size: 0.8em;
@@ -727,12 +735,15 @@
   }
   .offset-1 {
     margin: 15px auto;
+    width: 100%;
+  }
+  .button-order button {
+    margin-left: auto;
+    display: block;
   }
   .name-product-order,
   .price-checkout {
     font-size: 0.8em;
-  }
-  .name-product-order {
   }
   .container-xxl {
     padding: 0;
@@ -950,333 +961,17 @@
   }
 }
 
-@media (max-width: 480px) {
-  .general-order {
-    flex-direction: column;
-    align-items: stretch;
-    margin: auto;
-  }
-  .col-5,
-  .col-6 {
-    width: 100%;
-  }
-  .checkout-form-wrapper {
-    padding: 3px 5px !important;
-  }
-  .website-name {
-    font-size: 0.7em;
-    width: 100% !important;
-    margin-top: 5px;
-    margin-bottom: -9px !important;
-  }
-  .font-size-top {
-    font-size: 0.7em;
-  }
-  .ic_edit_order {
-    width: 15px;
-    height: 15px;
-  }
-  .info-customer {
-    padding: 0px 5px;
-    margin-top: -15px;
-  }
-  .form-group label,
-  .form-group-note label {
-    font-size: 0.7em;
-  }
-  .form-group {
-    margin-top: 5px !important;
-  }
-  .form-control {
-    font-size: 0.6em;
-    padding: 0px 5px;
-  }
-  .form-group-note {
-    margin-top: 5px !important;
-  }
-  .form-group-note .form-control-note {
-    font-size: 0.7em !important;
-    padding: 2px 5px;
-    height: auto;
-  }
-  .form-group-note textarea::placeholder {
-    font-size: 0.9em !important;
-  }
-  .form-group-note textarea {
-    font-size: 0.7em !important;
-  }
-  .form-group-voucher {
-    margin-top: 0 !important;
-  }
-  .form-group-voucher input::placeholder {
-    font-size: 0.9em !important;
-    color: #888;
-  }
-  .form-group-voucher input {
-    font-size: 0.7em !important;
-    height: auto;
-  }
-  .form-group-voucher .form-control-coupon {
-    padding: 0px 5px;
-    margin-top: 0px !important;
-  }
-  .form-group-voucher button {
-    font-size: 0.5em;
-  }
-  .payment-method {
-    margin-top: 15px !important;
-  }
-  .payment-method h5 {
-    font-size: 0.8em;
-  }
-  .form-check {
-    font-size: 0.7em;
-  }
-  .button-go-to-cart button {
-    padding: 2px 5px;
-    font-size: 0.7em;
-  }
-  .button-go-to-cart {
-    margin-top: -25px;
-  }
-  .offset-1 {
-    margin: 15px auto;
-  }
-  .name-product-order,
-  .price-checkout {
-    font-size: 0.7em;
-  }
-  .name-product-order {
-  }
-  .container-xxl {
-    padding: 0;
-  }
-  .check-out-img {
-    height: auto;
-  }
-  .checkout-badge {
-    width: 15px;
-    height: 15px;
-  }
-  .text-quantity {
-    font-size: 0.7em;
-    width: 15px !important;
-    height: 15px;
-    margin-top: -4px;
-    margin-left: -7px;
-  }
-  .name-product {
-    margin-top: 0;
-    font-size: 0.8em;
-    width: 3rem;
-    padding-top: 2px !important;
-  }
-  .total-price-one {
-    font-size: 0.8em;
-    padding: 0px 0px !important;
-  }
-  .price-of-product {
-    font-size: 0.8em;
-    padding-top: 0 !important;
-    margin: 2px 0px !important;
-    width: 100%;
-  }
-  .total-price-end h4,
-  .total-price-end h5 {
-    font-size: 0.7em;
-  }
-  .total-coupon h4,
-  .total-coupon h5 {
-    font-size: 0.7em;
-  }
-  .total-amount h4,
-  .total-amount h5 {
-    font-size: 0.7em;
-  }
-  .total-amount {
-    padding: 0px 3px !important;
-  }
-  .button-order {
-    margin: 8px 0px !important;
-  }
-  .button-order button {
-    font-size: 0.7em;
-    padding: 5px 10px !important;
-  }
-  .checkout-wrapper {
-    padding: 0px 0px !important;
-  }
-}
-
-@media (max-width: 320px) {
-  .general-order {
-    flex-direction: column;
-    align-items: stretch;
-    margin: auto;
-  }
-  .col-5,
-  .col-6 {
-    width: 100%;
-  }
-  .checkout-form-wrapper {
-    padding: 3px 5px !important;
-  }
-  .website-name {
-    font-size: 0.7em;
-    width: 100% !important;
-    margin-top: 5px;
-    margin-bottom: -9px !important;
-  }
-  .font-size-top {
-    font-size: 0.7em;
-  }
-  .ic_edit_order {
-    width: 15px;
-    height: 15px;
-  }
-  .info-customer {
-    padding: 0px 5px;
-    margin-top: -15px;
-  }
-  .form-group label,
-  .form-group-note label {
-    font-size: 0.7em;
-  }
-  .form-group {
-    margin-top: 5px !important;
-  }
-  .form-control {
-    font-size: 0.6em;
-    padding: 0px 5px;
-  }
-  .form-group-note {
-    margin-top: 5px !important;
-  }
-  .form-group-note .form-control-note {
-    font-size: 0.7em !important;
-    padding: 2px 5px;
-    height: auto;
-  }
-  .form-group-note textarea::placeholder {
-    font-size: 0.9em !important;
-  }
-  .form-group-note textarea {
-    font-size: 0.7em !important;
-  }
-  .form-group-voucher {
-    margin-top: 0 !important;
-  }
-  .form-group-voucher input::placeholder {
-    font-size: 0.9em !important;
-    color: #888;
-  }
-  .form-group-voucher input {
-    font-size: 0.7em !important;
-    height: auto;
-  }
-  .form-group-voucher .form-control-coupon {
-    padding: 0px 5px;
-    margin-top: 0px !important;
-  }
-  .form-group-voucher button {
-    font-size: 0.5em;
-  }
-  .payment-method {
-    margin-top: 15px !important;
-  }
-  .payment-method h5 {
-    font-size: 0.8em;
-  }
-  .form-check {
-    font-size: 0.7em;
-  }
-  .button-go-to-cart button {
-    padding: 2px 5px;
-    font-size: 0.7em;
-  }
-  .button-go-to-cart {
-    margin-top: -25px;
-  }
-  .offset-1 {
-    margin: 15px auto;
-  }
-  .name-product-order,
-  .price-checkout {
-    font-size: 0.7em;
-  }
-  .name-product-order {
-  }
-  .container-xxl {
-    padding: 0;
-  }
-  .check-out-img {
-    height: auto;
-  }
-  .checkout-badge {
-    width: 15px;
-    height: 15px;
-  }
-  .text-quantity {
-    font-size: 0.7em;
-    width: 15px !important;
-    height: 15px;
-    margin-top: -4px;
-    margin-left: -7px;
-  }
-  .name-product {
-    margin-top: 0;
-    font-size: 0.8em;
-    width: 3rem;
-    padding-top: 2px !important;
-  }
-  .total-price-one {
-    font-size: 0.8em;
-    padding: 0px 0px !important;
-  }
-  .price-of-product {
-    font-size: 0.8em;
-    padding-top: 0 !important;
-    margin: 2px 0px !important;
-    width: 100%;
-  }
-  .total-price-end h4,
-  .total-price-end h5 {
-    font-size: 0.7em;
-  }
-  .total-coupon h4,
-  .total-coupon h5 {
-    font-size: 0.7em;
-  }
-  .total-amount h4,
-  .total-amount h5 {
-    font-size: 0.7em;
-  }
-  .total-amount {
-    padding: 0px 3px !important;
-  }
-  .button-order {
-    margin: 8px 0px !important;
-  }
-  .button-order button {
-    font-size: 0.7em;
-    padding: 5px 10px !important;
-  }
-  .checkout-wrapper {
-    padding: 0px 0px !important;
-  }
-}
-
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Make sure it's on top of other content */
+  z-index: 1000;
 }
 
 .modal-content {

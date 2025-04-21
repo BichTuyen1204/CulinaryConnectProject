@@ -281,6 +281,12 @@
     font-weight: 500;
     padding: 4px 25px;
   }
+  .input-container{
+    margin-bottom: 5px;
+  }
+  .input-container p{
+    margin-top: 10px !important;
+  }
   .input-container p, .input-wrapper input{
     font-size: 0.7em;
   }

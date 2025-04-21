@@ -65,7 +65,7 @@ const AppContent = () => {
           <Breadcrumb />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="sign_in" element={<SignIn />} />
+            <Route path="sign_in" element={<SignIn openForgotPass={openForgotPass}/>} />
             <Route path="exploreMenu" element={<ExploreMenu />} />
             <Route path="cart" element={<Cart />} />
             <Route path="food_card" element={<Food_card />} />

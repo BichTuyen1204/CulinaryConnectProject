@@ -156,8 +156,8 @@
 }
 
 .popup-content-delete .info-delete {
-    font-weight: 500;
-    color: #333;
+  font-weight: 500;
+  color: #333;
 }
 
 .popup-buttons-delete {
@@ -189,7 +189,7 @@
 }
 
 .popup-buttons-delete .button-cancel:hover {
-    background-color: #696969;
+  background-color: #696969;
 }
 
 .popup-close-delete {
@@ -200,32 +200,46 @@
   cursor: pointer;
 }
 
-@media (max-width:431px) {
-  .quantity {
-    margin-left: 0px;
-    margin-right: 25px;
+@media (max-width: 630px) {
+  .btn-decrease,
+  .btn-increase {
+    display: none !important;
   }
-  .title {
-    margin-left: 50%;
+}
+
+@media (max-width: 545px) {
+  .cart-items-titile {
+    font-size: 0.8em !important;
+  }
+  .img-cart img {
+    width: 35px;
+    height: 35px;
   }
   .title-info {
-    padding-left: 5px;
+    font-size: 0.8em;
+  }
+  .price-cart {
+    font-size: 0.8em;
   }
   .input-change-quantity-cart {
-    width: 15px !important;
+    font-size: 0.7em !important;
+    width: 30px !important;
   }
-  .input-quantity{
-margin-right: 15px;  }
-.total-quantity{
-  font-size: 0.9em;
-  margin-top: -25px;
-}
-.total-price-first {
-  font-size: 0.9em;
-  margin-top: -25px;
-}
-.button-in-cart{
-  padding-top: 5px;
-  font-size: 0.9em;
-}
+  .total-price-small {
+    font-size: 0.7em;
+  }
+  .ic_remove {
+    font-size: 0.9em !important;
+  }
+  .part-total {
+    font-size: 0.6em !important;
+    padding-top: 0px !important
+  }
+  .button-go-back button, .button-go-checkout button{
+    padding: 7px 10px !important;
+    font-size: 0.55em;
+  }
+  .button-in-cart {
+    padding-top: 0px !important;
+  }
 }

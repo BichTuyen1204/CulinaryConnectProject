@@ -49,12 +49,6 @@ const Invoice = () => {
     CANCELLED: "CANCELLED",
   };
 
-  const paymentStatusMap = {
-    RECEIVED: "RECEIVED",
-    PENDING: "PENDING",
-    REFUNDED: "REFUNDED",
-  };
-
   const paymentMethodMap = {
     COD: "Cash on Delivery",
     PAYPAL: "PayPal",
@@ -64,19 +58,6 @@ const Invoice = () => {
 
   const getStatusColor = (status) => {
     return status === "CANCELLED" ? "red" : "green";
-  };
-
-  const getPaymentStatusColor = (paymentStatus) => {
-    switch (paymentStatus) {
-      case "RECEIVED":
-        return "green";
-      case "PENDING":
-        return "orange";
-      case "FAILED":
-        return "red";
-      default:
-        return "gray";
-    }
   };
 
   const getPaymentMethodColor = (paymentMethod) => {
@@ -395,6 +376,19 @@ const Invoice = () => {
                             Pay with PayPal
                           </button>
                         )}
+                        {order.paymentMethod === "PAYPAL" && (
+                          <p
+                            style={{
+                              fontWeight: "500",
+                              fontStyle: "italic",
+                              fontSize: "0.7em",
+                            }}
+                          >
+                            Please complete your payment within 1 hour of
+                            placing the order.
+                          </p>
+                        )}
+
                         {order.paymentMethod === "VNPAY" && (
                           <button
                             className="btn me-2"
@@ -417,22 +411,6 @@ const Invoice = () => {
                     $ {order.totalPrice.toLocaleString()}
                   </span>
                 </p>
-              </div>
-              <div className="note">
-                {!["SHIPPED", "DELIVERED", "CANCELLED"].includes(
-                  order.status
-                ) && (
-                  <p
-                    style={{
-                      fontWeight: "500",
-                      fontStyle: "italic",
-                      fontSize: "0.7em",
-                    }}
-                  >
-                    Please complete your payment within 1 hour of placing the
-                    order.
-                  </p>
-                )}
               </div>
             </div>
           </Link>

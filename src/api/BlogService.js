@@ -36,7 +36,7 @@ class BlogService {
   async searchDescriptionBlog(index, size, desc) {
     try {
       const response = await axios.post(
-        `${REACT_APP_BACKEND_API_ENDPOINT_SEARCH}/public/search/blog?prompt=Discover%20the%20history%2C%20nutritional%20value%2C%20and%20cultural&text_dist=0.8&index=${
+        `${REACT_APP_BACKEND_API_ENDPOINT_SEARCH}/public/search/blog?prompt=These%20cabbage%20rolls%20are%20stuffed%20with%20ground&text_dist=0.7&index=${
           index - 1
         }&size=${size}`,
         {

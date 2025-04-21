@@ -187,7 +187,7 @@ const Cart = () => {
           <p style={{ flex: 2, textAlign: "left", fontSize: "0.85em" }}>
             Title
           </p>
-          <p style={{ flex: 1, textAlign: "center", fontSize: "0.85em" }}>
+          <p style={{ flex: 1, textAlign: "left", fontSize: "0.85em" }}>
             Price
           </p>
           <p style={{ flex: 1, textAlign: "center", fontSize: "0.85em" }}>
@@ -196,7 +196,7 @@ const Cart = () => {
           <p style={{ flex: 1, textAlign: "center", fontSize: "0.85em" }}>
             Total
           </p>
-          <p style={{ flex: 1, textAlign: "center", fontSize: "0.85em" }}>
+          <p style={{ flex: 1, textAlign: "left", fontSize: "0.85em" }}>
             Remove
           </p>
         </div>
@@ -216,7 +216,7 @@ const Cart = () => {
                 }}
               >
                 {/* Image */}
-                <div style={{ flex: 1, textAlign: "center" }}>
+                <div className="img-cart" style={{ flex: 1, textAlign: "center" }}>
                   <Link to={`/food_detail/${item.product.id}`}>
                     <img
                       src={item.product.imageUrl}
@@ -237,7 +237,7 @@ const Cart = () => {
                 </p>
 
                 {/* Price */}
-                <div className="mb-4" style={{ flex: 1, textAlign: "center" }}>
+                <div className="mb-4 price-cart" style={{ flex: 1, textAlign: "center" }}>
                   {item.product.salePercent > 0 ? (
                     <>
                       <span
@@ -274,6 +274,7 @@ const Cart = () => {
                 >
                   {/* Nút trừ */}
                   <button
+                    className="btn-decrease"
                     onClick={() => decreaseQuantity(item.product.id)}
                     style={{
                       width: "20px",
@@ -281,12 +282,12 @@ const Cart = () => {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      backgroundColor: "#fceaea", // đỏ nhạt ban đầu
-                      border: "1px solid #f44336", // viền đỏ
+                      backgroundColor: "#fceaea",
+                      border: "1px solid #f44336",
                       borderRadius: "50%",
                       fontWeight: "bold",
                       fontSize: "0.8em",
-                      color: "#f44336", // chữ đỏ
+                      color: "#f44336",
                       cursor: "pointer",
                       transition: "all 0.2s ease",
                     }}
@@ -299,10 +300,10 @@ const Cart = () => {
                       e.currentTarget.style.color = "#f44336";
                     }}
                     onMouseDown={(e) => {
-                      e.currentTarget.style.backgroundColor = "#d32f2f"; // nhấn giữ
+                      e.currentTarget.style.backgroundColor = "#d32f2f";
                     }}
                     onMouseUp={(e) => {
-                      e.currentTarget.style.backgroundColor = "#f28b82"; // thả ra
+                      e.currentTarget.style.backgroundColor = "#f28b82";
                     }}
                   >
                     −
@@ -317,10 +318,10 @@ const Cart = () => {
                     onChange={(e) => handleQuantityChange(item.product.id, e)}
                     onBlur={(e) => {
                       handleBlur(item.product.id, e);
-                      e.currentTarget.style.border = "1px solid #ccc"; // reset về mặc định
+                      e.currentTarget.style.border = "1px solid #ccc";
                     }}
                     onFocus={(e) => {
-                      e.currentTarget.style.border = "1px solid tomato"; // border cam khi focus
+                      e.currentTarget.style.border = "1px solid tomato";
                     }}
                     min="1"
                     className="text-center input-change-quantity-cart bg-white"
@@ -338,6 +339,7 @@ const Cart = () => {
 
                   {/* Nút cộng */}
                   <button
+                    className="btn-increase"
                     onClick={() => increaseQuantity(item.product.id)}
                     style={{
                       width: "20px",
@@ -366,7 +368,7 @@ const Cart = () => {
                 </div>
 
                 {/* Total */}
-                <p className="mb-4" style={{ flex: 1, textAlign: "center" }}>
+                <p className="mb-4 total-price-small" style={{ flex: 1, textAlign: "center" }}>
                   $
                   {item.product.salePercent > 0
                     ? (
@@ -386,7 +388,7 @@ const Cart = () => {
                 {/* Remove */}
                 <p
                   className="ic_close"
-                  style={{ flex: 1, textAlign: "center" }}
+                  style={{ flex: 1, textAlign: "left" }}
                 >
                   <IoClose
                     className="ic_remove mb-4"
@@ -398,16 +400,16 @@ const Cart = () => {
                     }}
                     onClick={() => openModal(item.product.id)}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.color = "#f44336"; // đỏ khi hover
+                      e.currentTarget.style.color = "#f44336";
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.color = "#888"; // trở lại xám
+                      e.currentTarget.style.color = "#888";
                     }}
                     onMouseDown={(e) => {
-                      e.currentTarget.style.color = "#d32f2f"; // đỏ đậm khi nhấn
+                      e.currentTarget.style.color = "#d32f2f";
                     }}
                     onMouseUp={(e) => {
-                      e.currentTarget.style.color = "#f44336"; // quay lại đỏ hover
+                      e.currentTarget.style.color = "#f44336";
                     }}
                   />
                 </p>
@@ -438,7 +440,7 @@ const Cart = () => {
                         borderRadius: "12px",
                         textAlign: "center",
                         position: "relative",
-                        maxWidth: "360px",
+                        maxWidth: "400px",
                         width: "80%",
                         boxShadow: "0 8px 24px rgba(0,0,0,0.25)",
                         zIndex: 1000,
@@ -448,7 +450,7 @@ const Cart = () => {
                       <h4
                         style={{
                           marginBottom: "10px",
-                          fontWeight: "450",
+                          fontWeight: "500",
                           color: "#333",
                           fontSize: "1.1rem",
                         }}

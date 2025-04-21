@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 const REACT_APP_BACKEND_API_ENDPOINT =
   process.env.REACT_APP_BACKEND_API_ENDPOINT;
 
-const SignIn = () => {
+const SignIn = ({ openForgotPass }) => {
   const [username, setUserName] = useState("");
   const [userNameError, setUserNameError] = useState("");
   const [password, setPassword] = useState("");
@@ -17,7 +17,6 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [loginError, setLoginError] = useState("");
-  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
   const navigate = useNavigate();
 
@@ -183,8 +182,20 @@ const SignIn = () => {
           </div>
 
           {/* Forgot password */}
-          <div className="forgot-pass">
-            <p className="">Forgot password?</p>
+          <div className="forgot-pass mt-1">
+            <p
+              onClick={() => {
+                closeLogin(false);
+                openForgotPass();
+              }}
+              style={{
+                cursor: "pointer",
+                color: "blue",
+                textDecoration: "underline",
+              }}
+            >
+              Forgot password?
+            </p>
           </div>
 
           {/* Register */}
@@ -198,9 +209,17 @@ const SignIn = () => {
           </div>
 
           {/* Button login */}
-          <div className="button-login">
+          <div className="button-login-form">
             {formSubmitted && !loginError && (
-              <p style={{ color: "green" }}>Login successful</p>
+              <p
+                style={{
+                  color: "green",
+                  fontWeight: "500",
+                  marginBottom: "5px",
+                }}
+              >
+                Login successful
+              </p>
             )}
             {loginError && <p style={{ color: "red" }}>{loginError}</p>}
             <button
@@ -210,7 +229,7 @@ const SignIn = () => {
             >
               Login
             </button>
-            <div className="text-center p-2">OR</div>
+            <button className="text-or-login">OR</button>
             <button
               className="button-google"
               type="button"
