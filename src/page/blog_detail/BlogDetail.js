@@ -602,7 +602,11 @@ const BlogDetail = () => {
                         replies[comment.id]?.length > 0 && (
                           <div className="replies-list col-12 mx-5 mt-2">
                             {replies[comment.id]
-                              .filter((reply) => reply.accountName)
+                              .filter(
+                                (reply) =>
+                                  reply.accountName &&
+                                  reply.accountName !== "Anonymous"
+                              )
                               .map((reply, replyIndex) => (
                                 <div
                                   className="reply-item"
@@ -721,7 +725,9 @@ const BlogDetail = () => {
                                         {replies[reply.id]
                                           .filter(
                                             (superReply) =>
-                                              superReply.accountName
+                                              superReply.accountName &&
+                                              superReply.accountName !==
+                                                "Anonymous"
                                           )
                                           .map(
                                             (superReply, supperReplyIndex) => (
@@ -890,7 +896,9 @@ const BlogDetail = () => {
                                                       {replies[superReply.id]
                                                         .filter(
                                                           (superReplySmall) =>
-                                                            superReplySmall.accountName
+                                                            superReplySmall.accountName &&
+                                                            superReplySmall.accountName !==
+                                                              "Anonymous"
                                                         )
                                                         .map(
                                                           (
@@ -1195,6 +1203,7 @@ const BlogDetail = () => {
                       borderRadius: "8px",
                       padding: "25px",
                       width: "80%",
+                      maxWidth: "400px",
                       boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
                       zIndex: "1000",
                       textAlign: "center",
@@ -1244,6 +1253,7 @@ const BlogDetail = () => {
                       borderRadius: "8px",
                       padding: "25px",
                       width: "80%",
+                      maxWidth: "400px",
                       boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
                       zIndex: 1000,
                       textAlign: "center",
@@ -1364,6 +1374,7 @@ const BlogDetail = () => {
                       borderRadius: "8px",
                       padding: "25px",
                       width: "80%",
+                      maxWidth: "400px",
                       boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
                       zIndex: "1000",
                       textAlign: "center",
@@ -1412,6 +1423,7 @@ const BlogDetail = () => {
                       borderRadius: "8px",
                       padding: "25px",
                       width: "80%",
+                      maxWidth: "400px",
                       boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
                       zIndex: "1000",
                       textAlign: "center",
@@ -1533,6 +1545,7 @@ const BlogDetail = () => {
                       borderRadius: "8px",
                       padding: "25px",
                       width: "80%",
+                      maxWidth: "400px",
                       boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
                       zIndex: "1000",
                       textAlign: "center",
@@ -1582,6 +1595,7 @@ const BlogDetail = () => {
                       borderRadius: "8px",
                       padding: "25px",
                       width: "80%",
+                      maxWidth: "400px",
                       boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
                       zIndex: 1000,
                       textAlign: "center",
@@ -1702,6 +1716,7 @@ const BlogDetail = () => {
                       borderRadius: "8px",
                       padding: "25px",
                       width: "80%",
+                      maxWidth: "400px",
                       boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
                       zIndex: "1000",
                       textAlign: "center",

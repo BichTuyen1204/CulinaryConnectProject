@@ -19,7 +19,6 @@ import { FoodDisplay } from "./components/food_display/FoodDisplay";
 import Register from "./components/register/Register";
 import SignIn from "./components/sign_in/SignIn";
 import Invoice from "./page/invoice/Invoice";
-import OrderConfirmation from "./page/order_confirm/OrderConfirmation";
 import Google from "./page/google/Google";
 import OrderDetail from "./page/order_detail/OrderDetail";
 import { CartProvider } from "./components/context/Context";
@@ -84,7 +83,6 @@ const AppContent = () => {
             <Route path="register" element={<Register />} />
             <Route path="token" element={<Google />} />
             <Route path="invoice" element={<Invoice />} />
-            <Route path="order_confirm/:id" element={<OrderConfirmation />} />
             <Route path="order_detail/:id" element={<OrderDetail />} />
             <Route path="blog" element={<Blog />} />
             <Route path="blog_detail/:id" element={<BlogDetail />} />
