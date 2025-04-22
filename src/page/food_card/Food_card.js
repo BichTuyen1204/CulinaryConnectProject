@@ -166,7 +166,7 @@ export const Food_card = () => {
       setPopupAdd(true);
       setTimeout(() => {
         setPopupAdd(false);
-      }, 2500);
+      }, 2400);
     } else {
       navigate("/sign_in");
     }

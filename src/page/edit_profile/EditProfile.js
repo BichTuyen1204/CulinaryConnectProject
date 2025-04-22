@@ -125,7 +125,7 @@ export const EditProfile = () => {
 
   const ProfileNameChange = (e) => {
     let { value } = e.target;
-    value = value.replace(/[^a-zA-Z0-9]/g, "");
+    value = value.replace(/[^a-zA-Z0-9 ]/g, "");
     setProfileName(value);
     setUpdateInfo((preState) => ({ ...preState, profileName: value }));
     setFormSubmitted(false);
@@ -719,10 +719,13 @@ export const EditProfile = () => {
             {otpVisible && (
               <div className="otp-popup-overlay">
                 <div className="otp-popup">
-                  <h2>Enter OTP</h2>
+                  <h3>Enter OTP</h3>
                   <div className="form-group">
-                    <label>OTP:</label>
+                    <label>OTP:{" "}</label>
                     <input
+                    style={{
+                      fontSize: "0.8em"
+                    }}
                       type="text"
                       value={otp}
                       onChange={handleOtpChange}

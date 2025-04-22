@@ -11,6 +11,7 @@ import ProductService from "../../api/ProductService";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { CartContext } from "../../components/context/Context";
 import AccountService from "../../api/AccountService";
+import ReactDOM from "react-dom";
 
 export const ListProductSearchImg = () => {
   const { addToCart } = useContext(CartContext);
@@ -113,7 +114,7 @@ export const ListProductSearchImg = () => {
     if (!username) return navigate("/sign_in");
     await addToCart(product);
     setPopupAdd(true);
-    setTimeout(() => setPopupAdd(false), 1000);
+    setTimeout(() => setPopupAdd(false), 2400);
   };
 
   useEffect(() => {
@@ -286,13 +287,57 @@ export const ListProductSearchImg = () => {
           )}
 
           {/* Popup thêm vào giỏ */}
-          {popupAdd && (
-            <div className="popup position-fixed top-0 start-50 translate-middle-x mt-4 bg-success text-white py-2 px-4 rounded shadow">
-              <div className="popup-content text-center">
-                <strong>✅ Added to cart!</strong>
-              </div>
-            </div>
-          )}
+          {popupAdd &&
+            ReactDOM.createPortal(
+              <>
+                <div
+                  style={{
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    width: "100vw",
+                    height: "100vh",
+                    backgroundColor: "rgba(0, 0, 0, 0.2)",
+                    backdropFilter: "blur(3px)",
+                    zIndex: 999,
+                  }}
+                />
+                <div
+                  style={{
+                    position: "fixed",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    backgroundColor: "white",
+                    borderRadius: "12px",
+                    padding: "30px",
+                    width: "300px",
+                    boxShadow: "0 8px 20px rgba(0, 0, 0, 0.3)",
+                    zIndex: 1000,
+                    textAlign: "center",
+                  }}
+                >
+                  <svg
+                    className="checkmark"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 52 52"
+                  >
+                    <circle
+                      className="checkmark__circle"
+                      cx="26"
+                      cy="26"
+                      r="25"
+                    />
+                    <path className="checkmark__check" d="M14 26l7 7 15-15" />
+                  </svg>
+
+                  <p className="mt-2 text-success fw-bold">
+                    Added to cart successfully
+                  </p>
+                </div>
+              </>,
+              document.body
+            )}
         </div>
       </div>
     </div>

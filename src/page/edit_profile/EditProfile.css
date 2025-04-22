@@ -11,10 +11,10 @@
   display: flex;
   flex-direction: column;
   margin-left: 130px;
-  margin-left: auto;  
-  margin-right: auto; 
-  margin-top: 5%; 
-  margin-bottom: 10%; 
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5%;
+  margin-bottom: 10%;
 }
 
 .edit-profile-container button {
@@ -25,7 +25,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%3
+  height: 100%3;
 }
 
 .edit-profile-avatar {
@@ -50,10 +50,9 @@
 .bg-img:hover {
   cursor: pointer;
   border: 1px solid tomato;
-
 }
 
-.bg-img input{
+.bg-img input {
   background-color: red;
   width: fit-content;
   height: 50px;
@@ -65,7 +64,7 @@
   margin-left: 7px;
   width: 20px;
   height: 20px;
-} 
+}
 
 .ic_pen:hover {
   color: tomato;
@@ -91,7 +90,7 @@
   width: 100%;
   border: 1px solid #b4b4b4;
   font-size: 0.9rem;
-  padding: 4px 10px
+  padding: 4px 10px;
 }
 
 .edit-profile-info input:focus {
@@ -144,7 +143,7 @@
   color: white;
 }
 
-.tabs button.active{
+.tabs button.active {
   background-color: tomato;
   color: white;
 }
@@ -205,12 +204,28 @@
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 300px;
+  width: 80%;
+  max-width: 400px;
+  height: 100vh;
+  max-height: 230px;
   text-align: center;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
+.otp-popup input {
+  padding: 5px 10px;
+  margin-left: 5px;
+  border: 1px solid rgb(193, 193, 193);
+  border-radius: 5px;
+}
+
+.otp-popup input:focus {
+  border: 1px solid rgb(255, 128, 38);
+  outline: none !important;
+}
+
 
 .otp-popup button {
   padding: 10px 15px;
@@ -222,12 +237,17 @@
 }
 
 .otp-popup button.verify-otp {
-  background-color: #4CAF50;
+  background-color: #4caf50;
+  padding: 8px;
+  justify-content: center;
+  margin: auto;
+  width: 80%;
+  font-size: 0.8em;
   color: white;
 }
 
 .otp-popup button.verify-otp:disabled {
-  background-color: #ccc; 
+  background-color: #ccc;
   cursor: not-allowed;
 }
 
@@ -240,9 +260,13 @@
   box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.5);
 }
 
-
 .otp-popup button.close-otp {
-  background-color: #f44336; 
+  background-color: #f44336;
+  padding: 8px;
+  justify-content: center;
+  margin: auto;
+  width: 80%;
+  font-size: 0.8em;
   color: white;
 }
 
@@ -259,7 +283,7 @@
   margin-top: 10px;
 }
 
-@media (max-width:800px) {
+@media (max-width: 800px) {
   .edit-profile-avatar {
     width: 100px;
     height: 100px;
@@ -281,19 +305,21 @@
     font-weight: 500;
     padding: 4px 25px;
   }
-  .input-container{
+  .input-container {
     margin-bottom: 5px;
   }
-  .input-container p{
+  .input-container p {
     margin-top: 10px !important;
   }
-  .input-container p, .input-wrapper input{
+  .input-container p,
+  .input-wrapper input {
     font-size: 0.7em;
   }
   .edit-profile-info-big {
     margin-top: 5px !important;
   }
-  .bt-edit-profile, .bt-cancel-profile {
+  .bt-edit-profile,
+  .bt-cancel-profile {
     font-size: 0.7em;
   }
   .text-or {
@@ -305,7 +331,7 @@
   }
 }
 
-@media (max-width:600px) {
+@media (max-width: 600px) {
   .edit-profile-avatar {
     height: 90px;
     border: 3px solid rgb(15, 175, 0);
@@ -315,7 +341,7 @@
   }
 }
 
-@media (max-width:480px) {
+@media (max-width: 480px) {
   .edit-profile-header {
     height: 70px;
     width: 70px;
@@ -343,7 +369,8 @@
     padding: 4px 5px !important;
     width: 45vw !important;
   }
-  .input-container p, .input-wrapper input{
+  .input-container p,
+  .input-wrapper input {
     font-size: 0.6em;
   }
   .edit-profile-info-big {
@@ -356,7 +383,8 @@
     font-size: 0.6em !important;
     width: 100% !important;
   }
-  .bt-edit-profile, .bt-cancel-profile {
+  .bt-edit-profile,
+  .bt-cancel-profile {
     font-size: 0.6em;
   }
   .icon-eye-password {
@@ -366,7 +394,7 @@
   }
 }
 
-@media (max-width:320px){
+@media (max-width: 320px) {
   .edit-profile-header {
     height: 65px;
     width: 60px;
@@ -383,15 +411,17 @@
   }
   .tabs button {
     font-size: 0.4em;
-    padding: 3px!important;
+    padding: 3px !important;
   }
-  .input-container p, .input-wrapper input{
+  .input-container p,
+  .input-wrapper input {
     font-size: 0.4em;
   }
   .text-or {
     font-size: 0.5em !important;
   }
-  .bt-edit-profile, .bt-cancel-profile {
+  .bt-edit-profile,
+  .bt-cancel-profile {
     font-size: 0.5em;
   }
   .icon-eye-password {
@@ -399,7 +429,8 @@
     margin-top: 2px;
     right: 5px;
   }
-  .bt-edit-profile, .bt-cancel-profile {
+  .bt-edit-profile,
+  .bt-cancel-profile {
     font-size: 0.5em !important;
   }
   .bt-edit-profile {

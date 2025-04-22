@@ -283,7 +283,7 @@ const Register = () => {
           <div className="sign-up-input">
             <div className="sign-up-username">
               <label htmlFor="username">
-                Full name <span style={{ color: "red" }}>*</span>
+                Username <span style={{ color: "red" }}>*</span>
               </label>
               <input
                 type="name"
