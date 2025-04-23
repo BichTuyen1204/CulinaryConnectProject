@@ -22,7 +22,6 @@ ENV REACT_APP_BACKEND_API_ENDPOINT=${BACKEND_API_ENDPOINT}
 ENV REACT_APP_BACKEND_WS_ENDPOINT=${BACKEND_WS_ENDPOINT}
 ENV REACT_APP_BACKEND_API_ENDPOINT_SEARCH=${BACKEND_API_ENDPOINT_SEARCH}
 ENV REACT_APP_DEPLOY_ENDPOINT=${DEPLOY_ENDPOINT}
-ENV PORT=3001
 
 # Build the app
 RUN npm run build
@@ -32,7 +31,6 @@ FROM docker.io/nginx:alpine
 
 # Copy the build output to replace the default nginx contents
 COPY --from=build /app/build /usr/share/nginx/html
-
 
 RUN echo 'server { \
     listen 3001; \

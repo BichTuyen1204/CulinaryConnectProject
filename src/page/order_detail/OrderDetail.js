@@ -141,8 +141,7 @@ const OrderDetail = () => {
                 <strong className="mx-2">Payment Method:</strong>
                 <strong style={{ color: "tomato" }}>
                   {orderData.summary.paymentMethod}
-                  {orderData.summary.paymentMethod === "PAYPAL" ||
-                  orderData.summary.paymentMethod === "VNPAY"
+                  {orderData.summary.paymentMethod !== "COD"
                     ? " - " + orderData.summary.paymentStatus
                     : ""}
                 </strong>
